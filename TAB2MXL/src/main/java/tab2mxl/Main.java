@@ -9,11 +9,7 @@ public class Main {
 	public static void main(String[] args) {
 		
 		ReadFile("GuitarTab.txt");	
-		// yassers lab task
-		//Christophers lab task
-		// Faruq's lab task
-		// Erika's Lab Task
-		//Zach's lab task
+		
 	}
 	
 	public static void ReadFile(String fileName)
