@@ -1,4 +1,4 @@
-package tab2mxl_graphics;
+package tab2mxl;
 
 import javax.swing.*;
 
@@ -7,28 +7,30 @@ import java.awt.event.*;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 import java.util.prefs.Preferences;
 
 
 public class MyFrame extends JFrame implements ActionListener {
 
-	JButton button;
+	JButton selectFileButton;
 	JPanel panel;
 	
 	Preferences prefs = Preferences.userRoot().node(getClass().getName());
 	String LAST_USED_FOLDER = "";
 	
-	MyFrame() {
+	MyFrame() {		
 		
-		button = new JButton("Select File");  //Select File button
-		button.setBounds(100,100,250,100);
-		button.setForeground(Color.WHITE);    //Customize button
-		button.setBackground(Color.BLACK);
-		button.setOpaque(true);
-		button.setBorderPainted(false);
+		selectFileButton = new JButton("Select File");  //Select File button
+		selectFileButton.setBounds(100,100,250,100);
+		selectFileButton.setForeground(Color.WHITE);    //Customize button
+		selectFileButton.setBackground(Color.BLACK);
+		selectFileButton.setOpaque(true);
+		selectFileButton.setBorderPainted(false);
 		
-		button.addActionListener(this); //Button action
+		selectFileButton.addActionListener(this); //Button action
 		
 		JLabel label = new JLabel("Upload Tablature to Convert to MusicXML:");
 		label.setBounds(100, -100, 300, 300);
@@ -40,10 +42,10 @@ public class MyFrame extends JFrame implements ActionListener {
 		this.setLayout(null);
 		this.pack();
 		this.setLocationRelativeTo(null);
-		this.setSize(500,300);
+		this.setSize(852,480);
 		this.setVisible(true);
 		this.add(label);
-		this.add(button);
+		this.add(selectFileButton);
 			
 		//Sets the FileChoosers style to the current system look and feel
 		try {
@@ -55,9 +57,10 @@ public class MyFrame extends JFrame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 
-		if (e.getSource() == button) {  //Button click
+		if (e.getSource() == selectFileButton) {  //Button click
 			JFileChooser fileChooser = new JFileChooser(prefs.get(LAST_USED_FOLDER, new File(".").getAbsolutePath())); // Create file chooser
-
+			ArrayList<ArrayList<String>> input = new ArrayList<ArrayList<String>>();  
+			
 			int response = fileChooser.showOpenDialog(null); // Select file to open
 			// fileChooser.showSaveDialog(null); //Select file to save
 
@@ -70,15 +73,27 @@ public class MyFrame extends JFrame implements ActionListener {
 
 				try {
 					
-					Scanner input = new Scanner(file); //Print contents of text file to console
+					Scanner scannerInput = new Scanner(file); //Print contents of text file to console
 					
-					while (input.hasNextLine()) {
-						System.out.println(input.nextLine());
+					while (scannerInput.hasNextLine()) {	
+						String[] lineInput = scannerInput.nextLine().split("");						
+						ArrayList<String> lineInputList = new ArrayList<String>();
+						
+						for(String character : lineInput) {
+							lineInputList.add(character);
+					    }			
+						input.add(lineInputList);
 					}
-
+					
+					scannerInput.close();
+					
+					//Call FileUploaded() method in Main_GUI
+					Main.FileUploaded(input);
+					
 				} catch (FileNotFoundException e1) {
 					e1.printStackTrace();
-				}
+				}				
+				
 			}
 		}
 	}
