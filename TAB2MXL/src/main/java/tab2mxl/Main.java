@@ -11,6 +11,7 @@ public class Main {
 		ReadFile("GuitarTab.txt");	
 		// yassers lab task
 		//Christophers lab task
+		// Faruq's lab task
 	}
 	
 	public static void ReadFile(String fileName)
