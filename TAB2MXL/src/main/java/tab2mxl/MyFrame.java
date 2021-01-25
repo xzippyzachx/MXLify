@@ -16,6 +16,12 @@ public class MyFrame extends JFrame{
 		//Main Screen
 		///////////////////////
 		mainContentPanel = new MainContentPanel();
+		//Sets the FileChoosers style to the current system look and feel
+		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+	    } 
+	    catch (Throwable ex) { }
+		
         this.setContentPane(mainContentPanel);		
 		
         //Set Frame settings
@@ -23,13 +29,10 @@ public class MyFrame extends JFrame{
 		this.setSize(852,480);
 		this.setVisible(true);
 			
-		//Sets the FileChoosers style to the current system look and feel
-		try {
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-	    } 
-	    catch (Throwable ex) { }
-	}
+		
 	
+	}
+
 	
 	public void FileUploadScreen()
 	{
@@ -45,6 +48,20 @@ public class MyFrame extends JFrame{
 		mainContentPanel = null;
 		textInputContentPanel = new TextInputContentPanel();
 		this.setContentPane(textInputContentPanel);		
+	}
+	
+	public void MainContentScreenFromText()
+	{
+		textInputContentPanel = null;
+		mainContentPanel = new MainContentPanel();
+		this.setContentPane(mainContentPanel);
+	}
+	
+	public void MainContentScreenFromUpload()
+	{
+		fileUploadContentPanel = null;
+		mainContentPanel = new MainContentPanel();
+		this.setContentPane(mainContentPanel);
 	}
 	
 }

@@ -24,6 +24,7 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 	JScrollPane scroll;
 	JPanel inputpanel;
 	JButton button;
+	JButton backButton;
 	
 	TextInputContentPanel(){		
 	
@@ -32,6 +33,13 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 		Border padding = BorderFactory.createEmptyBorder(10, 10, 10, 10);
 		this.setBorder(padding);
         
+		//creates back button containder adds button to the content pannel
+		JPanel backPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));		
+		backButton = new JButton("Back");
+		backButton.addActionListener(this);
+		backPanel.add(backButton);
+		this.add(backPanel);
+		
         // creates Title Container and adds label to the Content panel
         titlePanel = new JPanel();
         titleLabel = new JLabel("Paste Your Tab Here");
@@ -63,6 +71,12 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		
+		if(e.getSource() ==backButton) {
+			this.setVisible(false);
+			Main.myFrame.MainContentScreenFromText();
+		}
+		else {
 		String[] inputText = textfield.getText().split("\n");
 		
 		ArrayList<ArrayList<String>> input = new ArrayList<ArrayList<String>>();
@@ -78,6 +92,7 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 		}
 		
 		Main.FileUploaded(input);		
+	}
 	}
 	
 }
