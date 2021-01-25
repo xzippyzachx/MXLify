@@ -3,7 +3,7 @@ package tab2mxl;
 import java.util.ArrayList;
 
 public class Main {
-    //dksadsladasl;dka;dkas;lkdas;lask
+    //dksadsladasl;dka;dkas;lkdasdsad
 	public static MyFrame myFrame;
 	
 	public static void main(String[] args) {
