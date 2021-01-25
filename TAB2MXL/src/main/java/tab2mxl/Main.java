@@ -3,8 +3,7 @@ package tab2mxl;
 import java.util.ArrayList;
 
 public class Main {
-	//Erika's comment
-	//yassers comment
+    //dksadsladasl;dka;dkas;lkdasdsad
 	public static MyFrame myFrame;
 	
 	public static void main(String[] args) {
@@ -15,5 +14,5 @@ public class Main {
 	{
 		new Parser(input);
 	}
-
+ 
 }
