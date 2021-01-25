@@ -40,7 +40,7 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
         
         // generates the text field, sets size,font, and scrollability
         textfield = new JTextArea(25,60);
-        textfield.setFont(Font.getFont(Font.MONOSPACED));
+        textfield.setFont(new Font(Font.MONOSPACED, Font.PLAIN,12));
         this.add(textfield);
         scroll = new JScrollPane (textfield, 
      		   JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
