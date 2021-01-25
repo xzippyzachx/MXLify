@@ -5,6 +5,7 @@ import java.util.ArrayList;
 public class Main {
 
     //christopher
+	//faruq merge test
 
 	public static MyFrame myFrame;
 	
