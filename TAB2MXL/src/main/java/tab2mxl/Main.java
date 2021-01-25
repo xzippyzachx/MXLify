@@ -3,7 +3,7 @@ package tab2mxl;
 import java.util.ArrayList;
 
 public class Main {
-	//Test
+	//Hehehehehehe
 	public static MyFrame myFrame;
 	
 	public static void main(String[] args) {
