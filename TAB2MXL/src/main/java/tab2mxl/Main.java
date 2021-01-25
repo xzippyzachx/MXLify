@@ -7,6 +7,8 @@ import java.util.Scanner;
 
 public class Main {
 
+	//Test
+	
 	public static void main(String[] args) {
 		//new MyFrame();
 		new textInput();
