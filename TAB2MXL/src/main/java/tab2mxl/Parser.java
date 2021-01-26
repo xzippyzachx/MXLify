@@ -27,6 +27,9 @@ public class Parser {
 			}
 		}
 		
+		//Create the file generator to generate the musicxml file
+		new FileGenerator (columns);
+		
 		//Print out the input
 		for(char[] col : columns)
 		{
