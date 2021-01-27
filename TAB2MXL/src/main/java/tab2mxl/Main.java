@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 public class Main {
 //Change
+	//This is my line
 	public static MyFrame myFrame;
 	
 	public static void main(String[] args) {
