@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 public class Main {
 	//Erika's comment 
+    //Labtask2
 	public static MyFrame myFrame;
 	
 	public static void main(String[] args) {
