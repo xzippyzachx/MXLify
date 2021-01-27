@@ -19,7 +19,7 @@ public class FileGenerator {
 	
 	String currentIndent = "";
 	
-	FileGenerator (ArrayList<char[]> output) {		
+	FileGenerator () {		
 		JFileChooser fileChooser = new JFileChooser(prefs.get(LAST_USED_FOLDER_SAVE, new File(".").getAbsolutePath())); // Create file chooser
 		fileChooser.setFileFilter(new FileNameExtensionFilter("musicxml file","musicxml"));
 		int response = fileChooser.showSaveDialog(null); //Select file to save
@@ -28,7 +28,8 @@ public class FileGenerator {
 			
 			saveFile = new File(fileChooser.getSelectedFile().getAbsolutePath());  //Print out path
 			try {
-		      myWriter = new FileWriter(saveFile);		      
+		      myWriter = new FileWriter(saveFile);
+		      
 		    } catch (IOException e) {
 		      e.printStackTrace();
 		    }

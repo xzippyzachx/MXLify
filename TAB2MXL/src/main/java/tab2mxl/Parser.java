@@ -5,32 +5,43 @@ import java.util.ArrayList;
 public class Parser {
 
 	int stringAmount;
+	int tabLineAmount;
 	
-	Parser(ArrayList<ArrayList<String>> input) {	
-
+	Parser(ArrayList<ArrayList<String>> input) {
 		stringAmount = 0;
+		tabLineAmount = 1;
+		
 		for(int i = 0; i < input.size(); i++)
 		{			
-			if(input.get(i).size() == 0)
+			if(input.get(i).size() < 2)
 				break;
 			stringAmount++;
 		}
 		
+		for(int i = 0; i < input.size(); i++)
+			if(input.get(i).size() < 2 && input.get(i-1).size() > 2 && i != input.size())
+				tabLineAmount++;
+				
 		//Transpose columns to rows
-		ArrayList<char[]> columns = new ArrayList<char[]>();		
-		for(int i = 0; i < input.get(0).size(); i++)
+		ArrayList<char[]> columns = new ArrayList<char[]>();
+		
+		for(int layer = 0; layer < tabLineAmount; layer++)
 		{
-			columns.add(new char[stringAmount]);
-			for(int l = 0; l < stringAmount; l++)
-			{
-				columns.get(i)[l] = (input.get(l).get(i).charAt(0));
-			}
+			for(int i = 0; i < input.get((layer * stringAmount) + layer).size(); i++)
+			{				
+				columns.add(new char[stringAmount]);
+				for(int l = 0; l < stringAmount; l++)
+				{
+					columns.get(columns.size()-1)[l] = input.get(l + (layer * stringAmount) + layer).get(i).charAt(0);
+				}
+			}			
 		}
 		
 		//Create the file generator to generate the MusicXML file
-		FileGenerator FileGen = new FileGenerator (columns);
+		FileGenerator FileGen = new FileGenerator ();
 		
 		//Calling the methods in the FileGenerator to build the MusicXML
+		//This is just to test
 		FileGen.AddInfo();
 		FileGen.OpenMeasure(1);
 		FileGen.AddNote(0,1,"A");
