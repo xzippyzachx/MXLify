@@ -27,10 +27,17 @@ public class Parser {
 			}
 		}
 		
-		//Create the file generator to generate the musicxml file
-		new FileGenerator (columns);
+		//Create the file generator to generate the MusicXML file
+		FileGenerator FileGen = new FileGenerator (columns);
 		
-		//Print out the input
+		//Calling the methods in the FileGenerator to build the MusicXML
+		FileGen.AddInfo();
+		FileGen.OpenMeasure(1);
+		FileGen.AddNote(0,1,"A");
+		FileGen.CloseMeasure();
+		FileGen.End();
+		
+		//Print out the input to the console
 		for(char[] col : columns)
 		{
 			for(char character : col)
