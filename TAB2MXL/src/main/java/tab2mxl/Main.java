@@ -2,8 +2,6 @@ package tab2mxl;
 
 import java.util.ArrayList;
 
-
-
 public class Main {
 	
 	public static MyFrame myFrame;
