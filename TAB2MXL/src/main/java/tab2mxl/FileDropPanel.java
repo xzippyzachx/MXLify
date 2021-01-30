@@ -17,16 +17,16 @@ public class FileDropPanel extends JPanel{
 		
 				JPanel DropPanel = new JPanel();
 				DropPanel.setLayout(new BoxLayout(DropPanel, BoxLayout.Y_AXIS));// sets layout to vertical
-				Border DropPadding = BorderFactory.createEmptyBorder(10, 10, 10, 10);
+				Border DropPadding = BorderFactory.createEmptyBorder(0, 10, 10, 10);
 				DropPanel.setBorder(DropPadding);
 				
 				
 				JLabel DropLabel = new JLabel("<html><body style='text-align: center'>Drop Tablature to<br>Convert to MusicXML");
 				DropLabel.setBackground(Color.PINK);
 				DropLabel.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 16));
-				DropLabel.setMinimumSize(new Dimension(300, 75));
-				DropLabel.setPreferredSize(new Dimension(300, 75));
-				DropLabel.setMaximumSize(new Dimension(300, 75));
+				//DropLabel.setMinimumSize(new Dimension(300, 75));
+				//DropLabel.setPreferredSize(new Dimension(300, 75));
+				//DropLabel.setMaximumSize(new Dimension(300, 75));
 				DropLabel.setHorizontalAlignment(JLabel.CENTER);
 				DropLabel.setHorizontalTextPosition(JLabel.CENTER);
 				DropLabel.setAlignmentX(JLabel.CENTER_ALIGNMENT);
@@ -41,7 +41,7 @@ public class FileDropPanel extends JPanel{
 				JLabel dropLoc = new JLabel();
 				ImageIcon imageIcon = new ImageIcon("DropImage.png"); // load the image to a imageIcon
 				Image image = imageIcon.getImage(); // transform it 
-				Image newImage = image.getScaledInstance(120, 120,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
+				Image newImage = image.getScaledInstance(120, 100,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
 				imageIcon = new ImageIcon(newImage);  // transform it back
 				dropLoc.setIcon(imageIcon);
 				

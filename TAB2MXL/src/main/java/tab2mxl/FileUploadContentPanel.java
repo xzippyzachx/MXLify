@@ -3,6 +3,8 @@ package tab2mxl;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.dnd.DnDConstants;
@@ -50,32 +52,38 @@ public class FileUploadContentPanel extends JPanel implements ActionListener {
 		//////////////////////
 
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS)); // sets layout to be vertical
-		Border padding = BorderFactory.createEmptyBorder(10, 10, 10, 10);
+		Border padding = BorderFactory.createEmptyBorder(10, 0, 10, 10);
 		this.setBorder(padding); // adds a basic border around the frame
 
-		// creates back button containder adds button to the top left of the content
-		// panel
-		JPanel backPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-		backButton = new JButton("Back");
-		backButton.addActionListener(this);
-		backPanel.add(backButton);
-		this.add(backPanel);
+//		BACK BUTTON REMOVED
+//		// creates back button container adds button to the top left of the content
+//		// panel
+//		JPanel backPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+//		backButton = new JButton("Back");
+//		backButton.addActionListener(this);
+//		backPanel.add(backButton);
+//		this.add(backPanel);
 
 		// creates panel to place the main body elements
-		JPanel OptionsPanel = new JPanel(new FlowLayout(FlowLayout.LEFT)); // sets layout of this panel to be horizontal
-		Border OptionsPadding = BorderFactory.createEmptyBorder(0, 50, 55, 0);
+		JPanel OptionsPanel = new JPanel(new GridLayout(2,1)); // 
+		Border OptionsPadding = BorderFactory.createEmptyBorder(-20, 50, 55, 0);
 		OptionsPanel.setBorder(OptionsPadding);
 
 		// creates panel for the upload label and button to go into
 		JPanel UploadPanel = new JPanel();
-		UploadPanel.setLayout(new BoxLayout(UploadPanel, BoxLayout.Y_AXIS)); // sets layout of this panel to be vertical
-
+		UploadPanel.setLayout(new GridLayout(4,1)); // sets layout of this panel to be vertical
+		JPanel SpacePanelTop = new JPanel(); // makes the top quarter of the UploadPanel empty space
+		JPanel SpacePanelBottom = new JPanel();  // makes the bottom quarter of the UploadPanel empty space
+		JPanel LabelPanel = new JPanel(new GridBagLayout()); // allows us centering of the label
 		JLabel label = new JLabel("Upload Tablature to Convert to MusicXML"); // creates label
 		label.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 16)); // sets font for the label
-		UploadPanel.add(label);
+		
+		LabelPanel.add(label);
+		UploadPanel.add(SpacePanelTop);
+		UploadPanel.add(LabelPanel);
 
 		JPanel ButtonPanel = new JPanel(); // creates panel for button
-		ButtonPanel.setLayout(new FlowLayout()); // centers the button in that panel
+		ButtonPanel.setLayout(new GridBagLayout()); // centers the button in that panel
 
 		selectButton = new JButton("Select File"); // Select File button
 //		selectButton.setBounds(100,100,250,100);
@@ -87,29 +95,34 @@ public class FileUploadContentPanel extends JPanel implements ActionListener {
 		ButtonPanel.add(selectButton);
 
 		UploadPanel.add(ButtonPanel); // adds button panel to the upload panel
-
-		// creates a panel for the drop label and drop box to go into
-		JPanel DropPanel = new JPanel();
-		DropPanel.setLayout(new BoxLayout(DropPanel, BoxLayout.Y_AXIS));// sets layout to vertical
-		Border DropPadding = BorderFactory.createEmptyBorder(0, 45, 15, 0);
-		DropPanel.setBorder(DropPadding);
-		JLabel DropLabel = new JLabel("Drop Tablature to Convert to MusicXML");
-		DropLabel.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 16));
-		DropPanel.add(DropLabel);
-		/**
-		 * to do: create the drop box for dropping in a text file
-		 */
+		UploadPanel.add(SpacePanelBottom); 
 		
-		JLabel dropLoc = new JLabel("Drag File Here!",SwingConstants.CENTER);
-		dropLoc.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 16));
-		dropLoc.setForeground(Color.red);
-		 MyDragDropListener myDragDropListener = new MyDragDropListener();
-
-	    // Connect the label with a drag and drop listener
-	    new DropTarget(dropLoc, myDragDropListener);
-
-	    // Add the label to the content
-	    DropPanel.add(dropLoc);
+		// creates a panel for the drop label and drop box to go into
+		FileDropPanel DropPanel = new FileDropPanel();
+		
+//		DropPanel.setLayout(new BoxLayout(DropPanel, BoxLayout.Y_AXIS));// sets layout to vertical
+//		Border DropPadding = BorderFactory.createEmptyBorder(0, 45, 15, 0);
+//		DropPanel.setBorder(DropPadding);
+//		JLabel DropLabel = new JLabel("Drop Tablature to Convert to MusicXML");
+//		
+//		DropLabel.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 16));
+//		DropPanel.add(DropLabel);
+//		/**
+//		 * to do: create the drop box for dropping in a text file
+//		 */
+//		
+//		JLabel dropLoc = new JLabel("Drag File Here!",SwingConstants.CENTER);
+//		dropLoc.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 16));
+//		dropLoc.setForeground(Color.red);
+//		 MyDragDropListener myDragDropListener = new MyDragDropListener();
+//
+//	    // Connect the label with a drag and drop listener
+//	    new DropTarget(dropLoc, myDragDropListener);
+//
+//	    // Add the label to the content
+//	    DropPanel.add(dropLoc);
+		
+		
 		OptionsPanel.add(UploadPanel);
 		OptionsPanel.add(DropPanel);
 
@@ -117,6 +130,7 @@ public class FileUploadContentPanel extends JPanel implements ActionListener {
 		// label.setBounds(100, -100, 300, 300);
 
 		// this.add(label);
+		
 		this.add(OptionsPanel);
 
 		this.setVisible(true);
@@ -124,10 +138,7 @@ public class FileUploadContentPanel extends JPanel implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (e.getSource() == backButton) {
-			this.setVisible(false);
-			Main.myFrame.MainContentScreenFromUpload();
-		} else {
+		
 			if (e.getSource() == selectButton) { // Button click
 				JFileChooser fileChooser = new JFileChooser(
 						prefs.get(LAST_USED_FOLDER, new File(".").getAbsolutePath())); // Create file chooser
@@ -167,7 +178,7 @@ public class FileUploadContentPanel extends JPanel implements ActionListener {
 					}
 				}
 			}
-		}
+		
 	}
 
 }

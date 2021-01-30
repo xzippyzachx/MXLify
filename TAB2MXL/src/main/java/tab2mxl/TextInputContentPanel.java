@@ -30,15 +30,16 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 	
 	// creates main content panel, lets layout to vertical, adds padding and sets it as Content Pane
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-		Border padding = BorderFactory.createEmptyBorder(10, 10, 10, 10);
+		Border padding = BorderFactory.createEmptyBorder(10, 10, 10, 50);
 		this.setBorder(padding);
-        
-		//creates back button containder adds button to the content pannel
-		JPanel backPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));		
-		backButton = new JButton("Back");
-		backButton.addActionListener(this);
-		backPanel.add(backButton);
-		this.add(backPanel);
+
+// BACK BUTTON REMOVED
+//		//creates back button containder adds button to the content pannel
+//		JPanel backPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));		
+//		backButton = new JButton("Back");
+//		backButton.addActionListener(this);
+//		backPanel.add(backButton);
+//		this.add(backPanel);
 		
         // creates Title Container and adds label to the Content panel
         titlePanel = new JPanel();
@@ -47,7 +48,7 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
         this.add(titlePanel);
         
         // generates the text field, sets size,font, and scrollability
-        textfield = new JTextArea(25,60);
+        textfield = new JTextArea(18,80);
         textfield.setFont(new Font(Font.MONOSPACED, Font.PLAIN,12));
         this.add(textfield);
         scroll = new JScrollPane (textfield, 
@@ -72,11 +73,7 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
-		if(e.getSource() ==backButton) {
-			this.setVisible(false);
-			Main.myFrame.MainContentScreenFromText();
-		}
-		else {
+
 		String[] inputText = textfield.getText().split("\n");
 		
 		ArrayList<ArrayList<String>> input = new ArrayList<ArrayList<String>>();
@@ -92,7 +89,7 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 		}
 		
 		Main.FileUploaded(input);		
-	}
+	
 	}
 	
 }
