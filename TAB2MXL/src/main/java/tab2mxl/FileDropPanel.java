@@ -10,35 +10,35 @@ import javax.swing.border.Border;
 public class FileDropPanel extends JPanel{
 	
 	public static String dropFilePath = "";
-	 private JPanel jp2;
-	    private JButton b2;
+	
 	FileDropPanel(){
 		
-		
-				JPanel DropPanel = new JPanel();
-				DropPanel.setLayout(new BoxLayout(DropPanel, BoxLayout.Y_AXIS));// sets layout to vertical
+				// Main Panel for Drop Elements
+				JPanel dropPanel = new JPanel();
+				dropPanel.setLayout(new BoxLayout(dropPanel, BoxLayout.Y_AXIS));// sets layout to vertical
 				Border DropPadding = BorderFactory.createEmptyBorder(0, 10, 10, 10);
-				DropPanel.setBorder(DropPadding);
+				dropPanel.setBorder(DropPadding);
 				
+				//Title Label -----------------------------------------------------------
+				JLabel dropLabel = new JLabel("<html><body style='text-align: center'>Drop Tablature to<br>Convert to MusicXML");
+				dropLabel.setBackground(Color.PINK);
+				dropLabel.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 16));
 				
-				JLabel DropLabel = new JLabel("<html><body style='text-align: center'>Drop Tablature to<br>Convert to MusicXML");
-				DropLabel.setBackground(Color.PINK);
-				DropLabel.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 16));
-				//DropLabel.setMinimumSize(new Dimension(300, 75));
-				//DropLabel.setPreferredSize(new Dimension(300, 75));
-				//DropLabel.setMaximumSize(new Dimension(300, 75));
-				DropLabel.setHorizontalAlignment(JLabel.CENTER);
-				DropLabel.setHorizontalTextPosition(JLabel.CENTER);
-				DropLabel.setAlignmentX(JLabel.CENTER_ALIGNMENT);
-				DropLabel.setBackground(Color.PINK);
-				DropLabel.setOpaque(true);
+				dropLabel.setHorizontalAlignment(JLabel.CENTER);
+				dropLabel.setHorizontalTextPosition(JLabel.CENTER);
+				dropLabel.setAlignmentX(JLabel.CENTER_ALIGNMENT);
+				
+				dropLabel.setBackground(Color.PINK);
+				dropLabel.setOpaque(true);
+				
 				Border border = BorderFactory.createLineBorder(Color.BLACK, 5);
-				 
-			    // set the border of this component
-			    DropLabel.setBorder(border);
-				DropPanel.add(DropLabel);
+				dropLabel.setBorder(border);
 				
+			    dropPanel.add(dropLabel);
+				
+			    //Drop Image Label ------------------------------------------------------
 				JLabel dropLoc = new JLabel();
+				
 				ImageIcon imageIcon = new ImageIcon("DropImage.png"); // load the image to a imageIcon
 				Image image = imageIcon.getImage(); // transform it 
 				Image newImage = image.getScaledInstance(120, 100,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
@@ -51,35 +51,38 @@ public class FileDropPanel extends JPanel{
 				dropLoc.setHorizontalAlignment(JLabel.CENTER);
 				dropLoc.setHorizontalTextPosition(JLabel.CENTER);
 				dropLoc.setAlignmentX(JLabel.CENTER_ALIGNMENT);
+				
 				dropLoc.setBackground(Color.LIGHT_GRAY);
 				dropLoc.setOpaque(true);
+				
 				DragDropListener dragDropListener = new DragDropListener();
-
-				// Connect the label with a drag and drop listener
-				new DropTarget(dropLoc, dragDropListener);
+				new DropTarget(dropLoc, dragDropListener); // Connect the label with a drag and drop listener
 
 				// Add the label to the content
-				DropPanel.add(dropLoc);
+				dropPanel.add(dropLoc);
 				
 				
+				//Bottom Label ------------------------------------------------------------
+				JLabel dropText = new JLabel("Drop File in Above Area");
 				
-				JLabel DropText = new JLabel("Drop File in Above Area");
-				DropText.setBackground(Color.PINK);
-				DropText.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 16));
-				DropText.setMinimumSize(new Dimension(300, 25));
-				DropText.setPreferredSize(new Dimension(300, 25));
-				DropText.setMaximumSize(new Dimension(300, 25));
-				DropText.setHorizontalAlignment(JLabel.CENTER);
-				DropText.setHorizontalTextPosition(JLabel.CENTER);
-				DropText.setAlignmentX(JLabel.CENTER_ALIGNMENT);
-				DropText.setBackground(Color.LIGHT_GRAY);
-				DropText.setOpaque(true);
+				dropText.setBackground(Color.PINK);
+				dropText.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 16));
 				
-				DropPanel.add(DropText);
+				dropText.setMinimumSize(new Dimension(300, 25));
+				dropText.setPreferredSize(new Dimension(300, 25));
+				dropText.setMaximumSize(new Dimension(300, 25));
 				
-				this.add(DropPanel);
-
-				this.setVisible(true);
+				dropText.setHorizontalAlignment(JLabel.CENTER);
+				dropText.setHorizontalTextPosition(JLabel.CENTER);
+				dropText.setAlignmentX(JLabel.CENTER_ALIGNMENT);
+				
+				dropText.setBackground(Color.LIGHT_GRAY);
+				dropText.setOpaque(true);
+				
+				dropPanel.add(dropText);
+				
+				this.add(dropPanel);//Add Drop Panel to File Drop Panel
+				this.setVisible(true); //Set File Drop Panel to Visible
     
 	}
 	
