@@ -47,17 +47,40 @@ public class Parser {
 		FileGen.AddNote(0,1,"A");
 		FileGen.CloseMeasure();
 		FileGen.End();
-		
+		int stringcheck = 0;
+		int fret = 0;
+		int count = 0;
+		int measure = 0;
+		int line = 0;
+		int gate = 0;
 		//Print out the input to the console
 		for(char[] col : columns)
 		{
 			for(char character : col)
 			{
-				System.out.print(character);
-			}
-			System.out.println("");
-		}
-		
-	}
+				if (character == '|') {
+					count++;
+			      }
+				if (count == 6) {
+				  measure++;
+				  count = 0;
+				 System.out.println("measure " + measure);
+			 }	
+				if (character != '-' && stringcheck <= 5) {
+					stringcheck++;
+					System.out.println("string " + character);
+				}
+				gate++;
+				line++;
+				if (character != '-' && character != '|' && gate>=7) {
+					fret = Character.getNumericValue(character);
+					System.out.println("line " + line + " and fret " + fret);
+				}
+				if (line == 6) {
+					line=0;
+				}
+		 }	
 	
+	}
+	}
 }
