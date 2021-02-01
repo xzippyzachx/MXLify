@@ -46,6 +46,8 @@ public class Parser {
 		//Start the musicxml file
 		fileGen.addInfo("London Bridge is Falling Down");
 		
+		
+		
 		fileGen.openPart(1);
 		
 		int currentColumn = 0;
@@ -84,6 +86,7 @@ public class Parser {
 					if(columns.size() > currentColumn + 1) {
 						System.out.println("measure " + measure);
 						fileGen.openMeasure(measure);
+					//TO DO: Check if the mesure is #1 and if so generate the attributes
 					}
 				}			
 				
@@ -93,8 +96,8 @@ public class Parser {
 				if (character != '-' && character != '|' && gate>=7) {
 					fret = Character.getNumericValue(character);
 					System.out.println("line " + line + " and fret " + fret);
-					fileGen.addNote(line, fret, tunner.getNote(tune[line], fret));
-				}				
+					fileGen.addNote(line, fret, tunner.getNote(tune[line-1].toUpperCase(), fret), "");
+				}
 				if (line == 6) {
 					line = 0;
 				}
