@@ -8,9 +8,6 @@ public class Main {
 	
 	public static void main(String[] args) {
 		myFrame = new MyFrame();
-		//Tuning class test
-		Tuning t = new Tuning("GuitarNotes.txt");
-		System.out.println(t.getNote("B", 2));
 	}
 
 	public static void FileUploaded(ArrayList<ArrayList<String>> input)

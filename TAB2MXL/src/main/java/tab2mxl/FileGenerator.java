@@ -128,7 +128,7 @@ public class FileGenerator {
 	 * @param fret
 	 * @param note
 	 */
-	public void addNote(int string, int fret, String note)
+	public void addNote(int string, int fret, String note, String noteType)
 	{
 		try {
 			myWriter.write(currentIndent + "<note>");
