@@ -36,7 +36,7 @@ public class MyFrame extends JFrame{
 		
         //Set Frame settings
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setSize(852,480);
+		this.setSize(1280,720);
 		this.setVisible(true);
 			
 		

@@ -38,49 +38,78 @@ public class Parser {
 		}
 		
 		//Create the file generator to generate the MusicXML file
-		FileGenerator FileGen = new FileGenerator ();
+		FileGenerator fileGen = new FileGenerator();
+		Tuning tunner = new Tuning("GuitarNotes.txt");
 		
 		//Calling the methods in the FileGenerator to build the MusicXML
-		//This is just to test
-		FileGen.AddInfo();
-		FileGen.OpenMeasure(1);
-		FileGen.AddNote(0,1,"A");
-		FileGen.CloseMeasure();
-		FileGen.End();
+		
+		//Start the musicxml file
+		fileGen.addInfo("London Bridge is Falling Down");
+		
+		fileGen.openPart(1);
+		
+		int currentColumn = 0;
 		int stringcheck = 0;
 		int fret = 0;
 		int count = 0;
 		int measure = 0;
 		int line = 0;
 		int gate = 0;
-		//Print out the input to the console
+		
+		String[] tune = new String[stringAmount];
+		
+		//Loop through the inputed columns
 		for(char[] col : columns)
 		{
 			for(char character : col)
 			{
-				if (character == '|') {
-					count++;
-			      }
-				if (count == 6) {
-				  measure++;
-				  count = 0;
-				 System.out.println("measure " + measure);
-			 }	
-				if (character != '-' && stringcheck <= 5) {
-					stringcheck++;
+				//Finds the string tunes
+				if (character != '-' && stringcheck <= 5) {		
 					System.out.println("string " + character);
+					tune[stringcheck] = Character.toString(character);
+					
+					stringcheck++;
 				}
+				
+				//Finds if there is a new measure
+				if (character == '|')
+					count++;				
+				if (count == 6) {
+					measure++;
+					count = 0;
+					
+					
+					if(fileGen.measureOpen)
+						fileGen.closeMeasure();
+					if(columns.size() > currentColumn + 1) {
+						System.out.println("measure " + measure);
+						fileGen.openMeasure(measure);
+					}
+				}			
+				
+				//Finds the string and fret of a note
 				gate++;
 				line++;
 				if (character != '-' && character != '|' && gate>=7) {
 					fret = Character.getNumericValue(character);
 					System.out.println("line " + line + " and fret " + fret);
-				}
+					fileGen.addNote(line, fret, tunner.getNote(tune[line], fret));
+				}				
 				if (line == 6) {
-					line=0;
+					line = 0;
 				}
-		 }	
-	
-	}
+				
+			}
+			currentColumn++;
+		}
+		
+		
+		//End the musicxml file
+		if(fileGen.measureOpen)
+			fileGen.closeMeasure();
+		if(fileGen.partOpen)
+			fileGen.closePart();
+		fileGen.end();
+		
 	}
 }

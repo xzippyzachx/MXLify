@@ -54,6 +54,8 @@ public class Tuning {
 	
 	//to get the note for each specified string and fret
 	public String getNote(String string, int fret) {
+		if(fret == 0)
+			return string;
 		String output = stringNotes.get(string).get(fret-1);
 		
 		return output;
