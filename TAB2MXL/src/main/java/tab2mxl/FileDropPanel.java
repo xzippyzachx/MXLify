@@ -20,18 +20,19 @@ public class FileDropPanel extends JPanel{
 				dropPanel.setBorder(DropPadding);
 				
 				//Title Label -----------------------------------------------------------
-				JLabel dropLabel = new JLabel("<html><body style='text-align: center'>Drop Tablature to<br>Convert to MusicXML");
+				JLabel dropLabel = new JLabel("<html><body style='text-align: center'>Drop Tablature to Convert<br> to MusicXML");
+				//JLabel dropLabel = new JLabel("Drop Tablature to Convert to MusicXML");
 				dropLabel.setBackground(Color.PINK);
-				dropLabel.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 16));
+				//dropLabel.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 16));
 				
 				dropLabel.setHorizontalAlignment(JLabel.CENTER);
 				dropLabel.setHorizontalTextPosition(JLabel.CENTER);
 				dropLabel.setAlignmentX(JLabel.CENTER_ALIGNMENT);
 				
-				dropLabel.setBackground(Color.PINK);
+				dropLabel.setBackground(new Color(51,153,255));
 				dropLabel.setOpaque(true);
 				
-				Border border = BorderFactory.createLineBorder(Color.BLACK, 5);
+				Border border = BorderFactory.createLineBorder(Color.BLACK, 3);
 				dropLabel.setBorder(border);
 				
 			    dropPanel.add(dropLabel);
@@ -48,6 +49,7 @@ public class FileDropPanel extends JPanel{
 				dropLoc.setMinimumSize(new Dimension(300, 100));
 				dropLoc.setPreferredSize(new Dimension(300, 100));
 				dropLoc.setMaximumSize(new Dimension(300, 100));
+				
 				dropLoc.setHorizontalAlignment(JLabel.CENTER);
 				dropLoc.setHorizontalTextPosition(JLabel.CENTER);
 				dropLoc.setAlignmentX(JLabel.CENTER_ALIGNMENT);
@@ -66,7 +68,7 @@ public class FileDropPanel extends JPanel{
 				JLabel dropText = new JLabel("Drop File in Above Area");
 				
 				dropText.setBackground(Color.PINK);
-				dropText.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 16));
+				//dropText.setFont(new Font(,Font.PLAIN, 16));
 				
 				dropText.setMinimumSize(new Dimension(300, 25));
 				dropText.setPreferredSize(new Dimension(300, 25));
