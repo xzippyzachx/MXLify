@@ -12,7 +12,6 @@ public class Main {
 
 	public static void FileUploaded(String input)
 	{
-		System.out.println(input);
 		myFrame.textInputContentPanel.textField.setText(input);
 	}
 	
