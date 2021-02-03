@@ -7,6 +7,7 @@ public class Parser {
 	int stringAmount;
 	int tabLineAmount;
 	
+	@SuppressWarnings("unused")
 	Parser(ArrayList<ArrayList<String>> input) {
 		stringAmount = 0;
 		tabLineAmount = 1;
@@ -57,14 +58,39 @@ public class Parser {
 		int measure = 0;
 		int line = 0;
 		int gate = 0;
-		
+		double dashNote; 
+		char[] col;
+		char character = ' ';
 		String[] tune = new String[stringAmount];
 		
 		//Loop through the inputed columns
-		for(char[] col : columns)
+		for(int i = 0; i < columns.size(); i++)
 		{
-			for(char character : col)
+			dashNote = 0.125;
+			col = columns.get(i);
+			for(int j = 0; j < col.length; j++)
 			{
+				character = col[j];
+				
+				// To check what type of note we have, by checking ahead
+				if(character != '-' && character != '|') {
+					boolean test;
+					boolean test2;
+				for(int k = i+1; k < columns.size()-1; k++) {
+					if(!containsOnly(columns.get(k), '|')) {
+						 test = containsOnly(columns.get(k), '-');
+							if(test) {
+								dashNote += 0.125;
+						}else {
+							break;
+						}
+					}else {
+						break;
+					}
+					
+				}
+				}
+				
 				//Finds the string tunes
 				if (character != '-' && stringcheck <= 5) {		
 					System.out.println("string " + character);
@@ -101,7 +127,7 @@ public class Parser {
 						fret = 0;
 					}
 					System.out.println("line " + line + " and fret " + fret);
-					fileGen.addNote(line, fret, tunner.getNote(tune[line-1].toUpperCase(), fret), "");
+					fileGen.addNote(line, fret, tunner.getNote(tune[line-1].toUpperCase(), fret), noteType(dashNote));
 				}
 				if (line == 6) {
 					line = 0;
@@ -119,5 +145,47 @@ public class Parser {
 			fileGen.closePart();
 		fileGen.end();
 		
+	}
+	
+	private boolean containsOnly(char[] cs, char o) {
+		boolean output = true;
+		
+		for(Object t : cs) {
+			output = output && t.equals(o) ;
+		}
+		
+		return output;
+	}
+	
+	private String noteType(double beatNote) {
+		String output = "";
+		
+		if(beatNote == 1) {
+			output = "whole";
+		}if(beatNote == 0.75) {
+			output = "three quarter";
+		}if(beatNote == 0.5) {
+			output = "half";
+		}if(beatNote == 0.25) {
+			output = "quarter";
+		}if(beatNote == 0.125) {
+			output = "eight";
+		}if(beatNote == 0.625) {
+			output = "16th";
+		}if(beatNote == 0.03125) {
+			output = "32nd";
+		}if(beatNote == 0.015625) {
+			output = "64th";
+		}if(beatNote == 1/128) {
+			output = "128th";
+		}if(beatNote == 1/256) {
+			output = "256th";
+		}if(beatNote == 1/512) {
+			output = "512th";
+		}if(beatNote == 1/1024) {
+			output = "1024th";
+		}
+			
+		return output;
 	}
 }
