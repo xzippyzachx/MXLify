@@ -95,6 +95,11 @@ public class Parser {
 				line++;
 				if (character != '-' && character != '|' && gate>=7) {
 					fret = Character.getNumericValue(character);
+					if(fret < 0)
+					{
+						System.out.println("Bad Char: " + character);
+						fret = 0;
+					}
 					System.out.println("line " + line + " and fret " + fret);
 					fileGen.addNote(line, fret, tunner.getNote(tune[line-1].toUpperCase(), fret), "");
 				}

@@ -10,7 +10,13 @@ public class Main {
 		myFrame = new MyFrame();
 	}
 
-	public static void FileUploaded(ArrayList<ArrayList<String>> input)
+	public static void FileUploaded(String input)
+	{
+		System.out.println(input);
+		myFrame.textInputContentPanel.textField.setText(input);
+	}
+	
+	public static void Convert(ArrayList<ArrayList<String>> input)
 	{
 		new Parser(input);
 	}

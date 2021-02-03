@@ -20,7 +20,7 @@ public class FileDropPanel extends JPanel{
 				dropPanel.setBorder(DropPadding);
 				
 				//Title Label -----------------------------------------------------------
-				JLabel dropLabel = new JLabel("<html><body style='text-align: center'>Drop Tablature to Convert<br> to MusicXML");
+				JLabel dropLabel = new JLabel("<html><body style='text-align: center'>Drop Tablature Text File");
 				//JLabel dropLabel = new JLabel("Drop Tablature to Convert to MusicXML");
 				dropLabel.setBackground(Color.PINK);
 				//dropLabel.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 16));
