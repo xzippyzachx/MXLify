@@ -147,7 +147,7 @@ public class FileGenerator {
 			newLine();
 			myWriter.write(currentIndent + "<duration>1</duration>"); 
 			newLine();
-			myWriter.write(currentIndent + "<type>quarter</type>"); 
+			myWriter.write(currentIndent + "<type>" + noteType +"</type>"); 
 			newLine();
 			myWriter.write(currentIndent + "<stem>down</stem>"); 
 			newLine();
