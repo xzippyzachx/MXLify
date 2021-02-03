@@ -14,8 +14,8 @@ public class MyFrame extends JFrame{
 	FileUploadContentPanel fileUploadContentPanel = new FileUploadContentPanel();
 	public TextInputContentPanel textInputContentPanel = new TextInputContentPanel();
 	
-	MyFrame() {	
-				
+	MyFrame() {
+		
 		///////////////////////
 		//Main Screen
 		///////////////////////
@@ -23,7 +23,7 @@ public class MyFrame extends JFrame{
 		mainContentPanel = new JPanel();
 		mainContentPanel.setLayout(new GridBagLayout ());
 		GridBagConstraints c = new GridBagConstraints();
-				
+		
 		c.gridwidth = 2;
 		
 		c.weightx = 0.7;
@@ -37,8 +37,8 @@ public class MyFrame extends JFrame{
 	    } 
 	    catch (Throwable ex) { }
 		
-        this.setContentPane(mainContentPanel);		
-		
+        this.setContentPane(mainContentPanel);
+        
         //Set Frame settings
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setSize(1280,720);
