@@ -6,6 +6,7 @@ public class Main {
 	public static MyFrame myFrame;
 	// yassers commit 
 	// christophers commit
+	// faruq's commit
 	public static void main(String[] args) {
 		myFrame = new MyFrame();
 	}
