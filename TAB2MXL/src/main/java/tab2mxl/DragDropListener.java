@@ -7,8 +7,13 @@ import java.awt.dnd.DropTargetDragEvent;
 import java.awt.dnd.DropTargetDropEvent;
 import java.awt.dnd.DropTargetEvent;
 import java.awt.dnd.DropTargetListener;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class DragDropListener implements DropTargetListener{
 	@Override
@@ -30,16 +35,27 @@ public class DragDropListener implements DropTargetListener{
 					// Get all of the dropped files
 					List files = (List) transferable.getTransferData(flavor);
 
-					// Loop them through
+					// Loop through
 					for (Object file : files) {
-						FileDropPanel.dropFilePath = ((File) (file)).getPath();
-
-						// Print out the file path
-						System.out.println("File path is '" + ((File) (file)).getPath() + "'.");
-
+						FileDropPanel.dropFilePath = ((File) (file)).getPath();						
 						
-						// ****** TO DO ******  Read data in file and send to Parser
-						
+						try {
+							BufferedReader reader = new BufferedReader(new FileReader ((File) file));
+						    String         line = null;
+						    StringBuilder  stringBuilder = new StringBuilder();
+						    String         ls = System.getProperty("line.separator");
+					    
+					        while((line = reader.readLine()) != null) {
+					            stringBuilder.append(line);
+					            stringBuilder.append(ls);
+					        }
+
+					        Main.FileUploaded(stringBuilder.toString());
+					        
+					        reader.close();
+					    } catch (IOException e1) {
+							e1.printStackTrace();
+						}
 					}
 				}
 			} catch (Exception e) {

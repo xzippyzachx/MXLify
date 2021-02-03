@@ -9,16 +9,14 @@ import java.util.ArrayList;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import javax.swing.UIManager;
 import javax.swing.border.Border;
 
 public class TextInputContentPanel extends JPanel implements ActionListener {
-	JTextArea textfield;
+	public JTextArea textField;
 	JPanel titlePanel;
 	JLabel titleLabel;
 	JScrollPane scroll;
@@ -43,22 +41,22 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 		
         // creates Title Container and adds label to the Content panel
         titlePanel = new JPanel();
-        titleLabel = new JLabel("Paste Your Tab Here");
+        titleLabel = new JLabel("Paste Your Tablature Here");
         titlePanel.add(titleLabel);
         this.add(titlePanel);
         
         // generates the text field, sets size,font, and scrollability
-        textfield = new JTextArea(18,80);
-        textfield.setFont(new Font(Font.MONOSPACED, Font.PLAIN,12));
-        this.add(textfield);
-        scroll = new JScrollPane (textfield, 
-     		   JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+        textField = new JTextArea(20,90);
+        textField.setFont(new Font(Font.MONOSPACED, Font.PLAIN,12));
+        this.add(textField);
+        scroll = new JScrollPane (textField);
         this.add(scroll);
         
         // creates the container for the button, generates the button and sets an action on click
         inputpanel = new JPanel();
         inputpanel.setLayout(new FlowLayout());
-        button = new JButton("Upload Tabulature!");
+        button = new JButton("Convert To MusicXML");
+        button.setFocusable(false);
         button.addActionListener(this);
         inputpanel.add(button);
         Border buttonPadding = BorderFactory.createEmptyBorder(10, 10, 10, 10);
@@ -74,22 +72,37 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		
 
-		String[] inputText = textfield.getText().split("\n");
+		String[] inputText = textField.getText().split("\n");
 		
 		ArrayList<ArrayList<String>> input = new ArrayList<ArrayList<String>>();
 		
 		for (String line : inputText) {	
+			line = cleanTextContent(line); //Removes redundant spaces
 			String[] lineInput = line.split("");
 			ArrayList<String> lineInputList = new ArrayList<String>();
 			
 			for(String character : lineInput) {
 				lineInputList.add(character);
-		    }			
+		    }
 			input.add(lineInputList);
 		}
 		
-		Main.FileUploaded(input);		
+		Main.Convert(input);		
 	
 	}
 	
+	private static String cleanTextContent(String text) 
+	{
+	    // strips off all non-ASCII characters
+	    text = text.replaceAll("[^\\x00-\\x7F]", "");
+	 
+	    // erases all the ASCII control characters
+	    text = text.replaceAll("[\\p{Cntrl}&&[^\r\n\t]]", "");
+	     
+	    // removes non-printable characters from Unicode
+	    text = text.replaceAll("\\p{C}", "");
+	 
+	    return text.trim();
+	}
+		
 }

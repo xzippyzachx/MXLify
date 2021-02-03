@@ -1,6 +1,7 @@
 package tab2mxl;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridBagLayout;
@@ -15,8 +16,12 @@ import java.awt.dnd.DropTargetEvent;
 import java.awt.dnd.DropTargetListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -75,25 +80,42 @@ public class FileUploadContentPanel extends JPanel implements ActionListener {
 		JPanel SpacePanelTop = new JPanel(); // makes the top quarter of the UploadPanel empty space
 		JPanel SpacePanelBottom = new JPanel();  // makes the bottom quarter of the UploadPanel empty space
 		JPanel LabelPanel = new JPanel(new GridBagLayout()); // allows us centering of the label
-		JLabel label = new JLabel("Upload Tablature to Convert to MusicXML"); // creates label
-		label.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 16)); // sets font for the label
+		JLabel label = new JLabel("Upload Tablature Text File"); // creates label
+		
+		label.setMinimumSize(new Dimension(300, 50));
+		label.setPreferredSize(new Dimension(300, 50));
+		label.setMaximumSize(new Dimension(300, 50));
+		
+		label.setHorizontalAlignment(JLabel.CENTER);
+		label.setHorizontalTextPosition(JLabel.CENTER);
+		label.setAlignmentX(JLabel.CENTER_ALIGNMENT);
+		
+		label.setBackground(new Color(51,153,255));
+		label.setOpaque(true);
+		
+		Border border = BorderFactory.createLineBorder(Color.BLACK, 3);
+		label.setBorder(border);
+	//	label.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 16)); // sets font for the label
 		
 		LabelPanel.add(label);
 		UploadPanel.add(SpacePanelTop);
 		UploadPanel.add(LabelPanel);
 
 		JPanel ButtonPanel = new JPanel(); // creates panel for button
+
+		
 		ButtonPanel.setLayout(new GridBagLayout()); // centers the button in that panel
 
 		selectButton = new JButton("Select File"); // Select File button
 //		selectButton.setBounds(100,100,250,100);
-		selectButton.setForeground(Color.WHITE); // Customize button
-		selectButton.setBackground(Color.BLACK);
-		selectButton.setOpaque(true);
-		selectButton.setBorderPainted(false);
+		//selectButton.setForeground(Color.WHITE); // Customize button
+		//selectButton.setBackground(Color.BLACK);
+		//selectButton.setOpaque(true);
+		//selectButton.setBorderPainted(false);
+		selectButton.setFocusable(false);
 		selectButton.addActionListener(this); // Button action
 		ButtonPanel.add(selectButton);
-
+		
 		UploadPanel.add(ButtonPanel); // adds button panel to the upload panel
 		UploadPanel.add(SpacePanelBottom); 
 		
@@ -155,25 +177,20 @@ public class FileUploadContentPanel extends JPanel implements ActionListener {
 					prefs.put(LAST_USED_FOLDER, fileChooser.getSelectedFile().getParent()); // Save file path
 
 					try {
+						BufferedReader reader = new BufferedReader(new FileReader (file));
+					    String         line = null;
+					    StringBuilder  stringBuilder = new StringBuilder();
+					    String         ls = System.getProperty("line.separator");
+				    
+				        while((line = reader.readLine()) != null) {
+				            stringBuilder.append(line);
+				            stringBuilder.append(ls);
+				        }
 
-						Scanner scannerInput = new Scanner(file); // Print contents of text file to console
-
-						while (scannerInput.hasNextLine()) {
-							String[] lineInput = scannerInput.nextLine().split("");
-							ArrayList<String> lineInputList = new ArrayList<String>();
-
-							for (String character : lineInput) {
-								lineInputList.add(character);
-							}
-							input.add(lineInputList);
-						}
-
-						scannerInput.close();
-
-						// Call FileUploaded() method in Main_GUI
-						Main.FileUploaded(input);
-
-					} catch (FileNotFoundException e1) {
+				        Main.FileUploaded(stringBuilder.toString());
+				        
+				        reader.close();
+				    } catch (IOException e1) {
 						e1.printStackTrace();
 					}
 				}

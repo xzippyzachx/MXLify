@@ -18,6 +18,8 @@ public class FileGenerator {
 	FileWriter myWriter;
 	
 	String currentIndent = "";
+	boolean measureOpen = false;
+	boolean partOpen = false;
 	
 	FileGenerator () {		
 		JFileChooser fileChooser = new JFileChooser(prefs.get(LAST_USED_FOLDER_SAVE, new File(".").getAbsolutePath())); // Create file chooser
@@ -39,7 +41,7 @@ public class FileGenerator {
 	/**
 	 * Goes to the next line in the MusicXML
 	 */
-	private void NewLine()
+	private void newLine()
 	{
 		try {
 			myWriter.write("\n");
@@ -50,13 +52,71 @@ public class FileGenerator {
 	
 	/**
 	 * Adds the initial info to the beginning of the MusicXML
+	 * @param title
 	 */
-	public void AddInfo()
+	public void addInfo(String title)
 	{
 		try {
-			myWriter.write("<score-partwise version=\"3.1\">");
+			myWriter.write(currentIndent + "<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+			newLine();
+			myWriter.write(currentIndent + "<score-partwise version=\"3.1\">");
 			currentIndent += "  ";
-			NewLine();
+			newLine();
+			myWriter.write(currentIndent + "<work>");
+			currentIndent += "  ";
+			newLine();
+			myWriter.write(currentIndent + "<work-title>" + title + "</work-title>");
+			newLine();	
+			currentIndent = currentIndent.substring(0,currentIndent.length() - 2);
+			myWriter.write(currentIndent + "</work>");			
+			newLine();
+			
+			myWriter.write(currentIndent + "<part-list>");
+			currentIndent += "  ";
+			newLine();
+			myWriter.write(currentIndent + "<score-part id=\"P1\">");
+			currentIndent += "  ";
+			newLine();
+			myWriter.write(currentIndent + "<part-name>Guitar</part-name>");
+			newLine();
+			currentIndent = currentIndent.substring(0,currentIndent.length() - 2);
+			myWriter.write(currentIndent + "</score-part>");			
+			newLine();
+			currentIndent = currentIndent.substring(0,currentIndent.length() - 2);
+			myWriter.write(currentIndent + "</part-list>");			
+			newLine();
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Adds a new part opening to the MusicXML
+	 * @param partNumber
+	 */
+	public void openPart(int partNumber)
+	{
+		try {
+			myWriter.write(currentIndent + "<part id=\"P" + partNumber + "\">");
+			currentIndent += "  ";
+			newLine();
+			partOpen = true;
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Adds a part closing to the MusicXML
+	 */
+	public void closePart()
+	{
+		try {
+			currentIndent = currentIndent.substring(0,currentIndent.length() - 2);
+			myWriter.write(currentIndent + "</part>");
+			newLine();
+			partOpen = false;
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -68,18 +128,35 @@ public class FileGenerator {
 	 * @param fret
 	 * @param note
 	 */
-	public void AddNote(int string, int fret, String note)
+	public void addNote(int string, int fret, String note, String noteType)
 	{
 		try {
 			myWriter.write(currentIndent + "<note>");
 			currentIndent += "  ";
-			NewLine();
 			
-			//do note stuff here
+			newLine();			
+			myWriter.write(currentIndent + "<pitch>");
+			currentIndent += "  ";
+			newLine();
+			myWriter.write(currentIndent + "<step>" + note + "</step>");
+			newLine();
+			myWriter.write(currentIndent + "<octave>4</octave>");
+			newLine();
+			currentIndent = currentIndent.substring(0,currentIndent.length() - 2);
+			myWriter.write(currentIndent + "</pitch>"); 
+			newLine();
+			myWriter.write(currentIndent + "<duration>1</duration>"); 
+			newLine();
+			myWriter.write(currentIndent + "<type>quarter</type>"); 
+			newLine();
+			myWriter.write(currentIndent + "<stem>down</stem>"); 
+			newLine();
+			myWriter.write(currentIndent + "<staff>1</staff>");
+			newLine();
 			
 			currentIndent = currentIndent.substring(0,currentIndent.length() - 2);
 			myWriter.write(currentIndent + "</note>");		
-			NewLine();
+			newLine();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -89,12 +166,13 @@ public class FileGenerator {
 	 * Adds a new measure opening to the MusicXML
 	 * @param measureNumber
 	 */
-	public void OpenMeasure(int measureNumber)
+	public void openMeasure(int measureNumber)
 	{
 		try {
-			myWriter.write(currentIndent + "<measure number=" + measureNumber + ">");
+			myWriter.write(currentIndent + "<measure number=\"" + measureNumber + "\">");
 			currentIndent += "  ";
-			NewLine();
+			newLine();
+			measureOpen = true;
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -103,12 +181,13 @@ public class FileGenerator {
 	/**
 	 * Adds a measure closing to the MusicXML
 	 */
-	public void CloseMeasure()
+	public void closeMeasure()
 	{
 		try {
 			currentIndent = currentIndent.substring(0,currentIndent.length() - 2);
 			myWriter.write(currentIndent + "</measure>");
-			NewLine();
+			newLine();
+			measureOpen = false;
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -117,7 +196,7 @@ public class FileGenerator {
 	/**
 	 * Adds the closing lines to the MusicXML
 	 */
-	public void End()
+	public void end()
 	{
 		try {
 			myWriter.write("</score-partwise>");			
