@@ -3,9 +3,6 @@ package tab2mxl;
 import java.util.ArrayList;
 
 public class Main {
-	// yassers feature 
-	// yassers feature 2
-	// Christopher's change
 	public static MyFrame myFrame;
 	
 	public static void main(String[] args) {
