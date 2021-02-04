@@ -1,7 +1,10 @@
 package tab2mxl;
 
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -9,11 +12,15 @@ import java.util.ArrayList;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.JTextField;
 import javax.swing.border.Border;
+
+import tab2mxl.TextPrompt.Show;
 
 public class TextInputContentPanel extends JPanel implements ActionListener {
 	public JTextArea textField;
@@ -23,12 +30,19 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 	JPanel inputpanel;
 	JButton button;
 	JButton backButton;
-	
+	String[] tabTypes = {"Select Instrument","Guitar", "Bass", "Drums"};
+	JPanel detailsPanel;
+	JComboBox tabList;
+	JTextField timeSignature;
+	JTextField songName;
+	static String tabType;
+	static String title;
+	static String timeSig;
 	TextInputContentPanel(){		
 	
 	// creates main content panel, lets layout to vertical, adds padding and sets it as Content Pane
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-		Border padding = BorderFactory.createEmptyBorder(10, 10, 10, 50);
+		Border padding = BorderFactory.createEmptyBorder(10, 00, 10, 10);
 		this.setBorder(padding);
 
 // BACK BUTTON REMOVED
@@ -46,23 +60,64 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
         this.add(titlePanel);
         
         // generates the text field, sets size,font, and scrollability
-        textField = new JTextArea(20,90);
+        textField = new JTextArea();
+        
         textField.setFont(new Font(Font.MONOSPACED, Font.PLAIN,12));
         this.add(textField);
         scroll = new JScrollPane (textField);
+        scroll.setPreferredSize(new Dimension(800, 500));
+        scroll.setMinimumSize(new Dimension(480, 300));
+        scroll.setSize(getPreferredSize());;
         this.add(scroll);
+        
+        detailsPanel = new JPanel();
+        
+        detailsPanel.setLayout(new GridLayout(1,3));
+        
+        Border detailsPadding = BorderFactory.createEmptyBorder(20, 00, 20, 0);
+        detailsPanel.setBorder(detailsPadding);
+        
+        tabList = new JComboBox(tabTypes);
+        tabList.setSelectedIndex(0);
+        
+        Border detailBorder = BorderFactory.createEmptyBorder(00, 00, 0, 00);
+        
+        songName = new JTextField();
+        songName.setBorder(detailBorder);  
+        songName.setFont(songName.getFont().deriveFont(16f));
+        songName.setHorizontalAlignment(JTextField.CENTER);
+        TextPrompt songNamePrompt = new TextPrompt("Song Name", songName,Show.FOCUS_LOST);
+        songNamePrompt.setHorizontalAlignment(JTextField.CENTER);
+        songNamePrompt.changeAlpha(0.8f);
+        
+        timeSignature = new JTextField();
+        timeSignature.setFont(timeSignature.getFont().deriveFont(16f));
+        timeSignature.setHorizontalAlignment(JTextField.CENTER);
+        TextPrompt timeSignaturePrompt = new TextPrompt("Time Signature", timeSignature,Show.FOCUS_LOST);
+        timeSignaturePrompt.setHorizontalAlignment(JTextField.CENTER);
+        timeSignaturePrompt.changeAlpha(0.8f);
+        
+        
+        detailsPanel.add(tabList);
+//        detailsPanel.add(new JPanel());
+        detailsPanel.add(songName);
+//        detailsPanel.add(new JPanel());
+        detailsPanel.add(timeSignature);
         
         // creates the container for the button, generates the button and sets an action on click
         inputpanel = new JPanel();
         inputpanel.setLayout(new FlowLayout());
         button = new JButton("Convert To MusicXML");
+        button.setBackground(new Color(33,150,243));
+        button.setForeground(new Color(224,224,224));
         button.setFocusable(false);
         button.addActionListener(this);
         inputpanel.add(button);
-        Border buttonPadding = BorderFactory.createEmptyBorder(10, 10, 10, 10);
+        Border buttonPadding = BorderFactory.createEmptyBorder(10, 0, 10, 10);
         inputpanel.setBorder(buttonPadding);
         
         //adds the button container to the content panel
+        this.add(detailsPanel);
         this.add(inputpanel);
         
         this.setVisible(true);
@@ -86,7 +141,9 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 		    }
 			input.add(lineInputList);
 		}
-		
+		tabType = tabList.getSelectedItem().toString();
+		title = songName.getText();
+		timeSig =timeSignature.getText();
 		Main.Convert(input);		
 	
 	}

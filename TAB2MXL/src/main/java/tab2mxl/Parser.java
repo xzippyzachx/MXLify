@@ -1,17 +1,24 @@
 package tab2mxl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Parser {
 
 	int stringAmount;
 	int tabLineAmount;
+	private ArrayList<char[]> columns;
+	private static  Map<String,String> misc;
 	
 	@SuppressWarnings("unused")
 	Parser(ArrayList<ArrayList<String>> input) {
 		stringAmount = 0;
 		tabLineAmount = 1;
-		
+		misc = new HashMap<String, String>();
+		addTitle(TextInputContentPanel.title);
+		addTabType(TextInputContentPanel.tabType);
+		addTime(TextInputContentPanel.timeSig);
 		for(int i = 0; i < input.size(); i++)
 		{			
 			if(input.get(i).size() < 2)
@@ -23,8 +30,8 @@ public class Parser {
 			if(input.get(i).size() < 2 && input.get(i-1).size() > 2 && i != input.size())
 				tabLineAmount++;
 				
-		//Transpose columns to rows
-		ArrayList<char[]> columns = new ArrayList<char[]>();
+		//Transpose columns to rows (do you mean rows to col?)
+		columns = new ArrayList<char[]>();
 		
 		for(int layer = 0; layer < tabLineAmount; layer++)
 		{
@@ -45,7 +52,7 @@ public class Parser {
 		//Calling the methods in the FileGenerator to build the MusicXML
 		
 		//Start the musicxml file
-		fileGen.addInfo("London Bridge is Falling Down");
+		fileGen.addInfo(misc.get("Title"));
 		
 		
 		
@@ -145,6 +152,9 @@ public class Parser {
 			fileGen.closePart();
 		fileGen.end();
 		
+
+		
+		
 	}
 	
 	private boolean containsOnly(char[] cs, char o) {
@@ -187,5 +197,53 @@ public class Parser {
 		}
 			
 		return output;
+	}
+	
+	private int getDivisions(int beatSig) {
+		int hyfenNumber = -1;
+		int boundary = 0;
+		
+		for(int i=0;i< columns.size();i++) {
+
+			if(columns.get(i)[0] == '|'){
+				boundary++;
+			}
+			if (boundary == 2) {
+				break;
+			}
+			
+			if(columns.get(i)[0] == '-') {
+				hyfenNumber++;
+			}
+			else {
+				if(i==0) {
+				
+			}
+				else if(columns.get(i-1)[0] != '-') {
+					
+				}
+				else {
+					hyfenNumber++;
+				}
+		}
+	}	
+		int division = hyfenNumber/beatSig;
+	
+		if(hyfenNumber%beatSig !=0) {
+			throw new IllegalArgumentException("the number of hyfens or the beatSignature is not correct"); 
+		}
+		return division;
+	}
+	
+	static void addTitle(String title){
+		misc.put("Title",title);
+	}
+	
+	static void addTabType(String tabType){
+		misc.put("TabType",tabType);
+	}
+	
+	static void addTime(String timeSig){
+		misc.put("TimeSig",timeSig);
 	}
 }

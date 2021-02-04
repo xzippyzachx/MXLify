@@ -16,24 +16,25 @@ public class FileDropPanel extends JPanel{
 				// Main Panel for Drop Elements
 				JPanel dropPanel = new JPanel();
 				dropPanel.setLayout(new BoxLayout(dropPanel, BoxLayout.Y_AXIS));// sets layout to vertical
-				Border DropPadding = BorderFactory.createEmptyBorder(0, 10, 10, 10);
+				Border DropPadding = BorderFactory.createEmptyBorder(0, 0, 0, 10);
 				dropPanel.setBorder(DropPadding);
 				
 				//Title Label -----------------------------------------------------------
 				JLabel dropLabel = new JLabel("<html><body style='text-align: center'>Drop Tablature Text File");
 				//JLabel dropLabel = new JLabel("Drop Tablature to Convert to MusicXML");
-				dropLabel.setBackground(Color.PINK);
+
 				//dropLabel.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 16));
 				
 				dropLabel.setHorizontalAlignment(JLabel.CENTER);
+				
 				dropLabel.setHorizontalTextPosition(JLabel.CENTER);
 				dropLabel.setAlignmentX(JLabel.CENTER_ALIGNMENT);
 				
-				dropLabel.setBackground(new Color(51,153,255));
+				dropLabel.setBackground(new Color(33,150,243));
 				dropLabel.setOpaque(true);
 				
-				Border border = BorderFactory.createLineBorder(Color.BLACK, 3);
-				dropLabel.setBorder(border);
+				
+		
 				
 			    dropPanel.add(dropLabel);
 				

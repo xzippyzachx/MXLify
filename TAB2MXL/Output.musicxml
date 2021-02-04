@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <score-partwise version="3.1">
   <work>
-    <work-title>London Bridge is Falling Down</work-title>
+    <work-title>sdsafg</work-title>
   </work>
   <part-list>
     <score-part id="P1">
@@ -10,6 +10,7 @@
   </part-list>
   <part id="P1">
     <measure number="1">
+<<<<<<< HEAD
 <attributes>
         <divisions>1</divisions>
         <key>
@@ -57,6 +58,8 @@
             </staff-tuning>
           </staff-details>
       </attributes>  
+=======
+>>>>>>> refs/remotes/origin/develop
       <note>
         <pitch>
           <step>E</step>
@@ -307,7 +310,11 @@
           <octave>4</octave>
         </pitch>
         <duration>1</duration>
+<<<<<<< HEAD
         <type>half</type>
+=======
+        <type>three quarter</type>
+>>>>>>> refs/remotes/origin/develop
         <stem>down</stem>
         <staff>1</staff>
       </note>
