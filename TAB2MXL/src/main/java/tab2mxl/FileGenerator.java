@@ -127,13 +127,13 @@ public class FileGenerator {
 	
 	public void attributes(int division, int keySignature, int beat, int beatType, String clef) {
 		try {
-			myWriter.write(currentIndent + "<Attributes>");
+			myWriter.write(currentIndent + "<attributes>");
 			currentIndent += "  ";
 			
 			newLine();
 			myWriter.write(currentIndent + "<divisions>"+division+"</divisions>");
 			newLine();
-			myWriter.write(currentIndent + "<Key>");
+			myWriter.write(currentIndent + "<key>");
 			currentIndent += "  ";
 			
 			newLine();
@@ -142,12 +142,12 @@ public class FileGenerator {
 			myWriter.write(currentIndent + "<mode>"+"major"+"</mode>");
 			currentIndent = currentIndent.substring(0,currentIndent.length() - 2);
 			newLine();
-			myWriter.write(currentIndent + "</Key>");
+			myWriter.write(currentIndent + "</key>");
 			newLine();
 			myWriter.write(currentIndent + "<time>");
 			currentIndent += "  ";
 			newLine();
-			myWriter.write(currentIndent + "<beats>"+beat+"</beat>");
+			myWriter.write(currentIndent + "<beats>"+beat+"</beats>");
 			newLine();
 			myWriter.write(currentIndent + "<beat-type>"+beatType+"</beat-type>");
 			currentIndent = currentIndent.substring(0,currentIndent.length() - 2);
@@ -165,7 +165,7 @@ public class FileGenerator {
 			myWriter.write(currentIndent + "</clef>");
 			currentIndent = currentIndent.substring(0,currentIndent.length() - 2);
 			newLine();
-			myWriter.write(currentIndent + "</Attributes>");
+			myWriter.write(currentIndent + "</attributes>");
 			newLine();
 			
 		} catch (IOException e) {
