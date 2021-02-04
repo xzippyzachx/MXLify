@@ -91,6 +91,8 @@ public class FileGenerator {
 		}
 	}
 	
+
+	
 	/**
 	 * Adds a new part opening to the MusicXML
 	 * @param partNumber
@@ -120,6 +122,57 @@ public class FileGenerator {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	
+	public void attributes(int division, int keySignature, int beat, int beatType, String clef) {
+		try {
+			myWriter.write(currentIndent + "<Attributes>");
+			currentIndent += "  ";
+			
+			newLine();
+			myWriter.write(currentIndent + "<divisions>"+division+"</divisions>");
+			newLine();
+			myWriter.write(currentIndent + "<Key>");
+			currentIndent += "  ";
+			
+			newLine();
+			myWriter.write(currentIndent + "<fifths>"+0+"</fifths>");
+			newLine();
+			myWriter.write(currentIndent + "<mode>"+"major"+"</mode>");
+			currentIndent = currentIndent.substring(0,currentIndent.length() - 2);
+			newLine();
+			myWriter.write(currentIndent + "</Key>");
+			newLine();
+			myWriter.write(currentIndent + "<time>");
+			currentIndent += "  ";
+			newLine();
+			myWriter.write(currentIndent + "<beats>"+beat+"</beat>");
+			newLine();
+			myWriter.write(currentIndent + "<beat-type>"+beatType+"</beat-type>");
+			currentIndent = currentIndent.substring(0,currentIndent.length() - 2);
+			newLine();
+			myWriter.write(currentIndent + "</time>");
+			newLine();
+			myWriter.write(currentIndent + "<clef>");
+			currentIndent += "  ";
+			newLine();
+			myWriter.write(currentIndent + "<sign>"+clef+"</sign>");
+			newLine();
+			myWriter.write(currentIndent + "<line>"+2+"</line>");
+			currentIndent = currentIndent.substring(0,currentIndent.length() - 2);
+			newLine();
+			myWriter.write(currentIndent + "</clef>");
+			currentIndent = currentIndent.substring(0,currentIndent.length() - 2);
+			newLine();
+			myWriter.write(currentIndent + "</Attributes>");
+			newLine();
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 	
 	/**

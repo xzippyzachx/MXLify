@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <score-partwise version="3.1">
   <work>
-    <work-title>sdsafg</work-title>
+    <work-title>dsfsdf</work-title>
   </work>
   <part-list>
     <score-part id="P1">
@@ -10,6 +10,21 @@
   </part-list>
   <part id="P1">
     <measure number="1">
+      <Attributes>
+        <divisions>2</divisions>
+        <Key>
+          <fifths>0</fifths>
+          <mode>major</mode>
+        </Key>
+        <time>
+          <beats>4</beat>
+          <beat-type>4</beat-type>
+        </time>
+        <clef>
+          <sign>G</sign>
+          <line>2</line>
+        </clef>
+      </Attributes>
       <note>
         <pitch>
           <step>E</step>

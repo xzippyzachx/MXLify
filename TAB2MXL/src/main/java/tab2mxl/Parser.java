@@ -16,9 +16,11 @@ public class Parser {
 		stringAmount = 0;
 		tabLineAmount = 1;
 		misc = new HashMap<String, String>();
+		
 		addTitle(TextInputContentPanel.title);
 		addTabType(TextInputContentPanel.tabType);
 		addTime(TextInputContentPanel.timeSig);
+		
 		for(int i = 0; i < input.size(); i++)
 		{			
 			if(input.get(i).size() < 2)
@@ -119,6 +121,10 @@ public class Parser {
 					if(columns.size() > currentColumn + 1) {
 						System.out.println("measure " + measure);
 						fileGen.openMeasure(measure);
+						if(measure ==1) {
+							fileGen.attributes(getDivisions(Integer.parseInt(misc.get("TimeSig"))), 0, Integer.parseInt(misc.get("TimeSig")), 4, "G");
+						}
+						
 					//TO DO: Check if the mesure is #1 and if so generate the attributes
 					}
 				}			
@@ -142,6 +148,7 @@ public class Parser {
 				
 			}
 			currentColumn++;
+		
 		}
 		
 		
