@@ -56,7 +56,7 @@
             <tuning-octave>4</tuning-octave>
             </staff-tuning>
           </staff-details>
-      </attributes>
+      </attributes>  
       <note>
         <pitch>
           <step>E</step>
@@ -125,7 +125,7 @@
           <octave>4</octave>
         </pitch>
         <duration>1</duration>
-        <type>quarter</type>
+        <type>half</type>
         <stem>down</stem>
         <staff>1</staff>
       </note>
@@ -157,7 +157,7 @@
           <octave>4</octave>
         </pitch>
         <duration>1</duration>
-        <type>quarter</type>
+        <type>half</type>
         <stem>down</stem>
         <staff>1</staff>
       </note>
@@ -189,7 +189,7 @@
           <octave>4</octave>
         </pitch>
         <duration>1</duration>
-        <type>quarter</type>
+        <type>half</type>
         <stem>down</stem>
         <staff>1</staff>
       </note>
@@ -263,7 +263,7 @@
           <octave>4</octave>
         </pitch>
         <duration>1</duration>
-        <type>quarter</type>
+        <type>half</type>
         <stem>down</stem>
         <staff>1</staff>
       </note>
@@ -275,7 +275,7 @@
           <octave>4</octave>
         </pitch>
         <duration>1</duration>
-        <type>quarter</type>
+        <type>half</type>
         <stem>down</stem>
         <staff>1</staff>
       </note>
@@ -285,7 +285,7 @@
           <octave>4</octave>
         </pitch>
         <duration>1</duration>
-        <type>quarter</type>
+        <type>half</type>
         <stem>down</stem>
         <staff>1</staff>
       </note>
@@ -307,7 +307,7 @@
           <octave>4</octave>
         </pitch>
         <duration>1</duration>
-        <type>quarter</type>
+        <type>half</type>
         <stem>down</stem>
         <staff>1</staff>
       </note>
