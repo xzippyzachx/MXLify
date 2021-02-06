@@ -186,8 +186,7 @@ public class FileGenerator {
 		try {
 			myWriter.write(currentIndent + "<note>");
 			currentIndent += "  ";
-			
-			newLine();			
+			newLine();
 			myWriter.write(currentIndent + "<pitch>");
 			currentIndent += "  ";
 			newLine();
@@ -206,7 +205,6 @@ public class FileGenerator {
 			newLine();
 			myWriter.write(currentIndent + "<staff>1</staff>");
 			newLine();
-			
 			currentIndent = currentIndent.substring(0,currentIndent.length() - 2);
 			myWriter.write(currentIndent + "</note>");		
 			newLine();
@@ -214,7 +212,42 @@ public class FileGenerator {
 			e.printStackTrace();
 		}
 	}
-	
+	public void addChord(char[] chord,String noteType) {
+		for (int i = 0; i<chord.length;i++) {
+		try {	
+			myWriter.write(currentIndent + "<note>");
+			currentIndent += "  ";
+			newLine();			
+			if(i>0) {
+				myWriter.write(currentIndent + "<chord/>");
+				newLine();
+			}
+			myWriter.write(currentIndent + "<pitch>");
+			currentIndent += "  ";
+			newLine();
+			myWriter.write(currentIndent + "<step>" + chord[i] + "</step>");
+			newLine();
+			myWriter.write(currentIndent + "<octave>4</octave>");
+			newLine();
+			currentIndent = currentIndent.substring(0,currentIndent.length() - 2);
+			myWriter.write(currentIndent + "</pitch>"); 
+			newLine();
+			myWriter.write(currentIndent + "<duration>1</duration>"); 
+			newLine();
+			myWriter.write(currentIndent + "<type>" + noteType +"</type>"); 
+			newLine();
+			myWriter.write(currentIndent + "<stem>down</stem>"); 
+			newLine();
+			myWriter.write(currentIndent + "<staff>1</staff>");
+			newLine();
+			currentIndent = currentIndent.substring(0,currentIndent.length() - 2);
+			myWriter.write(currentIndent + "</note>");		
+			newLine();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		}
+	}
 	/**
 	 * Adds a new measure opening to the MusicXML
 	 * @param measureNumber
