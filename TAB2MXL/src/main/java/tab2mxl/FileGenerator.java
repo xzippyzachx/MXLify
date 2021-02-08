@@ -14,6 +14,8 @@ public class FileGenerator {
 	public Preferences prefs = Preferences.userRoot().node(getClass().getName());
 	public String LAST_USED_FOLDER_SAVE = "";
 	
+	boolean failed = false;
+	
 	File saveFile;
 	FileWriter myWriter;
 	
@@ -35,6 +37,10 @@ public class FileGenerator {
 		    } catch (IOException e) {
 		      e.printStackTrace();
 		    }
+		}
+		else // Canceled
+		{
+			failed = true;
 		}
 	}
 	
@@ -69,8 +75,7 @@ public class FileGenerator {
 			newLine();	
 			currentIndent = currentIndent.substring(0,currentIndent.length() - 2);
 			myWriter.write(currentIndent + "</work>");			
-			newLine();
-			
+			newLine();			
 			myWriter.write(currentIndent + "<part-list>");
 			currentIndent += "  ";
 			newLine();
@@ -124,8 +129,16 @@ public class FileGenerator {
 		}
 	}
 	
-	
-	public void attributes(int division, int keySignature, int beat, int beatType, String clef) {
+	/**
+	 * Adds attributes to the MusicXML
+	 * @param division
+	 * @param keySignature
+	 * @param beat
+	 * @param beatType
+	 * @param clef
+	 * @param tune
+	 */
+	public void attributes(int division, int keySignature, int beat, int beatType, String clef, String[] tune) {
 		try {
 			myWriter.write(currentIndent + "<attributes>");
 			currentIndent += "  ";
@@ -134,37 +147,68 @@ public class FileGenerator {
 			myWriter.write(currentIndent + "<divisions>"+division+"</divisions>");
 			newLine();
 			myWriter.write(currentIndent + "<key>");
-			currentIndent += "  ";
+			currentIndent += "  ";	
 			
 			newLine();
 			myWriter.write(currentIndent + "<fifths>"+0+"</fifths>");
 			newLine();
-			myWriter.write(currentIndent + "<mode>"+"major"+"</mode>");
-			currentIndent = currentIndent.substring(0,currentIndent.length() - 2);
+			myWriter.write(currentIndent + "<mode>"+"major"+"</mode>");			
 			newLine();
+			currentIndent = currentIndent.substring(0,currentIndent.length() - 2);
 			myWriter.write(currentIndent + "</key>");
 			newLine();
 			myWriter.write(currentIndent + "<time>");
 			currentIndent += "  ";
+			
 			newLine();
 			myWriter.write(currentIndent + "<beats>"+beat+"</beats>");
 			newLine();
-			myWriter.write(currentIndent + "<beat-type>"+beatType+"</beat-type>");
-			currentIndent = currentIndent.substring(0,currentIndent.length() - 2);
+			myWriter.write(currentIndent + "<beat-type>"+beatType+"</beat-type>");			
 			newLine();
+			currentIndent = currentIndent.substring(0,currentIndent.length() - 2);
 			myWriter.write(currentIndent + "</time>");
+			newLine();
+			myWriter.write(currentIndent + "<staves>" + 2 + "</staves>");
 			newLine();
 			myWriter.write(currentIndent + "<clef>");
 			currentIndent += "  ";
+			
 			newLine();
 			myWriter.write(currentIndent + "<sign>"+clef+"</sign>");
 			newLine();
 			myWriter.write(currentIndent + "<line>"+2+"</line>");
-			currentIndent = currentIndent.substring(0,currentIndent.length() - 2);
 			newLine();
-			myWriter.write(currentIndent + "</clef>");
-			currentIndent = currentIndent.substring(0,currentIndent.length() - 2);
+			myWriter.write(currentIndent + "<clef-octave-change>"+(-1)+"</clef-octave-change>");
 			newLine();
+			currentIndent = currentIndent.substring(0,currentIndent.length() - 2);
+			myWriter.write(currentIndent + "</clef>");			
+			newLine();
+			myWriter.write(currentIndent + "<staff-details number = \"" + 2 + "\">");
+			currentIndent += "  ";
+			
+			newLine();
+			myWriter.write(currentIndent + "<staff-lines>" + tune.length + "</staff-lines>");
+			newLine();
+			
+			for(int i = 0; i < tune.length; i++)
+			{
+				myWriter.write(currentIndent + "<staff-tuning line=\"" + (i + 1) + "\">");
+				currentIndent += "  ";
+				newLine();
+				myWriter.write(currentIndent + "<tuning-step>" + tune[tune.length - i - 1] + "</tuning-step>");
+				newLine();
+				myWriter.write(currentIndent + "<tuning-octave>" + 2 + "</tuning-octave>");
+				newLine();
+				currentIndent = currentIndent.substring(0,currentIndent.length() - 2);
+				myWriter.write(currentIndent + "</staff-tuning>");
+				newLine();
+			}
+			
+			currentIndent = currentIndent.substring(0,currentIndent.length() - 2);
+			myWriter.write(currentIndent + "</staff-details>");
+			newLine();
+			
+			currentIndent = currentIndent.substring(0,currentIndent.length() - 2);
 			myWriter.write(currentIndent + "</attributes>");
 			newLine();
 			
@@ -212,42 +256,49 @@ public class FileGenerator {
 			e.printStackTrace();
 		}
 	}
-	public void addChord(char[] chord,String noteType) {
+	
+	/**
+	 * Adds a chord to the MusicXML
+	 * @param chord
+	 * @param noteType
+	 */
+	public void addChord(char[] chord, String noteType) {
 		for (int i = 0; i<chord.length;i++) {
-		try {	
-			myWriter.write(currentIndent + "<note>");
-			currentIndent += "  ";
-			newLine();			
-			if(i>0) {
-				myWriter.write(currentIndent + "<chord/>");
+			try {	
+				myWriter.write(currentIndent + "<note>");
+				currentIndent += "  ";
+				newLine();			
+				if(i>0) {
+					myWriter.write(currentIndent + "<chord/>");
+					newLine();
+				}
+				myWriter.write(currentIndent + "<pitch>");
+				currentIndent += "  ";
 				newLine();
+				myWriter.write(currentIndent + "<step>" + chord[i] + "</step>");
+				newLine();
+				myWriter.write(currentIndent + "<octave>4</octave>");
+				newLine();
+				currentIndent = currentIndent.substring(0,currentIndent.length() - 2);
+				myWriter.write(currentIndent + "</pitch>"); 
+				newLine();
+				myWriter.write(currentIndent + "<duration>1</duration>"); 
+				newLine();
+				myWriter.write(currentIndent + "<type>" + noteType +"</type>"); 
+				newLine();
+				myWriter.write(currentIndent + "<stem>down</stem>"); 
+				newLine();
+				myWriter.write(currentIndent + "<staff>1</staff>");
+				newLine();
+				currentIndent = currentIndent.substring(0,currentIndent.length() - 2);
+				myWriter.write(currentIndent + "</note>");		
+				newLine();
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
-			myWriter.write(currentIndent + "<pitch>");
-			currentIndent += "  ";
-			newLine();
-			myWriter.write(currentIndent + "<step>" + chord[i] + "</step>");
-			newLine();
-			myWriter.write(currentIndent + "<octave>4</octave>");
-			newLine();
-			currentIndent = currentIndent.substring(0,currentIndent.length() - 2);
-			myWriter.write(currentIndent + "</pitch>"); 
-			newLine();
-			myWriter.write(currentIndent + "<duration>1</duration>"); 
-			newLine();
-			myWriter.write(currentIndent + "<type>" + noteType +"</type>"); 
-			newLine();
-			myWriter.write(currentIndent + "<stem>down</stem>"); 
-			newLine();
-			myWriter.write(currentIndent + "<staff>1</staff>");
-			newLine();
-			currentIndent = currentIndent.substring(0,currentIndent.length() - 2);
-			myWriter.write(currentIndent + "</note>");		
-			newLine();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 		}
 	}
+	
 	/**
 	 * Adds a new measure opening to the MusicXML
 	 * @param measureNumber

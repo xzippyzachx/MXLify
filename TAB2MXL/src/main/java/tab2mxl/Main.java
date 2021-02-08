@@ -17,10 +17,7 @@ public class Main {
 	
 	public static void Convert(ArrayList<ArrayList<String>> input)
 	{
-		
 		new Parser(input);
-		
-	
 	}
  
 }

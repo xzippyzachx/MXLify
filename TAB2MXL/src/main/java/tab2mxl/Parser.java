@@ -51,6 +51,9 @@ public class Parser {
 		FileGenerator fileGen = new FileGenerator();
 		Tuning tunner = new Tuning("GuitarNotes.txt");
 		
+		if(fileGen.failed) //Check if failed to save file to location
+			return;
+		
 		//Calling the methods in the FileGenerator to build the MusicXML
 		
 		//Start the musicxml file
@@ -79,9 +82,25 @@ public class Parser {
 			dashNote = 0.125;
 			col = columns.get(i);
 			notesInColumn = 0;
+			
+			//Finds the string tunes
+			if (i == 0 && character != '-' && character != '|' && stringcheck <= 5) {
+				System.out.println("string " + character);
+				tune[stringcheck] = Character.toString(character);
+				
+				stringcheck++;
+			}
+			else //Tunings are missing
+			{
+				//Set default tunings
+				stringcheck = 6;
+				tune = new String[] {"E","B","G","D","A","E"};
+			}
+			
+			
 			for (int s = 0; s<col.length;s++) {
 				character = col[s];
-				if (character != '-' && character != '|' && stringcheck >5) {
+				if (character != '-' && character != '|' && stringcheck > 5) {
 					notesInColumn++;
 					//System.out.println(notesInColumn);
 				}
@@ -106,15 +125,7 @@ public class Parser {
 					}
 					
 				}
-				}
-				
-				//Finds the string tunes
-				if (character != '-' && stringcheck <= 5) {		
-					System.out.println("string " + character);
-					tune[stringcheck] = Character.toString(character);
-					
-					stringcheck++;
-				}
+				}			
 				
 				//Finds if there is a new measure
 				if (character == '|')
@@ -131,7 +142,7 @@ public class Parser {
 						fileGen.openMeasure(measure);
 						
 						if(measure ==1) {
-							fileGen.attributes(getDivisions(Integer.parseInt(misc.get("TimeSig"))), 0, Integer.parseInt(misc.get("TimeSig")), 4, "G");
+							fileGen.attributes(getDivisions(Integer.parseInt(misc.get("TimeSig"))), 0, Integer.parseInt(misc.get("TimeSig")), 4, "G", tune);
 						}
 					}
 				}			
@@ -202,7 +213,7 @@ public class Parser {
 		if(beatNote == 1) {
 			output = "whole";
 		}if(beatNote == 0.75) {
-			output = "three quarter";
+			output = "half"; //I changed it to half for now so it doesn't cause an error
 		}if(beatNote == 0.5) {
 			output = "half";
 		}if(beatNote == 0.25) {

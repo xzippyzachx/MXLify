@@ -107,7 +107,7 @@ public class FileUploadContentPanel extends JPanel implements ActionListener {
 		ButtonPanel.setBorder(ButtonPadding);
 //		ButtonPanel.setLayout(new GridBagLayout()); // centers the button in that panel
 
-		selectButton = new JButton("Upload Tablature Text File"); // Select File button
+		selectButton = new JButton("Select Tablature Text File"); // Select File button
 		selectButton.setBackground(new Color(33,150,243));
 		selectButton.setForeground(new Color(224,224,224));
 //		selectButton.setBounds(100,100,250,100);

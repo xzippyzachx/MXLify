@@ -1,24 +1,32 @@
 package tab2mxl;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
+import javax.swing.DefaultListCellRenderer;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.ListCellRenderer;
 import javax.swing.border.Border;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.EmptyBorder;
 
 import tab2mxl.TextPrompt.Show;
 
@@ -70,39 +78,47 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
         scroll.setSize(getPreferredSize());;
         this.add(scroll);
         
-        detailsPanel = new JPanel();
-        
+        detailsPanel = new JPanel();        
         detailsPanel.setLayout(new GridLayout(1,3));
-        
-        Border detailsPadding = BorderFactory.createEmptyBorder(20, 00, 20, 0);
-        detailsPanel.setBorder(detailsPadding);
-        
+                        
+        JPanel tabListPanel = new JPanel();
+        tabListPanel.setLayout(new GridLayout(0, 1));
+        tabListPanel.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 20));
         tabList = new JComboBox(tabTypes);
         tabList.setSelectedIndex(0);
+        tabListPanel.add(tabList);
         
-        Border detailBorder = BorderFactory.createEmptyBorder(00, 00, 0, 00);
-        
+        JPanel songNamePanel = new JPanel();
+        songNamePanel.setLayout(new GridLayout(0, 1));
+        songNamePanel.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 20));
         songName = new JTextField();
-        songName.setBorder(detailBorder);  
         songName.setFont(songName.getFont().deriveFont(16f));
-        songName.setHorizontalAlignment(JTextField.CENTER);
+        //songName.setHorizontalAlignment(JTextField.CENTER);
         TextPrompt songNamePrompt = new TextPrompt("Song Name", songName,Show.FOCUS_LOST);
         songNamePrompt.setHorizontalAlignment(JTextField.CENTER);
         songNamePrompt.changeAlpha(0.8f);
+        songNamePanel.add(songName);
         
+        JPanel timeSignaturePanel = new JPanel();
+        timeSignaturePanel.setLayout(new GridLayout(0, 1));
+        timeSignaturePanel.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 20));
         timeSignature = new JTextField();
         timeSignature.setFont(timeSignature.getFont().deriveFont(16f));
-        timeSignature.setHorizontalAlignment(JTextField.CENTER);
+        //timeSignature.setHorizontalAlignment(JTextField.CENTER);
         TextPrompt timeSignaturePrompt = new TextPrompt("Time Signature", timeSignature,Show.FOCUS_LOST);
         timeSignaturePrompt.setHorizontalAlignment(JTextField.CENTER);
         timeSignaturePrompt.changeAlpha(0.8f);
+        timeSignaturePanel.add(timeSignature);
+        
+        Border detailsPadding = BorderFactory.createEmptyBorder(20, 0, 20, 0);
+        detailsPanel.setBorder(detailsPadding);
         
         
-        detailsPanel.add(tabList);
+        detailsPanel.add(tabListPanel);
 //        detailsPanel.add(new JPanel());
-        detailsPanel.add(songName);
+        detailsPanel.add(songNamePanel);
 //        detailsPanel.add(new JPanel());
-        detailsPanel.add(timeSignature);
+        detailsPanel.add(timeSignaturePanel);
         
         // creates the container for the button, generates the button and sets an action on click
         inputpanel = new JPanel();
