@@ -22,23 +22,10 @@ public class Tuning {
 	private File tuningFile;
 	
 	//Constructor for the Tuning class
-	Tuning(String[] tune, boolean def, int stringAmount){
+	Tuning(String[] tune, int stringAmount){
 		//initialize the instance variables
 		//setting the tuning based on whether it should be default or not
-		if(!def) {
-			tuning = tune;
-		}else {
-			if(stringAmount == 5)
-				tuning = Tuning.DEFAULT_TUNING5;
-			if(stringAmount == 6)
-				tuning = Tuning.DEFAULT_TUNING6;
-			if(stringAmount == 7)
-				tuning = Tuning.DEFAULT_TUNING7;
-			if(stringAmount == 8)
-				tuning = Tuning.DEFAULT_TUNING8;
-			if(stringAmount == 9)
-				tuning = Tuning.DEFAULT_TUNING9;
-		}
+		tuning = tune;
 		/*for(String s : tuning) {
 			System.out.println(s + "-----");
 		}*/
@@ -77,14 +64,28 @@ public class Tuning {
 					}
 				}
 				}
-			for(String s : stringNotes.keySet()) {
-				System.out.println(s + "------");
-			}
 			noteScanner.close();
 			
 		}catch(FileNotFoundException e) {
 			e.getMessage();
 		}
+	}
+	
+	public static String[] getDefaultTuning(int stringAmount) {
+		String[] output = null;
+		
+		if(stringAmount == 5)
+			output = Tuning.DEFAULT_TUNING5;
+		if(stringAmount == 6)
+			output = Tuning.DEFAULT_TUNING6;
+		if(stringAmount == 7)
+			output = Tuning.DEFAULT_TUNING7;
+		if(stringAmount == 8)
+			output = Tuning.DEFAULT_TUNING8;
+		if(stringAmount == 9)
+			output = Tuning.DEFAULT_TUNING9;
+		return output;
+		
 	}
 	
 	//to get the note for each specified string and fret

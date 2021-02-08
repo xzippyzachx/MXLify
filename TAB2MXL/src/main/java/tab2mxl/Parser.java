@@ -77,6 +77,7 @@ public class Parser {
 		int notesInColumn = 0;
 		char note = ' ';
 		boolean def = false;
+		boolean chord;
 		String[] tune = new String[stringAmount];
 		
 		/*adds the tuning of the strings to the tune array if the tuning is
@@ -85,24 +86,31 @@ public class Parser {
 			if(columns.get(0)[i] != '-' && columns.get(0)[i] != '|') {
 				tune[i] = Character.toString(columns.get(0)[i]).toUpperCase();				
 			}else {
-				def = true;
+				tune = Tuning.getDefaultTuning(stringAmount);
+				break;
 			}
 		}
-		Tuning tunner = new Tuning(tune, def, stringAmount);
+		
+		
+		Tuning tunner = new Tuning(tune, stringAmount);
 		
 		//Loop through the inputed columns
 		for(int i = 0; i < columns.size(); i++)
 		{
 			col = columns.get(i);
 			notesInColumn = 0;
-			
-			for (int s = 0; s<col.length;s++) {
+			chord = false;
+			for (int s = 1; s < col.length;s++) {
 				character = col[s];
 				if (character != '-' && character != '|' && i > 0) {
 					notesInColumn++;
 					//System.out.println(notesInColumn);
 				}
 			}
+			if(notesInColumn > 1) {
+				chord = true;
+			}
+			
 			dash = 1;
 			for(int j = 0; j < col.length; j++)
 			{
@@ -110,7 +118,6 @@ public class Parser {
 				// To check what type of note we have, by checking ahead
 				if(character != '-' && character != '|') {
 					boolean test;
-					//boolean test2;
 					for(int k = i+1; k < columns.size()-1; k++) {
 						if(!containsOnly(columns.get(k), '|')) 
 						{
@@ -156,19 +163,15 @@ public class Parser {
 						System.out.println("Bad Char: " + character);
 						fret = 0;
 					}
-					//System.out.println(notesInColumn);
-					if (notesInColumn < 2) {
+					if (!chord) {
 						System.out.println("line " + line + " and fret " + fret);
 						fileGen.addNote(line, fret, tunner.getNote(tune[line-1].toUpperCase(), fret), noteType(dash), getDuration(beatNote, misc.get("TimeSig")));
 					}
 					else {
 						note = tunner.getNote(tune[line-1].toUpperCase(), fret).charAt(0);
 						chords[j] = note;
-						//System.out.println(dashNote);
-						//type = noteType(dashNote);
 						type = "half";
 						System.out.println("add chord " + line + " and fret " + fret);
-						//System.out.println(type);
 					}
 				}
 				if (line == 6) {
@@ -176,7 +179,7 @@ public class Parser {
 				}
 				
 			}
-			if (notesInColumn>1) {
+			if (chord) {
 				fileGen.addChord(chords,type);
 			}
 			currentColumn++;
