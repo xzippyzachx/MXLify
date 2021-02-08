@@ -43,14 +43,20 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 	JComboBox tabList;
 	JTextField timeSignature;
 	JTextField songName;
+	
+	JPanel errorPanel;
+	JLabel errorText;
+	
 	static String tabType;
 	static String title;
 	static String timeSig;
+	
+	
 	TextInputContentPanel(){		
 	
 	// creates main content panel, lets layout to vertical, adds padding and sets it as Content Pane
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-		Border padding = BorderFactory.createEmptyBorder(10, 00, 10, 10);
+		Border padding = BorderFactory.createEmptyBorder(0, 10, 0, 10);
 		this.setBorder(padding);
 
 // BACK BUTTON REMOVED
@@ -129,12 +135,20 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
         button.setFocusable(false);
         button.addActionListener(this);
         inputpanel.add(button);
-        Border buttonPadding = BorderFactory.createEmptyBorder(10, 0, 10, 10);
+        Border buttonPadding = BorderFactory.createEmptyBorder(10, 10, 0, 10);
         inputpanel.setBorder(buttonPadding);
+        
+        errorPanel = new JPanel();
+        errorPanel.setLayout(new FlowLayout());
+        errorText = new JLabel("");        
+        errorText.setForeground(Color.red);
+        errorPanel.add(errorText);
+        errorPanel.setPreferredSize(new Dimension(100, 30));
         
         //adds the button container to the content panel
         this.add(detailsPanel);
         this.add(inputpanel);
+        this.add(errorPanel);
         
         this.setVisible(true);
 	}
@@ -159,8 +173,25 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 		}
 		tabType = tabList.getSelectedItem().toString();
 		title = songName.getText();
-		timeSig =timeSignature.getText();
-		Main.Convert(input);		
+		timeSig = timeSignature.getText();
+		
+		
+		errorText.setText("");
+		//Detect if the text area is empty
+		if(input.size() <= 1)
+		{
+			errorText.setText("Text Area Empty");
+		}
+		//Detect if the field is empty
+		else if(tabType.equals("") || title.equals("") || timeSig.equals(""))
+		{
+			errorText.setText("Field Empty");
+		}
+		else
+		{			
+			Main.Convert(input);			
+		}
+		
 	
 	}
 	
