@@ -21,15 +21,17 @@ class TuningTest {
 	@Test
 	void testDefaultTuning() {
 		//String[] empty = {};
-		String[] tuneA = {"E", "B", "G", "D", "A", "E"};
-		String[] tuneB = {"E", "B", "G", "D", "A", "E", "B"};
-		String[] tuneC = {"E", "B", "G", "D", "A", "E", "B", "F#"};
-		String[] tuneD = {"E", "B", "G", "D", "A", "E", "B", "F#", "C#"};
+		String[] tuneA = {"B", "G", "D", "A", "E"};
+		String[] tuneB = {"E", "B", "G", "D", "A", "E"};
+		String[] tuneC = {"E", "B", "G", "D", "A", "E", "B"};
+		String[] tuneD = {"E", "B", "G", "D", "A", "E", "B", "F#"};
+		String[] tuneE = {"E", "B", "G", "D", "A", "E", "B", "F#", "C#"};
 		
-		assertEquals(Tuning.getDefaultTuning(6), tuneA);
-		assertEquals(Tuning.getDefaultTuning(7), tuneB);
-		assertEquals(Tuning.getDefaultTuning(8), tuneC);
-		assertEquals(Tuning.getDefaultTuning(9), tuneD);
+		assertArrayEquals(Tuning.getDefaultTuning(5), tuneA);
+		assertArrayEquals(Tuning.getDefaultTuning(6), tuneB);
+		assertArrayEquals(Tuning.getDefaultTuning(7), tuneC);
+		assertArrayEquals(Tuning.getDefaultTuning(8), tuneD);
+		assertArrayEquals(Tuning.getDefaultTuning(9), tuneE);
 	}
 	
 	@Test
