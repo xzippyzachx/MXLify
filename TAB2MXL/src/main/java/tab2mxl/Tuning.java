@@ -14,10 +14,10 @@ public class Tuning {
 	private String[] tuning;
 	//Default tuning for different string amounts.
 	private static final String[] DEFAULT_TUNING5 = {"B", "G", "D", "A", "E"};
-	private static final String[] DEFAULT_TUNING6 = {"e", "B", "G", "D", "A", "E"};
-	private static final String[] DEFAULT_TUNING7 = {"e", "B", "G", "D", "A", "E", "B"};
-	private static final String[] DEFAULT_TUNING8 = {"e", "B", "G", "D", "A", "E", "B", "F#"};
-	private static final String[] DEFAULT_TUNING9 = {"e", "B", "G", "D", "A", "E", "B", "F#", "C#"};
+	private static final String[] DEFAULT_TUNING6 = {"E", "B", "G", "D", "A", "E"};
+	private static final String[] DEFAULT_TUNING7 = {"E", "B", "G", "D", "A", "E", "B"};
+	private static final String[] DEFAULT_TUNING8 = {"E", "B", "G", "D", "A", "E", "B", "F#"};
+	private static final String[] DEFAULT_TUNING9 = {"E", "B", "G", "D", "A", "E", "B", "F#", "C#"};
 	//the file containing the notes for each string and fret
 	private File tuningFile;
 	

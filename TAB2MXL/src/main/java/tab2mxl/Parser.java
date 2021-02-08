@@ -83,12 +83,12 @@ public class Parser {
 		 * specified in the TAB, or the default if it isn't*/
 		for(int i = 0; i < stringAmount; i++ ) {
 			if(columns.get(0)[i] != '-' && columns.get(0)[i] != '|') {
-				tune[i] = Character.toString(columns.get(0)[i]);
-				}else {
-					def = true;
-				}
+				tune[i] = Character.toString(columns.get(0)[i]).toUpperCase();				
+			}else {
+				def = true;
+			}
 		}
-			Tuning tunner = new Tuning(tune, def, stringAmount);
+		Tuning tunner = new Tuning(tune, def, stringAmount);
 		
 		//Loop through the inputed columns
 		for(int i = 0; i < columns.size(); i++)
@@ -96,24 +96,9 @@ public class Parser {
 			col = columns.get(i);
 			notesInColumn = 0;
 			
-			//Finds the string tunes
-			if (i == 0 && character != '-' && character != '|' && stringcheck <= 5) {
-				System.out.println("string " + character);
-				tune[stringcheck] = Character.toString(character);
-				
-				stringcheck++;
-			}
-			else //Tunings are missing
-			{
-				//Set default tunings
-				stringcheck = 6;
-				tune = new String[] {"E","B","G","D","A","E"};
-			}
-			
-			
 			for (int s = 0; s<col.length;s++) {
 				character = col[s];
-				if (character != '-' && character != '|' && stringcheck > 5) {
+				if (character != '-' && character != '|' && i > 0) {
 					notesInColumn++;
 					//System.out.println(notesInColumn);
 				}
@@ -126,18 +111,18 @@ public class Parser {
 				if(character != '-' && character != '|') {
 					boolean test;
 					//boolean test2;
-				for(int k = i+1; k < columns.size()-1; k++) {
-					if(!containsOnly(columns.get(k), '|')) {
-						 test = containsOnly(columns.get(k), '-');
-							if(test) {
+					for(int k = i+1; k < columns.size()-1; k++) {
+						if(!containsOnly(columns.get(k), '|')) 
+						{
+							test = containsOnly(columns.get(k), '-');
+							if(test)
 								dash++;
-						}else {
-							break;
+							else
+								break;
 						}
-					}else {
-						break;
+						else
+							break;
 					}
-					
 				}
 				
 				//Finds if there is a new measure
@@ -192,7 +177,7 @@ public class Parser {
 				
 			}
 			if (notesInColumn>1) {
-			fileGen.addChord(chords,type);
+				fileGen.addChord(chords,type);
 			}
 			currentColumn++;
 		
@@ -206,7 +191,7 @@ public class Parser {
 			fileGen.closePart();
 		fileGen.end();
 		
-
+		
 		
 		
 	}
@@ -238,7 +223,7 @@ public class Parser {
 		}if(beatNote == 0.25) {
 			output = "quarter";
 		}if(beatNote == 0.125) {
-			output = "eight";
+			output = "eighth";
 		}if(beatNote == 0.625) {
 			output = "16th";
 		}if(beatNote == 0.03125) {
