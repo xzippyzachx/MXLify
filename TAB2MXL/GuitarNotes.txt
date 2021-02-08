@@ -1,6 +1,12 @@
-E||F |F#|G |G#|A |A#|B |C |C#|D |D#|E |F |F#|G |G#|A |A#|B |C |C#|D |
-B||C |C#|D |D#|E |F |F#|G |G#|A |A#|B |C |C#|D |D#|E |F |F#|G |G#|A |
-G||G#|A |A#|B |C |C#|D |D#|E |F |F#|G |G#|A |A#|B |C |C#|D |D#|E |F |
-D||D#|E |F |F#|G |G#|A |A#|B |C |C#|D |D#|E |F |F#|G |G#|A |A#|B |C |
-A||A#|B |C |C#|D |D#|E |F |F#|G |G#|A |A#|B |C |C#|D |D#|E |F |F#|G |
-E||F |F#|G |G#|A |A#|B |C |C#|D |D#|E |F |F#|G |G#|A |A#|B |C |C#|D |
+e ||F |F#|G |G#|A |A#|B |C |C#|D |D#|E |F |F#|G |G#|A |A#|B |C |C#|D |
+B ||C |C#|D |D#|E |F |F#|G |G#|A |A#|B |C |C#|D |D#|E |F |F#|G |G#|A |
+G ||G#|A |A#|B |C |C#|D |D#|E |F |F#|G |G#|A |A#|B |C |C#|D |D#|E |F |
+D ||D#|E |F |F#|G |G#|A |A#|B |C |C#|D |D#|E |F |F#|G |G#|A |A#|B |C |
+A ||A#|B |C |C#|D |D#|E |F |F#|G |G#|A |A#|B |C |C#|D |D#|E |F |F#|G |
+E ||F |F#|G |G#|A |A#|B |C |C#|D |D#|E |F |F#|G |G#|A |A#|B |C |C#|D |
+F#||F#|G |G#|A |A#|B |C |C#|D |D#|E |F |F#|G |G#|A |A#|B |C |C#|D |D#|
+C#||D |D#|E |F |F#|G |G#|A |A#|B |C |C#|D |D#|E |F |F#|G |G#|A |A#|B |
+G#||A |A#|B |C |C#|D |D#|E |F |F#|G |G#|A |A#|B |C |C#|D |D#|E |F |F#|
+A#||B |C |C#|D |D#|E |F |F#|G |G#|A |A#|B |C |C#|D |D#|E |F |F#|G |G#|
+D#||E |F |F#|G |G#|A |A#|B |C |C#|D |D#|E |F |F#|G |G#|A |A#|B |C |C#|
+A#||B |C |C#|D |D#|E |F |F#|G |G#|A |A#|B |C |C#|D |D#|E |F |F#|G |G#|

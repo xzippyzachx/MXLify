@@ -181,7 +181,7 @@ public class FileGenerator {
 	 * @param fret
 	 * @param note
 	 */
-	public void addNote(int string, int fret, String note, String noteType)
+	public void addNote(int string, int fret, String note, String noteType, int duration)
 	{
 		try {
 			myWriter.write(currentIndent + "<note>");
@@ -197,7 +197,7 @@ public class FileGenerator {
 			currentIndent = currentIndent.substring(0,currentIndent.length() - 2);
 			myWriter.write(currentIndent + "</pitch>"); 
 			newLine();
-			myWriter.write(currentIndent + "<duration>1</duration>"); 
+			myWriter.write(currentIndent + "<duration>" + duration + "</duration>"); 
 			newLine();
 			myWriter.write(currentIndent + "<type>" + noteType +"</type>"); 
 			newLine();

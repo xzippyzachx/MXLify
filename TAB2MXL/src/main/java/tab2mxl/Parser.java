@@ -11,7 +11,7 @@ public class Parser {
 	private ArrayList<char[]> columns;
 	private static  Map<String,String> misc;
 	
-	@SuppressWarnings("unused")
+	//@SuppressWarnings("unused")
 	Parser(ArrayList<ArrayList<String>> input) {
 		stringAmount = 0;
 		tabLineAmount = 1;
@@ -49,7 +49,6 @@ public class Parser {
 		
 		//Create the file generator to generate the MusicXML file
 		FileGenerator fileGen = new FileGenerator();
-		Tuning tunner = new Tuning("GuitarNotes.txt");
 		
 		//Calling the methods in the FileGenerator to build the MusicXML
 		
@@ -67,16 +66,30 @@ public class Parser {
 		int measure = 0;
 		int line = 0;
 		int gate = 0;
-		double dashNote; 
+		double beatType = 1/Double.parseDouble(misc.get("TimeSig"));
+		int div = getDivisions(Integer.parseInt(misc.get("TimeSig")));
+		double dash; 
 		char[] col;
 		char character = ' ';
 		int notesInColumn = 0;
 		char note = ' ';
+		boolean def = false;
 		String[] tune = new String[stringAmount];
+		
+		/*adds the tuning of the strings to the tune array if the tuning is
+		 * specified in the TAB, or the default if it isn't*/
+		for(int i = 0; i < stringAmount; i++ ) {
+			if(columns.get(0)[i] != '-' && columns.get(0)[i] != '|') {
+				tune[i] = Character.toString(columns.get(0)[i]);
+				}else {
+					def = true;
+				}
+		}
+			Tuning tunner = new Tuning(tune, def, stringAmount);
+		
 		//Loop through the inputed columns
 		for(int i = 0; i < columns.size(); i++)
 		{
-			dashNote = 0.125;
 			col = columns.get(i);
 			notesInColumn = 0;
 			for (int s = 0; s<col.length;s++) {
@@ -86,18 +99,19 @@ public class Parser {
 					//System.out.println(notesInColumn);
 				}
 			}
+			dash = 1;
 			for(int j = 0; j < col.length; j++)
 			{
 				character = col[j];
 				// To check what type of note we have, by checking ahead
 				if(character != '-' && character != '|') {
 					boolean test;
-					boolean test2;
+					//boolean test2;
 				for(int k = i+1; k < columns.size()-1; k++) {
 					if(!containsOnly(columns.get(k), '|')) {
 						 test = containsOnly(columns.get(k), '-');
 							if(test) {
-								dashNote += 0.125;
+								dash++;
 						}else {
 							break;
 						}
@@ -108,13 +122,14 @@ public class Parser {
 				}
 				}
 				
-				//Finds the string tunes
+				/*
+				 * //Finds the string tunes
 				if (character != '-' && stringcheck <= 5) {		
 					System.out.println("string " + character);
 					tune[stringcheck] = Character.toString(character);
 					
 					stringcheck++;
-				}
+				}*/
 				
 				//Finds if there is a new measure
 				if (character == '|')
@@ -135,7 +150,8 @@ public class Parser {
 						}
 					}
 				}			
-				
+
+				double beatNote = (dash * beatType)/div;
 				//Finds the string and fret of a note
 				gate++;
 				line++;
@@ -149,7 +165,7 @@ public class Parser {
 					//System.out.println(notesInColumn);
 					if (notesInColumn < 2) {
 						System.out.println("line " + line + " and fret " + fret);
-						fileGen.addNote(line, fret, tunner.getNote(tune[line-1].toUpperCase(), fret), noteType(dashNote));
+						fileGen.addNote(line, fret, tunner.getNote(tune[line-1].toUpperCase(), fret), noteType(dash), getDuration(beatNote, misc.get("TimeSig")));
 					}
 					else {
 						note = tunner.getNote(tune[line-1].toUpperCase(), fret).charAt(0);
@@ -196,13 +212,18 @@ public class Parser {
 		return output;
 	}
 	
-	private String noteType(double beatNote) {
+	private String noteType(double dash) {
 		String output = "";
+		
+		double beatType = 1/Double.parseDouble(misc.get("TimeSig"));
+		int div = getDivisions(Integer.parseInt(misc.get("TimeSig")));
+		
+		double beatNote = (dash * beatType)/div;
 		
 		if(beatNote == 1) {
 			output = "whole";
 		}if(beatNote == 0.75) {
-			output = "three quarter";
+			output = "quarter";
 		}if(beatNote == 0.5) {
 			output = "half";
 		}if(beatNote == 0.25) {
@@ -226,6 +247,15 @@ public class Parser {
 		}
 			
 		return output;
+	}
+	
+	private int getDuration(double noteType, String timeSig) {
+		double output = 0;
+		double div = getDivisions(Integer.parseInt(misc.get("TimeSig")));
+		double beatType = 1/Double.parseDouble(timeSig);
+		output = (noteType * div)/beatType;
+		
+		return (int)output/2;
 	}
 	
 	private int getDivisions(int beatSig) {
