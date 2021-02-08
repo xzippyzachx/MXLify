@@ -262,7 +262,7 @@ public class FileGenerator {
 	 * @param chord
 	 * @param noteType
 	 */
-	public void addChord(char[] chord, String noteType) {
+	public void addChord(char[] chord, String noteType, int duration) {
 		for (int i = 0; i<chord.length;i++) {
 			try {	
 				myWriter.write(currentIndent + "<note>");
@@ -282,7 +282,7 @@ public class FileGenerator {
 				currentIndent = currentIndent.substring(0,currentIndent.length() - 2);
 				myWriter.write(currentIndent + "</pitch>"); 
 				newLine();
-				myWriter.write(currentIndent + "<duration>1</duration>"); 
+				myWriter.write(currentIndent + "<duration>" + duration + "</duration>"); 
 				newLine();
 				myWriter.write(currentIndent + "<type>" + noteType +"</type>"); 
 				newLine();
