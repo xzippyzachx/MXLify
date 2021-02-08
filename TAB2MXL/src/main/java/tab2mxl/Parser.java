@@ -10,6 +10,7 @@ public class Parser {
 	int tabLineAmount;
 	private ArrayList<char[]> columns;
 	private static  Map<String,String> misc;
+	private static int beatType = 4;
 	
 	//@SuppressWarnings("unused")
 	Parser(ArrayList<ArrayList<String>> input) {
@@ -69,14 +70,13 @@ public class Parser {
 		int measure = 0;
 		int line = 0;
 		int gate = 0;
-		double beatType = 1/Double.parseDouble(misc.get("TimeSig"));
+		double beatTypeNote = 1.0/Parser.beatType;
 		int div = getDivisions(Integer.parseInt(misc.get("TimeSig")));
-		double dash; 
+		double dash = 0; 
 		char[] col;
 		char character = ' ';
 		int notesInColumn = 0;
 		char note = ' ';
-		boolean def = false;
 		boolean chord;
 		String[] tune = new String[stringAmount];
 		
@@ -104,34 +104,35 @@ public class Parser {
 				character = col[s];
 				if (character != '-' && character != '|' && i > 0) {
 					notesInColumn++;
-					//System.out.println(notesInColumn);
 				}
 			}
 			if(notesInColumn > 1) {
 				chord = true;
 			}
 			
-			dash = 1;
 			for(int j = 0; j < col.length; j++)
 			{
 				character = col[j];
 				// To check what type of note we have, by checking ahead
 				if(character != '-' && character != '|') {
+					dash = 1;
 					boolean test;
 					for(int k = i+1; k < columns.size()-1; k++) {
 						if(!containsOnly(columns.get(k), '|')) 
 						{
 							test = containsOnly(columns.get(k), '-');
-							if(test)
+							if(test) {
 								dash++;
-							else
+								}else {
 								break;
+								}
 						}
 						else
 							break;
 					}
 				}
-				
+				System.out.println(dash);
+				//System.out.println(dash);
 				//Finds if there is a new measure
 				if (character == '|')
 					count++;				
@@ -152,7 +153,7 @@ public class Parser {
 					}
 				}			
 
-				double beatNote = (dash * beatType)/div;
+				double beatNote = (dash * beatTypeNote)/div;
 				//Finds the string and fret of a note
 				gate++;
 				line++;
@@ -165,12 +166,12 @@ public class Parser {
 					}
 					if (!chord) {
 						System.out.println("line " + line + " and fret " + fret);
-						fileGen.addNote(line, fret, tunner.getNote(tune[line-1].toUpperCase(), fret), noteType(dash), getDuration(beatNote, misc.get("TimeSig")));
+						fileGen.addNote(line, fret, tunner.getNote(tune[line-1].toUpperCase(), fret), noteType(beatNote), getDuration(beatNote));
 					}
 					else {
 						note = tunner.getNote(tune[line-1].toUpperCase(), fret).charAt(0);
 						chords[j] = note;
-						type = "half";
+						type = noteType(beatNote);
 						System.out.println("add chord " + line + " and fret " + fret);
 					}
 				}
@@ -180,12 +181,12 @@ public class Parser {
 				
 			}
 			if (chord) {
-				fileGen.addChord(chords,type);
+				double beatNote = (dash * beatTypeNote)/div;
+				fileGen.addChord(chords,type, getDuration(beatNote));
 			}
 			currentColumn++;
 		
 		}
-		
 		
 		//End the musicxml file
 		if(fileGen.measureOpen)
@@ -209,18 +210,13 @@ public class Parser {
 		return output;
 	}
 	
-	private String noteType(double dash) {
+	private String noteType(double beatNote) {
 		String output = "";
-		
-		double beatType = 1/Double.parseDouble(misc.get("TimeSig"));
-		int div = getDivisions(Integer.parseInt(misc.get("TimeSig")));
-		
-		double beatNote = (dash * beatType)/div;
 		
 		if(beatNote == 1) {
 			output = "whole";
 		}if(beatNote == 0.75) {
-			output = "quarter";
+			output = "half";
 		}if(beatNote == 0.5) {
 			output = "half";
 		}if(beatNote == 0.25) {
@@ -246,13 +242,14 @@ public class Parser {
 		return output;
 	}
 	
-	private int getDuration(double noteType, String timeSig) {
+	private int getDuration(double noteType) {
+		//System.out.println(noteType);
 		double output = 0;
 		double div = getDivisions(Integer.parseInt(misc.get("TimeSig")));
-		double beatType = 1/Double.parseDouble(timeSig);
+		double beatType = 1.0/Parser.beatType;
 		output = (noteType * div)/beatType;
 		
-		return (int)output/2;
+		return (int)output;
 	}
 	
 	private int getDivisions(int beatSig) {
@@ -260,7 +257,7 @@ public class Parser {
 		int boundary = 0;
 		
 		for(int i=0;i< columns.size();i++) {
-
+			
 			if(columns.get(i)[0] == '|'){
 				boundary++;
 			}
@@ -282,13 +279,15 @@ public class Parser {
 					hyfenNumber++;
 				}
 		}
-	}	
-		int division = hyfenNumber/beatSig;
+	}
+		double beatNote = 1.0/Parser.beatType;
+		double totalBeatPerMeasure = beatSig/Parser.beatType;
+		double division = (hyfenNumber * beatNote)/totalBeatPerMeasure;
 	
-		if(hyfenNumber%beatSig !=0) {
+		/*if(hyfenNumber%beatSig !=0) {
 			throw new IllegalArgumentException("the number of hyfens or the beatSignature is not correct"); 
-		}
-		return division;
+		}*/
+		return (int)division;
 	}
 	
 	static void addTitle(String title){
