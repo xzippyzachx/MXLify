@@ -83,6 +83,7 @@ public class Parser {
 		/*adds the tuning of the strings to the tune array if the tuning is
 		 * specified in the TAB, or the default if it isn't*/
 		for(int i = 0; i < stringAmount; i++ ) {
+			System.out.println(columns.get(0)[i]);
 			if(columns.get(0)[i] != '-' && columns.get(0)[i] != '|') {
 				tune[i] = Character.toString(columns.get(0)[i]).toUpperCase();				
 			}else {
@@ -93,6 +94,7 @@ public class Parser {
 		
 		
 		Tuning tunner = new Tuning(tune, stringAmount);
+		
 		
 		//Loop through the inputed columns
 		for(int i = 0; i < columns.size(); i++)
