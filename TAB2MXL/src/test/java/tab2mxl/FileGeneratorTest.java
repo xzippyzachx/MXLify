@@ -18,8 +18,6 @@ class FileGeneratorTest {
 	
 	static void setUp() {
 		fileGen = new FileGenerator("tester.musicxml");
-		
-		//Erikas labtask
 	}
 	
 	@Test
