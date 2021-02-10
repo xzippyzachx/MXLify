@@ -144,17 +144,32 @@ class FileGeneratorTest {
 
 	@Test
 	void testOpenMeasure() {
-		fail("Not yet implemented");
+		setUp();
+		fileGen.openMeasure(4);
+		fileGen.end();
+		String fileContent = this.readFile();
+		String expected3 = "<measure number=\"" + 4 + "\">\n" + "</score-partwise>";
+		assertEquals(expected3, fileContent); 
 	}
 
 	@Test
 	void testCloseMeasure() {
-		fail("Not yet implemented");
+		setUp();
+		fileGen.closeMeasure();
+		fileGen.end();
+		String fileContent = this.readFile();
+		String expected1 =  "</measure>\n" 
+				 + "</score-partwise>";
+		assertEquals(expected1, fileContent); 
 	}
 
 	@Test
 	void testEnd() {
-		fail("Not yet implemented");
+		setUp();
+		fileGen.end();
+		String fileContent = this.readFile();
+		String expected2 = "</score-partwise>";
+		assertEquals(expected2, fileContent); 
 	}
 	
 	@SuppressWarnings("resource")
