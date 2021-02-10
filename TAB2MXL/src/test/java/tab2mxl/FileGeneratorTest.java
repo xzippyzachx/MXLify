@@ -1,17 +1,21 @@
 package tab2mxl;
 
 import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Scanner;
 
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
 
 class FileGeneratorTest {
 
 	static FileGenerator fileGen;
+	String fileContent;
+	String expected;
 	
 	@BeforeAll
 	static void setUp() {
@@ -28,9 +32,9 @@ class FileGeneratorTest {
 	void testAddInfo1() {
 		fileGen.addInfo("Example Title");
 		fileGen.end();
-		String fileContent = this.readFile();
 		
-		String expected = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+		fileContent = this.readFile();
+		expected = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
 				+ "<score-partwise version=\"3.1\">\n"
 				+ "  <work>\n"
 				+ "    <work-title>Example Title</work-title>\n"
@@ -43,12 +47,18 @@ class FileGeneratorTest {
 				+ "</score-partwise>";
 		
 		assertEquals(expected, fileContent); 
-		//assertTrue(fileContent.equals(expected));
 	}
 
 	@Test
 	void testOpenPart() {
-		fail("Not yet implemented");
+		this.openWriter();
+		fileGen.openPart(3);
+		fileGen.end();
+		
+		fileContent = this.readFile();
+		expected = "  <part id=\"P3\">\n"
+				        + "</score-partwise>";
+		assertEquals(expected, fileContent); 
 	}
 
 	@Test
@@ -94,8 +104,16 @@ class FileGeneratorTest {
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
-		System.out.println(fileContent);
+		System.out.println(fileContent + "\n\n--------------------------------------\n");
 		return fileContent;
+	}
+	
+	void openWriter(){
+		try {
+			fileGen.myWriter = new FileWriter(fileGen.saveFile);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 
