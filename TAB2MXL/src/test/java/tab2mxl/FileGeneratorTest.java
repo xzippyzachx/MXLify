@@ -44,7 +44,7 @@ class FileGeneratorTest {
 				+ "  </part-list>\n"
 				+ "</score-partwise>";
 		
-		assertEquals(expected, fileContent); 
+		assertEquals(expected, fileContent);
 	}
 
 	@Test
@@ -75,10 +75,8 @@ class FileGeneratorTest {
 
 	@Test
 	void testAttributes() {
-		setUp();
-		
-		String[] tune = new String[]{"E", "B", "G", "D", "A", "E"};
-		
+		setUp();		
+		String[] tune = new String[]{"E", "B", "G", "D", "A", "E"};		
 		fileGen.attributes(2,4,4,4, "G", tune);
 		fileGen.end();
 		String fileContent = this.readFile();
@@ -86,7 +84,7 @@ class FileGeneratorTest {
 		String expected = "<attributes>\n"
 				+ "  <divisions>"+ 2 +"</divisions>\n"
 				+ "  <key>\n"
-				+ "    <fifths>+0</fifths>\n"
+				+ "    <fifths>0</fifths>\n"
 				+ "    <mode>major</mode>\n"
 				+ "  </key>\n"
 				+ "  <time>\n"
@@ -96,33 +94,33 @@ class FileGeneratorTest {
 				+ "  <staves>2</staves>\n"
 				+ "  <clef>\n"
 				+ "    <sign>"+"G"+"</sign>\n"
-				+ "    <line>+2</line>\n"
+				+ "    <line>2</line>\n"
 				+ "    <clef-octave-change>-1</clef-octave-change>\n"
 				+ "  </clef>\n"
 				+ "  <staff-details number = \"2\">\n"
 				+ "    <staff-lines>" + tune.length + "</staff-lines>\n"
 				+ "    <staff-tuning line=\"1\">\n"
-				+ "      <tuning-step>" + tune[0] + "</tuning-step>\n"
+				+ "      <tuning-step>" + tune[5] + "</tuning-step>\n"
 				+ "      <tuning-octave>2</tuning-octave>\n"
 				+ "    </staff-tuning>\n"
 				+ "    <staff-tuning line=\"2\">\n"
-				+ "      <tuning-step>" + tune[1] + "</tuning-step>\n"
-				+ "      <tuning-octave>2</tuning-octave>\n"
-				+ "    </staff-tuning>\n"
-				+ "    <staff-tuning line=\"3\">\n"
-				+ "      <tuning-step>" + tune[2] + "</tuning-step>\n"
-				+ "      <tuning-octave>2</tuning-octave>\n"
-				+ "    </staff-tuning>\n"
-				+ "    <staff-tuning line=\"4\">\n"
-				+ "      <tuning-step>" + tune[3] + "</tuning-step>\n"
-				+ "      <tuning-octave>2</tuning-octave>\n"
-				+ "    </staff-tuning>\n"
-				+ "    <staff-tuning line=\"5\">\n"
 				+ "      <tuning-step>" + tune[4] + "</tuning-step>\n"
 				+ "      <tuning-octave>2</tuning-octave>\n"
 				+ "    </staff-tuning>\n"
+				+ "    <staff-tuning line=\"3\">\n"
+				+ "      <tuning-step>" + tune[3] + "</tuning-step>\n"
+				+ "      <tuning-octave>2</tuning-octave>\n"
+				+ "    </staff-tuning>\n"
+				+ "    <staff-tuning line=\"4\">\n"
+				+ "      <tuning-step>" + tune[2] + "</tuning-step>\n"
+				+ "      <tuning-octave>2</tuning-octave>\n"
+				+ "    </staff-tuning>\n"
+				+ "    <staff-tuning line=\"5\">\n"
+				+ "      <tuning-step>" + tune[1] + "</tuning-step>\n"
+				+ "      <tuning-octave>2</tuning-octave>\n"
+				+ "    </staff-tuning>\n"
 				+ "    <staff-tuning line=\"6\">\n"
-				+ "      <tuning-step>" + tune[5] + "</tuning-step>\n"
+				+ "      <tuning-step>" + tune[0] + "</tuning-step>\n"
 				+ "      <tuning-octave>2</tuning-octave>\n"
 				+ "    </staff-tuning>\n"
 				+ "  </staff-details>\n"
@@ -134,12 +132,69 @@ class FileGeneratorTest {
 
 	@Test
 	void testAddNote() {
-		fail("Not yet implemented");
+		setUp();
+		fileGen.addNote(1,1,"E", "half", 1);
+		fileGen.end();
+		String fileContent = this.readFile();
+		
+		String expected = "<note>\n"
+				+ "  <pitch>\n"
+				+ "    <step>" + "E" + "</step>\n"
+				+ "    <octave>4</octave>\n"
+				+ "  </pitch>\n"
+				+ "  <duration>" + 1 + "</duration>\n"
+				+ "  <type>" + "half" +"</type>\n"
+				+ "  <stem>down</stem>\n"
+				+ "  <staff>1</staff>\n"
+				+ "</note>\n"
+				+ "</score-partwise>";
+		
+		assertEquals(expected, fileContent); 
 	}
 
 	@Test
 	void testAddChord() {
-		fail("Not yet implemented");
+		setUp();		
+		char[] notes = new char[]{'E', 'B', 'G'};		
+		fileGen.addChord(notes, "half", 1);
+		fileGen.end();
+		String fileContent = this.readFile();
+		
+		String expected = "<note>\n"
+				+ "  <pitch>\n"
+				+ "    <step>" + "E" + "</step>\n"
+				+ "    <octave>4</octave>\n"
+				+ "  </pitch>\n"
+				+ "  <duration>" + 1 + "</duration>\n"
+				+ "  <type>" + "half" +"</type>\n"
+				+ "  <stem>down</stem>\n"
+				+ "  <staff>1</staff>\n"
+				+ "</note>\n"
+				+ "<note>\n"
+				+ "  <chord/>\n"
+				+ "  <pitch>\n"
+				+ "    <step>" + "B" + "</step>\n"
+				+ "    <octave>4</octave>\n"
+				+ "  </pitch>\n"				
+				+ "  <duration>" + 1 + "</duration>\n"
+				+ "  <type>" + "half" +"</type>\n"
+				+ "  <stem>down</stem>\n"
+				+ "  <staff>1</staff>\n"
+				+ "</note>\n"
+				+ "<note>\n"
+				+ "  <chord/>\n"
+				+ "  <pitch>\n"
+				+ "    <step>" + "G" + "</step>\n"
+				+ "    <octave>4</octave>\n"
+				+ "  </pitch>\n"				
+				+ "  <duration>" + 1 + "</duration>\n"
+				+ "  <type>" + "half" +"</type>\n"
+				+ "  <stem>down</stem>\n"
+				+ "  <staff>1</staff>\n"
+				+ "</note>\n"
+				+ "</score-partwise>";
+		
+		assertEquals(expected, fileContent); 
 	}
 
 	@Test

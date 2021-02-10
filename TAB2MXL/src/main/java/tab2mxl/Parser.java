@@ -9,7 +9,7 @@ public class Parser {
 	int stringAmount;
 	int tabLineAmount;
 	private ArrayList<char[]> columns;
-	private static  Map<String,String> misc;
+	public static  Map<String,String> misc;
 	private static int beatType = 4;
 	
 	//@SuppressWarnings("unused")

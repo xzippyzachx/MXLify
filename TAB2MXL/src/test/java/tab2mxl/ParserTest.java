@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.junit.jupiter.*;
 import org.junit.jupiter.api.BeforeAll;
@@ -19,7 +20,7 @@ class ParserTest {
 		File file = new File("TestInput_Guitar1.txt");
 	}
 	
-	@Test
+	//@Test
 	void testParser() {
 		
 		String[] inputText = new String [6];
@@ -70,17 +71,26 @@ class ParserTest {
 
 	@Test
 	void testAddTitle() {
-		fail("Not yet implemented");
+		Parser.misc = new HashMap<String, String>();
+		Parser.addTitle("Test Title");
+		
+		assertEquals(Parser.misc.get("Title"), "Test Title");
 	}
 
 	@Test
 	void testAddTabType() {
-		fail("Not yet implemented");
+		Parser.misc = new HashMap<String, String>();
+		Parser.addTabType("Guitar");
+		
+		assertEquals(Parser.misc.get("TabType"), "Guitar");
 	}
 
 	@Test
 	void testAddTime() {
-		fail("Not yet implemented");
+		Parser.misc = new HashMap<String, String>();
+		Parser.addTime("4");
+		
+		assertEquals(Parser.misc.get("TimeSig"), "4");
 	}
 
 }
