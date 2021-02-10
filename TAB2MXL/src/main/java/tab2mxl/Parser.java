@@ -48,7 +48,7 @@ public class Parser {
 		}
 		
 		//Create the file generator to generate the MusicXML file
-		FileGenerator fileGen = new FileGenerator();
+		FileGenerator fileGen = new FileGenerator("");
 		
 		if(fileGen.failed) //Check if failed to save file to location
 			return;

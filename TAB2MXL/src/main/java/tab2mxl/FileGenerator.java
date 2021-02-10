@@ -14,6 +14,7 @@ public class FileGenerator {
 	public Preferences prefs = Preferences.userRoot().node(getClass().getName());
 	public String LAST_USED_FOLDER_SAVE = "";
 	
+	
 	boolean failed = false;
 	
 	File saveFile;
@@ -23,14 +24,24 @@ public class FileGenerator {
 	boolean measureOpen = false;
 	boolean partOpen = false;
 	
-	FileGenerator () {		
-		JFileChooser fileChooser = new JFileChooser(prefs.get(LAST_USED_FOLDER_SAVE, new File(".").getAbsolutePath())); // Create file chooser
-		fileChooser.setFileFilter(new FileNameExtensionFilter("musicxml file","musicxml"));
-		int response = fileChooser.showSaveDialog(null); //Select file to save
+	FileGenerator (String path) {	
+		JFileChooser fileChooser = null;
+		int response = 0;
+		if(path == "")
+		{
+			fileChooser = new JFileChooser(prefs.get(LAST_USED_FOLDER_SAVE, new File(".").getAbsolutePath())); // Create file chooser
+			fileChooser.setFileFilter(new FileNameExtensionFilter("musicxml file","musicxml"));
+			response = fileChooser.showSaveDialog(null); //Select file to save
+		}
+		
 		
 		if (response == JFileChooser.APPROVE_OPTION) { // if File successively chosen
 			
-			saveFile = new File(fileChooser.getSelectedFile().getAbsolutePath());  //Print out path
+			if(path == "")
+				saveFile = new File(fileChooser.getSelectedFile().getAbsolutePath());  //Print out path
+			else
+				saveFile = new File(path);
+			
 			try {
 		      myWriter = new FileWriter(saveFile);
 		      
@@ -56,6 +67,15 @@ public class FileGenerator {
 		}
 	}
 	
+	private void tabBack()
+	{
+		try {
+			currentIndent = currentIndent.substring(0,currentIndent.length() - 2);
+		} catch (StringIndexOutOfBoundsException e) {
+			//e.printStackTrace();
+		}
+	}
+	
 	/**
 	 * Adds the initial info to the beginning of the MusicXML
 	 * @param title
@@ -73,7 +93,7 @@ public class FileGenerator {
 			newLine();
 			myWriter.write(currentIndent + "<work-title>" + title + "</work-title>");
 			newLine();	
-			currentIndent = currentIndent.substring(0,currentIndent.length() - 2);
+			tabBack();
 			myWriter.write(currentIndent + "</work>");			
 			newLine();			
 			myWriter.write(currentIndent + "<part-list>");
@@ -84,10 +104,10 @@ public class FileGenerator {
 			newLine();
 			myWriter.write(currentIndent + "<part-name>Guitar</part-name>");
 			newLine();
-			currentIndent = currentIndent.substring(0,currentIndent.length() - 2);
+			tabBack();
 			myWriter.write(currentIndent + "</score-part>");			
 			newLine();
-			currentIndent = currentIndent.substring(0,currentIndent.length() - 2);
+			tabBack();
 			myWriter.write(currentIndent + "</part-list>");			
 			newLine();
 			
@@ -120,7 +140,7 @@ public class FileGenerator {
 	public void closePart()
 	{
 		try {
-			currentIndent = currentIndent.substring(0,currentIndent.length() - 2);
+			tabBack();
 			myWriter.write(currentIndent + "</part>");
 			newLine();
 			partOpen = false;
@@ -154,7 +174,7 @@ public class FileGenerator {
 			newLine();
 			myWriter.write(currentIndent + "<mode>"+"major"+"</mode>");			
 			newLine();
-			currentIndent = currentIndent.substring(0,currentIndent.length() - 2);
+			tabBack();
 			myWriter.write(currentIndent + "</key>");
 			newLine();
 			myWriter.write(currentIndent + "<time>");
@@ -165,7 +185,7 @@ public class FileGenerator {
 			newLine();
 			myWriter.write(currentIndent + "<beat-type>"+beatType+"</beat-type>");			
 			newLine();
-			currentIndent = currentIndent.substring(0,currentIndent.length() - 2);
+			tabBack();
 			myWriter.write(currentIndent + "</time>");
 			newLine();
 			myWriter.write(currentIndent + "<staves>" + 2 + "</staves>");
@@ -180,7 +200,7 @@ public class FileGenerator {
 			newLine();
 			myWriter.write(currentIndent + "<clef-octave-change>"+(-1)+"</clef-octave-change>");
 			newLine();
-			currentIndent = currentIndent.substring(0,currentIndent.length() - 2);
+			tabBack();
 			myWriter.write(currentIndent + "</clef>");			
 			newLine();
 			myWriter.write(currentIndent + "<staff-details number = \"" + 2 + "\">");
@@ -199,16 +219,16 @@ public class FileGenerator {
 				newLine();
 				myWriter.write(currentIndent + "<tuning-octave>" + 2 + "</tuning-octave>");
 				newLine();
-				currentIndent = currentIndent.substring(0,currentIndent.length() - 2);
+				tabBack();
 				myWriter.write(currentIndent + "</staff-tuning>");
 				newLine();
 			}
 			
-			currentIndent = currentIndent.substring(0,currentIndent.length() - 2);
+			tabBack();
 			myWriter.write(currentIndent + "</staff-details>");
 			newLine();
 			
-			currentIndent = currentIndent.substring(0,currentIndent.length() - 2);
+			tabBack();
 			myWriter.write(currentIndent + "</attributes>");
 			newLine();
 			
@@ -238,7 +258,7 @@ public class FileGenerator {
 			newLine();
 			myWriter.write(currentIndent + "<octave>4</octave>");
 			newLine();
-			currentIndent = currentIndent.substring(0,currentIndent.length() - 2);
+			tabBack();
 			myWriter.write(currentIndent + "</pitch>"); 
 			newLine();
 			myWriter.write(currentIndent + "<duration>" + duration + "</duration>"); 
@@ -249,7 +269,7 @@ public class FileGenerator {
 			newLine();
 			myWriter.write(currentIndent + "<staff>1</staff>");
 			newLine();
-			currentIndent = currentIndent.substring(0,currentIndent.length() - 2);
+			tabBack();
 			myWriter.write(currentIndent + "</note>");		
 			newLine();
 		} catch (IOException e) {
@@ -279,7 +299,7 @@ public class FileGenerator {
 				newLine();
 				myWriter.write(currentIndent + "<octave>4</octave>");
 				newLine();
-				currentIndent = currentIndent.substring(0,currentIndent.length() - 2);
+				tabBack();
 				myWriter.write(currentIndent + "</pitch>"); 
 				newLine();
 				myWriter.write(currentIndent + "<duration>1</duration>"); 
@@ -290,7 +310,7 @@ public class FileGenerator {
 				newLine();
 				myWriter.write(currentIndent + "<staff>1</staff>");
 				newLine();
-				currentIndent = currentIndent.substring(0,currentIndent.length() - 2);
+				tabBack();
 				myWriter.write(currentIndent + "</note>");		
 				newLine();
 			} catch (IOException e) {
@@ -321,7 +341,7 @@ public class FileGenerator {
 	public void closeMeasure()
 	{
 		try {
-			currentIndent = currentIndent.substring(0,currentIndent.length() - 2);
+			tabBack();
 			myWriter.write(currentIndent + "</measure>");
 			newLine();
 			measureOpen = false;
