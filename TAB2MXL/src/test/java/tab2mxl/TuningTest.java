@@ -34,6 +34,10 @@ class TuningTest {
 		assertArrayEquals(Tuning.getDefaultTuning(9), tuneE);
 	}
 	
+	void testStringNotesHashMap() {
+		fail("Not yet implemented");
+	}
+	
 	@Test
 	void testGetNote() {
 	

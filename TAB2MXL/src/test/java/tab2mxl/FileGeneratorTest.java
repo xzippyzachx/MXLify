@@ -1,18 +1,18 @@
 package tab2mxl;
 
 import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.PrintWriter;
 import java.util.Scanner;
 
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
 
 class FileGeneratorTest {
 
 	static FileGenerator fileGen;
+	String fileContent;
+	String expected;
 	
 	static void setUp() {
 		fileGen = new FileGenerator("tester.musicxml");
@@ -30,9 +30,9 @@ class FileGeneratorTest {
 		setUp();
 		fileGen.addInfo("Example Title");
 		fileGen.end();
-		String fileContent = this.readFile();
 		
-		String expected = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+		fileContent = this.readFile();
+		expected = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
 				+ "<score-partwise version=\"3.1\">\n"
 				+ "  <work>\n"
 				+ "    <work-title>Example Title</work-title>\n"
@@ -45,19 +45,18 @@ class FileGeneratorTest {
 				+ "</score-partwise>";
 		
 		assertEquals(expected, fileContent); 
-		//assertTrue(fileContent.equals(expected));
 	}
 
 	@Test
 	void testOpenPart() {
 		setUp();
-		fileGen.openPart(1);
+		fileGen.openPart(3);
 		fileGen.end();
 		String fileContent = this.readFile();
 		
-		String expected = "<part id=\"P" + 1 + "\">\n"
+		String expected = "<part id=\"P" + 3 + "\">\n"
 				+ "</score-partwise>";
-		
+
 		assertEquals(expected, fileContent); 
 	}
 
@@ -166,8 +165,9 @@ class FileGeneratorTest {
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
-		System.out.println(fileContent);
+		System.out.println(fileContent + "\n\n--------------------------------------\n");
 		return fileContent;
 	}	
+
 
 }
