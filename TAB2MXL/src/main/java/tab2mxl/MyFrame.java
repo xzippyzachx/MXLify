@@ -11,24 +11,28 @@ public class MyFrame extends JFrame{
 
 	//Screens
 	JPanel mainContentPanel;
-	FileUploadContentPanel fileUploadContentPanel = new FileUploadContentPanel();
-	public TextInputContentPanel textInputContentPanel = new TextInputContentPanel();
+	FileUploadContentPanel fileUploadContentPanel;
+	public TextInputContentPanel textInputContentPanel;
 	
-	MyFrame() {	
-				
+	MyFrame() {
+		
 		///////////////////////
 		//Main Screen
 		///////////////////////
 		
 		mainContentPanel = new JPanel();
-		mainContentPanel.setLayout(new GridBagLayout ());
 		GridBagConstraints c = new GridBagConstraints();
-				
-		c.gridwidth = 2;
+		mainContentPanel.setLayout(new GridBagLayout ());
 		
-		c.weightx = 0.7;
+		fileUploadContentPanel = new FileUploadContentPanel();
+		c.gridx = 1;
+		c.gridx = 1;
+
 		mainContentPanel.add(fileUploadContentPanel, c);
-		c.weightx = 0.3;
+
+		textInputContentPanel = new TextInputContentPanel();
+		c.gridx = 2;
+		c.gridx = 2;
 		mainContentPanel.add(textInputContentPanel, c);
 		
 		//Sets the FileChoosers style to the current system look and feel
@@ -37,8 +41,8 @@ public class MyFrame extends JFrame{
 	    } 
 	    catch (Throwable ex) { }
 		
-        this.setContentPane(mainContentPanel);		
-		
+        this.setContentPane(mainContentPanel);
+        
         //Set Frame settings
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setSize(1280,720);
