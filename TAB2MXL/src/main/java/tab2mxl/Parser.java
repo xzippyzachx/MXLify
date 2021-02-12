@@ -196,8 +196,7 @@ public class Parser {
 			fileGen.closePart();
 		fileGen.end();
 		
-		
-		
+		new SuccessPopUp(Main.myFrame);
 		
 	}
 	

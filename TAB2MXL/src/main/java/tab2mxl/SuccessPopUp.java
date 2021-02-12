@@ -16,24 +16,19 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.Popup;
 import javax.swing.PopupFactory;
+import javax.swing.UIManager;
 import javax.swing.border.Border;
 
-public class ClearPopUp extends PopupFactory implements ActionListener{
+public class SuccessPopUp extends PopupFactory implements ActionListener{
 
 	Popup popup;
 	
-	JButton yesButton;
-	JButton noButton;
+	JButton okButton;
 	
-	String input;
 	MyFrame myFrame;
 	
-		
-	ClearPopUp (Component owner, String input){
+	SuccessPopUp (Component owner){
 				
-		
-		
-		this.input = input;
 		myFrame = (MyFrame) owner;
 		
         JPanel panel = new JPanel(); 
@@ -45,57 +40,36 @@ public class ClearPopUp extends PopupFactory implements ActionListener{
         
         JPanel titlepanel = new JPanel();
         titlepanel.setLayout(new FlowLayout());
-        JLabel title = new JLabel("Override Current Tablature");
-        title.setForeground(new Color(232, 32, 21));
+        JLabel title = new JLabel("Convertion Was Successful");
+        title.setForeground(new Color(110,199,56));
         title.setFont(new Font(title.getName(), Font.BOLD, 14));
         Border titlePadding = BorderFactory.createEmptyBorder(15, 10, 0, 10);
         title.setBorder(titlePadding);
         titlepanel.add(title);
         
         JPanel inputPanel = new JPanel();
-        inputPanel.setLayout(new FlowLayout());     
+        inputPanel.setLayout(new FlowLayout());
         
-        yesButton = new JButton("Yes");
-        yesButton.setBorderPainted(false);
-        yesButton.setBackground(new Color(33,150,243));
-        yesButton.setForeground(new Color(224,224,224));
-        yesButton.setFocusable(false);
-        yesButton.addActionListener(this);
+        okButton = new JButton("Ok");        
+        okButton.setBorderPainted(false);
+        okButton.setBackground(new Color(33,150,243));
+        okButton.setForeground(new Color(224,224,224));
+        okButton.setFocusable(false);
+        okButton.addActionListener(this);
         
         //Button hover effects
-        yesButton.addMouseListener(new java.awt.event.MouseAdapter() {
+        okButton.addMouseListener(new java.awt.event.MouseAdapter() {
     	    public void mouseEntered(java.awt.event.MouseEvent evt) {
-    	    	yesButton.setBackground(new Color(60,160,243));
-    	    	yesButton.setForeground(Color.black);
+    	    	okButton.setBackground(new Color(60,160,243));
+    	    	okButton.setForeground(Color.black);
     	    }
 
     	    public void mouseExited(java.awt.event.MouseEvent evt) {
-    	    	yesButton.setBackground(new Color(33,150,243));
-    	    	yesButton.setForeground(new Color(224,224,224));
+    	    	okButton.setBackground(new Color(33,150,243));
+    	    	okButton.setForeground(new Color(224,224,224));
     	    }
-    	});        
-        inputPanel.add(yesButton);        
-        
-        noButton = new JButton("No");
-        noButton.setBorderPainted(false);
-        noButton.setBackground(new Color(33,150,243));
-        noButton.setForeground(new Color(224,224,224));
-        noButton.setFocusable(false);
-        noButton.addActionListener(this);
-        
-        //Button hover effects
-        noButton.addMouseListener(new java.awt.event.MouseAdapter() {
-    	    public void mouseEntered(java.awt.event.MouseEvent evt) {
-    	    	noButton.setBackground(new Color(60,160,243));
-    	    	noButton.setForeground(Color.black);
-    	    }
-
-    	    public void mouseExited(java.awt.event.MouseEvent evt) {
-    	    	noButton.setBackground(new Color(33,150,243));
-    	    	noButton.setForeground(new Color(224,224,224));
-    	    }
-    	});        
-        inputPanel.add(noButton);
+    	});   
+        inputPanel.add(okButton);
         
         Border buttonPadding = BorderFactory.createEmptyBorder(0, 10, 0, 10);
         inputPanel.setBorder(buttonPadding);
@@ -109,21 +83,14 @@ public class ClearPopUp extends PopupFactory implements ActionListener{
         popup = this.getPopup(myFrame, panel, pt.x + frameSize.width/2 - 150, pt.y + frameSize.height/2 - 50);
         popup.show();
         Main.isInPopUp = true;
-}
+	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if(e.getSource() == yesButton)
-		{
-			myFrame.textInputContentPanel.textField.setText(input);
-			popup.hide();
-			Main.isInPopUp = false;
-		}
-		else
+		if(e.getSource() == okButton)
 		{
 			popup.hide();
 			Main.isInPopUp = false;
 		}
 	}	
-	
 }

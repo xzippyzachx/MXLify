@@ -36,8 +36,7 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 	JLabel titleLabel;
 	JScrollPane scroll;
 	JPanel inputpanel;
-	JButton button;
-	JButton backButton;
+	JButton convertButton;
 	String[] tabTypes = {"Select Instrument","Guitar", "Bass", "Drums"};
 	JPanel detailsPanel;
 	JComboBox tabList;
@@ -54,18 +53,10 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 	
 	TextInputContentPanel(){		
 	
-	// creates main content panel, lets layout to vertical, adds padding and sets it as Content Pane
+		// creates main content panel, lets layout to vertical, adds padding and sets it as Content Pane
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		Border padding = BorderFactory.createEmptyBorder(0, 10, 0, 10);
 		this.setBorder(padding);
-
-// BACK BUTTON REMOVED
-//		//creates back button containder adds button to the content pannel
-//		JPanel backPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));		
-//		backButton = new JButton("Back");
-//		backButton.addActionListener(this);
-//		backPanel.add(backButton);
-//		this.add(backPanel);
 		
         // creates Title Container and adds label to the Content panel
         titlePanel = new JPanel();
@@ -76,7 +67,7 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
         // generates the text field, sets size,font, and scrollability
         textField = new JTextArea();
         
-        textField.setFont(new Font(Font.MONOSPACED, Font.PLAIN,12));
+        textField.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
         this.add(textField);
         scroll = new JScrollPane (textField);
         scroll.setPreferredSize(new Dimension(800, 500));
@@ -129,12 +120,12 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
         // creates the container for the button, generates the button and sets an action on click
         inputpanel = new JPanel();
         inputpanel.setLayout(new FlowLayout());
-        button = new JButton("Convert To MusicXML");
-        button.setBackground(new Color(33,150,243));
-        button.setForeground(new Color(224,224,224));
-        button.setFocusable(false);
-        button.addActionListener(this);
-        inputpanel.add(button);
+        convertButton = new JButton("Convert To MusicXML");
+        convertButton.setBackground(new Color(33,150,243));
+        convertButton.setForeground(new Color(224,224,224));
+        convertButton.setFocusable(false);
+        convertButton.addActionListener(this);
+        inputpanel.add(convertButton);
         Border buttonPadding = BorderFactory.createEmptyBorder(10, 10, 0, 10);
         inputpanel.setBorder(buttonPadding);
         
@@ -156,6 +147,8 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
+		if(Main.isInPopUp)
+			return;
 
 		String[] inputText = textField.getText().split("\n");
 		
@@ -190,9 +183,7 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 		else
 		{			
 			Main.Convert(input);			
-		}
-		
-	
+		}	
 	}
 	
 	private static String cleanTextContent(String text) 

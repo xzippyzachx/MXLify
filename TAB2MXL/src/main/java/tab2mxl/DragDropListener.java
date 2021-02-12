@@ -19,6 +19,9 @@ public class DragDropListener implements DropTargetListener{
 	@Override
 	public void drop(DropTargetDropEvent event) {
 
+		if(Main.isInPopUp)
+			return;
+		
 		event.acceptDrop(DnDConstants.ACTION_COPY); // Accept copy drops
 
 		Transferable transferable = event.getTransferable(); // Get the transfer which can provide the dropped item data
