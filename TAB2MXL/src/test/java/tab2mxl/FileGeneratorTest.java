@@ -78,8 +78,9 @@ class FileGeneratorTest {
 	@Test
 	void testAttributes() {
 		setUp();		
-		String[] tune = new String[]{"E", "B", "G", "D", "A", "E"};		
-		fileGen.attributes(2,4,4,4, "G", tune);
+		String[] tune = new String[]{"E", "B", "G", "D", "A", "E"};	
+		int[] oct = new int[] {1, 2, 3, 4, 5, 6};
+		fileGen.attributes(2,4,4,4, "G", tune, oct);
 		fileGen.end();
 		String fileContent = this.readFile();
 		
@@ -135,7 +136,7 @@ class FileGeneratorTest {
 	@Test
 	void testAddNote() {
 		setUp();
-		fileGen.addNote(1,1,"E", "half", 1);
+		fileGen.addNote(1,1,"E", "half", 1, 3);
 		fileGen.end();
 		String fileContent = this.readFile();
 		
@@ -157,8 +158,9 @@ class FileGeneratorTest {
 	@Test
 	void testAddChord() {
 		setUp();		
-		char[] notes = new char[]{'E', 'B', 'G'};		
-		fileGen.addChord(notes, "half", 1);
+		char[] notes = new char[]{'E', 'B', 'G'};
+		int[] oct = new int[] {1,2,3};
+		fileGen.addChord(notes, "half", 1, oct);
 		fileGen.end();
 		String fileContent = this.readFile();
 		
