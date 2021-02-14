@@ -158,7 +158,7 @@ public class FileGenerator {
 	 * @param clef
 	 * @param tune
 	 */
-	public void attributes(int division, int keySignature, int beat, int beatType, String clef, String[] tune) {
+	public void attributes(int division, int keySignature, int beat, int beatType, String clef, String[] tune, int[] tuneOctave) {
 		try {
 			myWriter.write(currentIndent + "<attributes>");
 			currentIndent += "  ";
@@ -215,9 +215,9 @@ public class FileGenerator {
 				myWriter.write(currentIndent + "<staff-tuning line=\"" + (i + 1) + "\">");
 				currentIndent += "  ";
 				newLine();
-				myWriter.write(currentIndent + "<tuning-step>" + tune[tune.length - i - 1] + "</tuning-step>");
+				myWriter.write(currentIndent + "<tuning-step>" + tune[tune.length - i - 1].toUpperCase() + "</tuning-step>");
 				newLine();
-				myWriter.write(currentIndent + "<tuning-octave>" + 2 + "</tuning-octave>");
+				myWriter.write(currentIndent + "<tuning-octave>" + tuneOctave[tuneOctave.length - i - 1] + "</tuning-octave>");
 				newLine();
 				tabBack();
 				myWriter.write(currentIndent + "</staff-tuning>");
@@ -245,7 +245,7 @@ public class FileGenerator {
 	 * @param fret
 	 * @param note
 	 */
-	public void addNote(int string, int fret, String note, String noteType, int duration)
+	public void addNote(int string, int fret, String note, String noteType, int duration, int octave)
 	{
 		try {
 			myWriter.write(currentIndent + "<note>");
@@ -256,7 +256,7 @@ public class FileGenerator {
 			newLine();
 			myWriter.write(currentIndent + "<step>" + note + "</step>");
 			newLine();
-			myWriter.write(currentIndent + "<octave>4</octave>");
+			myWriter.write(currentIndent + "<octave>" + octave + "</octave>");
 			newLine();
 			tabBack();
 			myWriter.write(currentIndent + "</pitch>"); 
@@ -282,7 +282,7 @@ public class FileGenerator {
 	 * @param chord
 	 * @param noteType
 	 */
-	public void addChord(char[] chord, String noteType, int duration) {
+	public void addChord(char[] chord, String noteType, int duration, int[] octaves) {
 		for (int i = 0; i<chord.length;i++) {
 			try {	
 				myWriter.write(currentIndent + "<note>");
@@ -297,7 +297,7 @@ public class FileGenerator {
 				newLine();
 				myWriter.write(currentIndent + "<step>" + chord[i] + "</step>");
 				newLine();
-				myWriter.write(currentIndent + "<octave>4</octave>");
+				myWriter.write(currentIndent + "<octave>" + octaves[i] + "</octave>");
 				newLine();
 				tabBack();
 				myWriter.write(currentIndent + "</pitch>"); 
