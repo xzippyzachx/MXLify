@@ -19,6 +19,7 @@ public class FileGenerator {
 	
 	File saveFile;
 	FileWriter myWriter;
+	static String filepath;
 	
 	String currentIndent = "";
 	boolean measureOpen = false;
@@ -37,10 +38,15 @@ public class FileGenerator {
 		
 		if (response == JFileChooser.APPROVE_OPTION) { // if File successively chosen
 			
-			if(path == "")
-				saveFile = new File(fileChooser.getSelectedFile().getAbsolutePath());  //Print out path
-			else
-				saveFile = new File(path);
+			if(path == "") {
+				
+				filepath = fileChooser.getSelectedFile().getAbsolutePath();
+				saveFile = new File(filepath); //Print out path
+			}
+			else {
+				filepath= path;
+				saveFile = new File(filepath);
+			}
 			
 			try {
 		      myWriter = new FileWriter(saveFile);
