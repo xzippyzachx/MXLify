@@ -248,6 +248,7 @@ public class FileGenerator {
 	public void addNote(int string, int fret, String note, String noteType, int duration)
 	{
 		try {
+			tabBack();
 			myWriter.write(currentIndent + "<note>");
 			currentIndent += "  ";
 			newLine();
@@ -258,12 +259,28 @@ public class FileGenerator {
 			newLine();
 			myWriter.write(currentIndent + "<octave>4</octave>");
 			newLine();
-			tabBack();
 			myWriter.write(currentIndent + "</pitch>"); 
 			newLine();
+			tabBack();
 			myWriter.write(currentIndent + "<duration>" + duration + "</duration>"); 
 			newLine();
 			myWriter.write(currentIndent + "<type>" + noteType +"</type>"); 
+			newLine();
+			myWriter.write(currentIndent + "<notations>");
+			newLine();
+			currentIndent += "  ";
+			myWriter.write(currentIndent + "<technical>");
+			currentIndent += "  ";
+			newLine();
+			myWriter.write(currentIndent + "<string>" + string + "</string>");
+			newLine();
+			myWriter.write(currentIndent + "<fret>" + fret + "</fret>");
+			newLine();
+			tabBack();
+			myWriter.write(currentIndent + "</technical>");
+			newLine();
+			tabBack();
+			myWriter.write(currentIndent + "</notations>");
 			newLine();
 			myWriter.write(currentIndent + "<stem>down</stem>"); 
 			newLine();
@@ -282,37 +299,54 @@ public class FileGenerator {
 	 * @param chord
 	 * @param noteType
 	 */
-	public void addChord(char[] chord, String noteType, int duration) {
+	public void addChord(int[] fret, int[] string, char[] chord, String noteType, int duration) {
 		for (int i = 0; i<chord.length;i++) {
 			try {	
-				myWriter.write(currentIndent + "<note>");
-				currentIndent += "  ";
-				newLine();			
-				if(i>0) {
-					myWriter.write(currentIndent + "<chord/>");
-					newLine();
-				}
-				myWriter.write(currentIndent + "<pitch>");
-				currentIndent += "  ";
+			tabBack();
+			myWriter.write(currentIndent + "<note>");
+			currentIndent += "  ";
+			newLine();
+			if(i>0) {
+				myWriter.write(currentIndent + "<chord/>");
 				newLine();
-				myWriter.write(currentIndent + "<step>" + chord[i] + "</step>");
-				newLine();
-				myWriter.write(currentIndent + "<octave>4</octave>");
-				newLine();
-				tabBack();
-				myWriter.write(currentIndent + "</pitch>"); 
-				newLine();
-				myWriter.write(currentIndent + "<duration>" + duration + "</duration>"); 
-				newLine();
-				myWriter.write(currentIndent + "<type>" + noteType +"</type>"); 
-				newLine();
-				myWriter.write(currentIndent + "<stem>down</stem>"); 
-				newLine();
-				myWriter.write(currentIndent + "<staff>1</staff>");
-				newLine();
-				tabBack();
-				myWriter.write(currentIndent + "</note>");		
-				newLine();
+			}
+			myWriter.write(currentIndent + "<pitch>");
+			currentIndent += "  ";
+			newLine();
+			myWriter.write(currentIndent + "<step>" + chord[i] + "</step>");
+			newLine();
+			myWriter.write(currentIndent + "<octave>4</octave>");
+			newLine();
+			myWriter.write(currentIndent + "</pitch>"); 
+			newLine();
+			tabBack();
+			myWriter.write(currentIndent + "<duration>" + duration + "</duration>"); 
+			newLine();
+			myWriter.write(currentIndent + "<type>" + noteType +"</type>"); 
+			newLine();
+			myWriter.write(currentIndent + "<notations>");
+			newLine();
+			currentIndent += "  ";
+			myWriter.write(currentIndent + "<technical>");
+			currentIndent += "  ";
+			newLine();
+			myWriter.write(currentIndent + "<string>" + string[i] + "</string>");
+			newLine();
+			myWriter.write(currentIndent + "<fret>" + fret[i] + "</fret>");
+			newLine();
+			tabBack();
+			myWriter.write(currentIndent + "</technical>");
+			newLine();
+			tabBack();
+			myWriter.write(currentIndent + "</notations>");
+			newLine();
+			myWriter.write(currentIndent + "<stem>down</stem>"); 
+			newLine();
+			myWriter.write(currentIndent + "<staff>1</staff>");
+			newLine();
+			tabBack();
+			myWriter.write(currentIndent + "</note>");		
+			newLine();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

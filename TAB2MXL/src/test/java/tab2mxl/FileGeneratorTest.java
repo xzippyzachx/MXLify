@@ -20,7 +20,7 @@ class FileGeneratorTest {
 		fileGen = new FileGenerator("tester.musicxml");
 	}
 	
-	@Test
+	@Test 	
 	void testFileGenerator() {
 		setUp();
 		assertNotNull(fileGen.myWriter);
@@ -143,12 +143,18 @@ class FileGeneratorTest {
 				+ "  <pitch>\n"
 				+ "    <step>" + "E" + "</step>\n"
 				+ "    <octave>4</octave>\n"
-				+ "  </pitch>\n"
+				+ "    </pitch>\n"
 				+ "  <duration>" + 1 + "</duration>\n"
 				+ "  <type>" + "half" +"</type>\n"
-				+ "  <stem>down</stem>\n"
-				+ "  <staff>1</staff>\n"
-				+ "</note>\n"
+				+ "  <notations>\n"
+		        + "    <technical>\n"
+		        + "      <string>" + 1 + "</string>\n"
+		        + "      <fret>" + 1 + "</fret>\n"
+		        + "      <technical>\n"
+		        + "    <notations>\n"
+				+ "    <stem>down</stem>\n"
+				+ "    <staff>1</staff>\n"
+				+ "  </note>\n"
 				+ "</score-partwise>";
 		
 		assertEquals(expected, fileContent); 
@@ -157,47 +163,51 @@ class FileGeneratorTest {
 	@Test
 	void testAddChord() {
 		setUp();		
-		char[] notes = new char[]{'E', 'B', 'G'};		
-		fileGen.addChord(notes, "half", 1);
+		char[] notes = new char[]{'E','B'};		
+		int[] frets = new int[] {1,2};
+		int[] lines = new int[] {1,2};
+		fileGen.addChord(frets,lines,notes, "half", 1);
 		fileGen.end();
 		String fileContent = this.readFile();
-		
+
 		String expected = "<note>\n"
 				+ "  <pitch>\n"
-				+ "    <step>" + "E" + "</step>\n"
+				+ "    <step>" + notes[0] + "</step>\n"
 				+ "    <octave>4</octave>\n"
-				+ "  </pitch>\n"
+				+ "    </pitch>\n"
 				+ "  <duration>" + 1 + "</duration>\n"
 				+ "  <type>" + "half" +"</type>\n"
-				+ "  <stem>down</stem>\n"
-				+ "  <staff>1</staff>\n"
-				+ "</note>\n"
+				+ "  <notations>\n"
+		        + "    <technical>\n"
+		        + "      <string>" + lines[0] + "</string>\n"
+		        + "      <fret>" + frets[0] + "</fret>\n"
+		        + "      <technical>\n"
+		        + "    <notations>\n"
+				+ "    <stem>down</stem>\n"
+				+ "    <staff>1</staff>\n"
+				+ "  </note>\n"
 				+ "<note>\n"
 				+ "  <chord/>\n"
 				+ "  <pitch>\n"
-				+ "    <step>" + "B" + "</step>\n"
+				+ "    <step>" + notes[1] + "</step>\n"
 				+ "    <octave>4</octave>\n"
-				+ "  </pitch>\n"				
+				+ "    </pitch>\n"				
 				+ "  <duration>" + 1 + "</duration>\n"
 				+ "  <type>" + "half" +"</type>\n"
-				+ "  <stem>down</stem>\n"
-				+ "  <staff>1</staff>\n"
-				+ "</note>\n"
+				+ "  <notations>\n"
+		        + "    <technical>\n"
+		        + "      <string>" + lines[1] + "</string>\n"
+		        + "      <fret>" + frets[1] + "</fret>\n"
+		        + "      <technical>\n"
+		        + "     <notations>\n"
+				+ "     <stem>down</stem>\n"
+				+ "     <staff>1</staff>\n"
+				+ "   </note>\n"
 				+ "<note>\n"
-				+ "  <chord/>\n"
-				+ "  <pitch>\n"
-				+ "    <step>" + "G" + "</step>\n"
-				+ "    <octave>4</octave>\n"
-				+ "  </pitch>\n"				
-				+ "  <duration>" + 1 + "</duration>\n"
-				+ "  <type>" + "half" +"</type>\n"
-				+ "  <stem>down</stem>\n"
-				+ "  <staff>1</staff>\n"
-				+ "</note>\n"
+
 				+ "</score-partwise>";
-		
 		assertEquals(expected, fileContent); 
-	}
+	    }
 
 	@Test
 	void testOpenMeasure() {
