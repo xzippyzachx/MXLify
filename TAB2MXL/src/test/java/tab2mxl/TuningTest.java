@@ -15,7 +15,8 @@ class TuningTest {
 	@BeforeAll
     static void setUp() {
 		//String[] tune = {"e", "B", "G", "D", "A", "E"};
-	     tunning = new Tuning(tune, 6);
+		int[] oct = new int[]{1, 2, 3, 4, 5, 6};
+	     tunning = new Tuning(tune, 6, oct);
 	}
 	
 	@Test

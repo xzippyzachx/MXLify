@@ -6,18 +6,25 @@ public class Main {
 	
 	public static MyFrame myFrame;
 	
+	public static boolean isInPopUp;
+	static ClearPopUp clearPopUp;
+	static ClearPopUp successPopUp;	
+	
 	public static void main(String[] args) {
 		myFrame = new MyFrame();
 	}
 
 	public static void FileUploaded(String input)
 	{
-		myFrame.textInputContentPanel.textField.setText(input);
+		if(!myFrame.textInputContentPanel.textField.getText().isEmpty())
+			new ClearPopUp(myFrame, input);
+		else
+			myFrame.textInputContentPanel.textField.setText(input);
 	}
 	
 	public static void Convert(ArrayList<ArrayList<String>> input)
 	{
 		new Parser(input);
-	}
- 
+		new CreateScore(FileGenerator.filepath);
+	} 
 }

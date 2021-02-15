@@ -165,7 +165,7 @@ public class FileUploadContentPanel extends JPanel implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
-			if (e.getSource() == selectButton) { // Button click
+			if (e.getSource() == selectButton && !Main.isInPopUp) { // Button click
 				JFileChooser fileChooser = new JFileChooser(
 						prefs.get(LAST_USED_FOLDER, new File(".").getAbsolutePath())); // Create file chooser
 				ArrayList<ArrayList<String>> input = new ArrayList<ArrayList<String>>();
@@ -208,6 +208,9 @@ class MyDragDropListener implements DropTargetListener {
 
 	@Override
 	public void drop(DropTargetDropEvent event) {
+		
+		if(Main.isInPopUp)
+			return;
 
 		event.acceptDrop(DnDConstants.ACTION_COPY); // Accept copy drops
 
