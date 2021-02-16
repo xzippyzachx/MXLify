@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <score-partwise version="3.1">
   <work>
-<<<<<<< HEAD
     <work-title>4</work-title>
-=======
-    <work-title>guitar</work-title>
->>>>>>> refs/remotes/origin/develop
   </work>
   <part-list>
     <score-part id="P1">
@@ -24,7 +20,6 @@
           <beats>4</beats>
           <beat-type>4</beat-type>
         </time>
-        <staves>2</staves>
         <clef>
           <sign>G</sign>
           <line>2</line>
@@ -42,269 +37,99 @@
           </staff-tuning>
           <staff-tuning line="3">
             <tuning-step>D</tuning-step>
-            <tuning-octave>2</tuning-octave>
+            <tuning-octave>3</tuning-octave>
           </staff-tuning>
           <staff-tuning line="4">
             <tuning-step>G</tuning-step>
-            <tuning-octave>2</tuning-octave>
+            <tuning-octave>3</tuning-octave>
           </staff-tuning>
           <staff-tuning line="5">
             <tuning-step>B</tuning-step>
-            <tuning-octave>2</tuning-octave>
+            <tuning-octave>3</tuning-octave>
           </staff-tuning>
           <staff-tuning line="6">
             <tuning-step>E</tuning-step>
-            <tuning-octave>2</tuning-octave>
+            <tuning-octave>4</tuning-octave>
           </staff-tuning>
         </staff-details>
       </attributes>
-    <note>
-      <pitch>
-        <step>E</step>
-        <octave>4</octave>
+      <note>
+        <pitch>
+          <step>E</step>
+          <octave>2</octave>
         </pitch>
-<<<<<<< HEAD
-      <duration>2</duration>
-      <type>eighth</type>
-      <notations>
-        <technical>
-          <string>6</string>
-          <fret>0</fret>
-        </technical>
-      </notations>
-      <stem>down</stem>
-      <staff>1</staff>
-    </note>
-  <note>
-    <pitch>
-      <step>B</step>
-      <octave>4</octave>
-      </pitch>
-    <duration>2</duration>
-    <type>eighth</type>
-    <notations>
-      <technical>
-        <string>5</string>
-        <fret>2</fret>
-      </technical>
-    </notations>
-    <stem>down</stem>
-    <staff>1</staff>
-  </note>
-<note>
-  <pitch>
-    <step>E</step>
-    <octave>4</octave>
-    </pitch>
-  <duration>2</duration>
-  <type>eighth</type>
-  <notations>
-    <technical>
-      <string>4</string>
-      <fret>2</fret>
-    </technical>
-  </notations>
-  <stem>down</stem>
-  <staff>1</staff>
-</note>
-<note>
-  <pitch>
-    <step>G#</step>
-    <octave>4</octave>
-    </pitch>
-  <duration>2</duration>
-  <type>eighth</type>
-  <notations>
-    <technical>
-      <string>3</string>
-      <fret>1</fret>
-    </technical>
-  </notations>
-  <stem>down</stem>
-  <staff>1</staff>
-</note>
-<note>
-  <pitch>
-    <step>B</step>
-    <octave>4</octave>
-    </pitch>
-  <duration>2</duration>
-  <type>eighth</type>
-  <notations>
-    <technical>
-      <string>2</string>
-      <fret>0</fret>
-    </technical>
-  </notations>
-  <stem>down</stem>
-  <staff>1</staff>
-</note>
-<note>
-  <pitch>
-    <step>E</step>
-    <octave>4</octave>
-    </pitch>
-  <duration>2</duration>
-  <type>eighth</type>
-  <notations>
-    <technical>
-      <string>1</string>
-      <fret>0</fret>
-    </technical>
-  </notations>
-  <stem>down</stem>
-  <staff>1</staff>
-</note>
-<note>
-  <pitch>
-    <step>B</step>
-    <octave>4</octave>
-    </pitch>
-  <duration>2</duration>
-  <type>eighth</type>
-  <notations>
-    <technical>
-      <string>2</string>
-      <fret>0</fret>
-    </technical>
-  </notations>
-  <stem>down</stem>
-  <staff>1</staff>
-</note>
-<note>
-  <pitch>
-    <step>G#</step>
-    <octave>4</octave>
-    </pitch>
-  <duration>2</duration>
-  <type>eighth</type>
-  <notations>
-    <technical>
-      <string>3</string>
-      <fret>1</fret>
-    </technical>
-  </notations>
-  <stem>down</stem>
-  <staff>1</staff>
-</note>
-</measure>
-<measure number="2">
-<note>
-  <pitch>
-    <step>E</step>
-    <octave>4</octave>
-    </pitch>
-  <duration>16</duration>
-  <type>whole</type>
-  <notations>
-    <technical>
-      <string>1</string>
-      <fret>0</fret>
-    </technical>
-  </notations>
-  <stem>down</stem>
-  <staff>1</staff>
-</note>
-<note>
-  <chord/>
-  <pitch>
-    <step>B</step>
-    <octave>4</octave>
-    </pitch>
-  <duration>16</duration>
-  <type>whole</type>
-  <notations>
-    <technical>
-      <string>2</string>
-      <fret>0</fret>
-    </technical>
-  </notations>
-  <stem>down</stem>
-  <staff>1</staff>
-</note>
-<note>
-  <chord/>
-  <pitch>
-    <step>G</step>
-    <octave>4</octave>
-    </pitch>
-  <duration>16</duration>
-  <type>whole</type>
-  <notations>
-    <technical>
-      <string>3</string>
-      <fret>1</fret>
-    </technical>
-  </notations>
-  <stem>down</stem>
-  <staff>1</staff>
-</note>
-<note>
-  <chord/>
-  <pitch>
-    <step>E</step>
-    <octave>4</octave>
-    </pitch>
-  <duration>16</duration>
-  <type>whole</type>
-  <notations>
-    <technical>
-      <string>4</string>
-      <fret>2</fret>
-    </technical>
-  </notations>
-  <stem>down</stem>
-  <staff>1</staff>
-</note>
-<note>
-  <chord/>
-  <pitch>
-    <step>B</step>
-    <octave>4</octave>
-    </pitch>
-  <duration>16</duration>
-  <type>whole</type>
-  <notations>
-    <technical>
-      <string>5</string>
-      <fret>2</fret>
-    </technical>
-  </notations>
-  <stem>down</stem>
-  <staff>1</staff>
-</note>
-<note>
-  <chord/>
-  <pitch>
-    <step>E</step>
-    <octave>4</octave>
-    </pitch>
-  <duration>16</duration>
-  <type>whole</type>
-  <notations>
-    <technical>
-      <string>6</string>
-      <fret>0</fret>
-    </technical>
-  </notations>
-  <stem>down</stem>
-  <staff>1</staff>
-</note>
-</measure>
-</part>
-=======
         <duration>2</duration>
         <type>eighth</type>
+        <notations>
+          <technical>
+            <string>6</string>
+            <fret>0</fret>
+          </technical>
+        </notations>
         <stem>down</stem>
         <staff>1</staff>
       </note>
       <note>
         <pitch>
           <step>B</step>
-          <octave>4</octave>
+          <octave>2</octave>
         </pitch>
         <duration>2</duration>
         <type>eighth</type>
+        <notations>
+          <technical>
+            <string>5</string>
+            <fret>2</fret>
+          </technical>
+        </notations>
+        <stem>down</stem>
+        <staff>1</staff>
+      </note>
+      <note>
+        <pitch>
+          <step>E</step>
+          <octave>3</octave>
+        </pitch>
+        <duration>2</duration>
+        <type>eighth</type>
+        <notations>
+          <technical>
+            <string>4</string>
+            <fret>2</fret>
+          </technical>
+        </notations>
+        <stem>down</stem>
+        <staff>1</staff>
+      </note>
+      <note>
+        <pitch>
+          <step>G#</step>
+          <octave>3</octave>
+        </pitch>
+        <duration>2</duration>
+        <type>eighth</type>
+        <notations>
+          <technical>
+            <string>3</string>
+            <fret>1</fret>
+          </technical>
+        </notations>
+        <stem>down</stem>
+        <staff>1</staff>
+      </note>
+      <note>
+        <pitch>
+          <step>B</step>
+          <octave>3</octave>
+        </pitch>
+        <duration>2</duration>
+        <type>eighth</type>
+        <notations>
+          <technical>
+            <string>2</string>
+            <fret>0</fret>
+          </technical>
+        </notations>
         <stem>down</stem>
         <staff>1</staff>
       </note>
@@ -315,56 +140,44 @@
         </pitch>
         <duration>2</duration>
         <type>eighth</type>
-        <stem>down</stem>
-        <staff>1</staff>
-      </note>
-      <note>
-        <pitch>
-          <step>G#</step>
-          <octave>4</octave>
-        </pitch>
-        <duration>2</duration>
-        <type>eighth</type>
-        <stem>down</stem>
-        <staff>1</staff>
-      </note>
-      <note>
-        <pitch>
-          <step>B</step>
-          <octave>4</octave>
-        </pitch>
-        <duration>2</duration>
-        <type>eighth</type>
-        <stem>down</stem>
-        <staff>1</staff>
-      </note>
-      <note>
-        <pitch>
-          <step>E</step>
-          <octave>4</octave>
-        </pitch>
-        <duration>2</duration>
-        <type>eighth</type>
+        <notations>
+          <technical>
+            <string>1</string>
+            <fret>0</fret>
+          </technical>
+        </notations>
         <stem>down</stem>
         <staff>1</staff>
       </note>
       <note>
         <pitch>
           <step>B</step>
-          <octave>4</octave>
+          <octave>3</octave>
         </pitch>
         <duration>2</duration>
         <type>eighth</type>
+        <notations>
+          <technical>
+            <string>2</string>
+            <fret>0</fret>
+          </technical>
+        </notations>
         <stem>down</stem>
         <staff>1</staff>
       </note>
       <note>
         <pitch>
           <step>G#</step>
-          <octave>4</octave>
+          <octave>3</octave>
         </pitch>
         <duration>2</duration>
         <type>eighth</type>
+        <notations>
+          <technical>
+            <string>3</string>
+            <fret>1</fret>
+          </technical>
+        </notations>
         <stem>down</stem>
         <staff>1</staff>
       </note>
@@ -373,10 +186,16 @@
       <note>
         <pitch>
           <step>E</step>
-          <octave>4</octave>
-        </pitch>
+          <octave>2</octave>
+          </pitch>
         <duration>16</duration>
         <type>whole</type>
+        <notations>
+          <technical>
+            <string>6</string>
+            <fret>0</fret>
+          </technical>
+        </notations>
         <stem>down</stem>
         <staff>1</staff>
       </note>
@@ -384,10 +203,33 @@
         <chord/>
         <pitch>
           <step>B</step>
-          <octave>4</octave>
-        </pitch>
+          <octave>2</octave>
+          </pitch>
         <duration>16</duration>
         <type>whole</type>
+        <notations>
+          <technical>
+            <string>5</string>
+            <fret>2</fret>
+          </technical>
+        </notations>
+        <stem>down</stem>
+        <staff>1</staff>
+      </note>
+      <note>
+        <chord/>
+        <pitch>
+          <step>E</step>
+          <octave>3</octave>
+          </pitch>
+        <duration>16</duration>
+        <type>whole</type>
+        <notations>
+          <technical>
+            <string>4</string>
+            <fret>2</fret>
+          </technical>
+        </notations>
         <stem>down</stem>
         <staff>1</staff>
       </note>
@@ -395,21 +237,17 @@
         <chord/>
         <pitch>
           <step>G</step>
-          <octave>4</octave>
-        </pitch>
+          <alter>1</alter>
+          <octave>3</octave>
+          </pitch>
         <duration>16</duration>
         <type>whole</type>
-        <stem>down</stem>
-        <staff>1</staff>
-      </note>
-      <note>
-        <chord/>
-        <pitch>
-          <step>E</step>
-          <octave>4</octave>
-        </pitch>
-        <duration>16</duration>
-        <type>whole</type>
+        <notations>
+          <technical>
+            <string>3</string>
+            <fret>1</fret>
+          </technical>
+        </notations>
         <stem>down</stem>
         <staff>1</staff>
       </note>
@@ -417,10 +255,16 @@
         <chord/>
         <pitch>
           <step>B</step>
-          <octave>4</octave>
-        </pitch>
+          <octave>3</octave>
+          </pitch>
         <duration>16</duration>
         <type>whole</type>
+        <notations>
+          <technical>
+            <string>2</string>
+            <fret>0</fret>
+          </technical>
+        </notations>
         <stem>down</stem>
         <staff>1</staff>
       </note>
@@ -429,13 +273,18 @@
         <pitch>
           <step>E</step>
           <octave>4</octave>
-        </pitch>
+          </pitch>
         <duration>16</duration>
         <type>whole</type>
+        <notations>
+          <technical>
+            <string>1</string>
+            <fret>0</fret>
+          </technical>
+        </notations>
         <stem>down</stem>
         <staff>1</staff>
       </note>
     </measure>
   </part>
->>>>>>> refs/remotes/origin/develop
 </score-partwise>
