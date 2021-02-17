@@ -102,11 +102,11 @@ class FileGeneratorTest {
 	@Test
 	void testOpenPart() {
 		openWriter();
-		fileGen.openPart(3);
+		fileGen.openPart(1);
 		fileGen.end();
 		String fileContent = this.readFile();
 		
-		String expected = "<part id=\"P" + 3 + "\">\n"
+		String expected = "<part id=\"P" + 1 + "\">\n"
 				+ "</score-partwise>";
 
 		assertEquals(expected, fileContent); 
@@ -115,15 +115,14 @@ class FileGeneratorTest {
 	@Test
 	void testOpenPart2() {
 		openWriter();
-		fileGen.openPart(0);
+		fileGen.openPart(3);
 		fileGen.end();
 		String fileContent = this.readFile();
 		
-		String expected = "<part id=\"P" + 0 + "\">\n"
+		String expected = "<part id=\"P" + 3 + "\">\n"
 				+ "</score-partwise>";
 
 		assertEquals(expected, fileContent); 
-		fail("May want to add check to openPart, checking for part ID = 0");
 	}
 
 	@Test
@@ -269,6 +268,8 @@ class FileGeneratorTest {
 				+ "    </pitch>\n"
 				+ "  <duration>1</duration>\n"
 				+ "  <type>half</type>\n"
+				+ "  <dot/>\n"
+				+ "  <dot/>\n"
 				+ "  <notations>\n"
 				+ "    <technical>\n"
 				+ "      <string>2</string>\n"
@@ -286,6 +287,7 @@ class FileGeneratorTest {
 				+ "    </pitch>\n"
 				+ "  <duration>1</duration>\n"
 				+ "  <type>half</type>\n"
+				+ "  <dot/>\n"
 				+ "  <notations>\n"
 				+ "    <technical>\n"
 				+ "      <string>1</string>\n"
