@@ -8,11 +8,12 @@ public class Parser {
 
 	int stringAmount;
 	int tabLineAmount;
+	private int beat;
+	private int beatType;
 	private ArrayList<char[]> columns;
 	public static  Map<String,String> misc;
 	
 	//to be converted to user input
-	private static int beatType = 4;
 	private static int[] tuningOctave = {4,3,3,3,2,2};
 	//to be converted to user input
 	
@@ -25,6 +26,28 @@ public class Parser {
 		addTitle(TextInputContentPanel.title);
 		addTabType(TextInputContentPanel.tabType);
 		addTime(TextInputContentPanel.timeSig);
+		
+		//set the time signature to default if the inputed time signature isn't in the right format
+		if(misc.get("TimeSig") == "") {
+			beat = 4;
+			beatType = 4;
+		}else if(misc.get("TimeSig").indexOf('/') == -1) {
+			beat = 4;
+			beatType = 4;
+		}else if(misc.get("TimeSig").charAt(0) == '/') {
+			beat = 4;
+			beatType = 4;
+		}else if(misc.get("TimeSig").charAt(misc.get("TimeSig").length()-1) == '/') {
+			beat  = 4;
+			beatType = 4;
+			//set the time signature to default if the inputed time signature isn't in the right format
+		}else {
+			//get the beat and beat-type from the information given in the time signature
+			beat = Integer.parseInt(misc.get("TimeSig").substring(0, misc.get("TimeSig").indexOf('/')));
+			beatType = Integer.parseInt(misc.get("TimeSig").substring(misc.get("TimeSig").indexOf('/')+1));
+		}
+		System.out.println("beat: " + beat);
+		System.out.println("beatType: " + beatType);
 		
 		for(int i = 0; i < input.size(); i++)
 		{			
@@ -76,8 +99,8 @@ public class Parser {
 		int measure = 0;
 		int line = 0;
 		int gate = 0;
-		double beatTypeNote = 1.0/Parser.beatType;
-		int div = getDivisions(Integer.parseInt(misc.get("TimeSig")));
+		double beatTypeNote = 1.0/beatType;
+		int div = getDivisions(beat);
 		double dash = 0; 
 		char[] col;
 		int[] fretarray = new int[stringAmount];
@@ -161,7 +184,7 @@ public class Parser {
 						fileGen.openMeasure(measure);
 						
 						if(measure == 1) {
-							fileGen.attributes(getDivisions(Integer.parseInt(misc.get("TimeSig"))), 0, Integer.parseInt(misc.get("TimeSig")), 4, "G", tune, tuningOctave);
+							fileGen.attributes(getDivisions(beat), 0, beat, beatType, "G", tune, tuningOctave);
 						}
 					}
 				}			
@@ -301,9 +324,9 @@ public class Parser {
 	
 	private int getDuration(double noteType) {
 		double output = 0;
-		double div = getDivisions(Integer.parseInt(misc.get("TimeSig")));
-		double beatType = 1.0/Parser.beatType;
-		output = (noteType * div)/beatType;
+		double div = getDivisions(beat);
+		double beatTypeNote = 1.0/beatType;
+		output = (noteType * div)/beatTypeNote;
 		
 		return (int)output;
 	}
@@ -336,8 +359,8 @@ public class Parser {
 				}
 		}
 	}
-		double beatNote = 1.0/Parser.beatType;
-		double totalBeatPerMeasure = beatSig/Parser.beatType;
+		double beatNote = 1.0/beatType;
+		double totalBeatPerMeasure = beatSig/beatType;
 		double division = (hyfenNumber * beatNote)/totalBeatPerMeasure;
 	
 		/*if(hyfenNumber%beatSig !=0) {
