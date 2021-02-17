@@ -92,7 +92,7 @@ public class Parser {
 		 * specified in the TAB, or the default if it isn't*/
 		for(int i = 0; i < stringAmount; i++ ) {
 			//System.out.println(columns.get(0)[i]);
-			if(columns.get(0)[i] != '-' && columns.get(0)[i] != '|') {
+			if(columns.get(0)[i] != '-' && columns.get(0)[i] != '|' && Parser.tuningOctave != null) {
 				tune[i] = Character.toString(columns.get(0)[i]);
 				tO[i] = Parser.tuningOctave[i];
 			}else {
