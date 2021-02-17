@@ -66,7 +66,8 @@ public class Parser {
 		
 		char[] chords = new char[stringAmount];
 		int[] chordsOctave = new int[stringAmount];
-		String type="";
+		String chordType= "";
+		int[] chordDot = new int[stringAmount];
 		fileGen.openPart(1);
 		int currentColumn = 0;
 		int stringcheck = 0;
@@ -79,8 +80,8 @@ public class Parser {
 		int div = getDivisions(Integer.parseInt(misc.get("TimeSig")));
 		double dash = 0; 
 		char[] col;
-		int[] fretarray = new int[6];
-		int[] linearray = new int[6];
+		int[] fretarray = new int[stringAmount];
+		int[] linearray = new int[stringAmount];
 		char character = ' ';
 		int notesInColumn = 0;
 		char note = ' ';
@@ -94,7 +95,7 @@ public class Parser {
 		 * specified in the TAB, or the default if it isn't*/
 		for(int i = 0; i < stringAmount; i++ ) {
 			//System.out.println(columns.get(0)[i]);
-			if(columns.get(0)[i] != '-' && columns.get(0)[i] != '|') {
+			if(columns.get(0)[i] != '-' && columns.get(0)[i] != '|' && Parser.tuningOctave != null) {
 				tune[i] = Character.toString(columns.get(0)[i]);
 				tO[i] = Parser.tuningOctave[i];
 			}else {
@@ -159,7 +160,7 @@ public class Parser {
 						System.out.println("measure " + measure);
 						fileGen.openMeasure(measure);
 						
-						if(measure ==1) {
+						if(measure == 1) {
 							fileGen.attributes(getDivisions(Integer.parseInt(misc.get("TimeSig"))), 0, Integer.parseInt(misc.get("TimeSig")), 4, "G", tune, tuningOctave);
 						}
 					}
@@ -180,7 +181,7 @@ public class Parser {
 					if (!chord) {
 						linearray[j] = line;
 						System.out.println("line " + line + " and fret " + fret);
-						fileGen.addNote(line, fret, tunner.getNote(tune[line-1], fret), noteType(beatNote), getDuration(beatNote), tunner.getOctave(tune[line-1], fret));
+						fileGen.addNote(line, fret, tunner.getNote(tune[line-1], fret), noteType(beatNote), getDuration(beatNote), tunner.getOctave(tune[line-1], fret), dot(beatNote));
 					}
 					else {
 						note = tunner.getNote(tune[line-1].toUpperCase(), fret).charAt(0);
@@ -189,18 +190,19 @@ public class Parser {
 						chordOctave = tunner.getOctave(tune[line-1], fret);
 						chords[j] = note;
 						chordsOctave[j] = chordOctave;
-						type = noteType(beatNote);
+						chordType = noteType(beatNote);
+						chordDot[j] = dot(beatNote);
 						System.out.println("add chord " + line + " and fret " + fret);
 					}
 				}
-				if (line == 6) {
+				if (line == stringAmount) {
 					line = 0;
 				}
 				
 			}
 			if (chord) {
 				double beatNote = (dash * beatTypeNote)/div;
-				fileGen.addChord(chords,type, getDuration(beatNote), chordsOctave,linearray,fretarray);
+				fileGen.addChord(chords,chordType, getDuration(beatNote), chordsOctave,linearray,fretarray, chordDot);
 			}
 			currentColumn++;
 		
@@ -227,50 +229,69 @@ public class Parser {
 		return output;
 	}
 	
-	private boolean dot(double beatNote) {
-		boolean output = false;
+	private int dot(double beatNote) {
+		int output = 0;
+		double check = 0.0;
+		double temp;
+		double div = 2.0;
 		
-		if(beatNote == 0.75) {
-			output = true;
+		for(double i = 2.0; i > 0.0; i = i/2.0) {
+			if(beatNote >= i) {
+				check = i;
+				break;
+			}
 		}
-		
+		temp = check;
+		while(check != beatNote) {
+			check = check + temp/div;
+			div = div * 2;
+			output++;
+		}
+		System.out.println("dot: " + output);
 		return output;
 	}
 	
 	private String noteType(double beatNote) {
 		String output = "";
 		
-		if(beatNote == 1) {
+		if(beatNote >= 2) {
+			output = "double";
+		}else if(beatNote >= 1.0) {
 			output = "whole";
-		}if(beatNote == 0.75) {
+		}else if(beatNote >= 1.0/2.0) {
 			output = "half";
-		}if(beatNote == 0.5) {
-			output = "half";
-		}if(beatNote == 0.25) {
+		}else if(beatNote >= 1.0/4.0) {
 			output = "quarter";
-		}if(beatNote == 0.125) {
+		}else if(beatNote  >= 1.0/8.0) {
 			output = "eighth";
-		}if(beatNote == 0.625) {
-			output = "16th";
-		}if(beatNote == 0.03125) {
-			output = "32nd";
-		}if(beatNote == 0.015625) {
-			output = "64th";
-		}if(beatNote == 1/128) {
-			output = "128th";
-		}if(beatNote == 1/256) {
-			output = "256th";
-		}if(beatNote == 1/512) {
-			output = "512th";
-		}if(beatNote == 1/1024) {
-			output = "1024th";
+		}else if(beatNote < 1.0/8.0) {
+			output = "quaver";
+			int maxIndex = (int) ((1.0/8.0)/beatNote);
+			if(maxIndex % 2 == 0) {
+				maxIndex = maxIndex/2;
+			}else {
+				while(maxIndex % 2 != 0) {
+					maxIndex++;
+				}
+				maxIndex = maxIndex/2;
+			}
+			for(int i = 0; i < maxIndex; i++) {
+				if(output.charAt(0) != 's' && output.charAt(0) != 'd' && output.charAt(0) != 'h') {
+					output = "semi" + output;
+				}else if(output.charAt(0) == 's') {
+					output = "demi" + output;
+				}else if(output.charAt(0) == 'd') {
+					output = "hemi" + output;
+				}else if(output.charAt(0) == 'h') {
+					output = "semi" + output;
+				}
+			}
 		}
-			
+
 		return output;
 	}
 	
 	private int getDuration(double noteType) {
-		//System.out.println(noteType);
 		double output = 0;
 		double div = getDivisions(Integer.parseInt(misc.get("TimeSig")));
 		double beatType = 1.0/Parser.beatType;

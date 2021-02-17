@@ -79,8 +79,8 @@ public class Tuning {
 										octave++;
 										}
 								}
-								if(octave > 6) {
-									octave = 2;
+								if(octave > 9) {
+									octave = 0;
 								}
 								octaves.add(octave);
 								notes.add(note);

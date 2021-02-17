@@ -135,7 +135,7 @@ class FileGeneratorTest {
 	@Test
 	void testAddNote() {
 		setUp();
-		fileGen.addNote(1,1,"E", "half", 1, 3);
+		fileGen.addNote(1,1,"E", "half", 1, 3, 0);
 		fileGen.end();
 		String fileContent = this.readFile();
 		String expected = "<note>\n"
@@ -165,7 +165,8 @@ class FileGeneratorTest {
 		int[] frets = new int[] {1,2};
 		int[] lines = new int[] {1,2};
 		int[] oct = new int[] {1,2,3};
-		fileGen.addChord(notes, "half", 1,oct,frets,lines);
+		int[] dot = new int[] {1,2,3};
+		fileGen.addChord(notes, "half", 1,oct,frets,lines, dot);
 		fileGen.end();
 		String fileContent = this.readFile();
 		String expected = 
