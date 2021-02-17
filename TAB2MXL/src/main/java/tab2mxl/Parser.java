@@ -79,6 +79,8 @@ public class Parser {
 		int div = getDivisions(Integer.parseInt(misc.get("TimeSig")));
 		double dash = 0; 
 		char[] col;
+		int[] fretarray = new int[6];
+		int[] linearray = new int[6];
 		char character = ' ';
 		int notesInColumn = 0;
 		char note = ' ';
@@ -167,6 +169,7 @@ public class Parser {
 				//Finds the string and fret of a note
 				gate++;
 				line++;
+				
 				if (character != '-' && character != '|' && gate>=7) {
 					fret = Character.getNumericValue(character);
 					if(fret < 0)
@@ -175,10 +178,13 @@ public class Parser {
 						fret = 0;
 					}
 					if (!chord) {
+						linearray[j] = line;
 						System.out.println("line " + line + " and fret " + fret);
 						fileGen.addNote(line, fret, tunner.getNote(tune[line-1], fret), noteType(beatNote), getDuration(beatNote), tunner.getOctave(tune[line-1], fret));
 					}
 					else {
+						note = tunner.getNote(tune[line-1].toUpperCase(), fret).charAt(0);
+						fretarray[j] = fret;
 						note = tunner.getNote(tune[line-1], fret).charAt(0);//doesn't the charAt(0) get rid of the sharps?
 						chordOctave = tunner.getOctave(tune[line-1], fret);
 						chords[j] = note;
@@ -194,7 +200,7 @@ public class Parser {
 			}
 			if (chord) {
 				double beatNote = (dash * beatTypeNote)/div;
-				fileGen.addChord(chords,type, getDuration(beatNote), chordsOctave);
+				fileGen.addChord(chords,type, getDuration(beatNote), chordsOctave,linearray,fretarray);
 			}
 			currentColumn++;
 		
