@@ -237,7 +237,7 @@ public class Parser {
 		return output;
 	}
 	
-	private String noteType(double beatNote) {
+	protected static String noteType(double beatNote) { //beatNote = 0.0 if a fraction is inputed. May need error checking.
 		String output = "";
 		
 		if(beatNote == 1) {
@@ -256,13 +256,13 @@ public class Parser {
 			output = "32nd";
 		}if(beatNote == 0.015625) {
 			output = "64th";
-		}if(beatNote == 1/128) {
+		}if(beatNote == 1.0/128) {
 			output = "128th";
-		}if(beatNote == 1/256) {
+		}if(beatNote == 1.0/256) {
 			output = "256th";
-		}if(beatNote == 1/512) {
+		}if(beatNote == 1.0/512) {
 			output = "512th";
-		}if(beatNote == 1/1024) {
+		}if(beatNote == 1.0/1024) {
 			output = "1024th";
 		}
 			
