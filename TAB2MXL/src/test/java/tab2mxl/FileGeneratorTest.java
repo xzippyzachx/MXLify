@@ -198,13 +198,9 @@ class FileGeneratorTest {
 
 	@Test
 	void testAddNote() {
-<<<<<<< HEAD
 		setUp();
 		fileGen.addNote(1,1,"E", "half", 1, 3, 0);
-=======
-		openWriter();
-		fileGen.addNote(1,1,"E", "half", 1, 3);
->>>>>>> branch 'develop' of https://github.com/xzippyzachx/softwareproject_group9
+
 		fileGen.end();
 		String fileContent = this.readFile();
 		String expected = "<note>\n"
@@ -230,7 +226,7 @@ class FileGeneratorTest {
 	@Test
 	void testAddNote2() {
 		openWriter();
-		fileGen.addNote(2,3,"G", "quarter", 1, 2);
+		fileGen.addNote(2,3,"G", "quarter", 1, 2, 0);
 		fileGen.end();
 		String fileContent = this.readFile();
 		String expected = "<note>\n"

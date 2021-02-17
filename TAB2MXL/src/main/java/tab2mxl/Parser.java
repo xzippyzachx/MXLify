@@ -266,15 +266,18 @@ public class Parser {
 			output = "eighth";
 		}else if(beatNote < 1.0/8.0) {
 			output = "quaver";
-			int maxIndex = (int) ((1.0/8.0)/beatNote);
-			if(maxIndex % 2 == 0) {
-				maxIndex = maxIndex/2;
-			}else {
-				while(maxIndex % 2 != 0) {
-					maxIndex++;
+			int div = (int) ((1.0/8.0)/beatNote);
+			int maxIndex = 0;
+			if(div % 2 != 0) {
+				while(div % 2 != 0) {
+					div++;
 				}
-				maxIndex = maxIndex/2;
 			}
+			while(div != 1) {
+				div = div/2;
+				maxIndex++;
+			}
+			
 			for(int i = 0; i < maxIndex; i++) {
 				if(output.charAt(0) != 's' && output.charAt(0) != 'd' && output.charAt(0) != 'h') {
 					output = "semi" + output;

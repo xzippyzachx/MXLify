@@ -32,13 +32,13 @@ class ParserTest {
 		
 		assertEquals("quarter", Parser.noteType(0.25));
 		assertEquals("eighth", Parser.noteType(0.125));
-		assertEquals("32nd", Parser.noteType(0.03125));
-		assertEquals("64th", Parser.noteType(0.015625));
+		assertEquals("demisemiquaver", Parser.noteType(0.03125));
+		assertEquals("hemidemisemiquaver", Parser.noteType(0.015625));
 		
-		assertEquals("128th", Parser.noteType(1.0/128));
-		assertEquals("256th", Parser.noteType(1.0/256));
-		assertEquals("512th", Parser.noteType(1.0/512));
-		assertEquals("1024th", Parser.noteType(1.0/1024));
+		assertEquals("semihemidemisemiquaver", Parser.noteType(1.0/128));
+		assertEquals("demisemihemidemisemiquaver", Parser.noteType(1.0/256));
+		assertEquals("hemidemisemihemidemisemiquaver", Parser.noteType(1.0/512));
+		assertEquals("semihemidemisemihemidemisemiquaver", Parser.noteType(1.0/1024));
 	}
 	
 	
