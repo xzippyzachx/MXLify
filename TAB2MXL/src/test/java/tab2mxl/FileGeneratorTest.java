@@ -123,6 +123,7 @@ class FileGeneratorTest {
 				+ "</score-partwise>";
 
 		assertEquals(expected, fileContent); 
+		fail("May want to add check to openPart, checking for part ID = 0");
 	}
 
 	@Test
