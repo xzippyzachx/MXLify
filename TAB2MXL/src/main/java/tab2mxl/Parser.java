@@ -268,9 +268,14 @@ public class Parser {
 			output = "quaver";
 			int div = (int) ((1.0/8.0)/beatNote);
 			int maxIndex = 0;
+			double power = 0.0;
 			if(div % 2 != 0) {
 				while(div % 2 != 0) {
-					div++;
+					if(div <= Math.pow(2.0, power)) {
+						div = (int) Math.pow(2, power);
+					}else {
+						power = power + 1.0;
+					}
 				}
 			}
 			while(div != 1) {

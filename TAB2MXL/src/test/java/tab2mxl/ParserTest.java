@@ -27,14 +27,14 @@ class ParserTest {
 
 	@Test
 	void testNoteType() {
-		assertEquals("whole", Parser.noteType(1));
-		assertEquals("half", Parser.noteType(0.5));
+		assertEquals("whole", Parser.noteType(1.0));
+		assertEquals("half", Parser.noteType(1.0/2.0));
 		
-		assertEquals("quarter", Parser.noteType(0.25));
-		assertEquals("eighth", Parser.noteType(0.125));
-		assertEquals("demisemiquaver", Parser.noteType(0.03125));
-		assertEquals("hemidemisemiquaver", Parser.noteType(0.015625));
-		
+		assertEquals("quarter", Parser.noteType(1.0/4.0));
+		assertEquals("eighth", Parser.noteType(1.0/8.0));
+		assertEquals("semiquaver", Parser.noteType(1.0/16.0));
+		assertEquals("demisemiquaver", Parser.noteType(1.0/32.0));
+		assertEquals("hemidemisemiquaver", Parser.noteType(1.0/64.0));
 		assertEquals("semihemidemisemiquaver", Parser.noteType(1.0/128));
 		assertEquals("demisemihemidemisemiquaver", Parser.noteType(1.0/256));
 		assertEquals("hemidemisemihemidemisemiquaver", Parser.noteType(1.0/512));
