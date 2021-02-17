@@ -22,53 +22,27 @@ class ParserTest {
 	
 	//@Test
 	void testParser() {
-		
-		String[] inputText = new String [6];
-		 int index = 0;
-		BufferedReader reader;
-		try {
-			reader = new BufferedReader(new FileReader("TestInput_Guitar1.txt"));
-			String line = reader.readLine();
-			while (line != null) {
-				inputText[index] = line;
-				line = reader.readLine();
-				index++;
-			}
-					
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-     ArrayList<ArrayList<String>> input = new ArrayList<ArrayList<String>>();
-     
-		for (String line : inputText) {	
-			System.out.println(line);
-			String[] lineInput = line.split("");
-			ArrayList<String> lineInputList = new ArrayList<String>();
-			
-			for(String character : lineInput) {
-				lineInputList.add(character);
-		    }
-			input.add(lineInputList);
-		}
-	/*	Main.Convert(input);		
-		
-		Parser.addTabType("Guitar");
-		Parser.addTitle("title");
-		Parser.addTime("1");
-		
-		Parser parse = new Parser(input);
-		Parser.addTabType("Guitar");
-		Parser.addTitle("title");
-		Parser.addTime("1");
-		
-		TextInputContentPanel.timeSig = "1";
-		TextInputContentPanel.tabType = "Guitar";
-		TextInputContentPanel.title = "";
-		
-		*/
+		fail("Not yet implemented");
 	}
 
+	@Test
+	void testNoteType() {
+		assertEquals("whole", Parser.noteType(1));
+		assertEquals("half", Parser.noteType(0.5));
+		
+		assertEquals("quarter", Parser.noteType(0.25));
+		assertEquals("eighth", Parser.noteType(0.125));
+		assertEquals("32nd", Parser.noteType(0.03125));
+		assertEquals("64th", Parser.noteType(0.015625));
+		
+		assertEquals("128th", Parser.noteType(1.0/128));
+		assertEquals("256th", Parser.noteType(1.0/256));
+		assertEquals("512th", Parser.noteType(1.0/512));
+		assertEquals("1024th", Parser.noteType(1.0/1024));
+	}
+	
+	
+	
 	@Test
 	void testAddTitle() {
 		Parser.misc = new HashMap<String, String>();

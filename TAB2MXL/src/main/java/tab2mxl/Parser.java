@@ -251,7 +251,7 @@ public class Parser {
 		return output;
 	}
 	
-	private String noteType(double beatNote) {
+	protected static String noteType(double beatNote) { //beatNote = 0.0 if a fraction is inputed. May need error checking.
 		String output = "";
 		
 		if(beatNote >= 2) {
