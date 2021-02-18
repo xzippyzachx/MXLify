@@ -1,6 +1,8 @@
 package tab2mxl;
 
 import static org.junit.jupiter.api.Assertions.*;
+
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -16,20 +18,23 @@ class FileGeneratorTest {
 	String fileContent;
 	String expected;
 	
+	@BeforeAll
 	static void setUp() {
 		fileGen = new FileGenerator("tester.musicxml");
 	}
 	
 	@Test 	
 	void testFileGenerator() {
-		setUp();
+		openWriter();
 		assertNotNull(fileGen.myWriter);
 		assertNotNull(fileGen.saveFile);
+		assertNotNull(fileGen.LAST_USED_FOLDER_SAVE);
+		assertNotNull(fileGen.prefs);
 	}
 
 	@Test
 	void testAddInfo1() {
-		setUp();
+		openWriter();
 		fileGen.addInfo("Example Title");
 		fileGen.end();
 		
@@ -48,10 +53,68 @@ class FileGeneratorTest {
 		
 		assertEquals(expected, fileContent);
 	}
+	
+
+	@Test
+	void testAddInfo2() {
+		openWriter();
+		fileGen.addInfo("");
+		fileGen.end();
+		
+		fileContent = this.readFile();
+		expected = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+				+ "<score-partwise version=\"3.1\">\n"
+				+ "  <work>\n"
+				+ "    <work-title></work-title>\n"
+				+ "  </work>\n"
+				+ "  <part-list>\n"
+				+ "    <score-part id=\"P1\">\n"
+				+ "      <part-name>Guitar</part-name>\n"
+				+ "    </score-part>\n"
+				+ "  </part-list>\n"
+				+ "</score-partwise>";
+		
+		assertEquals(expected, fileContent);
+	}
+	
+	@Test
+	void testAddInfo3() {
+		openWriter();
+		fileGen.addInfo(" ");
+		fileGen.end();
+		
+		fileContent = this.readFile();
+		expected = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+				+ "<score-partwise version=\"3.1\">\n"
+				+ "  <work>\n"
+				+ "    <work-title> </work-title>\n"
+				+ "  </work>\n"
+				+ "  <part-list>\n"
+				+ "    <score-part id=\"P1\">\n"
+				+ "      <part-name>Guitar</part-name>\n"
+				+ "    </score-part>\n"
+				+ "  </part-list>\n"
+				+ "</score-partwise>";
+		
+		assertEquals(expected, fileContent);
+	}
 
 	@Test
 	void testOpenPart() {
-		setUp();
+		openWriter();
+		fileGen.openPart(1);
+		fileGen.end();
+		String fileContent = this.readFile();
+		
+		String expected = "<part id=\"P" + 1 + "\">\n"
+				+ "</score-partwise>";
+
+		assertEquals(expected, fileContent); 
+	}
+	
+	@Test
+	void testOpenPart2() {
+		openWriter();
 		fileGen.openPart(3);
 		fileGen.end();
 		String fileContent = this.readFile();
@@ -64,7 +127,7 @@ class FileGeneratorTest {
 
 	@Test
 	void testClosePart() {
-		setUp();
+		openWriter();
 		fileGen.closePart();
 		fileGen.end();
 		String fileContent = this.readFile();
@@ -77,7 +140,7 @@ class FileGeneratorTest {
 
 	@Test
 	void testAttributes() {
-		setUp();		
+		openWriter();	
 		String[] tune = new String[]{"E", "B", "G", "D", "A", "E"};	
 		int[] oct = new int[] {1, 2, 3, 4, 5, 6};
 		fileGen.attributes(2,4,4,4, "G", tune, oct);
@@ -135,7 +198,8 @@ class FileGeneratorTest {
 	@Test
 	void testAddNote() {
 		setUp();
-		fileGen.addNote(1,1,"E", "half", 1, 3);
+		fileGen.addNote(1,1,"E", "half", 1, 3, 0);
+
 		fileGen.end();
 		String fileContent = this.readFile();
 		String expected = "<note>\n"
@@ -157,15 +221,44 @@ class FileGeneratorTest {
 				+ "</score-partwise>";
 		assertEquals(expected, fileContent); 
 	}
+	
+	@Test
+	void testAddNote2() {
+		openWriter();
+		fileGen.addNote(2,3,"G", "quarter", 1, 2, 0);
+		fileGen.end();
+		String fileContent = this.readFile();
+		String expected = "<note>\n"
+				+ "  <pitch>\n"
+				+ "    <step>G</step>\n"
+				+ "    <octave>2</octave>\n"
+				+ "  </pitch>\n"
+				+ "  <duration>1</duration>\n"
+				+ "  <type>quarter</type>\n"
+				+ "  <notations>\n"
+				+ "    <technical>\n"
+				+ "      <string>2</string>\n"
+				+ "      <fret>3</fret>\n"
+				+ "    </technical>\n"
+				+ "  </notations>\n"
+				+ "  <stem>down</stem>\n"
+				+ "  <staff>1</staff>\n"
+				+ "</note>\n"
+				+ "</score-partwise>";
+		assertEquals(expected, fileContent); 
+	}
 
 	@Test
 	void testAddChord() {
-		setUp();		
+		openWriter();		
 		char[] notes = new char[]{'E','B'};		
 		int[] frets = new int[] {1,2};
 		int[] lines = new int[] {1,2};
+
 		int[] oct = new int[] {1,2,3};
-		fileGen.addChord(notes, "half", 1,oct,frets,lines);
+		int[] dot = new int[] {1,2,3};
+		fileGen.addChord(notes, "half", 1,oct,frets,lines, dot);
+
 		fileGen.end();
 		String fileContent = this.readFile();
 		String expected = 
@@ -176,6 +269,8 @@ class FileGeneratorTest {
 				+ "    </pitch>\n"
 				+ "  <duration>1</duration>\n"
 				+ "  <type>half</type>\n"
+				+ "  <dot/>\n"
+				+ "  <dot/>\n"
 				+ "  <notations>\n"
 				+ "    <technical>\n"
 				+ "      <string>2</string>\n"
@@ -193,6 +288,7 @@ class FileGeneratorTest {
 				+ "    </pitch>\n"
 				+ "  <duration>1</duration>\n"
 				+ "  <type>half</type>\n"
+				+ "  <dot/>\n"
 				+ "  <notations>\n"
 				+ "    <technical>\n"
 				+ "      <string>1</string>\n"
@@ -211,32 +307,80 @@ class FileGeneratorTest {
 
 	@Test
 	void testOpenMeasure() {
-		setUp();
+		openWriter();
+		fileGen.openMeasure(1);
+		fileGen.end();
+		String fileContent = this.readFile();
+		String expected = "<measure number=\"" + 1 + "\">\n" + "</score-partwise>";
+		assertEquals(expected, fileContent); 
+	}
+	
+	@Test
+	void testOpenMeasure2() {
+		openWriter();
 		fileGen.openMeasure(4);
 		fileGen.end();
 		String fileContent = this.readFile();
-		String expected3 = "<measure number=\"" + 4 + "\">\n" + "</score-partwise>";
-		assertEquals(expected3, fileContent); 
+		String expected = "<measure number=\"" + 4 + "\">\n" + "</score-partwise>";
+		assertEquals(expected, fileContent); 
+	}
+	
+	@Test
+	void testOpenMeasure3() {
+		openWriter();
+		fileGen.openMeasure(0);
+		fileGen.end();
+		String fileContent = this.readFile();
+		String expected = "<measure number=\"" + 0 + "\">\n" + "</score-partwise>";
+		assertEquals(expected, fileContent); 
+		//fail("Measure 0 should throw error");
 	}
 
 	@Test
 	void testCloseMeasure() {
-		setUp();
+		openWriter();
 		fileGen.closeMeasure();
 		fileGen.end();
 		String fileContent = this.readFile();
-		String expected1 =  "</measure>\n" 
+		String expected =  "</measure>\n" 
 				 + "</score-partwise>";
-		assertEquals(expected1, fileContent); 
+		assertEquals(expected, fileContent); 
 	}
 
 	@Test
 	void testEnd() {
-		setUp();
+		openWriter();
 		fileGen.end();
 		String fileContent = this.readFile();
-		String expected2 = "</score-partwise>";
-		assertEquals(expected2, fileContent); 
+		String expected = "</score-partwise>";
+		assertEquals(expected, fileContent); 
+	}
+	
+	@Test
+	void testCurrentIndent() {
+		openWriter();
+		fileGen.addInfo("Title Example");
+		fileGen.openMeasure(1);
+		fileGen.closeMeasure();
+		fileGen.end();
+		String fileContent = this.readFile();
+		
+		String expected = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+				+ "<score-partwise version=\"3.1\">\n"
+				+ "  <work>\n"
+				+ "    <work-title>Title Example</work-title>\n"
+				+ "  </work>\n"
+				+ "  <part-list>\n"
+				+ "    <score-part id=\"P1\">\n"
+				+ "      <part-name>Guitar</part-name>\n"
+				+ "    </score-part>\n"
+				+ "  </part-list>\n"
+				+ "  <measure number=\"" + 1 + "\">\n" 
+				+ "  </measure>\n" 
+				+ "</score-partwise>";
+		
+		assertEquals(expected, fileContent); 
+		
 	}
 	
 	@SuppressWarnings("resource")
@@ -253,6 +397,7 @@ class FileGeneratorTest {
 	
 	void openWriter(){
 		try {
+			fileGen.currentIndent = "";
 			fileGen.myWriter = new FileWriter(fileGen.saveFile);
 		} catch (IOException e) {
 			e.printStackTrace();
