@@ -106,8 +106,9 @@ public class Tuning {
 			
 			//Faruq make this check the notes file please - Zach
 			//Temporary way to check if the tuning is valid. Need to actually check if the Note Tunes file contains the tune 
-			if(stringNotes.size() != stringAmount)
+			if(stringNotes.size() != stringAmount) {
 				unSupportedTune = true;
+			}
 				
 			noteScanner.close();
 			

@@ -13,9 +13,9 @@ public class Parser {
 	private ArrayList<char[]> columns;
 	public static  Map<String,String> misc;
 	
-	//to be converted to user input
+	//to be converted to user input in the Preferences
 	private static int[] tuningOctave = {4,3,3,3,2,2};
-	//to be converted to user input
+	//to be converted to user input in the Preferences
 	
 	//@SuppressWarnings("unused")
 	Parser(ArrayList<ArrayList<String>> input) {
@@ -85,7 +85,6 @@ public class Parser {
 		String chordType= "";
 		int[] chordDot = new int[stringAmount];		
 		int currentColumn = 0;
-		int stringcheck = 0;
 		int fret = 0;
 		int count = 0;
 		int measure = 0;
@@ -109,7 +108,6 @@ public class Parser {
 		/*adds the tuning of the strings to the tune array if the tuning is
 		 * specified in the TAB, or the default if it isn't*/
 		for(int i = 0; i < stringAmount; i++ ) {
-			//System.out.println(columns.get(0)[i]);
 			if(columns.get(0)[i] != '-' && columns.get(0)[i] != '|' && Parser.tuningOctave != null) {
 				tune[i] = Character.toString(columns.get(0)[i]);
 				tO[i] = Parser.tuningOctave[i];
@@ -299,7 +297,6 @@ public class Parser {
 		}else if(beatNote  >= 1.0/8.0) {
 			output = "eighth";
 		}else if(beatNote < 1.0/8.0) {
-			output = "quaver";
 			int div = (int) ((1.0/8.0)/beatNote);
 			int maxIndex = 0;
 			double power = 0.0;
@@ -316,17 +313,19 @@ public class Parser {
 				div = div/2;
 				maxIndex++;
 			}
-			
-			for(int i = 0; i < maxIndex; i++) {
-				if(output.charAt(0) != 's' && output.charAt(0) != 'd' && output.charAt(0) != 'h') {
-					output = "semi" + output;
-				}else if(output.charAt(0) == 's') {
-					output = "demi" + output;
-				}else if(output.charAt(0) == 'd') {
-					output = "hemi" + output;
-				}else if(output.charAt(0) == 'h') {
-					output = "semi" + output;
-				}
+			int temp = (int)(Math.pow(2, maxIndex) * 8);
+			output = output + temp;
+			int lastTwo = Integer.parseInt(output.substring(output.length()-2));
+			if(output.charAt(output.length()-1) == '1') {
+				output = output + "st";
+			}else if(11 <= lastTwo && lastTwo <= 19) {
+				output = output + "th";
+			}else if(output.charAt(output.length()-1) == '2') {
+				output = output + "nd";
+			}else if(output.charAt(output.length()-1) == '3') {
+				output = output + "rd";
+			}else {
+				output = output + "th";
 			}
 		}
 
@@ -373,10 +372,7 @@ public class Parser {
 		double beatNote = 1.0/beatType;
 		double totalBeatPerMeasure = beatSig/beatType;
 		double division = (hyfenNumber * beatNote)/totalBeatPerMeasure;
-	
-		/*if(hyfenNumber%beatSig !=0) {
-			throw new IllegalArgumentException("the number of hyfens or the beatSignature is not correct"); 
-		}*/
+
 		return (int)division;
 	}
 	
