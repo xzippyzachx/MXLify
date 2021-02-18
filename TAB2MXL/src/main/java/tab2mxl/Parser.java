@@ -43,8 +43,13 @@ public class Parser {
 			//set the time signature to default if the inputed time signature isn't in the right format
 		}else {
 			//get the beat and beat-type from the information given in the time signature
-			beat = Integer.parseInt(misc.get("TimeSig").substring(0, misc.get("TimeSig").indexOf('/')));
-			beatType = Integer.parseInt(misc.get("TimeSig").substring(misc.get("TimeSig").indexOf('/')+1));
+			try{
+				beat = Integer.parseInt(misc.get("TimeSig").substring(0, misc.get("TimeSig").indexOf('/')));
+				beatType = Integer.parseInt(misc.get("TimeSig").substring(misc.get("TimeSig").indexOf('/')+1));
+			}catch(NumberFormatException e) {
+				beat = 4;
+				beatType = 4;
+			}
 		}
 		System.out.println("beat: " + beat);
 		System.out.println("beatType: " + beatType);
