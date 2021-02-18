@@ -15,17 +15,18 @@ class TuningTest {
 	@BeforeAll
     static void setUp() {
 		//String[] tune = {"e", "B", "G", "D", "A", "E"};
-	     tunning = new Tuning(tune, 6);
+		int[] oct = new int[]{1, 2, 3, 4, 5, 6};
+	     tunning = new Tuning(tune, 6, oct);
 	}
 	
 	@Test
 	void testDefaultTuning() {
 		//String[] empty = {};
 		String[] tuneA = {"B", "G", "D", "A", "E"};
-		String[] tuneB = {"E", "B", "G", "D", "A", "E"};
-		String[] tuneC = {"E", "B", "G", "D", "A", "E", "B"};
-		String[] tuneD = {"E", "B", "G", "D", "A", "E", "B", "F#"};
-		String[] tuneE = {"E", "B", "G", "D", "A", "E", "B", "F#", "C#"};
+		String[] tuneB = {"e", "B", "G", "D", "A", "E"};
+		String[] tuneC = {"e", "B", "G", "D", "A", "E", "B"};
+		String[] tuneD = {"e", "B", "G", "D", "A", "E", "B", "F#"};
+		String[] tuneE = {"e", "B", "G", "D", "A", "E", "B", "F#", "C#"};
 		
 		assertArrayEquals(Tuning.getDefaultTuning(5), tuneA);
 		assertArrayEquals(Tuning.getDefaultTuning(6), tuneB);
