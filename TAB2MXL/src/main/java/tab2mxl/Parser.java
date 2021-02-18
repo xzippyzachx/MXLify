@@ -51,8 +51,8 @@ public class Parser {
 				beatType = 4;
 			}
 		}
-		System.out.println("beat: " + beat);
-		System.out.println("beatType: " + beatType);
+		//System.out.println("beat: " + beat);
+		//System.out.println("beatType: " + beatType);
 		
 		for(int i = 0; i < input.size(); i++)
 		{			
@@ -79,24 +79,11 @@ public class Parser {
 				}
 			}			
 		}
-		
-		//Create the file generator to generate the MusicXML file
-		FileGenerator fileGen = new FileGenerator("");
-		
-		if(fileGen.failed) //Check if failed to save file to location
-			return;
-		
-		//Calling the methods in the FileGenerator to build the MusicXML
-		
-		//Start the musicxml file
-		fileGen.addInfo(misc.get("Title"));
-		
-		
+				
 		char[] chords = new char[stringAmount];
 		int[] chordsOctave = new int[stringAmount];
 		String chordType= "";
-		int[] chordDot = new int[stringAmount];
-		fileGen.openPart(1);
+		int[] chordDot = new int[stringAmount];		
 		int currentColumn = 0;
 		int stringcheck = 0;
 		int fret = 0;
@@ -135,6 +122,25 @@ public class Parser {
 		
 		
 		Tuning tunner = new Tuning(tune, stringAmount, tuningOctave);
+		if(tunner.unSupportedTune == true)
+		{
+			Main.myFrame.textInputContentPanel.errorText.setText("Tune Not Recognized");
+			return;
+		}
+		
+		//Create the file generator to generate the MusicXML file
+		FileGenerator fileGen = new FileGenerator("");
+		
+		if(fileGen.failed) //Check if failed to save file to location
+			return;
+		
+		//Calling the methods in the FileGenerator to build the MusicXML
+		
+		//Start the musicxml file
+		fileGen.addInfo(misc.get("Title"));
+		
+		//Open part
+		fileGen.openPart(1);
 		
 		//Loop through the inputed columns
 		for(int i = 0; i < columns.size(); i++)
@@ -185,7 +191,7 @@ public class Parser {
 					if(fileGen.measureOpen)
 						fileGen.closeMeasure();
 					if(columns.size() > currentColumn + 1) {
-						System.out.println("measure " + measure);
+						//System.out.println("measure " + measure);
 						fileGen.openMeasure(measure);
 						
 						if(measure == 1) {
@@ -208,7 +214,7 @@ public class Parser {
 					}
 					if (!chord) {
 						linearray[j] = line;
-						System.out.println("line " + line + " and fret " + fret);
+						//System.out.println("line " + line + " and fret " + fret);
 						fileGen.addNote(line, fret, tunner.getNote(tune[line-1], fret), noteType(beatNote), getDuration(beatNote), tunner.getOctave(tune[line-1], fret), dot(beatNote));
 					}
 					else {
@@ -220,7 +226,7 @@ public class Parser {
 						chordsOctave[j] = chordOctave;
 						chordType = noteType(beatNote);
 						chordDot[j] = dot(beatNote);
-						System.out.println("add chord " + line + " and fret " + fret);
+						//System.out.println("add chord " + line + " and fret " + fret);
 					}
 				}
 				if (line == stringAmount) {
@@ -275,7 +281,7 @@ public class Parser {
 			div = div * 2;
 			output++;
 		}
-		System.out.println("dot: " + output);
+		//System.out.println("dot: " + output);
 		return output;
 	}
 	
