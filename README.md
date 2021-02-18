@@ -1,10 +1,10 @@
 This is a University project for EECS2311 group 9
 
 This reposetory was coded by:
-Zach Ross
-Christopher Moon
-Erika Grandy
-Yasser
+Zach Ross,
+Christopher Moon,
+Erika Grandy,
+Yasser,
 Faruq Afolabi
 
 Running instructions:
