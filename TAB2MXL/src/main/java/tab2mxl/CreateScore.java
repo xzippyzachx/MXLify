@@ -12,7 +12,7 @@ public class CreateScore {
 		try {
 			Runtime.getRuntime().exec("ScoreMaker/dist/xml2score/xml2score.exe "+xmlPath);
         } catch (IOException e) {
-            e.printStackTrace();
+            e.printStackTrace(); 
             System.out.println("didnt work");
         }
 	}
