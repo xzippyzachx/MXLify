@@ -8,13 +8,14 @@ public class Parser {
 
 	int stringAmount;
 	int tabLineAmount;
+	private int beat;
+	private int beatType;
 	private ArrayList<char[]> columns;
 	public static  Map<String,String> misc;
 	
-	//to be converted to user input
-	private static int beatType = 4;
+	//to be converted to user input in the Preferences
 	private static int[] tuningOctave = {4,3,3,3,2,2};
-	//to be converted to user input
+	//to be converted to user input in the Preferences
 	
 	//@SuppressWarnings("unused")
 	Parser(ArrayList<ArrayList<String>> input) {
@@ -25,6 +26,33 @@ public class Parser {
 		addTitle(TextInputContentPanel.title);
 		addTabType(TextInputContentPanel.tabType);
 		addTime(TextInputContentPanel.timeSig);
+		
+		//set the time signature to default if the inputed time signature isn't in the right format
+		if(misc.get("TimeSig") == "") {
+			beat = 4;
+			beatType = 4;
+		}else if(misc.get("TimeSig").indexOf('/') == -1) {
+			beat = 4;
+			beatType = 4;
+		}else if(misc.get("TimeSig").charAt(0) == '/') {
+			beat = 4;
+			beatType = 4;
+		}else if(misc.get("TimeSig").charAt(misc.get("TimeSig").length()-1) == '/') {
+			beat  = 4;
+			beatType = 4;
+			//set the time signature to default if the inputed time signature isn't in the right format
+		}else {
+			//get the beat and beat-type from the information given in the time signature
+			try{
+				beat = Integer.parseInt(misc.get("TimeSig").substring(0, misc.get("TimeSig").indexOf('/')));
+				beatType = Integer.parseInt(misc.get("TimeSig").substring(misc.get("TimeSig").indexOf('/')+1));
+			}catch(NumberFormatException e) {
+				beat = 4;
+				beatType = 4;
+			}
+		}
+		//System.out.println("beat: " + beat);
+		//System.out.println("beatType: " + beatType);
 		
 		for(int i = 0; i < input.size(); i++)
 		{			
@@ -51,36 +79,23 @@ public class Parser {
 				}
 			}			
 		}
-		
-		//Create the file generator to generate the MusicXML file
-		FileGenerator fileGen = new FileGenerator("");
-		
-		if(fileGen.failed) //Check if failed to save file to location
-			return;
-		
-		//Calling the methods in the FileGenerator to build the MusicXML
-		
-		//Start the musicxml file
-		fileGen.addInfo(misc.get("Title"));
-		
-		
+				
 		char[] chords = new char[stringAmount];
 		int[] chordsOctave = new int[stringAmount];
-		String type="";
-		fileGen.openPart(1);
+		String chordType= "";
+		int[] chordDot = new int[stringAmount];		
 		int currentColumn = 0;
-		int stringcheck = 0;
 		int fret = 0;
 		int count = 0;
 		int measure = 0;
 		int line = 0;
 		int gate = 0;
-		double beatTypeNote = 1.0/Parser.beatType;
-		int div = getDivisions(Integer.parseInt(misc.get("TimeSig")));
+		double beatTypeNote = 1.0/beatType;
+		int div = getDivisions(beat);
 		double dash = 0; 
 		char[] col;
-		int[] fretarray = new int[6];
-		int[] linearray = new int[6];
+		int[] fretarray = new int[stringAmount];
+		int[] linearray = new int[stringAmount];
 		char character = ' ';
 		int notesInColumn = 0;
 		char note = ' ';
@@ -93,8 +108,7 @@ public class Parser {
 		/*adds the tuning of the strings to the tune array if the tuning is
 		 * specified in the TAB, or the default if it isn't*/
 		for(int i = 0; i < stringAmount; i++ ) {
-			//System.out.println(columns.get(0)[i]);
-			if(columns.get(0)[i] != '-' && columns.get(0)[i] != '|') {
+			if(columns.get(0)[i] != '-' && columns.get(0)[i] != '|' && Parser.tuningOctave != null) {
 				tune[i] = Character.toString(columns.get(0)[i]);
 				tO[i] = Parser.tuningOctave[i];
 			}else {
@@ -106,6 +120,25 @@ public class Parser {
 		
 		
 		Tuning tunner = new Tuning(tune, stringAmount, tuningOctave);
+		if(tunner.unSupportedTune == true)
+		{
+			Main.myFrame.textInputContentPanel.errorText.setText("Tune Not Recognized");
+			return;
+		}
+		
+		//Create the file generator to generate the MusicXML file
+		FileGenerator fileGen = new FileGenerator("");
+		
+		if(fileGen.failed) //Check if failed to save file to location
+			return;
+		
+		//Calling the methods in the FileGenerator to build the MusicXML
+		
+		//Start the musicxml file
+		fileGen.addInfo(misc.get("Title"));
+		
+		//Open part
+		fileGen.openPart(1);
 		
 		//Loop through the inputed columns
 		for(int i = 0; i < columns.size(); i++)
@@ -156,11 +189,11 @@ public class Parser {
 					if(fileGen.measureOpen)
 						fileGen.closeMeasure();
 					if(columns.size() > currentColumn + 1) {
-						System.out.println("measure " + measure);
+						//System.out.println("measure " + measure);
 						fileGen.openMeasure(measure);
 						
-						if(measure ==1) {
-							fileGen.attributes(getDivisions(Integer.parseInt(misc.get("TimeSig"))), 0, Integer.parseInt(misc.get("TimeSig")), 4, "G", tune, tuningOctave);
+						if(measure == 1) {
+							fileGen.attributes(getDivisions(beat), 0, beat, beatType, "G", tune, tuningOctave);
 						}
 					}
 				}			
@@ -179,8 +212,8 @@ public class Parser {
 					}
 					if (!chord) {
 						linearray[j] = line;
-						System.out.println("line " + line + " and fret " + fret);
-						fileGen.addNote(line, fret, tunner.getNote(tune[line-1], fret), noteType(beatNote), getDuration(beatNote), tunner.getOctave(tune[line-1], fret));
+						//System.out.println("line " + line + " and fret " + fret);
+						fileGen.addNote(line, fret, tunner.getNote(tune[line-1], fret), noteType(beatNote), getDuration(beatNote), tunner.getOctave(tune[line-1], fret), dot(beatNote));
 					}
 					else {
 						note = tunner.getNote(tune[line-1].toUpperCase(), fret).charAt(0);
@@ -189,18 +222,19 @@ public class Parser {
 						chordOctave = tunner.getOctave(tune[line-1], fret);
 						chords[j] = note;
 						chordsOctave[j] = chordOctave;
-						type = noteType(beatNote);
-						System.out.println("add chord " + line + " and fret " + fret);
+						chordType = noteType(beatNote);
+						chordDot[j] = dot(beatNote);
+						//System.out.println("add chord " + line + " and fret " + fret);
 					}
 				}
-				if (line == 6) {
+				if (line == stringAmount) {
 					line = 0;
 				}
 				
 			}
 			if (chord) {
 				double beatNote = (dash * beatTypeNote)/div;
-				fileGen.addChord(chords,type, getDuration(beatNote), chordsOctave,linearray,fretarray);
+				fileGen.addChord(chords,chordType, getDuration(beatNote), chordsOctave,linearray,fretarray, chordDot);
 			}
 			currentColumn++;
 		
@@ -227,54 +261,82 @@ public class Parser {
 		return output;
 	}
 	
-	private boolean dot(double beatNote) {
-		boolean output = false;
+	private int dot(double beatNote) {
+		int output = 0;
+		double check = 0.0;
+		double temp;
+		double div = 2.0;
 		
-		if(beatNote == 0.75) {
-			output = true;
+		for(double i = 2.0; i > 0.0; i = i/2.0) {
+			if(beatNote >= i) {
+				check = i;
+				break;
+			}
 		}
-		
+		temp = check;
+		while(check != beatNote) {
+			check = check + temp/div;
+			div = div * 2;
+			output++;
+		}
+		//System.out.println("dot: " + output);
 		return output;
 	}
 	
-	private String noteType(double beatNote) {
+	protected static String noteType(double beatNote) { //beatNote = 0.0 if a fraction is inputed. May need error checking.
 		String output = "";
 		
-		if(beatNote == 1) {
+		if(beatNote >= 2) {
+			output = "double";
+		}else if(beatNote >= 1.0) {
 			output = "whole";
-		}if(beatNote == 0.75) {
+		}else if(beatNote >= 1.0/2.0) {
 			output = "half";
-		}if(beatNote == 0.5) {
-			output = "half";
-		}if(beatNote == 0.25) {
+		}else if(beatNote >= 1.0/4.0) {
 			output = "quarter";
-		}if(beatNote == 0.125) {
+		}else if(beatNote  >= 1.0/8.0) {
 			output = "eighth";
-		}if(beatNote == 0.625) {
-			output = "16th";
-		}if(beatNote == 0.03125) {
-			output = "32nd";
-		}if(beatNote == 0.015625) {
-			output = "64th";
-		}if(beatNote == 1/128) {
-			output = "128th";
-		}if(beatNote == 1/256) {
-			output = "256th";
-		}if(beatNote == 1/512) {
-			output = "512th";
-		}if(beatNote == 1/1024) {
-			output = "1024th";
+		}else if(beatNote < 1.0/8.0) {
+			int div = (int) ((1.0/8.0)/beatNote);
+			int maxIndex = 0;
+			double power = 0.0;
+			if(div % 2 != 0) {
+				while(div % 2 != 0) {
+					if(div <= Math.pow(2.0, power)) {
+						div = (int) Math.pow(2, power);
+					}else {
+						power = power + 1.0;
+					}
+				}
+			}
+			while(div != 1) {
+				div = div/2;
+				maxIndex++;
+			}
+			int temp = (int)(Math.pow(2, maxIndex) * 8);
+			output = output + temp;
+			int lastTwo = Integer.parseInt(output.substring(output.length()-2));
+			if(output.charAt(output.length()-1) == '1') {
+				output = output + "st";
+			}else if(11 <= lastTwo && lastTwo <= 19) {
+				output = output + "th";
+			}else if(output.charAt(output.length()-1) == '2') {
+				output = output + "nd";
+			}else if(output.charAt(output.length()-1) == '3') {
+				output = output + "rd";
+			}else {
+				output = output + "th";
+			}
 		}
-			
+
 		return output;
 	}
 	
 	private int getDuration(double noteType) {
-		//System.out.println(noteType);
 		double output = 0;
-		double div = getDivisions(Integer.parseInt(misc.get("TimeSig")));
-		double beatType = 1.0/Parser.beatType;
-		output = (noteType * div)/beatType;
+		double div = getDivisions(beat);
+		double beatTypeNote = 1.0/beatType;
+		output = (noteType * div)/beatTypeNote;
 		
 		return (int)output;
 	}
@@ -307,13 +369,10 @@ public class Parser {
 				}
 		}
 	}
-		double beatNote = 1.0/Parser.beatType;
-		double totalBeatPerMeasure = beatSig/Parser.beatType;
+		double beatNote = 1.0/beatType;
+		double totalBeatPerMeasure = beatSig/beatType;
 		double division = (hyfenNumber * beatNote)/totalBeatPerMeasure;
-	
-		/*if(hyfenNumber%beatSig !=0) {
-			throw new IllegalArgumentException("the number of hyfens or the beatSignature is not correct"); 
-		}*/
+
 		return (int)division;
 	}
 	

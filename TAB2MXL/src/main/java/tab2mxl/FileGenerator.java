@@ -246,7 +246,7 @@ public class FileGenerator {
 	 * @param fret
 	 * @param note
 	 */
-	public void addNote(int string, int fret, String note, String noteType, int duration, int octave)
+	public void addNote(int string, int fret, String note, String noteType, int duration, int octave, int dot)
 	{
 		try {
 			myWriter.write(currentIndent + "<note>");
@@ -266,6 +266,10 @@ public class FileGenerator {
 			newLine();
 			myWriter.write(currentIndent + "<type>" + noteType +"</type>"); 
 			newLine();
+			for(int i  = 0; i < dot; i++) {
+				myWriter.write(currentIndent + "<dot/>");
+				newLine();
+			}
 			myWriter.write(currentIndent + "<notations>");
 			newLine();
 			currentIndent += "  ";
@@ -300,7 +304,7 @@ public class FileGenerator {
 	 * @param noteType
 	 */
 
-	public void addChord(char[] chord, String noteType, int duration, int[] octaves,int[] string, int[] fret) {
+	public void addChord(char[] chord, String noteType, int duration, int[] octaves,int[] string, int[] fret, int[] dot) {
 		for (int i = chord.length-1; i>=0;i--) {
 			try {	
 			myWriter.write(currentIndent + "<note>");
@@ -324,6 +328,10 @@ public class FileGenerator {
 			newLine();
 			myWriter.write(currentIndent + "<type>" + noteType +"</type>"); 
 			newLine();
+			for(int j  = 0; j < dot[i]; j++) {
+				myWriter.write(currentIndent + "<dot/>");
+				newLine();
+			}
 			myWriter.write(currentIndent + "<notations>");
 			newLine();
 			currentIndent += "  ";

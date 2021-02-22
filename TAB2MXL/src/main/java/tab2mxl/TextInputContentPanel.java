@@ -6,27 +6,20 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
-import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
-import javax.swing.DefaultListCellRenderer;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JComponent;
 import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.ListCellRenderer;
 import javax.swing.border.Border;
-import javax.swing.border.CompoundBorder;
-import javax.swing.border.EmptyBorder;
 
 import tab2mxl.TextPrompt.Show;
 
@@ -37,14 +30,14 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 	JScrollPane scroll;
 	JPanel inputpanel;
 	JButton convertButton;
-	String[] tabTypes = {"Select Instrument","Guitar", "Bass", "Drums"};
+	String[] tabTypes = {"Select Instrument","Guitar"/*, "Bass", "Drums"*/};
 	JPanel detailsPanel;
 	JComboBox tabList;
 	JTextField timeSignature;
 	JTextField songName;
 	
 	JPanel errorPanel;
-	JLabel errorText;
+	public JLabel errorText;
 	
 	static String tabType;
 	static String title;
@@ -170,6 +163,10 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 		
 		
 		errorText.setText("");
+		
+		
+		
+		
 		//Detect if the text area is empty
 		if(input.size() <= 1)
 		{
@@ -180,7 +177,20 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 		{
 			errorText.setText("Field Empty");
 		}
-		else
+		else {
+			int lineLength = input.get(0).size();
+			for (ArrayList<String> line : input) {
+				if(line.size() != lineLength)
+				{
+					errorText.setText("Wrong Formatting");
+					break;
+				}
+			}
+		}
+		
+		
+		
+		if (errorText.getText() == "")
 		{			
 			Main.Convert(input);			
 		}	

@@ -29,6 +29,8 @@ public class Tuning {
 	//the file containing the notes for each string and fret
 	private File tuningFile;
 	
+	public boolean unSupportedTune;
+	
 	//Constructor for the Tuning class
 	Tuning(String[] tune, int stringAmount, int[] tuneOctave){
 		//initialize the instance variables
@@ -47,24 +49,24 @@ public class Tuning {
 		
 		//name for each string of the guitar, either E, B,...etc
 		String stringName = "";
-		try {
-			
+		try {			
 			Scanner noteScanner=  new Scanner(tuningFile);
 			/*the List of notes for each string and frets arranged as 
 			 * position 0 for fret 1 up to position 21 for fret 22*/
 			List<String> notes;
 			List<Integer> octaves;
 			String line = "";
-				while(noteScanner.hasNextLine()) {
-					int fret = 0;
-					notes = new ArrayList<String>();
-					octaves = new ArrayList<Integer>();
-					line  = noteScanner.nextLine();
-					
-					//getting the name for each string
-					stringName = line.substring(0, 2).trim();
-					/*Checking to add the notes only if they are the same as
-					 * the one specified in the tuning array*/
+			
+			while(noteScanner.hasNextLine()) {
+				int fret = 0;
+				notes = new ArrayList<String>();
+				octaves = new ArrayList<Integer>();
+				line  = noteScanner.nextLine();
+				
+				//getting the name for each string
+				stringName = line.substring(0, 2).trim();
+				/*Checking to add the notes only if they are the same as
+				 * the one specified in the tuning array*/
 				for(int string  = 0; string < tuning.length; string++) {
 					if(stringName.equals(tuning[string])) {
 						octave = tuningOctave[string];
@@ -72,15 +74,15 @@ public class Tuning {
 						for(int i = 0; i < line.length()-1; i++) {
 							if(line.charAt(i) == '|' && line.charAt(i+1) != '|') {
 								String note = line.substring(i+1, line.indexOf("|", i+1)).trim();
-								System.out.println(fret);
+								//System.out.println(fret);
 								
 								if(fret > 0) {
 									if(note.equals("C")) {
 										octave++;
-										}
+									}
 								}
-								if(octave > 6) {
-									octave = 2;
+								if(octave > 9) {
+									octave = 0;
 								}
 								octaves.add(octave);
 								notes.add(note);
@@ -93,14 +95,20 @@ public class Tuning {
 						stringOctaves.put(stringName, octaves);
 					}
 				}
-				}
-				for(String s : stringOctaves.keySet()) {
-					System.out.print(s + "||");
-					for(int i = 0; i < stringOctaves.get(s).size(); i++) {
-						System.out.print(stringOctaves.get(s).get(i) + "|");
-					}
-					System.out.print("\n");
-				}
+			}
+//			for(String s : stringOctaves.keySet()) {
+//				System.out.print(s + "||");
+//				for(int i = 0; i < stringOctaves.get(s).size(); i++) {
+//					System.out.print(stringOctaves.get(s).get(i) + "|");
+//				}
+//				System.out.print("\n");
+//			}
+			
+			//Faruq make this check the notes file please - Zach
+			//Temporary way to check if the tuning is valid. Need to actually check if the Note Tunes file contains the tune 
+			if(stringNotes.size() != stringAmount) {
+				unSupportedTune = true;
+			}
 				
 			noteScanner.close();
 			
@@ -123,8 +131,7 @@ public class Tuning {
 		if(stringAmount == 9)
 			output = Tuning.DEFAULT_TUNING9;
 		
-		return output;
-		
+		return output;		
 	}
 	
 	public static int[] getDefaultTuningOctave(int stringAmount) {
