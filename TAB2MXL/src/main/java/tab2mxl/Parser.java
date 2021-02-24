@@ -69,12 +69,12 @@ public class Parser {
 			for(int i = 0; i < input.get((layer * stringAmount) + layer).size(); i++)
 			{
 				if(i > 1) {
-				columns.add(new char[stringAmount]);
-				for(int l = 0; l < stringAmount; l++)
-				{
-						columns.get(columns.size()-1)[l] = input.get(l + (layer * stringAmount) + layer).get(i).charAt(0);	
-						System.out.println("C(" + columns.get(columns.size()-1)[l] + ")");
-				}
+					columns.add(new char[stringAmount]);
+					for(int l = 0; l < stringAmount; l++)
+					{
+							columns.get(columns.size()-1)[l] = input.get(l + (layer * stringAmount) + layer).get(i).charAt(0);	
+							//System.out.println("C(" + columns.get(columns.size()-1)[l] + ")");
+					}
 				}
 			}			
 		}
@@ -103,14 +103,18 @@ public class Parser {
 		String[] tune = new String[stringAmount];
 		int[] tuningOctave = new int[stringAmount];
 		
+		Boolean defualtTune = false;
+		Boolean defualtOctave = false;
+		
 		
 		/*adds the tuning of the strings to the tune array if the tuning is
 		 * specified in the TAB, or the default if it isn't*/
 		for(int i = 0; i < input.size(); i++) {
-			if(input.get(i).get(0) != "-" && input.get(i).get(0) != "|" /*&& input.get(i).get(0) != ""*/) {
+			if(input.get(i).get(0) != "-" && input.get(i).get(0) != "|" && input.get(i).get(0) != "") {
 				tune[i] = input.get(i).get(0);
 			}else {
 				tune = Tuning.getDefaultTuning(stringAmount);
+				defualtTune = true;				
 				break;
 			}
 		}
@@ -119,21 +123,25 @@ public class Parser {
 				tuningOctave[i] = Integer.parseInt(input.get(i).get(1));
 			}else {
 				tuningOctave = Tuning.getDefaultTuningOctave(stringAmount);
+				defualtOctave = true;
 				break;
 			}
 		}
 		
 		Tuning tunner = new Tuning(tune, stringAmount, tuningOctave);
-		if(tunner.unSupportedTune == true)
+		System.out.println(defualtTune);
+		System.out.println(defualtOctave);
+		if(tunner.unSupportedTune == true && !defualtTune)
 		{
 			Main.myFrame.textInputContentPanel.errorText.setText("Tune Not Recognized");
 			return;
 		}
-		/*if(tunner.unSupportedOctave == true)
+		if(tunner.unSupportedOctave == true && !defualtOctave)
 		{
-			Main.myFrame.textInputContentPanel.errorText.setText("Tune Not Recognized");
+			Main.myFrame.textInputContentPanel.errorText.setText("Octave Not Recognized");
 			return;
-		}*/
+		}
+		
 		//Create the file generator to generate the MusicXML file
 		FileGenerator fileGen = new FileGenerator("");
 		
