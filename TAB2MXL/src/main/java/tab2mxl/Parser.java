@@ -103,8 +103,8 @@ public class Parser {
 		String[] tune = new String[stringAmount];
 		int[] tuningOctave = new int[stringAmount];
 		
-		Boolean defualtTune = false;
-		Boolean defualtOctave = false;
+		Boolean defaultTune = false;
+		Boolean defaultOctave = false;
 		
 		
 		/*adds the tuning of the strings to the tune array if the tuning is
@@ -114,7 +114,7 @@ public class Parser {
 				tune[i] = input.get(i).get(0);
 			}else {
 				tune = Tuning.getDefaultTuning(stringAmount);
-				defualtTune = true;				
+				defaultTune = true;				
 				break;
 			}
 		}
@@ -123,20 +123,18 @@ public class Parser {
 				tuningOctave[i] = Integer.parseInt(input.get(i).get(1));
 			}else {
 				tuningOctave = Tuning.getDefaultTuningOctave(stringAmount);
-				defualtOctave = true;
+				defaultOctave = true;
 				break;
 			}
 		}
 		
 		Tuning tunner = new Tuning(tune, stringAmount, tuningOctave);
-		System.out.println(defualtTune);
-		System.out.println(defualtOctave);
-		if(tunner.unSupportedTune == true && !defualtTune)
+		if(tunner.unSupportedTune == true && !defaultTune)
 		{
 			Main.myFrame.textInputContentPanel.errorText.setText("Tune Not Recognized");
 			return;
 		}
-		if(tunner.unSupportedOctave == true && !defualtOctave)
+		if(tunner.unSupportedOctave == true && !defaultOctave)
 		{
 			Main.myFrame.textInputContentPanel.errorText.setText("Octave Not Recognized");
 			return;
