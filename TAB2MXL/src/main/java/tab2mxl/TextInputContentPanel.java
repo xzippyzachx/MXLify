@@ -174,13 +174,9 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 		tabType = tabList.getSelectedItem().toString();
 		title = songName.getText();
 		timeSig = timeSignature.getText();
-		
-		
+				
 		errorText.setText("");
-		
-		
-		
-		
+				
 		//Detect if the text area is empty
 		if(input.size() <= 1)
 		{
@@ -202,11 +198,9 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 			}
 		}
 		
-		
-		
 		if (errorText.getText() == "")
 		{			
-			Main.Convert(input);			
+			Main.Convert(input);
 		}	
 	}
 	

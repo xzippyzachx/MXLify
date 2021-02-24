@@ -40,7 +40,7 @@ public class SuccessPopUp extends PopupFactory implements ActionListener{
         
         JPanel titlepanel = new JPanel();
         titlepanel.setLayout(new FlowLayout());
-        JLabel title = new JLabel("Convertion Was Successful");
+        JLabel title = new JLabel("Conversion Was Successful");
         title.setForeground(new Color(110,199,56));
         title.setFont(new Font(title.getName(), Font.BOLD, 14));
         Border titlePadding = BorderFactory.createEmptyBorder(15, 10, 0, 10);
