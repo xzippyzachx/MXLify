@@ -69,14 +69,13 @@ public class Tuning {
 				/*Checking to add the notes only if they are the same as
 				 * the one specified in the tuning array*/
 				for(int string  = 0; string < tuning.length; string++) {
-					if(stringName.equals(tuning[string])) {
+					if(stringName.equals(tuning[string]) && octaveCheck(tuningOctave[string])) {
 						octave = tuningOctave[string];
 						//adding the notes to the notes ArrayList
 						for(int i = 0; i < line.length()-1; i++) {
 							if(line.charAt(i) == '|' && line.charAt(i+1) != '|') {
 								String note = line.substring(i+1, line.indexOf("|", i+1)).trim();
 								//System.out.println(fret);
-								
 								if(fret > 0) {
 									if(note.equals("C")) {
 										octave++;
@@ -88,7 +87,6 @@ public class Tuning {
 								octaves.add(octave);
 								notes.add(note);
 								fret++;
-								
 							}
 						}
 						//adding the stringName as the key and the List of notes as the notes for each fret
@@ -97,13 +95,13 @@ public class Tuning {
 					}
 				}
 			}
-//			for(String s : stringOctaves.keySet()) {
-//				System.out.print(s + "||");
-//				for(int i = 0; i < stringOctaves.get(s).size(); i++) {
-//					System.out.print(stringOctaves.get(s).get(i) + "|");
-//				}
-//				System.out.print("\n");
-//			}
+			/*for(String s : stringOctaves.keySet()) {
+				System.out.print(s + "||");
+				for(int i = 0; i < stringOctaves.get(s).size(); i++) {
+					System.out.print(stringOctaves.get(s).get(i) + "|");
+				}
+				System.out.print("\n");
+			}*/
 			
 			//Faruq make this check the notes file please - Zach
 			//Temporary way to check if the tuning is valid. Need to actually check if the Note Tunes file contains the tune 
@@ -119,6 +117,17 @@ public class Tuning {
 		}catch(FileNotFoundException e) {
 			e.getMessage();
 		}
+	}
+	
+	private boolean octaveCheck(int o) {
+		boolean output = false;
+		
+		if(o != -1) 
+			output = output || true;
+		if(o >= 0 && o <= 9)
+			output = output || true;
+		
+		return output;
 	}
 	
 	public static String[] getDefaultTuning(int stringAmount) {

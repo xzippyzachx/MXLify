@@ -66,15 +66,13 @@ public class Parser {
 		
 		for(int layer = 0; layer < tabLineAmount; layer++)
 		{
-			for(int i = 0; i < input.get((layer * stringAmount) + layer).size(); i++)
+			for(int i = 2; i < input.get((layer * stringAmount) + layer).size(); i++)
 			{
-				if(i > 1) {
 				columns.add(new char[stringAmount]);
 				for(int l = 0; l < stringAmount; l++)
 				{
 						columns.get(columns.size()-1)[l] = input.get(l + (layer * stringAmount) + layer).get(i).charAt(0);	
 						System.out.println("C(" + columns.get(columns.size()-1)[l] + ")");
-				}
 				}
 			}			
 		}
@@ -102,27 +100,33 @@ public class Parser {
 		boolean chord;
 		String[] tune = new String[stringAmount];
 		int[] tuningOctave = new int[stringAmount];
-		
+		//boolean badOctave = false;
 		
 		/*adds the tuning of the strings to the tune array if the tuning is
 		 * specified in the TAB, or the default if it isn't*/
 		for(int i = 0; i < input.size(); i++) {
 			if(input.get(i).get(0) != "-" && input.get(i).get(0) != "|" /*&& input.get(i).get(0) != ""*/) {
 				tune[i] = input.get(i).get(0);
-			}else {
+			}/*else {
 				tune = Tuning.getDefaultTuning(stringAmount);
 				break;
-			}
+			}*/
+		}
+		if(containsOnlyString(tune, "")) {
+			tune = Tuning.getDefaultTuning(stringAmount);
 		}
 		for(int i = 0; i < input.size(); i++) {
-			if(input.get(i).get(1) != "-" && input.get(i).get(1) != "|" && input.get(i).get(1) != "") {
-				tuningOctave[i] = Integer.parseInt(input.get(i).get(1));
-			}else {
-				tuningOctave = Tuning.getDefaultTuningOctave(stringAmount);
-				break;
+			if(input.get(i).get(1) != "-" && input.get(i).get(1) != "|") {
+				if(input.get(i).get(1) == "") {
+					tuningOctave[i] = -1;
+				}else {
+					tuningOctave[i] = Integer.parseInt(input.get(i).get(1));
+				}
 			}
 		}
-		
+		if(containsOnlyInt(tuningOctave, -1)) {
+			tuningOctave = Tuning.getDefaultTuningOctave(stringAmount);
+		}
 		Tuning tunner = new Tuning(tune, stringAmount, tuningOctave);
 		if(tunner.unSupportedTune == true)
 		{
@@ -131,7 +135,7 @@ public class Parser {
 		}
 		/*if(tunner.unSupportedOctave == true)
 		{
-			Main.myFrame.textInputContentPanel.errorText.setText("Tune Not Recognized");
+			Main.myFrame.textInputContentPanel.errorText.setText("Octave Not Recognized");
 			return;
 		}*/
 		//Create the file generator to generate the MusicXML file
@@ -174,9 +178,9 @@ public class Parser {
 					dash = 1;
 					boolean test;
 					for(int k = i+1; k < columns.size()-1; k++) {
-						if(!containsOnly(columns.get(k), '|')) 
+						if(!containsOnlyChar(columns.get(k), '|')) 
 						{
-							test = containsOnly(columns.get(k), '-');
+							test = containsOnlyChar(columns.get(k), '-');
 							if(test) {
 								dash++;
 								}else {
@@ -260,7 +264,27 @@ public class Parser {
 		
 	}
 	
-	private boolean containsOnly(char[] cs, char o) {
+	private boolean containsOnlyChar(char[] cs, char o) {
+		boolean output = true;
+		
+		for(Object t : cs) {
+			output = output && t.equals(o) ;
+		}
+		
+		return output;
+	}
+	
+	private boolean containsOnlyInt(int[] cs, int o) {
+		boolean output = true;
+		
+		for(Object t : cs) {
+			output = output && t.equals(o) ;
+		}
+		
+		return output;
+	}
+	
+	private boolean containsOnlyString(String[] cs, String o) {
 		boolean output = true;
 		
 		for(Object t : cs) {
