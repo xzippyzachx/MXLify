@@ -16,7 +16,7 @@ public class FileGenerator {
 	
 	
 	boolean failed = false;
-	
+	static int measureNum = 0;
 	File saveFile;
 	FileWriter myWriter;
 	static String filepath;
@@ -248,6 +248,7 @@ public class FileGenerator {
 	 */
 	public void addNote(int string, int fret, String note, String noteType, int duration, int octave, int dot)
 	{
+		//if(measureNum > 0) {
 		try {
 			myWriter.write(currentIndent + "<note>");
 			currentIndent += "  ";
@@ -296,6 +297,7 @@ public class FileGenerator {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		//}
 	}
 	
 	/**
@@ -305,6 +307,7 @@ public class FileGenerator {
 	 */
 
 	public void addChord(char[] chord, String noteType, int duration, int[] octaves,int[] string, int[] fret, int[] dot) {
+		//if(measureNum >= 1) {
 		for (int i = chord.length-1; i>=0;i--) {
 			try {	
 			myWriter.write(currentIndent + "<note>");
@@ -359,6 +362,7 @@ public class FileGenerator {
 				e.printStackTrace();
 			}
 		}
+		//}
 	}
 	
 	/**
@@ -372,6 +376,7 @@ public class FileGenerator {
 			currentIndent += "  ";
 			newLine();
 			measureOpen = true;
+			//measureNum = measureNumber;
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

@@ -149,9 +149,23 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 		
 		for (String line : inputText) {	
 			line = cleanTextContent(line); //Removes redundant spaces
-			String[] lineInput = line.split("");
+			String[] lineInput = line.substring(line.indexOf('|')).split("");
 			ArrayList<String> lineInputList = new ArrayList<String>();
-			
+			String tunePlusOctave = line.substring(0, line.indexOf('|')).trim();
+			String tune = "";
+			String octave = "";
+			if(tunePlusOctave.length() > 0) {
+				try {
+					octave = "" + Integer.parseInt(tunePlusOctave.substring(tunePlusOctave.length()-1));
+					tune = tunePlusOctave.substring(0, tunePlusOctave.length()-1);
+				}catch(NumberFormatException e1){
+					octave = "";
+					tune = tunePlusOctave;
+				}
+			}
+			lineInputList.add(tune.trim());
+			lineInputList.add(octave.trim());
+			//lineInputList.add(tune);
 			for(String character : lineInput) {
 				lineInputList.add(character);
 		    }

@@ -30,6 +30,7 @@ public class Tuning {
 	private File tuningFile;
 	
 	public boolean unSupportedTune;
+	public boolean unSupportedOctave;
 	
 	//Constructor for the Tuning class
 	Tuning(String[] tune, int stringAmount, int[] tuneOctave){
@@ -108,6 +109,9 @@ public class Tuning {
 			//Temporary way to check if the tuning is valid. Need to actually check if the Note Tunes file contains the tune 
 			if(stringNotes.size() != stringAmount) {
 				unSupportedTune = true;
+			}
+			if(stringOctaves.size() != stringAmount) {
+				unSupportedOctave = true;
 			}
 				
 			noteScanner.close();

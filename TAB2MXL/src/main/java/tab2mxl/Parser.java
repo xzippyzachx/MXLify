@@ -13,10 +13,6 @@ public class Parser {
 	private ArrayList<char[]> columns;
 	public static  Map<String,String> misc;
 	
-	//to be converted to user input in the Preferences
-	private static int[] tuningOctave = {4,3,3,3,2,2};
-	//to be converted to user input in the Preferences
-	
 	//@SuppressWarnings("unused")
 	Parser(ArrayList<ArrayList<String>> input) {
 		stringAmount = 0;
@@ -71,15 +67,18 @@ public class Parser {
 		for(int layer = 0; layer < tabLineAmount; layer++)
 		{
 			for(int i = 0; i < input.get((layer * stringAmount) + layer).size(); i++)
-			{				
+			{
+				if(i > 1) {
 				columns.add(new char[stringAmount]);
 				for(int l = 0; l < stringAmount; l++)
 				{
-					columns.get(columns.size()-1)[l] = input.get(l + (layer * stringAmount) + layer).get(i).charAt(0);
+						columns.get(columns.size()-1)[l] = input.get(l + (layer * stringAmount) + layer).get(i).charAt(0);	
+						System.out.println("C(" + columns.get(columns.size()-1)[l] + ")");
+				}
 				}
 			}			
 		}
-				
+
 		char[] chords = new char[stringAmount];
 		int[] chordsOctave = new int[stringAmount];
 		String chordType= "";
@@ -102,22 +101,27 @@ public class Parser {
 		int chordOctave = 0;
 		boolean chord;
 		String[] tune = new String[stringAmount];
-		int[] tO = new int[stringAmount];
+		int[] tuningOctave = new int[stringAmount];
 		
 		
 		/*adds the tuning of the strings to the tune array if the tuning is
 		 * specified in the TAB, or the default if it isn't*/
-		for(int i = 0; i < stringAmount; i++ ) {
-			if(columns.get(0)[i] != '-' && columns.get(0)[i] != '|' && Parser.tuningOctave != null) {
-				tune[i] = Character.toString(columns.get(0)[i]);
-				tO[i] = Parser.tuningOctave[i];
+		for(int i = 0; i < input.size(); i++) {
+			if(input.get(i).get(0) != "-" && input.get(i).get(0) != "|" /*&& input.get(i).get(0) != ""*/) {
+				tune[i] = input.get(i).get(0);
 			}else {
 				tune = Tuning.getDefaultTuning(stringAmount);
-				tO = Tuning.getDefaultTuningOctave(stringAmount);
 				break;
 			}
 		}
-		
+		for(int i = 0; i < input.size(); i++) {
+			if(input.get(i).get(1) != "-" && input.get(i).get(1) != "|" && input.get(i).get(1) != "") {
+				tuningOctave[i] = Integer.parseInt(input.get(i).get(1));
+			}else {
+				tuningOctave = Tuning.getDefaultTuningOctave(stringAmount);
+				break;
+			}
+		}
 		
 		Tuning tunner = new Tuning(tune, stringAmount, tuningOctave);
 		if(tunner.unSupportedTune == true)
@@ -125,7 +129,11 @@ public class Parser {
 			Main.myFrame.textInputContentPanel.errorText.setText("Tune Not Recognized");
 			return;
 		}
-		
+		/*if(tunner.unSupportedOctave == true)
+		{
+			Main.myFrame.textInputContentPanel.errorText.setText("Tune Not Recognized");
+			return;
+		}*/
 		//Create the file generator to generate the MusicXML file
 		FileGenerator fileGen = new FileGenerator("");
 		
@@ -144,12 +152,14 @@ public class Parser {
 		for(int i = 0; i < columns.size(); i++)
 		{
 			col = columns.get(i);
-			notesInColumn = 0;
 			chord = false;
-			for (int s = 1; s < col.length;s++) {
-				character = col[s];
-				if (character != '-' && character != '|' && i > 0) {
-					notesInColumn++;
+			if(i > 0) {
+				notesInColumn = 0;
+				for (int s = 0; s < col.length;s++) {
+					character = col[s];
+					if (character != '-' && character != '|') {
+						notesInColumn++;
+					}
 				}
 			}
 			if(notesInColumn > 1) {
@@ -207,7 +217,7 @@ public class Parser {
 					fret = Character.getNumericValue(character);
 					if(fret < 0)
 					{
-						System.out.println("Bad Char: " + character);
+						System.out.println("Bad Char:(" + character + ")");
 						fret = 0;
 					}
 					if (!chord) {
@@ -216,7 +226,6 @@ public class Parser {
 						fileGen.addNote(line, fret, tunner.getNote(tune[line-1], fret), noteType(beatNote), getDuration(beatNote), tunner.getOctave(tune[line-1], fret), dot(beatNote));
 					}
 					else {
-						note = tunner.getNote(tune[line-1].toUpperCase(), fret).charAt(0);
 						fretarray[j] = fret;
 						note = tunner.getNote(tune[line-1], fret).charAt(0);//doesn't the charAt(0) get rid of the sharps?
 						chordOctave = tunner.getOctave(tune[line-1], fret);
