@@ -108,16 +108,13 @@ public class Parser {
 		/*adds the tuning of the strings to the tune array if the tuning is
 		 * specified in the TAB, or the default if it isn't*/
 		for(int i = 0; i < input.size(); i++) {
-			if(input.get(i).get(0) != "-" && input.get(i).get(0) != "|" && input.get(i).get(0) != "") {
+			if(input.get(i).get(0) != "-" && input.get(i).get(0) != "|") {
 				tune[i] = input.get(i).get(0);
-			}/*else {
-				tune = Tuning.getDefaultTuning(stringAmount);
-				defaultTune = true;				
-				break;
-			}*/
+			}
 		}
 		if(containsOnlyString(tune, "")) {
 			tune = Tuning.getDefaultTuning(stringAmount);
+			defaultTune = true;
 		}
 		for(int i = 0; i < input.size(); i++) {
 			if(input.get(i).get(1) != "-" && input.get(i).get(1) != "|") {
@@ -131,6 +128,7 @@ public class Parser {
 		}
 		if(containsOnlyInt(tuningOctave, -1)) {
 			tuningOctave = Tuning.getDefaultTuningOctave(stringAmount);
+			defaultOctave = true;
 		}
 		Tuning tunner = new Tuning(tune, stringAmount, tuningOctave);
 		if(tunner.unSupportedTune == true && !defaultTune)
