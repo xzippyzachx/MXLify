@@ -38,6 +38,8 @@ public class FileGenerator {
 		
 		if (response == JFileChooser.APPROVE_OPTION) { // if File successively chosen
 			
+			prefs.put(LAST_USED_FOLDER_SAVE, fileChooser.getSelectedFile().getParent()); // Save file path
+			
 			if(path == "") {
 				
 				filepath = fileChooser.getSelectedFile().getAbsolutePath();

@@ -72,8 +72,7 @@ public class Parser {
 				for(int l = 0; l < stringAmount; l++)
 				{
 						columns.get(columns.size()-1)[l] = input.get(l + (layer * stringAmount) + layer).get(i).charAt(0);	
-						System.out.println("C(" + columns.get(columns.size()-1)[l] + ")");
-
+						//System.out.println("C(" + columns.get(columns.size()-1)[l] + ")");
 				}
 			}			
 		}
@@ -268,8 +267,7 @@ public class Parser {
 			fileGen.closePart();
 		fileGen.end();
 		
-		new SuccessPopUp(Main.myFrame);
-		
+		new SuccessPopUp(Main.myFrame, FileGenerator.filepath);		
 	}
 	
 	private boolean containsOnlyChar(char[] cs, char o) {

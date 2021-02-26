@@ -27,10 +27,16 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 	public JTextArea textField;
 	JPanel titlePanel;
 	JLabel titleLabel;
+	
+	JPanel clearPanel;
+	JButton clearButton;
+	
 	JScrollPane scroll;
-	JPanel inputpanel;
+	
+	JPanel inputpanel;	
 	JButton convertButton;
-	String[] tabTypes = {"Select Instrument","Guitar"/*, "Bass", "Drums"*/};
+	
+	String[] tabTypes = {"Guitar"/*, "Bass", "Drums"*/};
 	JPanel detailsPanel;
 	JComboBox tabList;
 	JTextField timeSignature;
@@ -52,9 +58,24 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 		this.setBorder(padding);
 		
         // creates Title Container and adds label to the Content panel
-        titlePanel = new JPanel();
+        titlePanel = new JPanel();        
+        
+        titlePanel.setLayout(new GridLayout(0, 3));
+        
+        clearPanel = new JPanel();
+        clearPanel.setLayout(new FlowLayout(FlowLayout.LEFT,0,0));
+        clearButton = new JButton("Clear");
+        clearButton.setBackground(new Color(33,150,243));
+        clearButton.setForeground(new Color(224,224,224));
+        clearButton.setFocusable(false);
+        clearButton.addActionListener(this);
+        clearPanel.add(clearButton);
+        titlePanel.add(clearPanel);
+        
         titleLabel = new JLabel("Paste Your Tablature Here");
+        titleLabel.setHorizontalAlignment(JLabel.CENTER);
         titlePanel.add(titleLabel);
+        
         this.add(titlePanel);
         
         // generates the text field, sets size,font, and scrollability
@@ -84,6 +105,7 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
         songName = new JTextField();
         songName.setFont(songName.getFont().deriveFont(16f));
         //songName.setHorizontalAlignment(JTextField.CENTER);
+        songName.setText("Title");
         TextPrompt songNamePrompt = new TextPrompt("Song Name", songName,Show.FOCUS_LOST);
         songNamePrompt.setHorizontalAlignment(JTextField.CENTER);
         songNamePrompt.changeAlpha(0.8f);
@@ -95,6 +117,7 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
         timeSignature = new JTextField();
         timeSignature.setFont(timeSignature.getFont().deriveFont(16f));
         //timeSignature.setHorizontalAlignment(JTextField.CENTER);
+        timeSignature.setText("4/4");
         TextPrompt timeSignaturePrompt = new TextPrompt("Time Signature", timeSignature,Show.FOCUS_LOST);
         timeSignaturePrompt.setHorizontalAlignment(JTextField.CENTER);
         timeSignaturePrompt.changeAlpha(0.8f);
@@ -140,68 +163,86 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
-		if(Main.isInPopUp)
-			return;
-
-		String[] inputText = textField.getText().split("\n");
-		
-		ArrayList<ArrayList<String>> input = new ArrayList<ArrayList<String>>();
-		
-		for (String line : inputText) {	
-			line = cleanTextContent(line); //Removes redundant spaces
-			String[] lineInput = line.substring(line.indexOf('|')).split("");
-			ArrayList<String> lineInputList = new ArrayList<String>();
-			String tunePlusOctave = line.substring(0, line.indexOf('|')).trim();
-			String tune = "";
-			String octave = "";
-			if(tunePlusOctave.length() > 0) {
-				try {
-					octave = "" + Integer.parseInt(tunePlusOctave.substring(tunePlusOctave.length()-1));
-					tune = tunePlusOctave.substring(0, tunePlusOctave.length()-1);
-				}catch(NumberFormatException e1){
-					octave = "";
-					tune = tunePlusOctave;
+		if(e.getSource() == convertButton)
+		{
+			if(Main.isInPopUp)
+				return;
+	
+			//Detect if the text area is empty
+			if(textField.getText().isEmpty())
+			{
+				errorText.setText("Text Area Empty");
+				return;
+			}
+			else if (!textField.getText().contains("|"))
+			{
+				errorText.setText("Wrong Formatting");
+				return;
+			}
+			
+			String[] inputText = textField.getText().split("\n");
+			
+			ArrayList<ArrayList<String>> input = new ArrayList<ArrayList<String>>();
+			
+			for (String line : inputText) {	
+				line = cleanTextContent(line); //Removes redundant spaces
+				String[] lineInput = line.substring(line.indexOf('|')).split("");
+				ArrayList<String> lineInputList = new ArrayList<String>();
+				String tunePlusOctave = line.substring(0, line.indexOf('|')).trim();
+				String tune = "";
+				String octave = "";
+				if(tunePlusOctave.length() > 0) {
+					try {
+						octave = "" + Integer.parseInt(tunePlusOctave.substring(tunePlusOctave.length()-1));
+						tune = tunePlusOctave.substring(0, tunePlusOctave.length()-1);
+					}catch(NumberFormatException e1){
+						octave = "";
+						tune = tunePlusOctave;
+					}
+				}
+				lineInputList.add(tune.trim());
+				lineInputList.add(octave.trim());
+				//lineInputList.add(tune);
+				for(String character : lineInput) {
+					lineInputList.add(character);
+			    }
+				input.add(lineInputList);
+			}
+			tabType = tabList.getSelectedItem().toString();
+			title = songName.getText();
+			timeSig = timeSignature.getText();
+					
+			errorText.setText("");
+								
+			//Detect if the field is empty
+			if(tabType.equals("") || title.equals("") || timeSig.equals(""))
+			{
+				errorText.setText("Field Empty");
+			}
+			else {
+				int lineLength = input.get(0).size();
+				for (ArrayList<String> line : input) {
+					if(line.size() != lineLength)
+					{
+						errorText.setText("Wrong Formatting");
+						break;
+					}
 				}
 			}
-			lineInputList.add(tune.trim());
-			lineInputList.add(octave.trim());
-			//lineInputList.add(tune);
-			for(String character : lineInput) {
-				lineInputList.add(character);
-		    }
-			input.add(lineInputList);
+			
+			if (errorText.getText() == "")
+			{			
+				Main.Convert(input);
+			}	
 		}
-		tabType = tabList.getSelectedItem().toString();
-		title = songName.getText();
-		timeSig = timeSignature.getText();
-				
-		errorText.setText("");
-				
-		//Detect if the text area is empty
-		if(input.size() <= 1)
+		else if(e.getSource() == clearButton)
 		{
-			errorText.setText("Text Area Empty");
+			if(Main.isInPopUp)
+				return;
+			
+			if(!Main.myFrame.textInputContentPanel.textField.getText().isEmpty())
+				new ClearPopUp(Main.myFrame, "", "Clear Current Tablature");
 		}
-		//Detect if the field is empty
-		else if(tabType.equals("") || title.equals("") || timeSig.equals(""))
-		{
-			errorText.setText("Field Empty");
-		}
-		else {
-			int lineLength = input.get(0).size();
-			for (ArrayList<String> line : input) {
-				if(line.size() != lineLength)
-				{
-					errorText.setText("Wrong Formatting");
-					break;
-				}
-			}
-		}
-		
-		if (errorText.getText() == "")
-		{			
-			Main.Convert(input);
-		}	
 	}
 	
 	private static String cleanTextContent(String text) 

@@ -19,10 +19,10 @@ class FileGeneratorTest {
 	
 	@BeforeAll
 	static void setUp() {
-		fileGen = new FileGenerator("tester.musicxml");
+		fileGen = new FileGenerator("Outputs/tester.musicxml");
 	}
 	
-	@Test 	
+	@Test
 	void testFileGenerator() {
 		openWriter();
 		assertNotNull(fileGen.myWriter);
@@ -386,7 +386,7 @@ class FileGeneratorTest {
 	String readFile() {
 		String fileContent = null;
 		try {
-			fileContent = new Scanner(new File("tester.musicxml")).useDelimiter("\\Z").next();
+			fileContent = new Scanner(new File("Outputs/tester.musicxml")).useDelimiter("\\Z").next();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
