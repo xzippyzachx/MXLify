@@ -229,11 +229,12 @@ public class Parser {
 						fret = 0;
 					}
 					if (!chord) {
-						linearray[j] = line;
+						//linearray[j] = line;
 						//System.out.println("line " + line + " and fret " + fret);
 						fileGen.addNote(line, fret, tunner.getNote(tune[line-1], fret), noteType(beatNote), getDuration(beatNote), tunner.getOctave(tune[line-1], fret), dot(beatNote));
 					}
 					else {
+						linearray[j] = line;
 						fretarray[j] = fret;
 						note = tunner.getNote(tune[line-1], fret).charAt(0);//doesn't the charAt(0) get rid of the sharps?
 						chordOctave = tunner.getOctave(tune[line-1], fret);
@@ -246,15 +247,18 @@ public class Parser {
 				}
 				if (line == stringAmount) {
 					line = 0;
-				}
-				
+				}	
 			}
 			if (chord) {
 				double beatNote = (dash * beatTypeNote)/div;
 				fileGen.addChord(chords,chordType, getDuration(beatNote), chordsOctave,linearray,fretarray, chordDot);
+				linearray = new int[stringAmount];
+				fretarray = new int[stringAmount];
+				chords = new char[stringAmount];
+				chordsOctave = new int[stringAmount];
+				chordDot = new int[stringAmount];
 			}
 			currentColumn++;
-		
 		}
 		
 		//End the musicxml file
