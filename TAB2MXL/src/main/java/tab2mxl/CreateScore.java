@@ -38,7 +38,28 @@ public class CreateScore {
 			}
 		}
 		else {
-			System.out.println("unable to generate Score, this is a windows only feature");
+			this.xmlPath = xmlPath;
+			String[] command = {"./makeScore", xmlPath};
+			ProcessBuilder build = new ProcessBuilder(command);
+			File pyscript = new File("MakeScoreMac/dist/makeScore");
+			build.directory(new File(pyscript.getAbsolutePath()));
+			try {
+				Process process = build.start();
+				BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+				
+				String line;
+				while((line = reader.readLine()) != null) {
+					System.out.println(line);
+				}
+				int exitCode = process.waitFor();
+				System.out.println(" exeted with error " + exitCode);
+				File score = new File("MakeScoreMac/dist/makeScore/Score.svg");
+				score.renameTo(new File( new File(xmlPath).getParentFile() +"/"+ Parser.misc.get("Title")+"_Score.svg" ));
+				score.delete();
+			} catch (IOException | InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 	public static boolean isWindows() {
