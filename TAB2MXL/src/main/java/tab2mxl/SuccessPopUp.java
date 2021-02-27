@@ -8,6 +8,8 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
 import java.awt.Point;
@@ -86,13 +88,13 @@ public class SuccessPopUp extends PopupFactory implements ActionListener{
         openButton.addActionListener(this);
         
         //Button hover effects
-        openButton.addMouseListener(new java.awt.event.MouseAdapter() {
-    	    public void mouseEntered(java.awt.event.MouseEvent evt) {
+        openButton.addMouseListener(new MouseAdapter() {
+    	    public void mouseEntered(MouseEvent evt) {
     	    	openButton.setBackground(new Color(60,160,243));
     	    	openButton.setForeground(Color.black);
     	    }
 
-    	    public void mouseExited(java.awt.event.MouseEvent evt) {
+    	    public void mouseExited(MouseEvent evt) {
     	    	openButton.setBackground(new Color(33,150,243));
     	    	openButton.setForeground(new Color(224,224,224));
     	    }
