@@ -102,7 +102,8 @@ public class Parser {
 		int[] tuningOctave = new int[stringAmount];
 		Boolean defaultTune = false;
 		Boolean defaultOctave = false;
-
+        boolean[] sharp = new boolean[stringAmount];
+        boolean sharpnote = false;
 		
 		/*adds the tuning of the strings to the tune array if the tuning is
 		 * specified in the TAB, or the default if it isn't*/
@@ -228,9 +229,13 @@ public class Parser {
 						fret = 0;
 					}
 					if (!chord) {
+						if (tunner.getNote(tune[line-1], fret).substring(tunner.getNote(tune[line-1], fret).length()-1,tunner.getNote(tune[line-1], fret).length()).equals("#")){
+							sharpnote = true;
+						}
 						//linearray[j] = line;
 						//System.out.println("line " + line + " and fret " + fret);
-						fileGen.addNote(line, fret, tunner.getNote(tune[line-1], fret), noteType(beatNote), getDuration(beatNote), tunner.getOctave(tune[line-1], fret), dot(beatNote));
+						fileGen.addNote(line, fret, tunner.getNote(tune[line-1], fret), noteType(beatNote), getDuration(beatNote), tunner.getOctave(tune[line-1], fret), dot(beatNote),sharpnote);
+						sharpnote = false;
 					}
 					else {
 						linearray[j] = line;
@@ -242,6 +247,11 @@ public class Parser {
 						chordType = noteType(beatNote);
 						chordDot[j] = dot(beatNote);
 						//System.out.println("add chord " + line + " and fret " + fret);
+						if (tunner.getNote(tune[line-1], fret).substring(tunner.getNote(tune[line-1], fret).length()-1,tunner.getNote(tune[line-1], fret).length()).equals("#")){
+							sharp[j] = true;
+						}
+						else 
+							sharp[j] = false;
 					}
 				}
 				if (line == stringAmount) {
@@ -250,7 +260,7 @@ public class Parser {
 			}
 			if (chord) {
 				double beatNote = (dash * beatTypeNote)/div;
-				fileGen.addChord(chords,chordType, getDuration(beatNote), chordsOctave,linearray,fretarray, chordDot);
+				fileGen.addChord(chords,chordType, getDuration(beatNote), chordsOctave,linearray,fretarray, chordDot,sharp);
 				linearray = new int[stringAmount];
 				fretarray = new int[stringAmount];
 				chords = new char[stringAmount];
