@@ -31,7 +31,7 @@ public class FileGenerator {
 		if(path == "")
 		{
 			fileChooser = new JFileChooser(prefs.get(LAST_USED_FOLDER_SAVE, new File(".").getAbsolutePath())); // Create file chooser
-			fileChooser.setFileFilter(new FileNameExtensionFilter("musicxml file","musicxml"));
+			fileChooser.setFileFilter(new FileNameExtensionFilter("music xml","musicxml","mxl"));
 			response = fileChooser.showSaveDialog(null); //Select file to save
 		}
 		
@@ -40,10 +40,11 @@ public class FileGenerator {
 			
 			prefs.put(LAST_USED_FOLDER_SAVE, fileChooser.getSelectedFile().getParent()); // Save file path
 			
-			if(path == "") {
-				
+			if(path == "") {				
 				filepath = fileChooser.getSelectedFile().getAbsolutePath();
-				saveFile = new File(filepath); //Print out path
+				if (!filepath.substring(filepath.lastIndexOf(".")+1).equals("musicxml") && !filepath.substring(filepath.lastIndexOf(".")+1).equals("mxl"))     
+					filepath += ".musicxml"; //Add extension to file if not already added
+				saveFile = new File(filepath);
 			}
 			else {
 				filepath= path;

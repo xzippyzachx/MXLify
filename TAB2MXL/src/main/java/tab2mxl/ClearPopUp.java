@@ -7,6 +7,8 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.Point;
 
 import javax.swing.BorderFactory;
@@ -26,8 +28,7 @@ public class ClearPopUp extends PopupFactory implements ActionListener{
 	JButton noButton;
 	
 	String input;
-	MyFrame myFrame;
-	
+	MyFrame myFrame;	
 		
 	ClearPopUp (Component owner, String input, String message){
 				
@@ -84,13 +85,13 @@ public class ClearPopUp extends PopupFactory implements ActionListener{
         noButton.addActionListener(this);
         
         //Button hover effects
-        noButton.addMouseListener(new java.awt.event.MouseAdapter() {
-    	    public void mouseEntered(java.awt.event.MouseEvent evt) {
+        noButton.addMouseListener(new MouseAdapter() {
+    	    public void mouseEntered(MouseEvent evt) {
     	    	noButton.setBackground(new Color(60,160,243));
     	    	noButton.setForeground(Color.black);
     	    }
 
-    	    public void mouseExited(java.awt.event.MouseEvent evt) {
+    	    public void mouseExited(MouseEvent evt) {
     	    	noButton.setBackground(new Color(33,150,243));
     	    	noButton.setForeground(new Color(224,224,224));
     	    }
