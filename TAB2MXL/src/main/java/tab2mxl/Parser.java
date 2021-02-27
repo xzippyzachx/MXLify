@@ -47,8 +47,8 @@ public class Parser {
 				beatType = 4;
 			}
 		}
-		//System.out.println("beat: " + beat);
-		//System.out.println("beatType: " + beatType);
+		System.out.println("beat: " + beat);
+		System.out.println("beatType: " + beatType);
 		
 		for(int i = 0; i < input.size(); i++)
 		{			
@@ -323,11 +323,14 @@ public class Parser {
 			}
 		}
 		temp = check;
-		while(check != beatNote) {
+		while(check < beatNote) {
 			check = check + temp/div;
 			div = div * 2;
 			output++;
 		}
+		//System.out.println("BN: " + beatNote);
+		//System.out.println("Temp: " + temp);
+		//System.out.println("Check: " + check);
 		//System.out.println("dot: " + output);
 		return output;
 	}
@@ -387,6 +390,7 @@ public class Parser {
 		double beatTypeNote = 1.0/beatType;
 		output = (noteType * div)/beatTypeNote;
 		
+		//System.out.println("Duration: " + output);
 		return (int)output;
 	}
 	
@@ -419,8 +423,11 @@ public class Parser {
 		}
 	}
 		double beatNote = 1.0/beatType;
-		double totalBeatPerMeasure = beatSig/beatType;
+		double bSig  = 1.0 * beatSig;
+		double totalBeatPerMeasure = bSig/beatType;
 		double division = (hyfenNumber * beatNote)/totalBeatPerMeasure;
+		//System.out.println("TBM: " + totalBeatPerMeasure);
+		//System.out.println("Division: " + division);
 
 		return (int)division;
 	}

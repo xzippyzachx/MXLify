@@ -207,7 +207,7 @@ public class FileGenerator {
 			tabBack();
 			myWriter.write(currentIndent + "</clef>");			
 			newLine();
-			myWriter.write(currentIndent + "<staff-details number = \"" + 2 + "\">");
+			myWriter.write(currentIndent + "<staff-details>");
 			currentIndent += "  ";
 			newLine();
 			myWriter.write(currentIndent + "<staff-lines>" + tune.length + "</staff-lines>");
