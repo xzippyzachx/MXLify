@@ -46,6 +46,7 @@ public class MyFrame extends JFrame{
         //Set Frame settings
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setSize(1280,720);
+		this.setLocationRelativeTo(null); //Open in center of screen
 		this.setVisible(true);	
 	}
 	

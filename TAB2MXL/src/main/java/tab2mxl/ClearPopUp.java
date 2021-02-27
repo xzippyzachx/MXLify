@@ -29,7 +29,7 @@ public class ClearPopUp extends PopupFactory implements ActionListener{
 	MyFrame myFrame;
 	
 		
-	ClearPopUp (Component owner, String input){
+	ClearPopUp (Component owner, String input, String message){
 				
 		
 		
@@ -45,7 +45,7 @@ public class ClearPopUp extends PopupFactory implements ActionListener{
         
         JPanel titlepanel = new JPanel();
         titlepanel.setLayout(new FlowLayout());
-        JLabel title = new JLabel("Override Current Tablature");
+        JLabel title = new JLabel(message);
         title.setForeground(new Color(232, 32, 21));
         title.setFont(new Font(title.getName(), Font.BOLD, 14));
         Border titlePadding = BorderFactory.createEmptyBorder(15, 10, 0, 10);

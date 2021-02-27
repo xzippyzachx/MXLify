@@ -38,6 +38,8 @@ public class FileGenerator {
 		
 		if (response == JFileChooser.APPROVE_OPTION) { // if File successively chosen
 			
+			prefs.put(LAST_USED_FOLDER_SAVE, fileChooser.getSelectedFile().getParent()); // Save file path
+			
 			if(path == "") {
 				
 				filepath = fileChooser.getSelectedFile().getAbsolutePath();
@@ -246,7 +248,7 @@ public class FileGenerator {
 	 * @param fret
 	 * @param note
 	 */
-	public void addNote(int string, int fret, String note, String noteType, int duration, int octave, int dot)
+	public void addNote(int string, int fret, String note, String noteType, int duration, int octave, int dot,boolean alter)
 	{
 		//if(measureNum > 0) {
 		try {
@@ -258,6 +260,10 @@ public class FileGenerator {
 			newLine();
 			myWriter.write(currentIndent + "<step>" + note + "</step>");
 			newLine();
+			if (alter) {
+				myWriter.write(currentIndent + "<alter>" + 1 + "</alter>");
+				newLine();
+			}
 			myWriter.write(currentIndent + "<octave>" + octave + "</octave>");
 			newLine();
 			tabBack();
@@ -306,7 +312,7 @@ public class FileGenerator {
 	 * @param noteType
 	 */
 
-	public void addChord(char[] chord, String noteType, int duration, int[] octaves,int[] string, int[] fret, int[] dot) {
+	public void addChord(char[] chord, String noteType, int duration, int[] octaves,int[] string, int[] fret, int[] dot,boolean[] alter) {
 		//if(measureNum >= 1) {
 		boolean firstDone = false;
 		for (int i = chord.length-1; i>=0;i--) {
@@ -324,6 +330,10 @@ public class FileGenerator {
 					newLine();
 					myWriter.write(currentIndent + "<step>" + chord[i] + "</step>");
 					newLine();
+					if (alter[i]) {
+						myWriter.write(currentIndent + "<alter>" + 1 + "</alter>");
+						newLine();
+					}
 					myWriter.write(currentIndent + "<octave>" + octaves[i]+ "</octave>");
 					newLine();
 					myWriter.write(currentIndent + "</pitch>"); 

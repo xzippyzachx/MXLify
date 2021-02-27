@@ -8,7 +8,7 @@ public class Main {
 	
 	public static boolean isInPopUp;
 	static ClearPopUp clearPopUp;
-	static ClearPopUp successPopUp;	
+	static ClearPopUp successPopUp;
 	
 	public static void main(String[] args) {
 		myFrame = new MyFrame();
@@ -17,7 +17,7 @@ public class Main {
 	public static void FileUploaded(String input)
 	{
 		if(!myFrame.textInputContentPanel.textField.getText().isEmpty())
-			new ClearPopUp(myFrame, input);
+			new ClearPopUp(myFrame, input, "Override Current Tablature");
 		else
 			myFrame.textInputContentPanel.textField.setText(input);
 	}
