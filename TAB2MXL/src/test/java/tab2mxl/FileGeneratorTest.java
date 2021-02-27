@@ -197,7 +197,7 @@ class FileGeneratorTest {
 	@Test
 	void testAddNote() {
 		setUp();
-		fileGen.addNote(1,1,"E", "half", 1, 3, 0);
+		fileGen.addNote(1,1,"E", "half", 1, 3, 0,false);
 
 		fileGen.end();
 		String fileContent = this.readFile();
@@ -224,7 +224,7 @@ class FileGeneratorTest {
 	@Test
 	void testAddNote2() {
 		openWriter();
-		fileGen.addNote(2,3,"G", "quarter", 1, 2, 0);
+		fileGen.addNote(2,3,"G", "quarter", 1, 2, 0,false);
 		fileGen.end();
 		String fileContent = this.readFile();
 		String expected = "<note>\n"
@@ -256,7 +256,8 @@ class FileGeneratorTest {
 		int[] lines = new int[] {1,2};
 		int[] oct = new int[] {1,2,3};
 		int[] dot = new int[] {1,2,3};
-		fileGen.addChord(notes, "half", 1,oct,frets,lines, dot);
+		boolean[] alter = new boolean[] {false,false};
+		fileGen.addChord(notes, "half", 1,oct,frets,lines, dot,alter);
 		fileGen.end();
 		
 		String fileContent = this.readFile();

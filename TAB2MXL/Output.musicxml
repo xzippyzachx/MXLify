@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <score-partwise version="3.1">
   <work>
-    <work-title>uwu</work-title>
+    <work-title>4</work-title>
   </work>
   <part-list>
     <score-part id="P1">
@@ -292,6 +292,7 @@
       <note>
         <pitch>
           <step>A</step>
+          <alter>1</alter>
           <octave>3</octave>
           </pitch>
         <duration>3</duration>
@@ -427,6 +428,7 @@
       <note>
         <pitch>
           <step>A</step>
+          <alter>1</alter>
           <octave>2</octave>
           </pitch>
         <duration>3</duration>
@@ -477,6 +479,7 @@
       <note>
         <pitch>
           <step>A#</step>
+          <alter>1</alter>
           <octave>3</octave>
         </pitch>
         <duration>6</duration>
