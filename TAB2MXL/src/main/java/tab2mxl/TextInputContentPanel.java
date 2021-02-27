@@ -61,9 +61,12 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
         titlePanel = new JPanel();        
         
         titlePanel.setLayout(new GridLayout(0, 3));
+        titlePanel.setOpaque(false);
         
         clearPanel = new JPanel();
         clearPanel.setLayout(new FlowLayout(FlowLayout.LEFT,0,0));
+        clearPanel.setOpaque(false);
+        
         clearButton = new JButton("Clear");
         clearButton.setBackground(new Color(33,150,243));
         clearButton.setForeground(new Color(224,224,224));
@@ -73,15 +76,23 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
         titlePanel.add(clearPanel);
         
         titleLabel = new JLabel("Paste Your Tablature Here");
+
+     //   titleLabel.setPreferredSize(new Dimension(100,25));
+      //  titleLabel.setMinimumSize(new Dimension(200,100));
         titleLabel.setHorizontalAlignment(JLabel.CENTER);
+        titleLabel.setOpaque(true);
+        titleLabel.setBackground(new Color(33,150,243));
+        titleLabel.setSize(new Dimension(100,10));
         titlePanel.add(titleLabel);
-        
+        //titlePanel.setPreferredSize(new Dimension(30,40));
+       // titlePanel.setOpaque(true);
+        //titlePanel.setBackground(new Color(33,150,243));
         this.add(titlePanel);
         
         // generates the text field, sets size,font, and scrollability
         textField = new JTextArea();
         
-        textField.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
+        //textField.setFont(f);
         this.add(textField);
         scroll = new JScrollPane (textField);
         scroll.setPreferredSize(new Dimension(800, 500));
@@ -91,10 +102,12 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
         
         detailsPanel = new JPanel();        
         detailsPanel.setLayout(new GridLayout(1,3));
+        detailsPanel.setOpaque(false);
                         
         JPanel tabListPanel = new JPanel();
         tabListPanel.setLayout(new GridLayout(0, 1));
         tabListPanel.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 20));
+        tabListPanel.setOpaque(false);
         tabList = new JComboBox(tabTypes);
         tabList.setSelectedIndex(0);
         tabListPanel.add(tabList);
@@ -102,6 +115,7 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
         JPanel songNamePanel = new JPanel();
         songNamePanel.setLayout(new GridLayout(0, 1));
         songNamePanel.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 20));
+        songNamePanel.setOpaque(false);
         songName = new JTextField();
         songName.setFont(songName.getFont().deriveFont(16f));
         //songName.setHorizontalAlignment(JTextField.CENTER);
@@ -114,6 +128,7 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
         JPanel timeSignaturePanel = new JPanel();
         timeSignaturePanel.setLayout(new GridLayout(0, 1));
         timeSignaturePanel.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 20));
+        timeSignaturePanel.setOpaque(false);
         timeSignature = new JTextField();
         timeSignature.setFont(timeSignature.getFont().deriveFont(16f));
         //timeSignature.setHorizontalAlignment(JTextField.CENTER);
@@ -144,6 +159,7 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
         inputpanel.add(convertButton);
         Border buttonPadding = BorderFactory.createEmptyBorder(10, 10, 0, 10);
         inputpanel.setBorder(buttonPadding);
+        inputpanel.setOpaque(false);
         
         errorPanel = new JPanel();
         errorPanel.setLayout(new FlowLayout());
@@ -151,12 +167,13 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
         errorText.setForeground(Color.red);
         errorPanel.add(errorText);
         errorPanel.setPreferredSize(new Dimension(100, 30));
+        errorPanel.setOpaque(false);
         
         //adds the button container to the content panel
         this.add(detailsPanel);
         this.add(inputpanel);
         this.add(errorPanel);
-        
+        this.setOpaque(false);
         this.setVisible(true);
 	}
 

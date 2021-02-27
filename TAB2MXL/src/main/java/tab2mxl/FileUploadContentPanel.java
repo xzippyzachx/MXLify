@@ -73,10 +73,12 @@ public class FileUploadContentPanel extends JPanel implements ActionListener {
 		JPanel OptionsPanel = new JPanel(new GridLayout(2,1)); // 
 		Border OptionsPadding = BorderFactory.createEmptyBorder(100, 00, 55, 0);
 		OptionsPanel.setBorder(OptionsPadding);
+		OptionsPanel.setOpaque(false);
 
 		// creates panel for the upload label and button to go into
 		JPanel UploadPanel = new JPanel();
 		UploadPanel.setLayout(new GridLayout(1,1)); // sets layout of this panel to be vertical
+		UploadPanel.setOpaque(false);
 //		JPanel SpacePanelTop = new JPanel(); // makes the top quarter of the UploadPanel empty space
 //		JPanel SpacePanelBottom = new JPanel();  // makes the bottom quarter of the UploadPanel empty space
 		//JPanel LabelPanel = new JPanel(new GridBagLayout()); // allows us centering of the label
@@ -105,6 +107,7 @@ public class FileUploadContentPanel extends JPanel implements ActionListener {
 		ButtonPanel.setLayout(new BoxLayout(ButtonPanel, BoxLayout.Y_AXIS));
 		Border ButtonPadding = BorderFactory.createEmptyBorder(20, 65, 0, 0);
 		ButtonPanel.setBorder(ButtonPadding);
+		ButtonPanel.setOpaque(false);
 //		ButtonPanel.setLayout(new GridBagLayout()); // centers the button in that panel
 
 		selectButton = new JButton("Select Tablature Text File"); // Select File button
@@ -158,7 +161,7 @@ public class FileUploadContentPanel extends JPanel implements ActionListener {
 		// this.add(label);
 		
 		this.add(OptionsPanel);
-
+		this.setOpaque(false);
 		this.setVisible(true);
 	}
 

@@ -2,6 +2,7 @@ package tab2mxl;
 
 import javax.swing.*;
 
+import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
@@ -13,6 +14,7 @@ public class MyFrame extends JFrame{
 	JPanel mainContentPanel;
 	FileUploadContentPanel fileUploadContentPanel;
 	public TextInputContentPanel textInputContentPanel;
+	Color frameColour = new Color(0,90,108);
 	
 	MyFrame() {
 		
@@ -23,6 +25,7 @@ public class MyFrame extends JFrame{
 		mainContentPanel = new JPanel();
 		GridBagConstraints c = new GridBagConstraints();
 		mainContentPanel.setLayout(new GridBagLayout ());
+		mainContentPanel.setBackground(frameColour);
 		
 		fileUploadContentPanel = new FileUploadContentPanel();
 		c.gridx = 1;

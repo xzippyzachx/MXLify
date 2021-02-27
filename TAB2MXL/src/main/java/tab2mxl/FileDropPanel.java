@@ -18,6 +18,7 @@ public class FileDropPanel extends JPanel{
 				dropPanel.setLayout(new BoxLayout(dropPanel, BoxLayout.Y_AXIS));// sets layout to vertical
 				Border DropPadding = BorderFactory.createEmptyBorder(0, 0, 0, 10);
 				dropPanel.setBorder(DropPadding);
+				dropPanel.setOpaque(false);
 				
 				//Title Label -----------------------------------------------------------
 				JLabel dropLabel = new JLabel("<html><body style='text-align: center'>Drop Tablature Text File");
@@ -85,6 +86,7 @@ public class FileDropPanel extends JPanel{
 				dropPanel.add(dropText);
 				
 				this.add(dropPanel);//Add Drop Panel to File Drop Panel
+				this.setOpaque(false);
 				this.setVisible(true); //Set File Drop Panel to Visible
     
 	}
