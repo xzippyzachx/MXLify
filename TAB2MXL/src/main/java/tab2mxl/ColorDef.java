@@ -21,7 +21,9 @@ public enum ColorDef
     RAITH(new java.awt.Color(0, 65, 125, 255), new java.awt.Color(0, 106, 172, 255), new java.awt.Color(130, 180, 214, 255)),
     GREEN_LCD(new java.awt.Color(15, 109, 93, 255), new java.awt.Color(0, 185, 165, 255), new java.awt.Color(48, 255, 204,255)),
     JUG_GREEN(new java.awt.Color(0x204524), new java.awt.Color(0x32A100), new java.awt.Color(0x81CE00)),
-    WHITE(new java.awt.Color(220, 220, 220, 255), new java.awt.Color(235, 235, 235, 255), java.awt.Color.WHITE);
+    WHITE(new java.awt.Color(220, 220, 220, 255), new java.awt.Color(235, 235, 235, 255), java.awt.Color.WHITE),
+	
+	CUSTOM_BLUE(new java.awt.Color(33,150,243), new java.awt.Color(33,150,243), new java.awt.Color(33,150,243));
 
     public final java.awt.Color DARK;
     public final java.awt.Color MEDIUM;

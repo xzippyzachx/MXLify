@@ -137,11 +137,13 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
         convertButton.setForeground(new Color(224,224,224));
         convertButton.setFocusable(false);
         convertButton.addActionListener(this);
+        
         JPanel togglepanel = new JPanel();
-
         sheetMusicToggle = new SteelCheckBox();
-        sheetMusicToggle.setRised(false);
-		sheetMusicToggle.setSelectedColor(ColorDef.YELLOW);
+        
+        sheetMusicToggle.setColored(true);
+        sheetMusicToggle.setSelectedColor(ColorDef.CUSTOM_BLUE);
+        sheetMusicToggle.setRised(false);		
         sheetMusicToggle.setText("Sheet Music");
         sheetMusicToggle.addActionListener(new ActionListener() {
 			@Override
@@ -149,12 +151,10 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 				if(e.getID() == ActionEvent.ACTION_PERFORMED){
 					TextInputContentPanel.scoremake = !TextInputContentPanel.scoremake;
 				}
-//				TextInputContentPanel.scoremake = e.getStateChange() == ItemEvent.SELECTED;
-				System.out.println(TextInputContentPanel.scoremake);
+				//TextInputContentPanel.scoremake = e.getStateChange() == ItemEvent.SELECTED;
+				//System.out.println(TextInputContentPanel.scoremake);
 				if( TextInputContentPanel.scoremake && !CreateScore.isWindows()){
 					JOptionPane.showMessageDialog(null,"We've detected you're running this application on MacOS, please read the User Manuel before using this feature to prevent any errors");
-//
-//
 				}
 			}
 		});
