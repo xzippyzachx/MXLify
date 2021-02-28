@@ -61,15 +61,44 @@ public class FileUploadContentPanel extends JPanel implements ActionListener {
 		JPanel OptionsPanel = new JPanel(new GridLayout(2,1)); // 
 		Border OptionsPadding = BorderFactory.createEmptyBorder(100, 00, 50, 0);
 		OptionsPanel.setBorder(OptionsPadding);
+		OptionsPanel.setOpaque(false);
 
 		// creates panel for the upload label and button to go into
 		JPanel UploadPanel = new JPanel();
 		UploadPanel.setLayout(new GridLayout(1,1)); // sets layout of this panel to be vertical
 
+		UploadPanel.setOpaque(false);
+//		JPanel SpacePanelTop = new JPanel(); // makes the top quarter of the UploadPanel empty space
+//		JPanel SpacePanelBottom = new JPanel();  // makes the bottom quarter of the UploadPanel empty space
+		//JPanel LabelPanel = new JPanel(new GridBagLayout()); // allows us centering of the label
+		//JLabel label = new JLabel("Upload Tablature Text File"); // creates label
+		
+//		label.setMinimumSize(new Dimension(300, 50));
+//		label.setPreferredSize(new Dimension(300, 50));
+//		label.setMaximumSize(new Dimension(300, 50));
+//		
+//		label.setHorizontalAlignment(JLabel.CENTER);
+//		label.setHorizontalTextPosition(JLabel.CENTER);
+//		label.setAlignmentX(JLabel.CENTER_ALIGNMENT);
+//		
+//		label.setBackground(new Color(51,153,255));
+//		label.setOpaque(true);
+//		
+//		Border border = BorderFactory.createLineBorder(Color.BLACK, 3);
+//		label.setBorder(border);
+	//	label.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 16)); // sets font for the label
+		
+//		LabelPanel.add(label);
+//		UploadPanel.add(SpacePanelTop);
+//		UploadPanel.add(LabelPanel);
+
 		JPanel ButtonPanel = new JPanel(); // creates panel for button
 		ButtonPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
 		Border ButtonPadding = BorderFactory.createEmptyBorder(10, 0, 0, 0);
 		ButtonPanel.setBorder(ButtonPadding);
+
+
+		ButtonPanel.setOpaque(false);
 
 
 		selectButton = new JButton("Select File"); // Select File button
@@ -90,7 +119,7 @@ public class FileUploadContentPanel extends JPanel implements ActionListener {
 		OptionsPanel.add(UploadPanel);
 		
 		this.add(OptionsPanel);
-
+		this.setOpaque(false);
 		this.setVisible(true);
 	}
 

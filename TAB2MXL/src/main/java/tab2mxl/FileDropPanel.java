@@ -15,6 +15,7 @@ public class FileDropPanel extends JPanel{
 	
 	FileDropPanel(){
 		
+
 		// Main Panel for Drop Elements
 		JPanel dropPanel = new JPanel();
 		dropPanel.setLayout(new BoxLayout(dropPanel, BoxLayout.Y_AXIS));// sets layout to vertical
@@ -28,7 +29,8 @@ public class FileDropPanel extends JPanel{
 		
 		dropLabel.setHorizontalTextPosition(JLabel.CENTER);
 		dropLabel.setAlignmentX(JLabel.CENTER_ALIGNMENT);
-		
+		Border padding = BorderFactory.createEmptyBorder(5, 0, 5, 0);
+		dropLabel.setBorder(padding);
 		dropLabel.setBackground(new Color(33,150,243));
 		dropLabel.setOpaque(true);
 					
@@ -58,11 +60,12 @@ public class FileDropPanel extends JPanel{
     	    public void mouseEntered(MouseEvent evt) {
     	    	dropLoc.setBackground(new Color(207,207,207));
     	    }
+    	    
 
     	    public void mouseExited(MouseEvent evt) {
     	    	dropLoc.setBackground(Color.LIGHT_GRAY);
     	    }
-    	}); 
+		});
 		
 		dropLoc.setOpaque(true);
 		
@@ -70,8 +73,14 @@ public class FileDropPanel extends JPanel{
 		new DropTarget(dropLoc, dragDropListener); // Connect the label with a drag and drop listener
 
 		// Add the label to the content
+		dropPanel.setOpaque(false);
 		dropPanel.add(dropLoc);
-						
+		//dropPanel.add(dropLabel);
+				
+
+    	 
+		
+				
 		/*
 		//Bottom Label ------------------------------------------------------------
 		JLabel dropText = new JLabel("Drop File in Above Area");
@@ -92,12 +101,8 @@ public class FileDropPanel extends JPanel{
 		
 		dropPanel.add(dropText);
 		*/
-		
+		this.setOpaque(false);
 		this.add(dropPanel);//Add Drop Panel to File Drop Panel
 		this.setVisible(true); //Set File Drop Panel to Visible
-    
 	}
-	
 }
-
-
