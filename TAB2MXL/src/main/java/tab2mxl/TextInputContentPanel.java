@@ -8,23 +8,18 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.util.ArrayList;
 
-import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
+import javax.swing.*;
 import javax.swing.border.Border;
 
 import tab2mxl.TextPrompt.Show;
 
 public class TextInputContentPanel extends JPanel implements ActionListener {
 	public JTextArea textField;
+	public static boolean scoremake = false;
 	JPanel titlePanel;
 	JLabel titleLabel;
 	
@@ -41,6 +36,7 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 	JComboBox tabList;
 	JTextField timeSignature;
 	JTextField songName;
+	SteelCheckBox sheetMusicToggle;
 	
 	JPanel errorPanel;
 	public JLabel errorText;
@@ -141,7 +137,32 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
         convertButton.setForeground(new Color(224,224,224));
         convertButton.setFocusable(false);
         convertButton.addActionListener(this);
+        JPanel togglepanel = new JPanel();
+
+        sheetMusicToggle = new SteelCheckBox();
+        sheetMusicToggle.setRised(false);
+		sheetMusicToggle.setSelectedColor(ColorDef.YELLOW);
+        sheetMusicToggle.setText("Sheet Music");
+        sheetMusicToggle.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(e.getID() == ActionEvent.ACTION_PERFORMED){
+					TextInputContentPanel.scoremake = !TextInputContentPanel.scoremake;
+				}
+//				TextInputContentPanel.scoremake = e.getStateChange() == ItemEvent.SELECTED;
+				System.out.println(TextInputContentPanel.scoremake);
+				if( TextInputContentPanel.scoremake && CreateScore.isWindows()){
+					JOptionPane.showMessageDialog(null,"We've detected you're running this application on MacOS, please read the User Manuel before using this feature to prevent any errors");
+//
+//
+				}
+			}
+		});
+        togglepanel.add(sheetMusicToggle);
+		Border togglePadding = BorderFactory.createEmptyBorder(0, 40, 0, 0);
+		togglepanel.setBorder(togglePadding);
         inputpanel.add(convertButton);
+        inputpanel.add(togglepanel);
         Border buttonPadding = BorderFactory.createEmptyBorder(10, 10, 0, 10);
         inputpanel.setBorder(buttonPadding);
         
@@ -156,7 +177,6 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
         this.add(detailsPanel);
         this.add(inputpanel);
         this.add(errorPanel);
-        
         this.setVisible(true);
 	}
 
