@@ -311,8 +311,10 @@ public class Parser {
 	}
 	
 	private int dot(double beatNote) {
+		System.out.println("BeatNote: " + beatNote);
 		int output = 0;
 		double check = 0.0;
+		double check2 = 0.0;
 		double temp;
 		double div = 2.0;
 		
@@ -322,21 +324,30 @@ public class Parser {
 				break;
 			}
 		}
+		boolean c = true;
+
 		temp = check;
-		while(check < beatNote) {
+		check2 = check;
+		System.out.println("Temp: " + temp);
+		while(c) {
 			check = check + temp/div;
-			div = div * 2;
-			output++;
+			if(check2 < beatNote && beatNote <= check) {
+				output++;
+			}else {
+				c = false;
+			}
+			check2 = check2 + temp/div;
 		}
 		//System.out.println("BN: " + beatNote);
 		//System.out.println("Temp: " + temp);
 		//System.out.println("Check: " + check);
-		//System.out.println("dot: " + output);
+		System.out.println("dot: " + output);
 		return output;
 	}
 	
 	protected static String noteType(double beatNote) { //beatNote = 0.0 if a fraction is inputed. May need error checking.
 		String output = "";
+		System.out.println("Note: " + beatNote);
 		
 		if(beatNote >= 2) {
 			output = "double";
@@ -349,18 +360,21 @@ public class Parser {
 		}else if(beatNote  >= 1.0/8.0) {
 			output = "eighth";
 		}else if(beatNote < 1.0/8.0) {
+			System.out.println(beatNote);
 			int div = (int) ((1.0/8.0)/beatNote);
+			System.out.println(div);
 			int maxIndex = 0;
 			double power = 0.0;
 			if(div % 2 != 0) {
 				while(div % 2 != 0) {
-					if(div <= Math.pow(2.0, power)) {
+					if(div < Math.pow(2.0, power)) {
 						div = (int) Math.pow(2, power);
 					}else {
 						power = power + 1.0;
 					}
 				}
 			}
+			System.out.println(div);
 			while(div != 1) {
 				div = div/2;
 				maxIndex++;
@@ -380,7 +394,6 @@ public class Parser {
 				output = output + "th";
 			}
 		}
-
 		return output;
 	}
 	
@@ -421,15 +434,15 @@ public class Parser {
 					hyfenNumber++;
 				}
 		}
-	}
+			}
 		double beatNote = 1.0/beatType;
 		double bSig  = 1.0 * beatSig;
 		double totalBeatPerMeasure = bSig/beatType;
 		double division = (hyfenNumber * beatNote)/totalBeatPerMeasure;
 		//System.out.println("TBM: " + totalBeatPerMeasure);
-		//System.out.println("Division: " + division);
+		System.out.println("Division: " + division);
 
-		return (int)division;
+		return (int)Math.round(division);
 	}
 	
 	static void addTitle(String title){
