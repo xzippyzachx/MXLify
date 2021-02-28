@@ -22,10 +22,10 @@ public class FileDropPanel extends JPanel{
 				
 				//Title Label -----------------------------------------------------------
 				JLabel dropLabel = new JLabel("<html><body style='text-align: center'>Drop Tablature Text File");
-				//JLabel dropLabel = new JLabel("Drop Tablature to Convert to MusicXML");
 
 				//dropLabel.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 16));
-				
+				Border padding = BorderFactory.createEmptyBorder(5, 0, 5, 0);
+				dropLabel.setBorder(padding);
 				dropLabel.setHorizontalAlignment(JLabel.CENTER);
 				
 				dropLabel.setHorizontalTextPosition(JLabel.CENTER);
@@ -33,9 +33,6 @@ public class FileDropPanel extends JPanel{
 				
 				dropLabel.setBackground(new Color(33,150,243));
 				dropLabel.setOpaque(true);
-				
-				
-		
 				
 			    dropPanel.add(dropLabel);
 				
@@ -65,13 +62,12 @@ public class FileDropPanel extends JPanel{
 				// Add the label to the content
 				dropPanel.add(dropLoc);
 				
-				
 				//Bottom Label ------------------------------------------------------------
 				JLabel dropText = new JLabel("Drop File in Above Area");
 				
 				dropText.setBackground(Color.PINK);
-				//dropText.setFont(new Font(,Font.PLAIN, 16));
-				
+				padding = BorderFactory.createEmptyBorder(0, 0, 10, 0);
+				dropText.setBorder(padding);
 				dropText.setMinimumSize(new Dimension(300, 25));
 				dropText.setPreferredSize(new Dimension(300, 25));
 				dropText.setMaximumSize(new Dimension(300, 25));

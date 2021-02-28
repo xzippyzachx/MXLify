@@ -54,7 +54,7 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 	
 		// creates main content panel, lets layout to vertical, adds padding and sets it as Content Pane
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-		Border padding = BorderFactory.createEmptyBorder(0, 10, 0, 10);
+		Border padding = BorderFactory.createEmptyBorder(0, 10,0, 10);
 		this.setBorder(padding);
 		
         // creates Title Container and adds label to the Content panel
@@ -62,6 +62,9 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
         
         titlePanel.setLayout(new GridLayout(0, 3));
         titlePanel.setOpaque(false);
+       // titlePanel.setBackground(Color.black);
+        padding = BorderFactory.createEmptyBorder(14, 10,0, 10);
+		titlePanel.setBorder(padding);
         
         clearPanel = new JPanel();
         clearPanel.setLayout(new FlowLayout(FlowLayout.LEFT,0,0));
