@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <score-partwise version="3.1">
   <work>
+<<<<<<< HEAD
     <work-title>Title</work-title>
+=======
+    <work-title>test</work-title>
+>>>>>>> refs/remotes/origin/develop
   </work>
   <part-list>
     <score-part id="P1">
@@ -56,6 +60,90 @@
       <note>
         <pitch>
           <step>E</step>
+<<<<<<< HEAD
+=======
+          <octave>2</octave>
+        </pitch>
+        <duration>2</duration>
+        <type>eighth</type>
+        <notations>
+          <technical>
+            <string>6</string>
+            <fret>0</fret>
+          </technical>
+        </notations>
+        <stem>down</stem>
+        <staff>1</staff>
+      </note>
+      <note>
+        <pitch>
+          <step>B</step>
+          <octave>2</octave>
+        </pitch>
+        <duration>2</duration>
+        <type>eighth</type>
+        <notations>
+          <technical>
+            <string>5</string>
+            <fret>2</fret>
+          </technical>
+        </notations>
+        <stem>down</stem>
+        <staff>1</staff>
+      </note>
+      <note>
+        <pitch>
+          <step>E</step>
+          <octave>3</octave>
+        </pitch>
+        <duration>2</duration>
+        <type>eighth</type>
+        <notations>
+          <technical>
+            <string>4</string>
+            <fret>2</fret>
+          </technical>
+        </notations>
+        <stem>down</stem>
+        <staff>1</staff>
+      </note>
+      <note>
+        <pitch>
+          <step>G#</step>
+          <alter>1</alter>
+          <octave>3</octave>
+        </pitch>
+        <duration>2</duration>
+        <type>eighth</type>
+        <notations>
+          <technical>
+            <string>3</string>
+            <fret>1</fret>
+          </technical>
+        </notations>
+        <stem>down</stem>
+        <staff>1</staff>
+      </note>
+      <note>
+        <pitch>
+          <step>B</step>
+          <octave>3</octave>
+        </pitch>
+        <duration>2</duration>
+        <type>eighth</type>
+        <notations>
+          <technical>
+            <string>2</string>
+            <fret>0</fret>
+          </technical>
+        </notations>
+        <stem>down</stem>
+        <staff>1</staff>
+      </note>
+      <note>
+        <pitch>
+          <step>E</step>
+>>>>>>> refs/remotes/origin/develop
           <octave>4</octave>
         </pitch>
         <duration>2</duration>
@@ -87,8 +175,14 @@
       </note>
       <note>
         <pitch>
+<<<<<<< HEAD
           <step>C</step>
           <octave>4</octave>
+=======
+          <step>G#</step>
+          <alter>1</alter>
+          <octave>3</octave>
+>>>>>>> refs/remotes/origin/develop
         </pitch>
         <duration>2</duration>
         <type>eighth</type>
@@ -153,11 +247,20 @@
       </note>
       <note>
         <pitch>
+<<<<<<< HEAD
           <step>E</step>
           <octave>4</octave>
         </pitch>
         <duration>4</duration>
         <type>quarter</type>
+=======
+          <step>G</step>
+          <alter>1</alter>
+          <octave>3</octave>
+          </pitch>
+        <duration>16</duration>
+        <type>whole</type>
+>>>>>>> refs/remotes/origin/develop
         <notations>
           <technical>
             <string>1</string>
