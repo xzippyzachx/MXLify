@@ -59,14 +59,14 @@ public class MyFrame extends JFrame{
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setSize(1280,720);
 		this.setResizable(false);
-		this.setTitle("TAB2MXL");
+		this.setTitle("MXLify");
 		this.setLocationRelativeTo(null); //Open in center of screen
 		this.setVisible(true);	
 
 	}
 	
 	private ImageIcon getBackgroundImage() {
-		ImageIcon backgroundImage = new ImageIcon("bg4.jpg");
+		ImageIcon backgroundImage = new ImageIcon("bg4.jpg");                            
 		Image image = backgroundImage.getImage(); // transform it 
 		Image newImage = image.getScaledInstance(1280, 720,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
 		backgroundImage = new ImageIcon(newImage);  // transform it back
