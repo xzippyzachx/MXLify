@@ -154,7 +154,7 @@ public class SteelCheckBoxUI extends javax.swing.plaf.basic.BasicCheckBoxUI impl
         final java.awt.font.FontRenderContext RENDER_CONTEXT = new java.awt.font.FontRenderContext(null, true, true);
         final java.awt.font.TextLayout TEXT_LAYOUT = new java.awt.font.TextLayout(CHECKBOX.getText(), G2.getFont(), RENDER_CONTEXT);
         final java.awt.geom.Rectangle2D BOUNDS = TEXT_LAYOUT.getBounds(); 
-        G2.drawString(CHECKBOX.getText(), backgroundImage.getWidth() + 5, (CHECKBOX.getBounds().height - BOUNDS.getBounds().height) / 2 + BOUNDS.getBounds().height);
+        G2.drawString(CHECKBOX.getText(), backgroundImage.getWidth(), (CHECKBOX.getBounds().height - BOUNDS.getBounds().height) / 2 + BOUNDS.getBounds().height);
 
         G2.dispose();        
     }

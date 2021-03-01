@@ -195,7 +195,7 @@ public class Parser {
 							break;
 					}
 				}
-				//System.out.println(dash);
+				
 				//Finds if there is a new measure
 				if (character == '|')
 					count++;				
@@ -207,7 +207,6 @@ public class Parser {
 					if(fileGen.measureOpen)
 						fileGen.closeMeasure();
 					if(columns.size() > currentColumn + 1) {
-						//System.out.println("measure " + measure);
 						fileGen.openMeasure(measure);
 						
 						if(measure == 1) {
@@ -232,8 +231,6 @@ public class Parser {
 						if (tunner.getNote(tune[line-1], fret).substring(tunner.getNote(tune[line-1], fret).length()-1,tunner.getNote(tune[line-1], fret).length()).equals("#")){
 							sharpnote = true;
 						}
-						//linearray[j] = line;
-						//System.out.println("line " + line + " and fret " + fret);
 						fileGen.addNote(line, fret, tunner.getNote(tune[line-1], fret), noteType(beatNote), getDuration(beatNote), tunner.getOctave(tune[line-1], fret), dot(beatNote),sharpnote);
 						sharpnote = false;
 					}
@@ -324,28 +321,25 @@ public class Parser {
 				break;
 			}
 		}
-		boolean c = true;
+		boolean loop = true;
 
 		temp = check;
 		check2 = check;
 		System.out.println("Temp: " + temp);
-		while(c) {
+		while(loop) {
 			check = check + temp/div;
 			if(check2 < beatNote && beatNote <= check) {
 				output++;
 			}else {
-				c = false;
+				loop = false;
 			}
 			check2 = check2 + temp/div;
 		}
-		//System.out.println("BN: " + beatNote);
-		//System.out.println("Temp: " + temp);
-		//System.out.println("Check: " + check);
-		System.out.println("dot: " + output);
+		
 		return output;
 	}
 	
-	protected static String noteType(double beatNote) { //beatNote = 0.0 if a fraction is inputed. May need error checking.
+	protected static String noteType(double beatNote) {
 		String output = "";
 		System.out.println("Note: " + beatNote);
 		

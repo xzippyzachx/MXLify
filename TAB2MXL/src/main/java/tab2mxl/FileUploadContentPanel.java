@@ -104,6 +104,8 @@ public class FileUploadContentPanel extends JPanel implements ActionListener {
 		selectButton = new JButton("Select File"); // Select File button
 		selectButton.setBackground(new Color(33,150,243));
 		selectButton.setForeground(new Color(224,224,224));
+		selectButton.setOpaque(true);
+		selectButton.setBorderPainted(false);
 
 		selectButton.setFocusable(false);
 		selectButton.addActionListener(this); // Button action

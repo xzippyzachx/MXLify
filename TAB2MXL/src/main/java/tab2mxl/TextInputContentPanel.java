@@ -71,6 +71,8 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
         clearButton.setForeground(new Color(224,224,224));
         clearButton.setFocusable(false);
         clearButton.addActionListener(this);
+        clearButton.setOpaque(true);
+        clearButton.setBorderPainted(false);
         clearPanel.add(clearButton);
         titlePanel.add(clearPanel);
         
@@ -156,6 +158,8 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
         convertButton.setForeground(new Color(224,224,224));
         convertButton.setFocusable(false);
         convertButton.addActionListener(this);
+        convertButton.setOpaque(true);
+        convertButton.setBorderPainted(false);
         
         JPanel togglepanel = new JPanel();
         togglepanel.setOpaque(false);
