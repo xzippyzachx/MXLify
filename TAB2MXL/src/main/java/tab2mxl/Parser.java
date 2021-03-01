@@ -127,16 +127,16 @@ public class Parser {
 		}	
 		
 		Tuning tunner = new Tuning(tune, stringAmount, tuningOctave);
-		if(tunner.unSupportedTune == true && !defaultTune)
-		{
-			Main.myFrame.textInputContentPanel.errorText.setText("Tune Not Recognized");
-			return;
-		}
 		if(tunner.unSupportedOctave == true && !defaultOctave)
 		{
 			Main.myFrame.textInputContentPanel.errorText.setText("Octave Not Recognized");
 			return;
 		}
+		if(tunner.unSupportedTune == true && !defaultTune)
+		{
+			Main.myFrame.textInputContentPanel.errorText.setText("Tune Not Recognized");
+			return;
+		}		
 		
 		//Create the file generator to generate the MusicXML file
 		FileGenerator fileGen = new FileGenerator("");
@@ -226,7 +226,7 @@ public class Parser {
 						if (tunner.getNote(tune[line-1], fret).substring(tunner.getNote(tune[line-1], fret).length()-1,tunner.getNote(tune[line-1], fret).length()).equals("#")){
 							sharpnote = true;
 						}
-						fileGen.addNote(line, fret, tunner.getNote(tune[line-1], fret), noteType(beatNote), getDuration(beatNote), tunner.getOctave(tune[line-1], fret), dot(beatNote),sharpnote);
+						fileGen.addNote(line, fret, tunner.getNote(tune[line-1], fret).charAt(0), noteType(beatNote), getDuration(beatNote), tunner.getOctave(tune[line-1], fret), dot(beatNote),sharpnote);
 						sharpnote = false;
 					}
 					else {
