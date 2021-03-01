@@ -47,8 +47,6 @@ public class Parser {
 				beatType = 4;
 			}
 		}
-		System.out.println("beat: " + beat);
-		System.out.println("beatType: " + beatType);
 		
 		for(int i = 0; i < input.size(); i++)
 		{			
@@ -71,9 +69,7 @@ public class Parser {
 				columns.add(new char[stringAmount]);
 				for(int l = 0; l < stringAmount; l++)
 				{
-						columns.get(columns.size()-1)[l] = input.get(l + (layer * stringAmount) + layer).get(i).charAt(0);	
-						//System.out.println("C(" + columns.get(columns.size()-1)[l] + ")");
-				}
+						columns.get(columns.size()-1)[l] = input.get(l + (layer * stringAmount) + layer).get(i).charAt(0);					}
 			}			
 		}
 
@@ -236,13 +232,12 @@ public class Parser {
 					else {
 						linearray[j] = line;
 						fretarray[j] = fret;
-						note = tunner.getNote(tune[line-1], fret).charAt(0);//doesn't the charAt(0) get rid of the sharps?
+						note = tunner.getNote(tune[line-1], fret).charAt(0);
 						chordOctave = tunner.getOctave(tune[line-1], fret);
 						chords[j] = note;
 						chordsOctave[j] = chordOctave;
 						chordType = noteType(beatNote);
 						chordDot[j] = dot(beatNote);
-						//System.out.println("add chord " + line + " and fret " + fret);
 						if (tunner.getNote(tune[line-1], fret).substring(tunner.getNote(tune[line-1], fret).length()-1,tunner.getNote(tune[line-1], fret).length()).equals("#")){
 							sharp[j] = true;
 						}
@@ -307,7 +302,6 @@ public class Parser {
 	}
 	
 	private int dot(double beatNote) {
-		System.out.println("BeatNote: " + beatNote);
 		int output = 0;
 		double check = 0.0;
 		double check2 = 0.0;
@@ -324,7 +318,6 @@ public class Parser {
 
 		temp = check;
 		check2 = check;
-		System.out.println("Temp: " + temp);
 		while(loop) {
 			check = check + temp/div;
 			if(check2 < beatNote && beatNote <= check) {
@@ -340,7 +333,6 @@ public class Parser {
 	
 	protected static String noteType(double beatNote) {
 		String output = "";
-		System.out.println("Note: " + beatNote);
 		
 		if(beatNote >= 2) {
 			output = "double";
@@ -353,9 +345,7 @@ public class Parser {
 		}else if(beatNote  >= 1.0/8.0) {
 			output = "eighth";
 		}else if(beatNote < 1.0/8.0) {
-			System.out.println(beatNote);
 			int div = (int) ((1.0/8.0)/beatNote);
-			System.out.println(div);
 			int maxIndex = 0;
 			double power = 0.0;
 			if(div % 2 != 0) {
@@ -367,7 +357,6 @@ public class Parser {
 					}
 				}
 			}
-			System.out.println(div);
 			while(div != 1) {
 				div = div/2;
 				maxIndex++;
@@ -395,8 +384,6 @@ public class Parser {
 		double div = getDivisions(beat);
 		double beatTypeNote = 1.0/beatType;
 		output = (noteType * div)/beatTypeNote;
-		
-		//System.out.println("Duration: " + output);
 		return (int)output;
 	}
 	
@@ -432,8 +419,6 @@ public class Parser {
 		double bSig  = 1.0 * beatSig;
 		double totalBeatPerMeasure = bSig/beatType;
 		double division = (hyfenNumber * beatNote)/totalBeatPerMeasure;
-		//System.out.println("TBM: " + totalBeatPerMeasure);
-		System.out.println("Division: " + division);
 
 		return (int)Math.round(division);
 	}
