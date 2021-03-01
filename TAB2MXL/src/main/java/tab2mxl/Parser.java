@@ -107,7 +107,7 @@ public class Parser {
 		
 		/*adds the tuning of the strings to the tune array if the tuning is
 		 * specified in the TAB, or the default if it isn't*/
-		for(int i = 0; i < input.size(); i++) {
+		for(int i = 0; i < stringAmount; i++) {
 			if(input.get(i).get(0) != "-" && input.get(i).get(0) != "|") {
 				tune[i] = input.get(i).get(0);
 			}
@@ -116,20 +116,20 @@ public class Parser {
 			tune = Tuning.getDefaultTuning(stringAmount);
 			defaultTune = true;
 		}
-		for(int i = 0; i < input.size(); i++) {
+		for(int i = 0; i < stringAmount; i++) {
 			if(input.get(i).get(1) != "-" && input.get(i).get(1) != "|") {
 				if(input.get(i).get(1) == "") {
 					tuningOctave[i] = -1;
 				}else {
 					tuningOctave[i] = Integer.parseInt(input.get(i).get(1));
 				}
-
 			}
 		}
 		if(containsOnlyInt(tuningOctave, -1)) {
 			tuningOctave = Tuning.getDefaultTuningOctave(stringAmount);
 			defaultOctave = true;
-		}
+		}	
+		
 		Tuning tunner = new Tuning(tune, stringAmount, tuningOctave);
 		if(tunner.unSupportedTune == true && !defaultTune)
 		{
@@ -197,12 +197,11 @@ public class Parser {
 				}
 				//System.out.println(dash);
 				//Finds if there is a new measure
-				if (character == '|')
+				if (character == '|' && (i == 0 || columns.get(i-1)[j] != '|'))
 					count++;				
 				if (count == 6) {
 					measure++;
-					count = 0;
-					
+					count = 0;					
 					
 					if(fileGen.measureOpen)
 						fileGen.closeMeasure();
