@@ -28,18 +28,16 @@ public class FileGenerator {
 	FileGenerator (String path) {	
 		JFileChooser fileChooser = null;
 		int response = 0;
-		if(path == "")
-		{
+		if(path == "") {
 			fileChooser = new JFileChooser(prefs.get(LAST_USED_FOLDER_SAVE, new File(".").getAbsolutePath())); // Create file chooser
 			fileChooser.setFileFilter(new FileNameExtensionFilter("music xml","musicxml","mxl"));
-			response = fileChooser.showSaveDialog(null); //Select file to save
-			prefs.put(LAST_USED_FOLDER_SAVE, fileChooser.getSelectedFile().getParent()); // Save file path
+			response = fileChooser.showSaveDialog(null); //Select file to save			
 		}
-		
-		
+				
 		if (response == JFileChooser.APPROVE_OPTION) { // if File successively chosen
 			
-			if(path == "") {				
+			if(path == "") {	
+				prefs.put(LAST_USED_FOLDER_SAVE, fileChooser.getSelectedFile().getParent()); // Save file path
 				filepath = fileChooser.getSelectedFile().getAbsolutePath();
 				if (!filepath.substring(filepath.lastIndexOf(".")+1).equals("musicxml") && !filepath.substring(filepath.lastIndexOf(".")+1).equals("mxl"))     
 					filepath += ".musicxml"; //Add extension to file if not already added
