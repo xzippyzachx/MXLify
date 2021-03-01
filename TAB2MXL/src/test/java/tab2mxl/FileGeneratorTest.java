@@ -161,7 +161,7 @@ class FileGeneratorTest {
 				+ "    <line>2</line>\n"
 				+ "    <clef-octave-change>-1</clef-octave-change>\n"
 				+ "  </clef>\n"
-				+ "  <staff-details number = \"2\">\n"
+				+ "  <staff-details>\n"
 				+ "    <staff-lines>6</staff-lines>\n"
 				+ "    <staff-tuning line=\"1\">\n"
 				+ "      <tuning-step>E</tuning-step>\n"

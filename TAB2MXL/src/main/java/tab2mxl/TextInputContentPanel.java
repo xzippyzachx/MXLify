@@ -1,15 +1,12 @@
 package tab2mxl;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import java.util.ArrayList;
 
 import javax.swing.*;
@@ -81,8 +78,9 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
      //   titleLabel.setPreferredSize(new Dimension(100,25));
       //  titleLabel.setMinimumSize(new Dimension(200,100));
         titleLabel.setHorizontalAlignment(JLabel.CENTER);
-        titleLabel.setOpaque(true);
+        titleLabel.setOpaque(false);
         titleLabel.setBackground(new Color(33,150,243));
+        titleLabel.setForeground(Color.white);
         titleLabel.setSize(new Dimension(100,10));
         titlePanel.add(titleLabel);
         //titlePanel.setPreferredSize(new Dimension(30,40));
@@ -169,6 +167,7 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
         sheetMusicToggle.setSelectedColor(ColorDef.CUSTOM_BLUE);
         sheetMusicToggle.setRised(false);		
         sheetMusicToggle.setText("Sheet Music");
+        sheetMusicToggle.setForeground(Color.white);
         sheetMusicToggle.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -231,30 +230,38 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 			String[] inputText = textField.getText().split("\n");
 			
 			ArrayList<ArrayList<String>> input = new ArrayList<ArrayList<String>>();
-			
-			for (String line : inputText) {	
-				line = cleanTextContent(line); //Removes redundant spaces
-				String[] lineInput = line.substring(line.indexOf('|')).split("");
-				ArrayList<String> lineInputList = new ArrayList<String>();
-				String tunePlusOctave = line.substring(0, line.indexOf('|')).trim();
-				String tune = "";
-				String octave = "";
-				if(tunePlusOctave.length() > 0) {
-					try {
-						octave = "" + Integer.parseInt(tunePlusOctave.substring(tunePlusOctave.length()-1));
-						tune = tunePlusOctave.substring(0, tunePlusOctave.length()-1);
-					}catch(NumberFormatException e1){
-						octave = "";
-						tune = tunePlusOctave;
+						
+			for (String line : inputText) {
+				if(line.length() > 1)
+				{
+					line = cleanTextContent(line); //Removes redundant spaces
+					String[] lineInput = line.substring(line.indexOf('|')).split("");
+					ArrayList<String> lineInputList = new ArrayList<String>();
+					String tunePlusOctave = line.substring(0, line.indexOf('|')).trim();
+					String tune = "";
+					String octave = "";
+					if(tunePlusOctave.length() > 0) {
+						try {
+							octave = "" + Integer.parseInt(tunePlusOctave.substring(tunePlusOctave.length()-1));
+							tune = tunePlusOctave.substring(0, tunePlusOctave.length()-1);
+						}catch(NumberFormatException e1){
+							octave = "";
+							tune = tunePlusOctave;
+						}
 					}
+					lineInputList.add(tune.trim());
+					lineInputList.add(octave.trim());
+					//lineInputList.add(tune);
+					for(String character : lineInput) {
+						lineInputList.add(character);
+				    }
+					
+					input.add(lineInputList);
 				}
-				lineInputList.add(tune.trim());
-				lineInputList.add(octave.trim());
-				//lineInputList.add(tune);
-				for(String character : lineInput) {
-					lineInputList.add(character);
-			    }
-				input.add(lineInputList);
+				else
+				{
+					input.add(new ArrayList<String>());
+				}
 			}
 			tabType = tabList.getSelectedItem().toString();
 			title = songName.getText();
@@ -270,13 +277,22 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 			else {
 				int lineLength = input.get(0).size();
 				for (ArrayList<String> line : input) {
-					if(line.size() != lineLength)
+					if(line.size() != lineLength && line.size() != 0)
 					{
 						errorText.setText("Wrong Formatting");
 						break;
 					}
 				}
 			}
+			
+			/*
+			for (ArrayList<String> line : input) {
+				for (String chr : line) {
+					System.out.print(chr);
+				}
+				System.out.println("");
+			}
+			*/
 			
 			if (errorText.getText() == "")
 			{			

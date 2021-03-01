@@ -33,12 +33,11 @@ public class FileGenerator {
 			fileChooser = new JFileChooser(prefs.get(LAST_USED_FOLDER_SAVE, new File(".").getAbsolutePath())); // Create file chooser
 			fileChooser.setFileFilter(new FileNameExtensionFilter("music xml","musicxml","mxl"));
 			response = fileChooser.showSaveDialog(null); //Select file to save
+			prefs.put(LAST_USED_FOLDER_SAVE, fileChooser.getSelectedFile().getParent()); // Save file path
 		}
 		
 		
 		if (response == JFileChooser.APPROVE_OPTION) { // if File successively chosen
-			
-			prefs.put(LAST_USED_FOLDER_SAVE, fileChooser.getSelectedFile().getParent()); // Save file path
 			
 			if(path == "") {				
 				filepath = fileChooser.getSelectedFile().getAbsolutePath();
