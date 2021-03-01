@@ -79,8 +79,9 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
      //   titleLabel.setPreferredSize(new Dimension(100,25));
       //  titleLabel.setMinimumSize(new Dimension(200,100));
         titleLabel.setHorizontalAlignment(JLabel.CENTER);
-        titleLabel.setOpaque(true);
+        titleLabel.setOpaque(false);
         titleLabel.setBackground(new Color(33,150,243));
+        titleLabel.setForeground(Color.white);
         titleLabel.setSize(new Dimension(100,10));
         titlePanel.add(titleLabel);
         //titlePanel.setPreferredSize(new Dimension(30,40));
@@ -165,6 +166,7 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
         sheetMusicToggle.setSelectedColor(ColorDef.CUSTOM_BLUE);
         sheetMusicToggle.setRised(false);		
         sheetMusicToggle.setText("Sheet Music");
+        sheetMusicToggle.setForeground(Color.white);
         sheetMusicToggle.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {

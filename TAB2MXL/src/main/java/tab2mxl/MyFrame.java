@@ -66,7 +66,7 @@ public class MyFrame extends JFrame{
 	}
 	
 	private ImageIcon getBackgroundImage() {
-		ImageIcon backgroundImage = new ImageIcon("blue_background.jpg");
+		ImageIcon backgroundImage = new ImageIcon("bg4.jpg");
 		Image image = backgroundImage.getImage(); // transform it 
 		Image newImage = image.getScaledInstance(1280, 720,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
 		backgroundImage = new ImageIcon(newImage);  // transform it back
