@@ -13,5 +13,5 @@ See the user manual document for install and usage instructions
 - Zach Ross - https://github.com/xzippyzachx/
 - Christopher Moon - https://github.com/chris832-eng/
 - Erika Grandy - https://github.com/ErikaGrandy/
-- Yasser - https://github.com/Yalzahed/
+- Yasser Al Zahed - https://github.com/Yalzahed/
 - Faruq Afolabi - https://github.com/qurafa/
