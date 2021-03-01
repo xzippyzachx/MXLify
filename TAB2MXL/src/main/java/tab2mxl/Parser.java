@@ -98,6 +98,9 @@ public class Parser {
 		char note = ' ';
 		int chordOctave = 0;
 		boolean chord;
+		boolean hammer =false;
+		boolean hammerDone = false;
+
 		String[] tune = new String[stringAmount];
 		int[] tuningOctave = new int[stringAmount];
 		Boolean defaultTune = false;
@@ -177,8 +180,16 @@ public class Parser {
 			for(int j = 0; j < col.length; j++)
 			{
 				character = col[j];
+
+				if( i<columns.size()-1&& j<col.length-1 && columns.get(i+1)[j] == 'h'){
+					dash = hamererOnDuration(columns.get(i+2)[j],i+2);
+					hammer = true;
+					hammerDone = false;
+				}
+
 				// To check what type of note we have, by checking ahead
-				if(character != '-' && character != '|') {
+
+				else if(character != 'h' && character != '-' && character != '|') {
 					dash = 1;
 					boolean test;
 					for(int k = i+1; k < columns.size()-1; k++) {
@@ -217,11 +228,12 @@ public class Parser {
 				}			
 
 				double beatNote = (dash * beatTypeNote)/div;
+
 				//Finds the string and fret of a note
 				gate++;
 				line++;
 				
-				if (character != '-' && character != '|' && gate>=7) {
+				if (character != 'h' && character != '-' && character != '|' && gate>=7) {
 					fret = Character.getNumericValue(character);
 					if(fret < 0)
 					{
@@ -234,8 +246,17 @@ public class Parser {
 						}
 						//linearray[j] = line;
 						//System.out.println("line " + line + " and fret " + fret);
-						fileGen.addNote(line, fret, tunner.getNote(tune[line-1], fret), noteType(beatNote), getDuration(beatNote), tunner.getOctave(tune[line-1], fret), dot(beatNote),sharpnote);
+						fileGen.addNote(line, fret, tunner.getNote(tune[line-1], fret), noteType(beatNote), getDuration(beatNote), tunner.getOctave(tune[line-1], fret), dot(beatNote),sharpnote,hammer,hammerDone);
 						sharpnote = false;
+
+						if(hammer && !hammerDone){
+							hammerDone = true;
+						}
+
+						if(hammerDone){
+							hammer = false;
+						}
+
 					}
 					else {
 						linearray[j] = line;
@@ -289,7 +310,29 @@ public class Parser {
 		
 		return output;
 	}
-	
+
+	private int hamererOnDuration(char afterhammer, int i){
+		if( afterhammer!= '-' && afterhammer != '|') {
+			int dash = 1;
+			boolean test;
+			for(int k = i+1; k < columns.size()-1; k++) {
+				if(!containsOnlyChar(columns.get(k), '|'))
+				{
+					test = containsOnlyChar(columns.get(k), '-');
+					if(test) {
+						dash++;
+					}else {
+						break;
+					}
+				}
+				else
+					break;
+			}
+			return dash;
+		}
+		return 1;
+	};
+
 	private boolean containsOnlyInt(int[] cs, int o) {
 		boolean output = true;
 		
@@ -420,13 +463,16 @@ public class Parser {
 				break;
 			}
 			
-			if(columns.get(i)[0] == '-') {
+			if(columns.get(i)[0] == '-' || columns.get(i)[0] == 'h') {
 				hyfenNumber++;
 			}
 			else {
 				if(i==0) {
 				
 			}
+				else if(columns.get(i-1)[0] == 'h') {
+					hyfenNumber++;
+				}
 				else if(columns.get(i-1)[0] != '-') {
 					
 				}
@@ -440,10 +486,12 @@ public class Parser {
 		double totalBeatPerMeasure = bSig/beatType;
 		double division = (hyfenNumber * beatNote)/totalBeatPerMeasure;
 		//System.out.println("TBM: " + totalBeatPerMeasure);
+		System.out.println("hyfen number is "+hyfenNumber);
 		System.out.println("Division: " + division);
 
 		return (int)Math.round(division);
 	}
+
 	
 	static void addTitle(String title){
 		misc.put("Title",title);

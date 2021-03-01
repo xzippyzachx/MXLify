@@ -249,7 +249,7 @@ public class FileGenerator {
 	 * @param fret
 	 * @param note
 	 */
-	public void addNote(int string, int fret, String note, String noteType, int duration, int octave, int dot,boolean alter)
+	public void addNote(int string, int fret, String note, String noteType, int duration, int octave, int dot,boolean alter,boolean hammer,boolean hammerDone)
 	{
 		//if(measureNum > 0) {
 		try {
@@ -284,12 +284,26 @@ public class FileGenerator {
 			myWriter.write(currentIndent + "<technical>");
 			currentIndent += "  ";
 			newLine();
+			if(hammer){
+			myWriter.write(currentIndent + "<hammer-on number=\"1\" type=\"start\">H</hammer-on>");
+			}
+			else if(hammer && hammerDone){
+				myWriter.write(currentIndent + "<hammer-on number=\"1\" type=\"stop\"/>");
+			}
+			newLine();
 			myWriter.write(currentIndent + "<string>" + string + "</string>");
 			newLine();
 			myWriter.write(currentIndent + "<fret>" + fret + "</fret>");
 			newLine();
 			tabBack();
 			myWriter.write(currentIndent + "</technical>");
+			newLine();
+			if(hammer){
+				myWriter.write(currentIndent + "<slur number=\"1\" placement=\"above\" type=\"start\"/>");
+			}
+			else if(hammer && hammerDone){
+				myWriter.write(currentIndent + "<slur number=\"1\" type=\"stop\"/>");
+			}
 			newLine();
 			tabBack();
 			myWriter.write(currentIndent + "</notations>");

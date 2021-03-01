@@ -145,6 +145,7 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
         sheetMusicToggle.setSelectedColor(ColorDef.CUSTOM_BLUE);
         sheetMusicToggle.setRised(false);		
         sheetMusicToggle.setText("Sheet Music");
+        JLabel togglelabel = new JLabel("Sheet Music");
         sheetMusicToggle.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -159,6 +160,7 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 			}
 		});
         togglepanel.add(sheetMusicToggle);
+        togglepanel.add(togglelabel);
 		Border togglePadding = BorderFactory.createEmptyBorder(0, 40, 0, 0);
 		togglepanel.setBorder(togglePadding);
         inputpanel.add(convertButton);
@@ -201,7 +203,7 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 			}
 			
 			String[] inputText = textField.getText().split("\n");
-			
+			System.out.println(inputText);
 			ArrayList<ArrayList<String>> input = new ArrayList<ArrayList<String>>();
 			
 			for (String line : inputText) {	
