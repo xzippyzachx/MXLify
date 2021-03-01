@@ -1,4 +1,4 @@
-# Tablature To MusicXML Converter
+# MXLify - Tablature To MusicXML Converter
 
 ---
 
