@@ -5,7 +5,7 @@
 ## Description
 This software is used to convert text tablature into a MusicXML file, which can then be used in professional-level music software.
 
-See the user manual document for install and usage instructions
+See the [User Manual Document](https://github.com/xzippyzachx/softwareproject_group9/blob/master/UserManual.pdf) for install and usage instructions
 
 ---
 
