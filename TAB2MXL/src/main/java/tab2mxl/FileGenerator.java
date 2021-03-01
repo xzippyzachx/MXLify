@@ -16,7 +16,7 @@ public class FileGenerator {
 	
 	
 	boolean failed = false;
-	
+	static int measureNum = 0;
 	File saveFile;
 	FileWriter myWriter;
 	static String filepath;
@@ -28,20 +28,20 @@ public class FileGenerator {
 	FileGenerator (String path) {	
 		JFileChooser fileChooser = null;
 		int response = 0;
-		if(path == "")
-		{
+		if(path == "") {
 			fileChooser = new JFileChooser(prefs.get(LAST_USED_FOLDER_SAVE, new File(".").getAbsolutePath())); // Create file chooser
-			fileChooser.setFileFilter(new FileNameExtensionFilter("musicxml file","musicxml"));
-			response = fileChooser.showSaveDialog(null); //Select file to save
+			fileChooser.setFileFilter(new FileNameExtensionFilter("music xml","musicxml","mxl"));
+			response = fileChooser.showSaveDialog(null); //Select file to save			
 		}
-		
-		
+				
 		if (response == JFileChooser.APPROVE_OPTION) { // if File successively chosen
 			
-			if(path == "") {
-				
+			if(path == "") {	
+				prefs.put(LAST_USED_FOLDER_SAVE, fileChooser.getSelectedFile().getParent()); // Save file path
 				filepath = fileChooser.getSelectedFile().getAbsolutePath();
-				saveFile = new File(filepath); //Print out path
+				if (!filepath.substring(filepath.lastIndexOf(".")+1).equals("musicxml") && !filepath.substring(filepath.lastIndexOf(".")+1).equals("mxl"))     
+					filepath += ".musicxml"; //Add extension to file if not already added
+				saveFile = new File(filepath);
 			}
 			else {
 				filepath= path;
@@ -205,7 +205,7 @@ public class FileGenerator {
 			tabBack();
 			myWriter.write(currentIndent + "</clef>");			
 			newLine();
-			myWriter.write(currentIndent + "<staff-details number = \"" + 2 + "\">");
+			myWriter.write(currentIndent + "<staff-details>");
 			currentIndent += "  ";
 			newLine();
 			myWriter.write(currentIndent + "<staff-lines>" + tune.length + "</staff-lines>");
@@ -240,14 +240,35 @@ public class FileGenerator {
 		
 	}
 	
+	public void addRest(int duration, String noteType) {
+		try {
+			
+			myWriter.write(currentIndent + "<note>");
+			currentIndent += "  ";
+			newLine();
+			myWriter.write(currentIndent + "<rest/>");
+			newLine();
+			myWriter.write(currentIndent + "<duration>" + duration + "</duration>");
+			newLine();
+			myWriter.write(currentIndent + "<type>" + noteType + "</type>");
+			newLine();
+			tabBack();
+			myWriter.write(currentIndent + "</note>");		
+			newLine();
+		}catch(IOException e) {
+			
+		}
+	}
+	
 	/**
 	 * Adds a note to the MusicXML
 	 * @param string
 	 * @param fret
 	 * @param note
 	 */
-	public void addNote(int string, int fret, String note, String noteType, int duration, int octave, int dot)
+	public void addNote(int string, int fret, String note, String noteType, int duration, int octave, int dot,boolean alter)
 	{
+		//if(measureNum > 0) {
 		try {
 			myWriter.write(currentIndent + "<note>");
 			currentIndent += "  ";
@@ -257,6 +278,10 @@ public class FileGenerator {
 			newLine();
 			myWriter.write(currentIndent + "<step>" + note + "</step>");
 			newLine();
+			if (alter) {
+				myWriter.write(currentIndent + "<alter>" + 1 + "</alter>");
+				newLine();
+			}
 			myWriter.write(currentIndent + "<octave>" + octave + "</octave>");
 			newLine();
 			tabBack();
@@ -296,6 +321,7 @@ public class FileGenerator {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		//}
 	}
 	
 	/**
@@ -304,61 +330,71 @@ public class FileGenerator {
 	 * @param noteType
 	 */
 
-	public void addChord(char[] chord, String noteType, int duration, int[] octaves,int[] string, int[] fret, int[] dot) {
+	public void addChord(char[] chord, String noteType, int duration, int[] octaves,int[] string, int[] fret, int[] dot,boolean[] alter) {
+		//if(measureNum >= 1) {
+		boolean firstDone = false;
 		for (int i = chord.length-1; i>=0;i--) {
-			try {	
-			myWriter.write(currentIndent + "<note>");
-			currentIndent += "  ";
-			newLine();
-			if(i<chord.length-1) {
-				myWriter.write(currentIndent + "<chord/>");
-				newLine();
-			}
-			myWriter.write(currentIndent + "<pitch>");
-			currentIndent += "  ";
-			newLine();
-			myWriter.write(currentIndent + "<step>" + chord[i] + "</step>");
-			newLine();
-			myWriter.write(currentIndent + "<octave>" + octaves[i]+ "</octave>");
-			newLine();
-			myWriter.write(currentIndent + "</pitch>"); 
-			newLine();
-			tabBack();
-			myWriter.write(currentIndent + "<duration>" + duration + "</duration>"); 
-			newLine();
-			myWriter.write(currentIndent + "<type>" + noteType +"</type>"); 
-			newLine();
-			for(int j  = 0; j < dot[i]; j++) {
-				myWriter.write(currentIndent + "<dot/>");
-				newLine();
-			}
-			myWriter.write(currentIndent + "<notations>");
-			newLine();
-			currentIndent += "  ";
-			myWriter.write(currentIndent + "<technical>");
-			currentIndent += "  ";
-			newLine();
-			myWriter.write(currentIndent + "<string>" + string[i] + "</string>");
-			newLine();
-			myWriter.write(currentIndent + "<fret>" + fret[i] + "</fret>");
-			newLine();
-			tabBack();
-			myWriter.write(currentIndent + "</technical>");
-			newLine();
-			tabBack();
-			myWriter.write(currentIndent + "</notations>");
-			newLine();
-			myWriter.write(currentIndent + "<stem>down</stem>"); 
-			newLine();
-			myWriter.write(currentIndent + "<staff>1</staff>");
-			newLine();
-			tabBack();
-			myWriter.write(currentIndent + "</note>");		
-			newLine();
-			} catch (IOException e) {
-				e.printStackTrace();
+			if(string[i] != 0) {
+				try {	
+					myWriter.write(currentIndent + "<note>");
+					currentIndent += "  ";
+					newLine();
+					if(firstDone) {
+						myWriter.write(currentIndent + "<chord/>");
+						newLine();
+					}
+					myWriter.write(currentIndent + "<pitch>");
+					currentIndent += "  ";
+					newLine();
+					myWriter.write(currentIndent + "<step>" + chord[i] + "</step>");
+					newLine();
+					if (alter[i]) {
+						myWriter.write(currentIndent + "<alter>" + 1 + "</alter>");
+						newLine();
+					}
+					myWriter.write(currentIndent + "<octave>" + octaves[i]+ "</octave>");
+					newLine();
+					myWriter.write(currentIndent + "</pitch>"); 
+					newLine();
+					tabBack();
+					myWriter.write(currentIndent + "<duration>" + duration + "</duration>"); 
+					newLine();
+					myWriter.write(currentIndent + "<type>" + noteType +"</type>"); 
+					newLine();
+					for(int j  = 0; j < dot[i]; j++) {
+						myWriter.write(currentIndent + "<dot/>");
+						newLine();
+					}
+					myWriter.write(currentIndent + "<notations>");
+					newLine();
+					currentIndent += "  ";
+					myWriter.write(currentIndent + "<technical>");
+					currentIndent += "  ";
+					newLine();
+					myWriter.write(currentIndent + "<string>" + string[i] + "</string>");
+					newLine();
+					myWriter.write(currentIndent + "<fret>" + fret[i] + "</fret>");
+					newLine();
+					tabBack();
+					myWriter.write(currentIndent + "</technical>");
+					newLine();
+					tabBack();
+					myWriter.write(currentIndent + "</notations>");
+					newLine();
+					myWriter.write(currentIndent + "<stem>down</stem>"); 
+					newLine();
+					myWriter.write(currentIndent + "<staff>1</staff>");
+					newLine();
+					tabBack();
+					myWriter.write(currentIndent + "</note>");		
+					newLine();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				firstDone = true;
 			}
 		}
+		//}
 	}
 	
 	/**
@@ -372,6 +408,7 @@ public class FileGenerator {
 			currentIndent += "  ";
 			newLine();
 			measureOpen = true;
+			//measureNum = measureNumber;
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

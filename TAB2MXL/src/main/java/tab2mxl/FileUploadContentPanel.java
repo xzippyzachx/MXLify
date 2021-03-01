@@ -40,6 +40,7 @@ import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class FileUploadContentPanel extends JPanel implements ActionListener {
 
@@ -52,31 +53,21 @@ public class FileUploadContentPanel extends JPanel implements ActionListener {
 
 	FileUploadContentPanel() {
 
-		//////////////////////
-		// File Upload Screen
-		//////////////////////
-
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS)); // sets layout to be vertical
 		Border padding = BorderFactory.createEmptyBorder(10, 0, 10, 10);
 		this.setBorder(padding); // adds a basic border around the frame
 
-//		BACK BUTTON REMOVED
-//		// creates back button container adds button to the top left of the content
-//		// panel
-//		JPanel backPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-//		backButton = new JButton("Back");
-//		backButton.addActionListener(this);
-//		backPanel.add(backButton);
-//		this.add(backPanel);
-
 		// creates panel to place the main body elements
 		JPanel OptionsPanel = new JPanel(new GridLayout(2,1)); // 
-		Border OptionsPadding = BorderFactory.createEmptyBorder(100, 00, 55, 0);
+		Border OptionsPadding = BorderFactory.createEmptyBorder(100, 00, 50, 0);
 		OptionsPanel.setBorder(OptionsPadding);
+		OptionsPanel.setOpaque(false);
 
 		// creates panel for the upload label and button to go into
 		JPanel UploadPanel = new JPanel();
 		UploadPanel.setLayout(new GridLayout(1,1)); // sets layout of this panel to be vertical
+
+		UploadPanel.setOpaque(false);
 //		JPanel SpacePanelTop = new JPanel(); // makes the top quarter of the UploadPanel empty space
 //		JPanel SpacePanelBottom = new JPanel();  // makes the bottom quarter of the UploadPanel empty space
 		//JPanel LabelPanel = new JPanel(new GridBagLayout()); // allows us centering of the label
@@ -102,171 +93,78 @@ public class FileUploadContentPanel extends JPanel implements ActionListener {
 //		UploadPanel.add(LabelPanel);
 
 		JPanel ButtonPanel = new JPanel(); // creates panel for button
-		ButtonPanel.setLayout(new BoxLayout(ButtonPanel, BoxLayout.Y_AXIS));
-		Border ButtonPadding = BorderFactory.createEmptyBorder(20, 65, 0, 0);
+		ButtonPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+		Border ButtonPadding = BorderFactory.createEmptyBorder(10, 0, 0, 0);
 		ButtonPanel.setBorder(ButtonPadding);
-//		ButtonPanel.setLayout(new GridBagLayout()); // centers the button in that panel
 
-		selectButton = new JButton("Select Tablature Text File"); // Select File button
+
+		ButtonPanel.setOpaque(false);
+
+
+		selectButton = new JButton("Select File"); // Select File button
 		selectButton.setBackground(new Color(33,150,243));
 		selectButton.setForeground(new Color(224,224,224));
-//		selectButton.setBounds(100,100,250,100);
-		//selectButton.setForeground(Color.WHITE); // Customize button
-		//selectButton.setBackground(Color.BLACK);
-		//selectButton.setOpaque(true);
-		//selectButton.setBorderPainted(false);
+		selectButton.setOpaque(true);
+		selectButton.setBorderPainted(false);
+
 		selectButton.setFocusable(false);
 		selectButton.addActionListener(this); // Button action
 		ButtonPanel.add(selectButton);
 		
 		UploadPanel.add(ButtonPanel); // adds button panel to the upload panel
-//		UploadPanel.add(SpacePanelBottom); 
-		
-		// creates a panel for the drop label and drop box to go into
+
 		FileDropPanel DropPanel = new FileDropPanel();
 		Border DropPadding = BorderFactory.createEmptyBorder(20, 0, 0, 0);
 		DropPanel.setBorder(DropPadding);
-//		DropPanel.setLayout(new BoxLayout(DropPanel, BoxLayout.Y_AXIS));// sets layout to vertical
-//		Border DropPadding = BorderFactory.createEmptyBorder(0, 45, 15, 0);
-//		DropPanel.setBorder(DropPadding);
-//		JLabel DropLabel = new JLabel("Drop Tablature to Convert to MusicXML");
-//		
-//		DropLabel.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 16));
-//		DropPanel.add(DropLabel);
-//		/**
-//		 * to do: create the drop box for dropping in a text file
-//		 */
-//		
-//		JLabel dropLoc = new JLabel("Drag File Here!",SwingConstants.CENTER);
-//		dropLoc.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 16));
-//		dropLoc.setForeground(Color.red);
-//		 MyDragDropListener myDragDropListener = new MyDragDropListener();
-//
-//	    // Connect the label with a drag and drop listener
-//	    new DropTarget(dropLoc, myDragDropListener);
-//
-//	    // Add the label to the content
-//	    DropPanel.add(dropLoc);
 		
 		OptionsPanel.add(DropPanel);
 		OptionsPanel.add(UploadPanel);
 		
-
-		// JLabel label = new JLabel("Upload Tablature to Convert to MusicXML:");
-		// label.setBounds(100, -100, 300, 300);
-
-		// this.add(label);
-		
 		this.add(OptionsPanel);
-
+		this.setOpaque(false);
 		this.setVisible(true);
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
-			if (e.getSource() == selectButton && !Main.isInPopUp) { // Button click
-				JFileChooser fileChooser = new JFileChooser(
-						prefs.get(LAST_USED_FOLDER, new File(".").getAbsolutePath())); // Create file chooser
-				ArrayList<ArrayList<String>> input = new ArrayList<ArrayList<String>>();
+		if (e.getSource() == selectButton && !Main.isInPopUp) { // Button click
+			
+			FileNameExtensionFilter filter = new FileNameExtensionFilter("*.txt", "txt");				
+			JFileChooser fileChooser = new JFileChooser(prefs.get(LAST_USED_FOLDER, new File(".").getAbsolutePath())); // Create file chooser
+			fileChooser.setFileFilter(filter); // Only allow .txt files
+			
+			ArrayList<ArrayList<String>> input = new ArrayList<ArrayList<String>>();
 
-				int response = fileChooser.showOpenDialog(null); // Select file to open
-				// fileChooser.showSaveDialog(null); //Select file to save
+			int response = fileChooser.showOpenDialog(null); // Select file to open
 
-				if (response == JFileChooser.APPROVE_OPTION) { // if File successively chosen
+			if (response == JFileChooser.APPROVE_OPTION) { // if File successively chosen
 
-					File file = new File(fileChooser.getSelectedFile().getAbsolutePath()); // Print out path
-					System.out.println("File Location: " + file + "\n");
+				File file = new File(fileChooser.getSelectedFile().getAbsolutePath()); // Print out path
+				System.out.println("File Location: " + file + "\n");
 
-					prefs.put(LAST_USED_FOLDER, fileChooser.getSelectedFile().getParent()); // Save file path
+				prefs.put(LAST_USED_FOLDER, fileChooser.getSelectedFile().getParent()); // Save file path
 
-					try {
-						BufferedReader reader = new BufferedReader(new FileReader (file));
-					    String         line = null;
-					    StringBuilder  stringBuilder = new StringBuilder();
-					    String         ls = System.getProperty("line.separator");
-				    
-				        while((line = reader.readLine()) != null) {
-				            stringBuilder.append(line);
-				            stringBuilder.append(ls);
-				        }
+				try {
+					BufferedReader reader = new BufferedReader(new FileReader (file));
+				    String         line = null;
+				    StringBuilder  stringBuilder = new StringBuilder();
+				    String         ls = System.getProperty("line.separator");
+			    
+			        while((line = reader.readLine()) != null) {
+			            stringBuilder.append(line);
+			            stringBuilder.append(ls);
+			        }
 
-				        Main.FileUploaded(stringBuilder.toString());
-				        
-				        reader.close();
-				    } catch (IOException e1) {
-						e1.printStackTrace();
-					}
+			        Main.FileUploaded(stringBuilder.toString());
+			        
+			        reader.close();
+			    } catch (IOException e1) {
+					e1.printStackTrace();
 				}
-			}
-		
-	}
-
-}
-
-class MyDragDropListener implements DropTargetListener {
-
-	@Override
-	public void drop(DropTargetDropEvent event) {
-		
-		if(Main.isInPopUp)
-			return;
-
-		event.acceptDrop(DnDConstants.ACTION_COPY); // Accept copy drops
-
-		Transferable transferable = event.getTransferable(); // Get the transfer which can provide the dropped item data
-
-		DataFlavor[] flavors = transferable.getTransferDataFlavors(); // Get the data formats of the dropped item
-
-		for (DataFlavor flavor : flavors) { // Loop through the flavors
-
-			try {
-
-				// If the drop items are files
-				if (flavor.isFlavorJavaFileListType()) {
-
-					// Get all of the dropped files
-					List files = (List) transferable.getTransferData(flavor);
-
-					// Loop them through
-					for (Object file : files) {
-						FileUploadContentPanel.dropFilePath = ((File) (file)).getPath();
-
-						// Print out the file path
-						System.out.println("File path is '" + ((File) (file)).getPath() + "'.");
-
-					}
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
 			}
 		}
-		event.dropComplete(true); // Inform that the drop is complete
 	}
-
-	@Override
-	public void dragEnter(DropTargetDragEvent arg0) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void dragExit(DropTargetEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void dragOver(DropTargetDragEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void dropActionChanged(DropTargetDragEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
-
+	
 }
+

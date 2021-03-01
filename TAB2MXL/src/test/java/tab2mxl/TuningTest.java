@@ -46,7 +46,6 @@ class TuningTest {
 		assertEquals("G", tunning.getNote("E", 3));     //Testing notes from different positions
 		assertEquals("F", tunning.getNote("E", 1));
 		assertEquals("C#", tunning.getNote("E", 21));
-		
 		assertEquals("C#", tunning.getNote("D", 11));
 		assertEquals("B", tunning.getNote("G", 4));
 		

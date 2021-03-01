@@ -39,8 +39,7 @@ public class DragDropListener implements DropTargetListener{
 					List files = (List) transferable.getTransferData(flavor);
 
 					// Loop through
-					for (Object file : files) {
-						FileDropPanel.dropFilePath = ((File) (file)).getPath();						
+					for (Object file : files) {										
 						
 						try {
 							BufferedReader reader = new BufferedReader(new FileReader ((File) file));
@@ -52,10 +51,26 @@ public class DragDropListener implements DropTargetListener{
 					            stringBuilder.append(line);
 					            stringBuilder.append(ls);
 					        }
+					        
+					        String fileName = ((File) (file)).getName();
+							String extension = "";
 
-					        Main.FileUploaded(stringBuilder.toString());
+							int i = fileName.lastIndexOf('.');
+							int p = Math.max(fileName.lastIndexOf('/'), fileName.lastIndexOf('\\'));
+
+							if (i > p)
+							    extension = fileName.substring(i+1);
+							
+							System.out.println(extension);
+							
+							if(extension.equals(".txt") || extension.equals("txt"))
+							{
+								FileDropPanel.dropFilePath = ((File) (file)).getPath();
+								Main.FileUploaded(stringBuilder.toString());
+							}								
 					        
 					        reader.close();
+					        
 					    } catch (IOException e1) {
 							e1.printStackTrace();
 						}

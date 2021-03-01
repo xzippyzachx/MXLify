@@ -7,6 +7,8 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.Point;
 
 import javax.swing.BorderFactory;
@@ -26,10 +28,9 @@ public class ClearPopUp extends PopupFactory implements ActionListener{
 	JButton noButton;
 	
 	String input;
-	MyFrame myFrame;
-	
+	MyFrame myFrame;	
 		
-	ClearPopUp (Component owner, String input){
+	ClearPopUp (Component owner, String input, String message){
 				
 		
 		
@@ -45,7 +46,7 @@ public class ClearPopUp extends PopupFactory implements ActionListener{
         
         JPanel titlepanel = new JPanel();
         titlepanel.setLayout(new FlowLayout());
-        JLabel title = new JLabel("Override Current Tablature");
+        JLabel title = new JLabel(message);
         title.setForeground(new Color(232, 32, 21));
         title.setFont(new Font(title.getName(), Font.BOLD, 14));
         Border titlePadding = BorderFactory.createEmptyBorder(15, 10, 0, 10);
@@ -61,6 +62,8 @@ public class ClearPopUp extends PopupFactory implements ActionListener{
         yesButton.setForeground(new Color(224,224,224));
         yesButton.setFocusable(false);
         yesButton.addActionListener(this);
+        yesButton.setOpaque(true);
+        yesButton.setBorderPainted(false);
         
         //Button hover effects
         yesButton.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -82,15 +85,17 @@ public class ClearPopUp extends PopupFactory implements ActionListener{
         noButton.setForeground(new Color(224,224,224));
         noButton.setFocusable(false);
         noButton.addActionListener(this);
+        noButton.setOpaque(true);
+        noButton.setBorderPainted(false);
         
         //Button hover effects
-        noButton.addMouseListener(new java.awt.event.MouseAdapter() {
-    	    public void mouseEntered(java.awt.event.MouseEvent evt) {
+        noButton.addMouseListener(new MouseAdapter() {
+    	    public void mouseEntered(MouseEvent evt) {
     	    	noButton.setBackground(new Color(60,160,243));
     	    	noButton.setForeground(Color.black);
     	    }
 
-    	    public void mouseExited(java.awt.event.MouseEvent evt) {
+    	    public void mouseExited(MouseEvent evt) {
     	    	noButton.setBackground(new Color(33,150,243));
     	    	noButton.setForeground(new Color(224,224,224));
     	    }
