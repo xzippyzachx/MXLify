@@ -71,9 +71,7 @@ public class Parser {
 				columns.add(new char[stringAmount]);
 				for(int l = 0; l < stringAmount; l++)
 				{
-						columns.get(columns.size()-1)[l] = input.get(l + (layer * stringAmount) + layer).get(i).charAt(0);	
-						//System.out.println("C(" + columns.get(columns.size()-1)[l] + ")");
-				}
+						columns.get(columns.size()-1)[l] = input.get(l + (layer * stringAmount) + layer).get(i).charAt(0);					}
 			}			
 		}
 
@@ -110,7 +108,7 @@ public class Parser {
 		
 		/*adds the tuning of the strings to the tune array if the tuning is
 		 * specified in the TAB, or the default if it isn't*/
-		for(int i = 0; i < input.size(); i++) {
+		for(int i = 0; i < stringAmount; i++) {
 			if(input.get(i).get(0) != "-" && input.get(i).get(0) != "|") {
 				tune[i] = input.get(i).get(0);
 			}
@@ -119,7 +117,7 @@ public class Parser {
 			tune = Tuning.getDefaultTuning(stringAmount);
 			defaultTune = true;
 		}
-		for(int i = 0; i < input.size(); i++) {
+		for(int i = 0; i < stringAmount; i++) {
 			if(input.get(i).get(1) != "-" && input.get(i).get(1) != "|") {
 				if(input.get(i).get(1) == "") {
 					tuningOctave[i] = -1;
@@ -134,17 +132,17 @@ public class Parser {
 			defaultOctave = true;
 		}
 		Tuning tunner = new Tuning(tune, stringAmount, tuningOctave);
-		if(tunner.unSupportedTune == true && !defaultTune)
-		{
-			Main.myFrame.textInputContentPanel.errorText.setText("Tune Not Recognized");
-			return;
-		}
 		if(tunner.unSupportedOctave == true && !defaultOctave)
 		{
 			Main.myFrame.textInputContentPanel.errorText.setText("Octave Not Recognized");
 			return;
 		}
-		
+		if(tunner.unSupportedTune == true && !defaultTune)
+		{
+			Main.myFrame.textInputContentPanel.errorText.setText("Tune Not Recognized");
+			return;
+		}
+
 		//Create the file generator to generate the MusicXML file
 		FileGenerator fileGen = new FileGenerator("");
 		
@@ -206,9 +204,9 @@ public class Parser {
 							break;
 					}
 				}
-				//System.out.println(dash);
+
 				//Finds if there is a new measure
-				if (character == '|')
+				if (character == '|' && (i == 0 || columns.get(i-1)[j] != '|'))
 					count++;				
 				if (count == 6) {
 					measure++;
@@ -228,7 +226,6 @@ public class Parser {
 				}			
 
 				double beatNote = (dash * beatTypeNote)/div;
-
 				//Finds the string and fret of a note
 				gate++;
 				line++;
@@ -244,9 +241,7 @@ public class Parser {
 						if (tunner.getNote(tune[line-1], fret).substring(tunner.getNote(tune[line-1], fret).length()-1,tunner.getNote(tune[line-1], fret).length()).equals("#")){
 							sharpnote = true;
 						}
-						//linearray[j] = line;
-						//System.out.println("line " + line + " and fret " + fret);
-						fileGen.addNote(line, fret, tunner.getNote(tune[line-1], fret), noteType(beatNote), getDuration(beatNote), tunner.getOctave(tune[line-1], fret), dot(beatNote),sharpnote,hammer,hammerDone);
+						fileGen.addNote(line, fret, tunner.getNote(tune[line-1], fret).charAt(0), noteType(beatNote), getDuration(beatNote), tunner.getOctave(tune[line-1], fret), dot(beatNote),sharpnote);
 						sharpnote = false;
 
 						if(hammer && !hammerDone){
@@ -261,13 +256,12 @@ public class Parser {
 					else {
 						linearray[j] = line;
 						fretarray[j] = fret;
-						note = tunner.getNote(tune[line-1], fret).charAt(0);//doesn't the charAt(0) get rid of the sharps?
+						note = tunner.getNote(tune[line-1], fret).charAt(0);
 						chordOctave = tunner.getOctave(tune[line-1], fret);
 						chords[j] = note;
 						chordsOctave[j] = chordOctave;
 						chordType = noteType(beatNote);
 						chordDot[j] = dot(beatNote);
-						//System.out.println("add chord " + line + " and fret " + fret);
 						if (tunner.getNote(tune[line-1], fret).substring(tunner.getNote(tune[line-1], fret).length()-1,tunner.getNote(tune[line-1], fret).length()).equals("#")){
 							sharp[j] = true;
 						}
@@ -367,30 +361,25 @@ public class Parser {
 				break;
 			}
 		}
-		boolean c = true;
+		boolean loop = true;
 
 		temp = check;
 		check2 = check;
-		System.out.println("Temp: " + temp);
-		while(c) {
+		while(loop) {
 			check = check + temp/div;
 			if(check2 < beatNote && beatNote <= check) {
 				output++;
 			}else {
-				c = false;
+				loop = false;
 			}
 			check2 = check2 + temp/div;
 		}
-		//System.out.println("BN: " + beatNote);
-		//System.out.println("Temp: " + temp);
-		//System.out.println("Check: " + check);
-		System.out.println("dot: " + output);
+
 		return output;
 	}
 	
-	protected static String noteType(double beatNote) { //beatNote = 0.0 if a fraction is inputed. May need error checking.
+	protected static String noteType(double beatNote) {
 		String output = "";
-		System.out.println("Note: " + beatNote);
 		
 		if(beatNote >= 2) {
 			output = "double";
@@ -403,9 +392,7 @@ public class Parser {
 		}else if(beatNote  >= 1.0/8.0) {
 			output = "eighth";
 		}else if(beatNote < 1.0/8.0) {
-			System.out.println(beatNote);
 			int div = (int) ((1.0/8.0)/beatNote);
-			System.out.println(div);
 			int maxIndex = 0;
 			double power = 0.0;
 			if(div % 2 != 0) {
@@ -417,7 +404,6 @@ public class Parser {
 					}
 				}
 			}
-			System.out.println(div);
 			while(div != 1) {
 				div = div/2;
 				maxIndex++;
@@ -445,8 +431,6 @@ public class Parser {
 		double div = getDivisions(beat);
 		double beatTypeNote = 1.0/beatType;
 		output = (noteType * div)/beatTypeNote;
-		
-		//System.out.println("Duration: " + output);
 		return (int)output;
 	}
 	
@@ -492,7 +476,7 @@ public class Parser {
 		return (int)Math.round(division);
 	}
 
-	
+
 	static void addTitle(String title){
 		misc.put("Title",title);
 	}

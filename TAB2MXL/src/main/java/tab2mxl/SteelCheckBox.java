@@ -20,7 +20,8 @@ public class SteelCheckBox extends javax.swing.JCheckBox
     {
         super();
         setPreferredSize(new java.awt.Dimension(100, 26));
-    }
+        setOpaque(false);
+        }
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="Getter/Setter">
