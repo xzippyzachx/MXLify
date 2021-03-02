@@ -266,7 +266,7 @@ public class FileGenerator {
 	 * @param fret
 	 * @param note
 	 */
-	public void addNote(int string, int fret, String note, String noteType, int duration, int octave, int dot,boolean alter)
+	public void addNote(int string, int fret, char note, String noteType, int duration, int octave, int dot,boolean alter)
 	{
 		//if(measureNum > 0) {
 		try {
