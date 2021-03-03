@@ -38,9 +38,10 @@ public class FileGenerator {
 		
 		if (response == JFileChooser.APPROVE_OPTION) { // if File successively chosen
 			
-			prefs.put(LAST_USED_FOLDER_SAVE, fileChooser.getSelectedFile().getParent()); // Save file path
+
 			
-			if(path == "") {				
+			if(path == "") {
+				prefs.put(LAST_USED_FOLDER_SAVE, fileChooser.getSelectedFile().getParent()); // Save file path
 				filepath = fileChooser.getSelectedFile().getAbsolutePath();
 				if (!filepath.substring(filepath.lastIndexOf(".")+1).equals("musicxml") && !filepath.substring(filepath.lastIndexOf(".")+1).equals("mxl"))     
 					filepath += ".musicxml"; //Add extension to file if not already added
