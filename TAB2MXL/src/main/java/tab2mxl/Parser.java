@@ -96,8 +96,12 @@ public class Parser {
 		char note = ' ';
 		int chordOctave = 0;
 		boolean chord;
-		boolean hammer =false;
+		boolean hammerOn = false;
+		boolean hammerStart =false;
+		boolean hammerContinue = false;
 		boolean hammerDone = false;
+		int hammerLength = 0;
+		int hammerDuration = 0;
 
 		String[] tune = new String[stringAmount];
 		int[] tuningOctave = new int[stringAmount];
@@ -179,15 +183,27 @@ public class Parser {
 			{
 				character = col[j];
 
-				if( i<columns.size()-1&& j<col.length-1 && columns.get(i+1)[j] == 'h'){
-					dash = hamererOnDuration(columns.get(i+2)[j],i+2);
-					hammer = true;
-					hammerDone = false;
+				if( i+1<columns.size()&& j<col.length && columns.get(i+1)[j] == 'h' && !hammerOn){ // if same row, next col is an h then then begin hammer on
+					int m = i;
+					hammerLength++;
+					while(m+1<columns.size() && columns.get(m+1)[j] =='h'){ // checks length of hammer on
+						hammerLength++;
+						m +=2;
+					}
+					hammerDuration = hamererOnDuration(columns.get(i+2)[j],i+2*(hammerLength-1)); // sets necessary flags to true
+					hammerOn = true;
+					hammerStart = true;
+
+				}
+				if(Character.isDigit(character) && hammerLength > 0){// sets the duration for notes in the hammeron
+					dash = hammerDuration;
+					hammerLength--;
+
 				}
 
-				// To check what type of note we have, by checking ahead
 
-				else if(character != 'h' && character != '-' && character != '|') {
+
+				else if(character != 'h' && character != '-' && character != '|' && !hammerOn) {
 					dash = 1;
 					boolean test;
 					for(int k = i+1; k < columns.size()-1; k++) {
@@ -226,6 +242,7 @@ public class Parser {
 				}			
 
 				double beatNote = (dash * beatTypeNote)/div;
+
 				//Finds the string and fret of a note
 				gate++;
 				line++;
@@ -241,16 +258,24 @@ public class Parser {
 						if (tunner.getNote(tune[line-1], fret).substring(tunner.getNote(tune[line-1], fret).length()-1,tunner.getNote(tune[line-1], fret).length()).equals("#")){
 							sharpnote = true;
 						}
-						fileGen.addNote(line, fret, tunner.getNote(tune[line-1], fret).charAt(0), noteType(beatNote), getDuration(beatNote), tunner.getOctave(tune[line-1], fret), dot(beatNote),sharpnote);
+						fileGen.addNote(line, fret, tunner.getNote(tune[line-1], fret).charAt(0), noteType(beatNote), getDuration(beatNote), tunner.getOctave(tune[line-1], fret), dot(beatNote),sharpnote, hammerStart,hammerContinue,hammerDone);
 						sharpnote = false;
 
-						if(hammer && !hammerDone){
+						if(hammerStart){ // indicates that we have past first note of hammer on
+							hammerStart = false;
+							hammerContinue = true;
+						}
+						if(hammerLength == 1){ // indicates that the next note is the end of the hammer on
+							hammerContinue = false;
 							hammerDone = true;
 						}
-
-						if(hammerDone){
-							hammer = false;
+						if (hammerLength == 0 ){ // indicates that the hammer on is over and back to regular scheduled programming
+							hammerDone = false;
+							hammerOn = false;
+							hammerDuration = 0;
+							hammerLength = 0;
 						}
+
 
 					}
 					else {
