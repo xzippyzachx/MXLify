@@ -163,7 +163,7 @@
       </note>
       <note>
         <pitch>
-          <step>G</step>
+          <step>B</step>
           <octave>3</octave>
         </pitch>
         <duration>2</duration>
@@ -172,7 +172,7 @@
           <technical>
             <hammer-on number="1" type="stop"/>
             <string>4</string>
-            <fret>5</fret>
+            <fret>9</fret>
           </technical>
           <slur number="1" type="stop"/>
         </notations>
@@ -290,15 +290,17 @@
       <note>
         <pitch>
           <step>A</step>
+          <alter>1</alter>
           <octave>4</octave>
         </pitch>
         <duration>4</duration>
         <type>quarter</type>
+        <accidental>sharp</accidental>
         <notations>
           <technical>
             <hammer-on number="1" type="stop"/>
             <string>1</string>
-            <fret>5</fret>
+            <fret>6</fret>
           </technical>
           <slur number="1" type="stop"/>
         </notations>

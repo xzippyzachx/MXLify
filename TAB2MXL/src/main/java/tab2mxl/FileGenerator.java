@@ -278,6 +278,10 @@ public class FileGenerator {
 				myWriter.write(currentIndent + "<dot/>");
 				newLine();
 			}
+			if(alter){
+				myWriter.write(currentIndent + "<accidental>sharp</accidental>");
+				newLine();
+			}
 			myWriter.write(currentIndent + "<notations>");
 			newLine();
 			currentIndent += "  ";
@@ -368,6 +372,10 @@ public class FileGenerator {
 					newLine();
 					for(int j  = 0; j < dot[i]; j++) {
 						myWriter.write(currentIndent + "<dot/>");
+						newLine();
+					}
+					if(alter[i]){
+						myWriter.write(currentIndent + "<accidental>sharp</accidental>");
 						newLine();
 					}
 					myWriter.write(currentIndent + "<notations>");
