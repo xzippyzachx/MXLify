@@ -1,4 +1,4 @@
-package gui_helper;
+package gui;
 
 /**
  *

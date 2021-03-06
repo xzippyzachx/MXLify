@@ -1,7 +1,6 @@
 package tab2mxl;
 
 import java.util.ArrayList;
-
 import gui_panels.MyFrame;
 import gui_popups.ClearPopUp;
 
