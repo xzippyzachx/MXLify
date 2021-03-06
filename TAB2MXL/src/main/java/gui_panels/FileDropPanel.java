@@ -1,4 +1,4 @@
-package tab2mxl;
+package gui_panels;
 
 import java.awt.*;
 import java.awt.dnd.DropTarget;
@@ -7,6 +7,8 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.*;
 import javax.swing.border.Border;
+
+import gui_helper.DragDropListener;
 
 @SuppressWarnings("serial")
 public class FileDropPanel extends JPanel{

@@ -1,7 +1,8 @@
-package tab2mxl;
+package gui_popups;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -9,6 +10,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
+import java.io.IOException;
 import java.awt.Point;
 
 import javax.swing.BorderFactory;
@@ -20,22 +23,23 @@ import javax.swing.Popup;
 import javax.swing.PopupFactory;
 import javax.swing.border.Border;
 
-public class ClearPopUp extends PopupFactory implements ActionListener{
+import gui_panels.MyFrame;
+import tab2mxl.Main;
+
+public class SuccessPopUp extends PopupFactory implements ActionListener{
 
 	Popup popup;
 	
-	JButton yesButton;
-	JButton noButton;
+	JButton okButton;
+	JButton openButton;
 	
-	String input;
-	MyFrame myFrame;	
-		
-	ClearPopUp (Component owner, String input, String message){
+	MyFrame myFrame;
+	String path;
+	
+	public SuccessPopUp (Component owner, String path){
 				
-		
-		
-		this.input = input;
 		myFrame = (MyFrame) owner;
+		this.path = path;
 		
         JPanel panel = new JPanel(); 
         panel.setPreferredSize(new Dimension(300, 100));
@@ -46,61 +50,63 @@ public class ClearPopUp extends PopupFactory implements ActionListener{
         
         JPanel titlepanel = new JPanel();
         titlepanel.setLayout(new FlowLayout());
-        JLabel title = new JLabel(message);
-        title.setForeground(new Color(232, 32, 21));
+        JLabel title = new JLabel("Conversion Was Successful");
+        title.setForeground(new Color(110,199,56));
         title.setFont(new Font(title.getName(), Font.BOLD, 14));
         Border titlePadding = BorderFactory.createEmptyBorder(15, 10, 0, 10);
         title.setBorder(titlePadding);
         titlepanel.add(title);
         
         JPanel inputPanel = new JPanel();
-        inputPanel.setLayout(new FlowLayout());     
+        inputPanel.setLayout(new FlowLayout());
         
-        yesButton = new JButton("Yes");
-        yesButton.setBorderPainted(false);
-        yesButton.setBackground(new Color(33,150,243));
-        yesButton.setForeground(new Color(224,224,224));
-        yesButton.setFocusable(false);
-        yesButton.addActionListener(this);
-        yesButton.setOpaque(true);
-        yesButton.setBorderPainted(false);
+        //Ok button
+        okButton = new JButton("Ok");        
+        okButton.setBorderPainted(false);
+        okButton.setBackground(new Color(33,150,243));
+        okButton.setForeground(new Color(224,224,224));
+        okButton.setFocusable(false);
+        okButton.addActionListener(this);
+        okButton.setOpaque(true);
+        okButton.setBorderPainted(false);
         
         //Button hover effects
-        yesButton.addMouseListener(new java.awt.event.MouseAdapter() {
+        okButton.addMouseListener(new java.awt.event.MouseAdapter() {
     	    public void mouseEntered(java.awt.event.MouseEvent evt) {
-    	    	yesButton.setBackground(new Color(60,160,243));
-    	    	yesButton.setForeground(Color.black);
+    	    	okButton.setBackground(new Color(60,160,243));
+    	    	okButton.setForeground(Color.black);
     	    }
 
     	    public void mouseExited(java.awt.event.MouseEvent evt) {
-    	    	yesButton.setBackground(new Color(33,150,243));
-    	    	yesButton.setForeground(new Color(224,224,224));
+    	    	okButton.setBackground(new Color(33,150,243));
+    	    	okButton.setForeground(new Color(224,224,224));
     	    }
-    	});        
-        inputPanel.add(yesButton);        
+    	});   
+        inputPanel.add(okButton);
         
-        noButton = new JButton("No");
-        noButton.setBorderPainted(false);
-        noButton.setBackground(new Color(33,150,243));
-        noButton.setForeground(new Color(224,224,224));
-        noButton.setFocusable(false);
-        noButton.addActionListener(this);
-        noButton.setOpaque(true);
-        noButton.setBorderPainted(false);
+        //Open button
+        openButton = new JButton("Open");        
+        openButton.setBorderPainted(false);
+        openButton.setBackground(new Color(33,150,243));
+        openButton.setForeground(new Color(224,224,224));
+        openButton.setFocusable(false);
+        openButton.addActionListener(this);
+        openButton.setOpaque(true);
+        openButton.setBorderPainted(false);
         
         //Button hover effects
-        noButton.addMouseListener(new MouseAdapter() {
+        openButton.addMouseListener(new MouseAdapter() {
     	    public void mouseEntered(MouseEvent evt) {
-    	    	noButton.setBackground(new Color(60,160,243));
-    	    	noButton.setForeground(Color.black);
+    	    	openButton.setBackground(new Color(60,160,243));
+    	    	openButton.setForeground(Color.black);
     	    }
 
     	    public void mouseExited(MouseEvent evt) {
-    	    	noButton.setBackground(new Color(33,150,243));
-    	    	noButton.setForeground(new Color(224,224,224));
+    	    	openButton.setBackground(new Color(33,150,243));
+    	    	openButton.setForeground(new Color(224,224,224));
     	    }
-    	});        
-        inputPanel.add(noButton);
+    	});   
+        inputPanel.add(openButton);
         
         Border buttonPadding = BorderFactory.createEmptyBorder(0, 10, 0, 10);
         inputPanel.setBorder(buttonPadding);
@@ -114,21 +120,26 @@ public class ClearPopUp extends PopupFactory implements ActionListener{
         popup = this.getPopup(myFrame, panel, pt.x + frameSize.width/2 - 150, pt.y + frameSize.height/2 - 50);
         popup.show();
         Main.isInPopUp = true;
-}
+	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if(e.getSource() == yesButton)
+		if(e.getSource() == okButton)
 		{
-			myFrame.textInputContentPanel.textField.setText(input);
 			popup.hide();
 			Main.isInPopUp = false;
 		}
-		else
+		else if(e.getSource() == openButton)
 		{
+			if (Desktop.isDesktopSupported()) {
+				try {
+					Desktop.getDesktop().open(new File(path).getParentFile());
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+			}
 			popup.hide();
 			Main.isInPopUp = false;
 		}
 	}	
-	
 }

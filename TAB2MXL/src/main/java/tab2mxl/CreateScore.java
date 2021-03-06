@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.concurrent.TimeUnit;
 
+import gui_panels.TextInputContentPanel;
+
 public class CreateScore {
 	String xmlPath;
 	private static String OS = System.getProperty("os.name").toLowerCase();

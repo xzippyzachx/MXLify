@@ -1,4 +1,4 @@
-package tab2mxl;
+package gui_helper;
 
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
@@ -14,6 +14,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+
+import gui_panels.FileDropPanel;
+import tab2mxl.Main;
 
 public class DragDropListener implements DropTargetListener{
 	@Override

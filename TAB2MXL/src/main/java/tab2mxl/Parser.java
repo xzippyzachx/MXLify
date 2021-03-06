@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import gui_panels.TextInputContentPanel;
+import gui_popups.SuccessPopUp;
+
 public class Parser {
 
 	int stringAmount;
@@ -19,9 +22,9 @@ public class Parser {
 		tabLineAmount = 1;
 		misc = new HashMap<String, String>();
 		
-		addTitle(TextInputContentPanel.title);
-		addTabType(TextInputContentPanel.tabType);
-		addTime(TextInputContentPanel.timeSig);
+		addTitle(TextInputContentPanel.getTitle());
+		addTabType(TextInputContentPanel.getTabType());
+		addTime(TextInputContentPanel.getTimeSig());
 		
 		//set the time signature to default if the inputed time signature isn't in the right format
 		if(misc.get("TimeSig") == "") {
