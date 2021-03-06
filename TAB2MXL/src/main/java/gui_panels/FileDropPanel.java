@@ -8,7 +8,7 @@ import java.awt.event.MouseEvent;
 import javax.swing.*;
 import javax.swing.border.Border;
 
-import gui_helper.DragDropListener;
+import gui.DragDropListener;
 
 @SuppressWarnings("serial")
 public class FileDropPanel extends JPanel{

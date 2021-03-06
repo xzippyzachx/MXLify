@@ -12,10 +12,10 @@ import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.border.Border;
 
-import gui_helper.ColorDef;
-import gui_helper.SteelCheckBox;
-import gui_helper.TextPrompt;
-import gui_helper.TextPrompt.Show;
+import gui.ColorDef;
+import gui.SteelCheckBox;
+import gui.TextPrompt;
+import gui.TextPrompt.Show;
 import gui_popups.ClearPopUp;
 import tab2mxl.CreateScore;
 import tab2mxl.Main;
