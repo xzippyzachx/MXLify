@@ -257,7 +257,7 @@ class FileGeneratorTest {
 		int[] oct = new int[] {1,2,3};
 		int[] dot = new int[] {1,2,3};
 		boolean[] alter = new boolean[] {false,false};
-		fileGen.addChord(notes, "half", 1,oct,frets,lines, dot,alter);
+		fileGen.addChord(notes, "half", 1,oct,frets,lines, dot,alter,-1,false,false,false);
 		fileGen.end();
 		
 		String fileContent = this.readFile();
