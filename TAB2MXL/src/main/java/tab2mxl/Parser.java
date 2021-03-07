@@ -15,7 +15,7 @@ public class Parser {
 	private int beatType;
 	private ArrayList<char[]> columns;
 	public static  Map<String,String> misc;
-	private static double rest;
+	
 	//@SuppressWarnings("unused")
 	Parser(ArrayList<ArrayList<String>> input) {
 		stringAmount = 0;
@@ -105,7 +105,6 @@ public class Parser {
 		boolean hammerDone = false;
 		int hammerLength = 0;
 		int hammerDuration = 0;
-		rest = 0.0;
 		int hammerLocation = -1;
 
 		String[] tune = new String[stringAmount];
@@ -246,12 +245,13 @@ public class Parser {
 							fileGen.attributes(getDivisions(beat), 0, beat, beatType, "G", tune, tuningOctave);
 						}
 					}
-			
-			double beatNote;
-				if(hammerOn){
-					beatNote = beatNote(hammerDuration * beatTypeNote)/div;
 				}
-				else { beatNote = beatNote(dash * beatTypeNote)/div;}
+
+				double beatNote;
+				if(hammerOn){
+					beatNote = (hammerDuration * beatTypeNote)/div;
+				}
+				else { beatNote = (dash * beatTypeNote)/div;}
 
 				//Finds the string and fret of a note
 				gate++;
@@ -274,12 +274,7 @@ public class Parser {
 							hammerLength--;
 						}
 						sharpnote = false;
-						
-						if(rest > 0.0) {
-							fileGen.addRest(getDuration(rest), noteType(rest));
-							rest = 0.0;
-						}
-						
+
 						if(hammerStart){ // indicates that we have past first note of hammer on
 							hammerStart = false;
 							hammerContinue = true;
@@ -294,7 +289,10 @@ public class Parser {
 							hammerDuration = 0;
 							hammerLength = 0;
 						}
-					}else {
+
+
+					}
+					else {
 						linearray[j] = line;
 						fretarray[j] = fret;
 						note = tunner.getNote(tune[line-1], fret).charAt(0);
@@ -305,9 +303,9 @@ public class Parser {
 						chordDot[j] = dot(beatNote);
 						if (tunner.getNote(tune[line-1], fret).substring(tunner.getNote(tune[line-1], fret).length()-1,tunner.getNote(tune[line-1], fret).length()).equals("#")){
 							sharp[j] = true;
-						}else {
-							sharp[j] = false;
 						}
+						else 
+							sharp[j] = false;
 					}
 				}
 				if (line == stringAmount) {
@@ -317,9 +315,9 @@ public class Parser {
 			if (chord) {
 				double beatNote;
 				if(hammerOn){
-					beatNote = beatNote(hammerDuration * beatTypeNote)/div;
+					beatNote = (hammerDuration * beatTypeNote)/div;
 				}
-				else { beatNote = beatNote(dash * beatTypeNote)/div;}
+				else { beatNote = (dash * beatTypeNote)/div;}
 
 				fileGen.addChord(chords,chordType, getDuration(beatNote), chordsOctave,linearray,fretarray, chordDot,sharp,hammerLocation,hammerStart,hammerContinue,hammerDone);
 				linearray = new int[stringAmount];
@@ -345,18 +343,17 @@ public class Parser {
 					hammerLength = 0;
 				}
 			}
-			}
 			currentColumn++;
 		}
-
+		
 		//End the musicxml file
 		if(fileGen.measureOpen)
 			fileGen.closeMeasure();
 		if(fileGen.partOpen)
 			fileGen.closePart();
 		fileGen.end();
-
-		new SuccessPopUp(Main.myFrame, FileGenerator.filepath);	
+		
+		new SuccessPopUp(Main.myFrame, FileGenerator.filepath);		
 	}
 	
 	private boolean containsOnlyChar(char[] cs, char o) {
@@ -389,7 +386,7 @@ public class Parser {
 			return dash;
 		}
 		return 1;
-	}
+	};
 
 	private boolean containsOnlyInt(int[] cs, int o) {
 		boolean output = true;
@@ -411,66 +408,6 @@ public class Parser {
 		return output;
 	}
 	
-	//To get the beatNote in a proper fraction.
-	private double beatNote(double b) {
-		double output = 0.0;
-		int c = 256;
-		if(b > 1.0/c) {
-			System.out.println("BeatNote: " + b);
-			if(b >= 2.0) {
-				output = 2.0;
-				while(b > output) {
-					output += 1.0/c;
-				}
-			}else if(b >= 1.0) {
-				output = 1.0;
-				while(b > output) {
-					output += 1.0/c;
-				}
-			}else if(b >= 1.0/2.0) {
-				output = 1.0/2;
-				while(b > output) {
-					output += 1.0/c;
-				}
-			}else if(b >= 1.0/4.0) {
-				output = 1.0/4;
-				while(b > output) {
-					output += 1.0/c;
-				}
-			}else if(b  >= 1.0/8.0) {
-				output = 1.0/8;
-				while(b > output) {
-					output += 1.0/c;
-				}
-			}else if(b < 1.0/8.0) {
-				double div = ((1.0/8.0)/b);
-				int maxIndex = 0;
-				double power = 0.0;
-				if(div % 2 != 0.0) {
-					while(div % 2 != 0) {
-						if(div < Math.pow(2.0, power)) {
-							div = (int) Math.pow(2, power);
-						}else {
-							power = power + 1.0;
-							c *= 2;
-						}
-					}
-				}
-				while(div != 1) {
-					div = div/2;
-					maxIndex++;
-				}
-				int temp = (int)(Math.pow(2, maxIndex) * 8);
-				output = 1.0/temp;
-				while(b > output) {
-					output += 1.0/c;
-				}
-			}
-		}
-		//System.out.println("BeatNoteOut: " + output);
-		return output;
-	}
-	
 	private int dot(double beatNote) {
 		System.out.println("BeatNote: " + beatNote);
 		int output = 0;
@@ -485,31 +422,20 @@ public class Parser {
 				break;
 			}
 		}
-		System.out.println("Check: " + check);
 		boolean loop = true;
+
 		temp = check;
 		check2 = check;
 		while(loop) {
 			check = check + temp/div;
-			if(check2 < beatNote && beatNote > check) {
-				System.out.println(check2 + " < " + beatNote + " > " + check);
+			if(check2 < beatNote && beatNote <= check) {
 				output++;
-			}else if(beatNote == check) {
-				System.out.println(beatNote + "==" + check);
-				output++;
-				break;
-			}else if(beatNote < check) {
-				if(check - beatNote < check - check2) {
-					//add the rest here
-					rest = beatNote(beatNote - check2);
-				}
-				else {
-					break;
-				}
+			}else {
+				loop = false;
 			}
 			check2 = check2 + temp/div;
 		}
-		System.out.println("");
+
 		return output;
 	}
 	
@@ -561,11 +487,11 @@ public class Parser {
 		return output;
 	}
 	
-	private int getDuration(double beatNote) {
+	private int getDuration(double noteType) {
 		double output = 0;
 		double div = getDivisions(beat);
 		double beatTypeNote = 1.0/beatType;
-		output = (beatNote * div)/beatTypeNote;
+		output = (noteType * div)/beatTypeNote;
 		return (int)output;
 	}
 	
@@ -600,7 +526,6 @@ public class Parser {
 				}
 		}
 			}
-		
 		double beatNote = 1.0/beatType;
 		double bSig  = 1.0 * beatSig;
 		double totalBeatPerMeasure = bSig/beatType;
@@ -609,13 +534,10 @@ public class Parser {
 		System.out.println("hyfen number is "+hyfenNumber);
 		System.out.println("Division: " + division);
 
-		if(division % 0.5 == 0) {
-			return (int) division;
-		}else {
-			return (int)Math.round(division);
-		}
+		return (int)Math.round(division);
 	}
-	
+
+
 	static void addTitle(String title){
 		misc.put("Title",title);
 	}

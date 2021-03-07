@@ -53,8 +53,260 @@
           </staff-tuning>
         </staff-details>
       </attributes>
+      <note>
+        <pitch>
+          <step>A</step>
+          <octave>2</octave>
+        </pitch>
+        <duration>2</duration>
+        <type>eighth</type>
+        <notations>
+          <technical>
+            <hammer-on number="1" type="start">H</hammer-on>
+            <string>6</string>
+            <fret>5</fret>
+          </technical>
+          <slur number="1" placement="above" type="start"/>
+        </notations>
+        <stem>down</stem>
+        <staff>1</staff>
+      </note>
+      <note>
+        <pitch>
+          <step>C</step>
+          <octave>3</octave>
+        </pitch>
+        <duration>2</duration>
+        <type>eighth</type>
+        <notations>
+          <technical>
+            <hammer-on number="1" type="stop"/>
+            <string>6</string>
+            <fret>8</fret>
+          </technical>
+          <slur number="1" type="stop"/>
+        </notations>
+        <stem>down</stem>
+        <staff>1</staff>
+      </note>
+      <note>
+        <pitch>
+          <step>D</step>
+          <octave>3</octave>
+        </pitch>
+        <duration>2</duration>
+        <type>eighth</type>
+        <notations>
+          <technical>
+            <hammer-on number="1" type="start">H</hammer-on>
+            <string>5</string>
+            <fret>5</fret>
+          </technical>
+          <slur number="1" placement="above" type="start"/>
+        </notations>
+        <stem>down</stem>
+        <staff>1</staff>
+      </note>
+      <note>
+        <pitch>
+          <step>E</step>
+          <octave>3</octave>
+        </pitch>
+        <duration>2</duration>
+        <type>eighth</type>
+        <notations>
+          <technical>
+            <hammer-on number="1" type="stop"/>
+            <string>5</string>
+            <fret>7</fret>
+          </technical>
+          <slur number="1" type="stop"/>
+        </notations>
+        <stem>down</stem>
+        <staff>1</staff>
+      </note>
+      <note>
+        <pitch>
+          <step>G</step>
+          <octave>3</octave>
+        </pitch>
+        <duration>2</duration>
+        <type>eighth</type>
+        <notations>
+          <technical>
+            <hammer-on number="1" type="start">H</hammer-on>
+            <string>4</string>
+            <fret>5</fret>
+          </technical>
+          <slur number="1" placement="above" type="start"/>
+        </notations>
+        <stem>down</stem>
+        <staff>1</staff>
+      </note>
+      <note>
+        <pitch>
+          <step>A</step>
+          <octave>3</octave>
+        </pitch>
+        <duration>2</duration>
+        <type>eighth</type>
+        <notations>
+          <technical>
+            <hammer-on number="1" type="stop"/>
+            <hammer-on number="1" type="start">H</hammer-on>
+            <string>4</string>
+            <fret>7</fret>
+          </technical>
+        </notations>
+        <stem>down</stem>
+        <staff>1</staff>
+      </note>
+      <note>
+        <pitch>
+          <step>B</step>
+          <octave>3</octave>
+        </pitch>
+        <duration>2</duration>
+        <type>eighth</type>
+        <notations>
+          <technical>
+            <hammer-on number="1" type="stop"/>
+            <string>4</string>
+            <fret>9</fret>
+          </technical>
+          <slur number="1" type="stop"/>
+        </notations>
+        <stem>down</stem>
+        <staff>1</staff>
+      </note>
+      <note>
+        <pitch>
+          <step>D</step>
+          <octave>4</octave>
+        </pitch>
+        <duration>2</duration>
+        <type>eighth</type>
+        <notations>
+          <technical>
+            <string>3</string>
+            <fret>7</fret>
+          </technical>
+        </notations>
+        <stem>down</stem>
+        <staff>1</staff>
+      </note>
     </measure>
     <measure number="2">
+      <note>
+        <pitch>
+          <step>E</step>
+          <octave>4</octave>
+        </pitch>
+        <duration>2</duration>
+        <type>eighth</type>
+        <notations>
+          <technical>
+            <hammer-on number="1" type="start">H</hammer-on>
+            <string>2</string>
+            <fret>5</fret>
+          </technical>
+          <slur number="1" placement="above" type="start"/>
+        </notations>
+        <stem>down</stem>
+        <staff>1</staff>
+      </note>
+      <note>
+        <pitch>
+          <step>G</step>
+          <octave>4</octave>
+        </pitch>
+        <duration>2</duration>
+        <type>eighth</type>
+        <notations>
+          <technical>
+            <hammer-on number="1" type="stop"/>
+            <hammer-on number="1" type="start">H</hammer-on>
+            <string>2</string>
+            <fret>8</fret>
+          </technical>
+        </notations>
+        <stem>down</stem>
+        <staff>1</staff>
+      </note>
+      <note>
+        <pitch>
+          <step>E</step>
+          <octave>4</octave>
+        </pitch>
+        <duration>2</duration>
+        <type>eighth</type>
+        <notations>
+          <technical>
+            <hammer-on number="1" type="stop"/>
+            <hammer-on number="1" type="start">H</hammer-on>
+            <string>2</string>
+            <fret>5</fret>
+          </technical>
+        </notations>
+        <stem>down</stem>
+        <staff>1</staff>
+      </note>
+      <note>
+        <pitch>
+          <step>G</step>
+          <octave>4</octave>
+        </pitch>
+        <duration>2</duration>
+        <type>eighth</type>
+        <notations>
+          <technical>
+            <hammer-on number="1" type="stop"/>
+            <string>2</string>
+            <fret>8</fret>
+          </technical>
+          <slur number="1" type="stop"/>
+        </notations>
+        <stem>down</stem>
+        <staff>1</staff>
+      </note>
+      <note>
+        <pitch>
+          <step>G</step>
+          <octave>4</octave>
+        </pitch>
+        <duration>4</duration>
+        <type>quarter</type>
+        <notations>
+          <technical>
+            <hammer-on number="1" type="start">H</hammer-on>
+            <string>1</string>
+            <fret>3</fret>
+          </technical>
+          <slur number="1" placement="above" type="start"/>
+        </notations>
+        <stem>down</stem>
+        <staff>1</staff>
+      </note>
+      <note>
+        <pitch>
+          <step>A</step>
+          <alter>1</alter>
+          <octave>4</octave>
+        </pitch>
+        <duration>4</duration>
+        <type>quarter</type>
+        <accidental>sharp</accidental>
+        <notations>
+          <technical>
+            <hammer-on number="1" type="stop"/>
+            <string>1</string>
+            <fret>6</fret>
+          </technical>
+          <slur number="1" type="stop"/>
+        </notations>
+        <stem>down</stem>
+        <staff>1</staff>
+      </note>
     </measure>
   </part>
 </score-partwise>

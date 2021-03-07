@@ -340,7 +340,7 @@ public class FileGenerator {
 	 * @param noteType
 	 */
 
-	public void addChord(char[] chord, String noteType, int duration, int[] octaves,int[] string, int[] fret, int[] dot,boolean[] alter) {
+	public void addChord(char[] chord, String noteType, int duration, int[] octaves,int[] string, int[] fret, int[] dot,boolean[] alter, int HamLocation, boolean hammerStart, boolean hammerContinue, boolean hammerDone) {
 		//if(measureNum >= 1) {
 		boolean firstDone = false;
 		for (int i = chord.length-1; i>=0;i--) {
