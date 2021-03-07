@@ -12,7 +12,7 @@ public class Parser {
 	private int beatType;
 	private ArrayList<char[]> columns;
 	public static  Map<String,String> misc;
-	
+	private static double rest;
 	//@SuppressWarnings("unused")
 	Parser(ArrayList<ArrayList<String>> input) {
 		stringAmount = 0;
@@ -102,6 +102,7 @@ public class Parser {
 		boolean hammerDone = false;
 		int hammerLength = 0;
 		int hammerDuration = 0;
+		rest = 0.0;
 
 		String[] tune = new String[stringAmount];
 		int[] tuningOctave = new int[stringAmount];
@@ -240,9 +241,13 @@ public class Parser {
 						}
 					}
 				}			
-
-				double beatNote = (dash * beatTypeNote)/div;
-
+				System.out.println("Dash: " + dash);
+				System.out.println("BTN: " + beatTypeNote);
+				System.out.println("Div: " + div);
+				System.out.println("BiNPUT: " + (1.0 * dash * beatTypeNote)/div);
+				double beatNote = beatNote((1.0 * dash * beatTypeNote)/div);
+				System.out.println("BoUTPUT: " + beatNote);
+				System.out.println("");
 				//Finds the string and fret of a note
 				gate++;
 				line++;
@@ -260,7 +265,12 @@ public class Parser {
 						}
 						fileGen.addNote(line, fret, tunner.getNote(tune[line-1], fret).charAt(0), noteType(beatNote), getDuration(beatNote), tunner.getOctave(tune[line-1], fret), dot(beatNote),sharpnote, hammerStart,hammerContinue,hammerDone);
 						sharpnote = false;
-
+						
+						if(rest > 0.0) {
+							fileGen.addRest(getDuration(rest), noteType(rest));
+							rest = 0.0;
+						}
+						
 						if(hammerStart){ // indicates that we have past first note of hammer on
 							hammerStart = false;
 							hammerContinue = true;
@@ -275,10 +285,7 @@ public class Parser {
 							hammerDuration = 0;
 							hammerLength = 0;
 						}
-
-
-					}
-					else {
+					}else {
 						linearray[j] = line;
 						fretarray[j] = fret;
 						note = tunner.getNote(tune[line-1], fret).charAt(0);
@@ -289,9 +296,9 @@ public class Parser {
 						chordDot[j] = dot(beatNote);
 						if (tunner.getNote(tune[line-1], fret).substring(tunner.getNote(tune[line-1], fret).length()-1,tunner.getNote(tune[line-1], fret).length()).equals("#")){
 							sharp[j] = true;
-						}
-						else 
+						}else {
 							sharp[j] = false;
+						}
 					}
 				}
 				if (line == stringAmount) {
@@ -299,7 +306,7 @@ public class Parser {
 				}	
 			}
 			if (chord) {
-				double beatNote = (dash * beatTypeNote)/div;
+				double beatNote = beatNote((dash * beatTypeNote)/div);
 				fileGen.addChord(chords,chordType, getDuration(beatNote), chordsOctave,linearray,fretarray, chordDot,sharp);
 				linearray = new int[stringAmount];
 				fretarray = new int[stringAmount];
@@ -372,6 +379,66 @@ public class Parser {
 		return output;
 	}
 	
+	//To get the beatNote in a proper fraction.
+	private double beatNote(double b) {
+		double output = 0.0;
+		int c = 256;
+		if(b > 1.0/c) {
+			System.out.println("BeatNote: " + b);
+			if(b >= 2.0) {
+				output = 2.0;
+				while(b > output) {
+					output += 1.0/c;
+				}
+			}else if(b >= 1.0) {
+				output = 1.0;
+				while(b > output) {
+					output += 1.0/c;
+				}
+			}else if(b >= 1.0/2.0) {
+				output = 1.0/2;
+				while(b > output) {
+					output += 1.0/c;
+				}
+			}else if(b >= 1.0/4.0) {
+				output = 1.0/4;
+				while(b > output) {
+					output += 1.0/c;
+				}
+			}else if(b  >= 1.0/8.0) {
+				output = 1.0/8;
+				while(b > output) {
+					output += 1.0/c;
+				}
+			}else if(b < 1.0/8.0) {
+				double div = ((1.0/8.0)/b);
+				int maxIndex = 0;
+				double power = 0.0;
+				if(div % 2 != 0.0) {
+					while(div % 2 != 0) {
+						if(div < Math.pow(2.0, power)) {
+							div = (int) Math.pow(2, power);
+						}else {
+							power = power + 1.0;
+							c *= 2;
+						}
+					}
+				}
+				while(div != 1) {
+					div = div/2;
+					maxIndex++;
+				}
+				int temp = (int)(Math.pow(2, maxIndex) * 8);
+				output = 1.0/temp;
+				while(b > output) {
+					output += 1.0/c;
+				}
+			}
+		}
+		//System.out.println("BeatNoteOut: " + output);
+		return output;
+	}
+	
 	private int dot(double beatNote) {
 		System.out.println("BeatNote: " + beatNote);
 		int output = 0;
@@ -386,20 +453,31 @@ public class Parser {
 				break;
 			}
 		}
+		System.out.println("Check: " + check);
 		boolean loop = true;
-
 		temp = check;
 		check2 = check;
 		while(loop) {
 			check = check + temp/div;
-			if(check2 < beatNote && beatNote <= check) {
+			if(check2 < beatNote && beatNote > check) {
+				System.out.println(check2 + " < " + beatNote + " > " + check);
 				output++;
-			}else {
-				loop = false;
+			}else if(beatNote == check) {
+				System.out.println(beatNote + "==" + check);
+				output++;
+				break;
+			}else if(beatNote < check) {
+				if(check - beatNote < check - check2) {
+					//add the rest here
+					rest = beatNote(beatNote - check2);
+				}
+				else {
+					break;
+				}
 			}
 			check2 = check2 + temp/div;
 		}
-
+		System.out.println("");
 		return output;
 	}
 	
@@ -451,11 +529,11 @@ public class Parser {
 		return output;
 	}
 	
-	private int getDuration(double noteType) {
+	private int getDuration(double beatNote) {
 		double output = 0;
 		double div = getDivisions(beat);
 		double beatTypeNote = 1.0/beatType;
-		output = (noteType * div)/beatTypeNote;
+		output = (beatNote * div)/beatTypeNote;
 		return (int)output;
 	}
 	
@@ -490,6 +568,7 @@ public class Parser {
 				}
 		}
 			}
+		
 		double beatNote = 1.0/beatType;
 		double bSig  = 1.0 * beatSig;
 		double totalBeatPerMeasure = bSig/beatType;
@@ -498,10 +577,13 @@ public class Parser {
 		System.out.println("hyfen number is "+hyfenNumber);
 		System.out.println("Division: " + division);
 
-		return (int)Math.round(division);
+		if(division % 0.5 == 0) {
+			return (int) division;
+		}else {
+			return (int)Math.round(division);
+		}
 	}
-
-
+	
 	static void addTitle(String title){
 		misc.put("Title",title);
 	}

@@ -411,6 +411,25 @@ public class FileGenerator {
 		//}
 	}
 	
+	public void addRest(int duration, String noteType) {
+		try {
+			myWriter.write(currentIndent + "<note>");
+			currentIndent += "  ";
+			newLine();
+			myWriter.write(currentIndent + "<rest/>");
+			newLine();
+			myWriter.write(currentIndent + "<duration>" + duration + "</duration>");
+			newLine();
+			myWriter.write(currentIndent + "<type>" + noteType + "</type>");
+			newLine();
+			tabBack();
+			myWriter.write(currentIndent + "</note>");
+			newLine();
+		}catch(IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	/**
 	 * Adds a new measure opening to the MusicXML
 	 * @param measureNumber
