@@ -1,4 +1,4 @@
-package tab2mxl;
+package gui_panels;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -12,7 +12,13 @@ import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.border.Border;
 
-import tab2mxl.TextPrompt.Show;
+import gui.ColorDef;
+import gui.SteelCheckBox;
+import gui.TextPrompt;
+import gui.TextPrompt.Show;
+import gui_popups.ClearPopUp;
+import tab2mxl.CreateScore;
+import tab2mxl.Main;
 
 public class TextInputContentPanel extends JPanel implements ActionListener {
 	public JTextArea textField;
@@ -38,9 +44,9 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 	JPanel errorPanel;
 	public JLabel errorText;
 	
-	static String tabType;
-	static String title;
-	static String timeSig;
+	private static String tabType;
+	private static String title;
+	private static String timeSig;
 	
 	
 	TextInputContentPanel(){		
@@ -108,7 +114,7 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
         tabListPanel.setLayout(new GridLayout(0, 1));
         tabListPanel.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 20));
         tabListPanel.setOpaque(false);
-        tabList = new JComboBox(tabTypes);
+        tabList = new JComboBox<Object>(tabTypes);
         tabList.setSelectedIndex(0);
         tabListPanel.add(tabList);
         
@@ -263,14 +269,14 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 					input.add(new ArrayList<String>());
 				}
 			}
-			tabType = tabList.getSelectedItem().toString();
-			title = songName.getText();
-			timeSig = timeSignature.getText();
+			setTabType(tabList.getSelectedItem().toString());
+			setTitle(songName.getText());
+			setTimeSig(timeSignature.getText());
 					
 			errorText.setText("");
 								
 			//Detect if the field is empty
-			if(tabType.equals("") || title.equals("") || timeSig.equals(""))
+			if(getTabType().equals("") || getTitle().equals("") || getTimeSig().equals(""))
 			{
 				errorText.setText("Field Empty");
 			}
@@ -321,6 +327,30 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 	    text = text.replaceAll("\\p{C}", "");
 	 
 	    return text.trim();
+	}
+
+	public static String getTitle() {
+		return title;
+	}
+
+	public static void setTitle(String title) {
+		TextInputContentPanel.title = title;
+	}
+
+	public static String getTabType() {
+		return tabType;
+	}
+
+	public static void setTabType(String tabType) {
+		TextInputContentPanel.tabType = tabType;
+	}
+
+	public static String getTimeSig() {
+		return timeSig;
+	}
+
+	public static void setTimeSig(String timeSig) {
+		TextInputContentPanel.timeSig = timeSig;
 	}
 		
 }

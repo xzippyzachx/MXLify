@@ -1,4 +1,4 @@
-package tab2mxl;
+package gui;
 
 import java.awt.*;
 import java.awt.event.*;
