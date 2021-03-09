@@ -53,29 +53,26 @@ public class Parser {
 //		System.out.println("beat: " + beat);
 //		System.out.println("beatType: " + beatType);
 		
-		for(int i = 0; i < input.size(); i++)
-		{			
+		for(int i = 0; i < input.size(); i++) {			
 			if(input.get(i).size() < 2)
 				break;
 			stringAmount++;
 		}
 		
-		for(int i = 0; i < input.size(); i++)
+		for(int i = 0; i < input.size(); i++) {
 			if(input.get(i).size() < 2 && input.get(i-1).size() > 2 && i != input.size())
 				tabLineAmount++;
+		}
 				
 		//Transpose columns to rows (do you mean rows to col?)
 		columns = new ArrayList<char[]>();
 		
-		for(int layer = 0; layer < tabLineAmount; layer++)
-		{
-			for(int i = 2; i < input.get((layer * stringAmount) + layer).size(); i++)
-			{
+		for(int layer = 0; layer < tabLineAmount; layer++) {
+			for(int i = 2; i < input.get((layer * stringAmount) + layer).size(); i++) {
 				columns.add(new char[stringAmount]);
 				for(int l = 0; l < stringAmount; l++)
-				{
-						columns.get(columns.size()-1)[l] = input.get(l + (layer * stringAmount) + layer).get(i).charAt(0);					}
-			}			
+					columns.get(columns.size()-1)[l] = input.get(l + (layer * stringAmount) + layer).get(i).charAt(0);
+			}		
 		}
 
 		char[] chords = new char[stringAmount];
@@ -98,6 +95,7 @@ public class Parser {
 		int notesInColumn = 0;
 		char note = ' ';
 		int chordOctave = 0;
+		boolean doubleDigit;
 		boolean chord;
 		boolean hammerOn = false;
 		boolean hammerStart =false;
@@ -109,8 +107,8 @@ public class Parser {
 
 		String[] tune = new String[stringAmount];
 		int[] tuningOctave = new int[stringAmount];
-		Boolean defaultTune = false;
-		Boolean defaultOctave = false;
+		boolean defaultTune = false;
+		boolean defaultOctave = false;
         boolean[] sharp = new boolean[stringAmount];
         boolean sharpnote = false;
 		
@@ -121,10 +119,12 @@ public class Parser {
 				tune[i] = input.get(i).get(0);
 			}
 		}
+		
 		if(containsOnlyString(tune, "")) {
 			tune = Tuning.getDefaultTuning(stringAmount);
 			defaultTune = true;
 		}
+		
 		for(int i = 0; i < stringAmount; i++) {
 			if(input.get(i).get(1) != "-" && input.get(i).get(1) != "|") {
 				if(input.get(i).get(1) == "") {
@@ -135,10 +135,12 @@ public class Parser {
 
 			}
 		}
+		
 		if(containsOnlyInt(tuningOctave, -1)) {
 			tuningOctave = Tuning.getDefaultTuningOctave(stringAmount);
 			defaultOctave = true;
 		}
+		
 		Tuning tunner = new Tuning(tune, stringAmount, tuningOctave);
 		if(tunner.unSupportedOctave == true && !defaultOctave)
 		{
@@ -169,6 +171,7 @@ public class Parser {
 		for(int i = 0; i < columns.size(); i++)
 		{
 			col = columns.get(i);
+			doubleDigit = false;
 			chord = false;
 			if(i > 0) {
 				notesInColumn = 0;
@@ -206,34 +209,34 @@ public class Parser {
 //
 //
 //				}
-
-
-
 				else if(character != 'h' && character != '-' && character != '|' && !hammerOn) {
 					dash = 1;
+					int offset = 0;
+					char characterForward = columns.get(i+1)[j];
+					if(Character.isDigit(characterForward))
+						offset++;
+					
 					boolean test;
-					for(int k = i+1; k < columns.size()-1; k++) {
-						if(!containsOnlyChar(columns.get(k), '|')) 
-						{
+					for(int k = i+1+offset; k < columns.size()-1; k++) {
+						if(!containsOnlyChar(columns.get(k), '|')) {
 							test = containsOnlyChar(columns.get(k), '-');
 							if(test) {
 								dash++;
-								}else {
+							}else
 								break;
-								}
-						}
-						else
+						}else
 							break;
 					}
+					
+					System.out.println("Offset: " + offset);					
 				}
 
 				//Finds if there is a new measure
 				if (character == '|' && (i == 0 || columns.get(i-1)[j] != '|'))
-					count++;				
+					count++;
 				if (count == 6) {
 					measure++;
-					count = 0;
-					
+					count = 0;					
 					
 					if(fileGen.measureOpen)
 						fileGen.closeMeasure();
@@ -251,14 +254,29 @@ public class Parser {
 				if(hammerOn){
 					beatNote = (hammerDuration * beatTypeNote)/div;
 				}
-				else { beatNote = (dash * beatTypeNote)/div;}
+				else { 
+					beatNote = (dash * beatTypeNote)/div;
+//					System.out.println("Div: " + div);
+//					System.out.println("BeatTypeNote: " + beatTypeNote);
+//					System.out.println("Dash: " + dash);
+//					System.out.println("BeatNote: " + beatNote);
+				}
 
 				//Finds the string and fret of a note
 				gate++;
 				line++;
 				
-				if (character != 'h' && character != '-' && character != '|' && gate>=7) {
+				if (Character.isDigit(character) && gate>=7) {
 					fret = Character.getNumericValue(character);
+					
+					//This checks for double digits
+					char characterForward = columns.get(i+1)[j];
+					if(Character.isDigit(characterForward))
+					{
+						doubleDigit = true;
+						fret = (fret * 10) + Character.getNumericValue(characterForward);
+					}
+					
 					if(fret < 0)
 					{
 						System.out.println("Bad Char:(" + character + ")");
@@ -290,7 +308,6 @@ public class Parser {
 							hammerLength = 0;
 						}
 
-
 					}
 					else {
 						linearray[j] = line;
@@ -312,6 +329,9 @@ public class Parser {
 					line = 0;
 				}	
 			}
+			
+			
+			//Chord
 			if (chord) {
 				double beatNote;
 				if(hammerOn){
@@ -341,8 +361,14 @@ public class Parser {
 					hammerOn = false;
 					hammerDuration = 0;
 					hammerLength = 0;
-				}
+				}								
 			}
+			
+			if(doubleDigit) { //Skip next line if double digit
+				i++;
+				currentColumn++;
+			}
+			
 			currentColumn++;
 		}
 		
@@ -409,7 +435,7 @@ public class Parser {
 	}
 	
 	private int dot(double beatNote) {
-		System.out.println("BeatNote: " + beatNote);
+		//System.out.println("BeatNote: " + beatNote);
 		int output = 0;
 		double check = 0.0;
 		double check2 = 0.0;
@@ -514,7 +540,7 @@ public class Parser {
 			else {
 				if(i==0) {
 				
-			}
+				}
 				else if(columns.get(i-1)[0] == 'h') {
 					hyfenNumber++;
 				}
@@ -524,17 +550,20 @@ public class Parser {
 				else {
 					hyfenNumber++;
 				}
-		}
 			}
+		}
 		double beatNote = 1.0/beatType;
 		double bSig  = 1.0 * beatSig;
 		double totalBeatPerMeasure = bSig/beatType;
 		double division = (hyfenNumber * beatNote)/totalBeatPerMeasure;
-		//System.out.println("TBM: " + totalBeatPerMeasure);
-		System.out.println("hyfen number is "+hyfenNumber);
-		System.out.println("Division: " + division);
+//		System.out.println("TBM: " + totalBeatPerMeasure);
+//		System.out.println("hyfen number is "+hyfenNumber);
+//		System.out.println("Division: " + division);
 
-		return (int)Math.round(division);
+		if(division%0.5 == 0)
+            return (int)division;
+        else
+            return (int)Math.round(division);
 	}
 
 

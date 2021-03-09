@@ -167,7 +167,7 @@ public class FileUploadContentPanel extends JPanel implements ActionListener {
 					if (i > p)
 					    extension = fileName.substring(i+1);
 					
-					System.out.println(extension);
+					//System.out.println(extension);
 					
 					if(extension.equals(".txt") || extension.equals("txt"))
 					{
