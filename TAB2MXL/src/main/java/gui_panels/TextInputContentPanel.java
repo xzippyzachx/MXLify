@@ -11,6 +11,8 @@ import java.util.ArrayList;
 
 import javax.swing.*;
 import javax.swing.border.Border;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 import gui.ColorDef;
 import gui.SteelCheckBox;
@@ -18,6 +20,7 @@ import gui.TextPrompt;
 import gui.TextPrompt.Show;
 import gui_popups.ClearPopUp;
 import tab2mxl.CreateScore;
+import tab2mxl.InstrumentDetection;
 import tab2mxl.Main;
 
 public class TextInputContentPanel extends JPanel implements ActionListener {
@@ -34,7 +37,7 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 	JPanel inputpanel;	
 	JButton convertButton;
 	
-	String[] tabTypes = {"Guitar"/*, "Bass", "Drums"*/};
+	String[] tabTypes = {"Guitar", "Bass", "Drums"};
 	JPanel detailsPanel;
 	JComboBox tabList;
 	JTextField timeSignature;
@@ -47,8 +50,7 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 	private static String tabType;
 	private static String title;
 	private static String timeSig;
-	
-	
+		
 	TextInputContentPanel(){		
 	
 		// creates main content panel, lets layout to vertical, adds padding and sets it as Content Pane
@@ -97,6 +99,22 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
         // generates the text field, sets size,font, and scrollability
         textField = new JTextArea();
         textField.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
+        textField.getDocument().addDocumentListener(new DocumentListener() { // Detect changes to the text area
+            @Override
+            public void changedUpdate(DocumentEvent arg0) { }
+            
+			@Override
+			public void insertUpdate(DocumentEvent e) {
+				String[] inputText = textField.getText().split("\n");
+				tabList.setSelectedIndex(InstrumentDetection.detectInstrument(GetInput(inputText)));
+			}
+			
+			@Override
+			public void removeUpdate(DocumentEvent e) {
+				String[] inputText = textField.getText().split("\n");
+				tabList.setSelectedIndex(InstrumentDetection.detectInstrument(GetInput(inputText)));
+			}
+        });
         
         //textField.setFont(f);
         this.add(textField);
@@ -235,40 +253,10 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 			
 			String[] inputText = textField.getText().split("\n");
 			
-			ArrayList<ArrayList<String>> input = new ArrayList<ArrayList<String>>();
-						
-			for (String line : inputText) {
-				if(line.length() > 1)
-				{
-					line = cleanTextContent(line); //Removes redundant spaces
-					String[] lineInput = line.substring(line.indexOf('|')).split("");
-					ArrayList<String> lineInputList = new ArrayList<String>();
-					String tunePlusOctave = line.substring(0, line.indexOf('|')).trim();
-					String tune = "";
-					String octave = "";
-					if(tunePlusOctave.length() > 0) {
-						try {
-							octave = "" + Integer.parseInt(tunePlusOctave.substring(tunePlusOctave.length()-1));
-							tune = tunePlusOctave.substring(0, tunePlusOctave.length()-1);
-						}catch(NumberFormatException e1){
-							octave = "";
-							tune = tunePlusOctave;
-						}
-					}
-					lineInputList.add(tune.trim());
-					lineInputList.add(octave.trim());
-					//lineInputList.add(tune);
-					for(String character : lineInput) {
-						lineInputList.add(character);
-				    }
-					
-					input.add(lineInputList);
-				}
-				else
-				{
-					input.add(new ArrayList<String>());
-				}
-			}
+			ArrayList<ArrayList<String>> input = new ArrayList<ArrayList<String>>();						
+			
+			input = GetInput(inputText); // Convert to double String ArrayList
+			
 			setTabType(tabList.getSelectedItem().toString());
 			setTitle(songName.getText());
 			setTimeSig(timeSignature.getText());
@@ -301,8 +289,8 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 			*/
 			
 			if (errorText.getText() == "")
-			{			
-				Main.Convert(input);
+			{
+				Main.Convert(input, tabList.getSelectedIndex());
 			}	
 		}
 		else if(e.getSource() == clearButton)
@@ -313,6 +301,55 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 			if(!Main.myFrame.textInputContentPanel.textField.getText().isEmpty())
 				new ClearPopUp(Main.myFrame, "", "Clear Current Tablature");
 		}
+	}
+	
+	private ArrayList<ArrayList<String>> GetInput (String[] textInput)
+	{
+		if(textField.getText().isEmpty())
+		{
+			return null;
+		}
+		else if (!textField.getText().contains("|"))
+		{
+			return null;
+		}
+		
+		ArrayList<ArrayList<String>> input = new ArrayList<ArrayList<String>>();
+		
+		for (String line : textInput) {
+			if(line.length() > 1)
+			{
+				line = cleanTextContent(line); //Removes redundant spaces
+				String[] lineInput = line.substring(line.indexOf('|')).split("");
+				ArrayList<String> lineInputList = new ArrayList<String>();
+				String tunePlusOctave = line.substring(0, line.indexOf('|')).trim();
+				String tune = "";
+				String octave = "";
+				if(tunePlusOctave.length() > 0) {
+					try {
+						octave = "" + Integer.parseInt(tunePlusOctave.substring(tunePlusOctave.length()-1));
+						tune = tunePlusOctave.substring(0, tunePlusOctave.length()-1);
+					}catch(NumberFormatException e1){
+						octave = "";
+						tune = tunePlusOctave;
+					}
+				}
+				lineInputList.add(tune.trim());
+				lineInputList.add(octave.trim());
+				//lineInputList.add(tune);
+				for(String character : lineInput) {
+					lineInputList.add(character);
+			    }
+				
+				input.add(lineInputList);
+			}
+			else
+			{
+				input.add(new ArrayList<String>());
+			}
+		}
+		
+		return input;
 	}
 	
 	private static String cleanTextContent(String text) 

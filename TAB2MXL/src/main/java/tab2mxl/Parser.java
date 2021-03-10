@@ -228,7 +228,7 @@ public class Parser {
 							break;
 					}
 					
-					System.out.println("Offset: " + offset);					
+					//System.out.println("Offset: " + offset);					
 				}
 
 				//Finds if there is a new measure
@@ -468,9 +468,7 @@ public class Parser {
 	protected static String noteType(double beatNote) {
 		String output = "";
 		
-		if(beatNote >= 2) {
-			output = "double";
-		}else if(beatNote >= 1.0) {
+		if(beatNote >= 1.0) {
 			output = "whole";
 		}else if(beatNote >= 1.0/2.0) {
 			output = "half";
