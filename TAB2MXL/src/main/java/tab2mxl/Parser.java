@@ -203,13 +203,7 @@ public class Parser {
 					hammerStart = true;
 
 				}
-//				if(Character.isDigit(character) && hammerLength > 0){// sets the duration for notes in the hammeron
-//					dash = hammerDuration;
-//					hammerLength--;
-//
-//
-//				}
-				else if(character != 'h' && character != '-' && character != '|' && !hammerOn) {
+				else if(character != 'h' && character != '-' && character != '|' && !hammerOn && !doubleDigit) {
 					dash = 1;
 					int offset = 0;
 					char characterForward = columns.get(i+1)[j];
@@ -254,7 +248,7 @@ public class Parser {
 				if(hammerOn){
 					beatNote = (hammerDuration * beatTypeNote)/div;
 				}
-				else { 
+				else {
 					beatNote = (dash * beatTypeNote)/div;
 //					System.out.println("Div: " + div);
 //					System.out.println("BeatTypeNote: " + beatTypeNote);
@@ -337,7 +331,13 @@ public class Parser {
 				if(hammerOn){
 					beatNote = (hammerDuration * beatTypeNote)/div;
 				}
-				else { beatNote = (dash * beatTypeNote)/div;}
+				else { 
+					beatNote = (dash * beatTypeNote)/div;
+//					System.out.println("Div: " + div);
+//					System.out.println("BeatTypeNote: " + beatTypeNote);
+//					System.out.println("Dash: " + dash);
+//					System.out.println("BeatNote: " + beatNote);
+				}
 
 				fileGen.addChord(chords,chordType, getDuration(beatNote), chordsOctave,linearray,fretarray, chordDot,sharp,hammerLocation,hammerStart,hammerContinue,hammerDone);
 				linearray = new int[stringAmount];
@@ -361,7 +361,7 @@ public class Parser {
 					hammerOn = false;
 					hammerDuration = 0;
 					hammerLength = 0;
-				}								
+				}
 			}
 			
 			if(doubleDigit) { //Skip next line if double digit
@@ -379,7 +379,7 @@ public class Parser {
 			fileGen.closePart();
 		fileGen.end();
 		
-		new SuccessPopUp(Main.myFrame, FileGenerator.filepath);		
+		new SuccessPopUp(Main.myFrame, FileGenerator.filepath);
 	}
 	
 	private boolean containsOnlyChar(char[] cs, char o) {
