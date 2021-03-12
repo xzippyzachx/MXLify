@@ -1,4 +1,4 @@
-package tab2mxl;
+package gui_panels;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -17,12 +17,12 @@ import java.awt.Toolkit;
 public class MyFrame extends JFrame{
 
 	//Screens
-	JPanel mainContentPanel;
+	public JPanel mainContentPanel;
 	FileUploadContentPanel fileUploadContentPanel;
 	public TextInputContentPanel textInputContentPanel;
 	Color frameColour = new Color(0,90,108);
 	
-	MyFrame() {
+	public MyFrame() {
 		
 		///////////////////////
 		//Main Screen

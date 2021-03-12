@@ -28,15 +28,19 @@ public class FileGenerator {
 	FileGenerator (String path) {	
 		JFileChooser fileChooser = null;
 		int response = 0;
-		if(path == "") {
+		if(path == "")
+		{
 			fileChooser = new JFileChooser(prefs.get(LAST_USED_FOLDER_SAVE, new File(".").getAbsolutePath())); // Create file chooser
 			fileChooser.setFileFilter(new FileNameExtensionFilter("music xml","musicxml","mxl"));
-			response = fileChooser.showSaveDialog(null); //Select file to save			
+			response = fileChooser.showSaveDialog(null); //Select file to save
 		}
-				
+		
+		
 		if (response == JFileChooser.APPROVE_OPTION) { // if File successively chosen
 			
-			if(path == "") {	
+
+			
+			if(path == "") {
 				prefs.put(LAST_USED_FOLDER_SAVE, fileChooser.getSelectedFile().getParent()); // Save file path
 				filepath = fileChooser.getSelectedFile().getAbsolutePath();
 				if (!filepath.substring(filepath.lastIndexOf(".")+1).equals("musicxml") && !filepath.substring(filepath.lastIndexOf(".")+1).equals("mxl"))     
@@ -240,33 +244,13 @@ public class FileGenerator {
 		
 	}
 	
-	public void addRest(int duration, String noteType) {
-		try {
-			
-			myWriter.write(currentIndent + "<note>");
-			currentIndent += "  ";
-			newLine();
-			myWriter.write(currentIndent + "<rest/>");
-			newLine();
-			myWriter.write(currentIndent + "<duration>" + duration + "</duration>");
-			newLine();
-			myWriter.write(currentIndent + "<type>" + noteType + "</type>");
-			newLine();
-			tabBack();
-			myWriter.write(currentIndent + "</note>");		
-			newLine();
-		}catch(IOException e) {
-			
-		}
-	}
-	
 	/**
 	 * Adds a note to the MusicXML
 	 * @param string
 	 * @param fret
 	 * @param note
 	 */
-	public void addNote(int string, int fret, String note, String noteType, int duration, int octave, int dot,boolean alter)
+	public void addNote(int string, int fret, char note, String noteType, int duration, int octave, int dot,boolean alter,boolean hammerStart, boolean hammerContinue, boolean hammerDone)
 	{
 		//if(measureNum > 0) {
 		try {
@@ -295,12 +279,30 @@ public class FileGenerator {
 				myWriter.write(currentIndent + "<dot/>");
 				newLine();
 			}
+			if(alter){
+				myWriter.write(currentIndent + "<accidental>sharp</accidental>");
+				newLine();
+			}
 			myWriter.write(currentIndent + "<notations>");
 			newLine();
 			currentIndent += "  ";
 			myWriter.write(currentIndent + "<technical>");
 			currentIndent += "  ";
 			newLine();
+			if(hammerStart){
+				myWriter.write(currentIndent + "<hammer-on number=\"1\" type=\"start\">H</hammer-on>");
+				newLine();
+			}
+			else if(hammerContinue){
+				myWriter.write(currentIndent + "<hammer-on number=\"1\" type=\"stop\"/>");
+				newLine();
+				myWriter.write(currentIndent + "<hammer-on number=\"1\" type=\"start\">H</hammer-on>");
+				newLine();
+			}
+			else if(hammerDone){
+				myWriter.write(currentIndent + "<hammer-on number=\"1\" type=\"stop\"/>");
+				newLine();
+			}
 			myWriter.write(currentIndent + "<string>" + string + "</string>");
 			newLine();
 			myWriter.write(currentIndent + "<fret>" + fret + "</fret>");
@@ -308,6 +310,14 @@ public class FileGenerator {
 			tabBack();
 			myWriter.write(currentIndent + "</technical>");
 			newLine();
+			if(hammerStart){
+				myWriter.write(currentIndent + "<slur number=\"1\" placement=\"above\" type=\"start\"/>");
+				newLine();
+			}
+			else if(hammerDone){
+				myWriter.write(currentIndent + "<slur number=\"1\" type=\"stop\"/>");
+				newLine();
+			}
 			tabBack();
 			myWriter.write(currentIndent + "</notations>");
 			newLine();
@@ -330,7 +340,7 @@ public class FileGenerator {
 	 * @param noteType
 	 */
 
-	public void addChord(char[] chord, String noteType, int duration, int[] octaves,int[] string, int[] fret, int[] dot,boolean[] alter) {
+	public void addChord(char[] chord, String noteType, int duration, int[] octaves,int[] string, int[] fret, int[] dot,boolean[] alter, int HamLocation, boolean hammerStart, boolean hammerContinue, boolean hammerDone) {
 		//if(measureNum >= 1) {
 		boolean firstDone = false;
 		for (int i = chord.length-1; i>=0;i--) {
@@ -365,12 +375,30 @@ public class FileGenerator {
 						myWriter.write(currentIndent + "<dot/>");
 						newLine();
 					}
+					if(alter[i]){
+						myWriter.write(currentIndent + "<accidental>sharp</accidental>");
+						newLine();
+					}
 					myWriter.write(currentIndent + "<notations>");
 					newLine();
 					currentIndent += "  ";
 					myWriter.write(currentIndent + "<technical>");
 					currentIndent += "  ";
 					newLine();
+					if(i == HamLocation &&hammerStart){
+						myWriter.write(currentIndent + "<hammer-on number=\"1\" type=\"start\">H</hammer-on>");
+						newLine();
+					}
+					else if(i == HamLocation && hammerContinue){
+						myWriter.write(currentIndent + "<hammer-on number=\"1\" type=\"stop\"/>");
+						newLine();
+						myWriter.write(currentIndent + "<hammer-on number=\"1\" type=\"start\">H</hammer-on>");
+						newLine();
+					}
+					else if(i == HamLocation && hammerDone){
+						myWriter.write(currentIndent + "<hammer-on number=\"1\" type=\"stop\"/>");
+						newLine();
+					}
 					myWriter.write(currentIndent + "<string>" + string[i] + "</string>");
 					newLine();
 					myWriter.write(currentIndent + "<fret>" + fret[i] + "</fret>");
@@ -378,6 +406,14 @@ public class FileGenerator {
 					tabBack();
 					myWriter.write(currentIndent + "</technical>");
 					newLine();
+					if(i == HamLocation && hammerStart){
+						myWriter.write(currentIndent + "<slur number=\"1\" placement=\"above\" type=\"start\"/>");
+						newLine();
+					}
+					else if(i == HamLocation && hammerDone){
+						myWriter.write(currentIndent + "<slur number=\"1\" type=\"stop\"/>");
+						newLine();
+					}
 					tabBack();
 					myWriter.write(currentIndent + "</notations>");
 					newLine();

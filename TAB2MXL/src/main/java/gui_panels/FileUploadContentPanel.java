@@ -1,4 +1,4 @@
-package tab2mxl;
+package gui_panels;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -41,6 +41,8 @@ import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.filechooser.FileNameExtensionFilter;
+
+import tab2mxl.Main;
 
 public class FileUploadContentPanel extends JPanel implements ActionListener {
 
@@ -156,7 +158,22 @@ public class FileUploadContentPanel extends JPanel implements ActionListener {
 			            stringBuilder.append(ls);
 			        }
 
-			        Main.FileUploaded(stringBuilder.toString());
+			        String fileName = ((File) (file)).getName();
+					String extension = "";
+
+					int i = fileName.lastIndexOf('.');
+					int p = Math.max(fileName.lastIndexOf('/'), fileName.lastIndexOf('\\'));
+
+					if (i > p)
+					    extension = fileName.substring(i+1);
+					
+					//System.out.println(extension);
+					
+					if(extension.equals(".txt") || extension.equals("txt"))
+					{
+						Main.FileUploaded(stringBuilder.toString());
+					}								
+			        
 			        
 			        reader.close();
 			    } catch (IOException e1) {
