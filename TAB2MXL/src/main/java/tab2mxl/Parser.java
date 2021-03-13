@@ -486,42 +486,33 @@ public class Parser {
 		if(b >= 1.0/256) {
 			if(b >= 2.0) {
 				output = 2.0;
-				while(b > output) {
 					output += beatNote(b - output);
-				}
 			}else if(b >= 1.0) {
 				output = 1.0;
-				while(b > output) {
 					output += beatNote(b - output);
-				}
 			}else if(b >= 1.0/2.0) {
 				output = 1.0/2;
-				while(b > output) {
 					output += beatNote(b - output);
-				}
 			}else if(b >= 1.0/4.0) {
 				output = 1.0/4;
-				while(b > output) {
 					output += beatNote(b - output);
-				}
 			}else if(b  >= 1.0/8.0) {
 				output = 1.0/8;
-				while(b > output) {
 					output += beatNote(b - output);
-				}
 			}else if(b < 1.0/8.0) {
 				double div = ((1.0/8.0)/b);
-				int maxIndex = -1;
+				int maxIndex = 0;
 				double power = 0.0;
 				if(div % 2 != 0.0) {
-					while(div % 2 != 0) {
+					while(div % 2 != 0.0) {
 						if(div < Math.pow(2.0, power)) {
 							div = (int) Math.pow(2, power);
 						}else {
-							power = power + 1.0;
+							power += 1.0;
 						}
 					}
 				}
+				System.out.println("Power: " + power);
 				while(div != 1) {
 					div = div/2;
 					maxIndex++;
@@ -529,9 +520,7 @@ public class Parser {
 				int temp = (int)(Math.pow(2, maxIndex) * 8);
 				output = 1.0/temp;
 				System.out.println("Temp: " + temp);
-				while(b > output) {
 					output += beatNote(b - output);
-				}
 			}
 		}
 		
