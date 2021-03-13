@@ -434,7 +434,7 @@ public class Parser {
 	
 	private int dot(double beatNote) {
 		System.out.println("");
-		System.out.println("BeatNote: " + beatNote);
+		System.out.println("DotBeatNote: " + beatNote);
 		int output = 0;
 		double check = 0.0;
 		double check2 = 0.0;
@@ -447,7 +447,7 @@ public class Parser {
 			}
 		}
 		
-		System.out.println("Check: " + check);
+		System.out.println("DotCheck: " + check);
 		temp = check;
 		check2 = check;
 		
@@ -464,7 +464,7 @@ public class Parser {
 				if(check - beatNote < check - check2) {
 					//add the rest here
 					//rest = beatNote(beatNote - check2);
-					System.out.println("Rest: " + rest);
+					System.out.println("DotRest: " + rest);
 				}/*else if() {
 					
 				}*/else {
@@ -481,42 +481,37 @@ public class Parser {
 	
 	private double beatNote(double b) {
 		double output = 0.0;
-		int c = 16;
 		
+		System.out.println("BeatNote: " + b);
 		if(b >= 1.0/256) {
-			//System.out.println("BeatNote: " + b);
 			if(b >= 2.0) {
 				output = 2.0;
 				while(b > output) {
-					output += 1.0/c;
+					output += beatNote(b - output);
 				}
 			}else if(b >= 1.0) {
 				output = 1.0;
 				while(b > output) {
-					output += 1.0/c;
+					output += beatNote(b - output);
 				}
 			}else if(b >= 1.0/2.0) {
 				output = 1.0/2;
 				while(b > output) {
-					output += 1.0/c;
+					output += beatNote(b - output);
 				}
 			}else if(b >= 1.0/4.0) {
-				//c *= 2;
 				output = 1.0/4;
 				while(b > output) {
-					output += 1.0/c;
+					output += beatNote(b - output);
 				}
 			}else if(b  >= 1.0/8.0) {
-				//c *= 4;
-				c *= 2;
 				output = 1.0/8;
 				while(b > output) {
-					output += 1.0/c;
+					output += beatNote(b - output);
 				}
 			}else if(b < 1.0/8.0) {
-				c *= 8;
 				double div = ((1.0/8.0)/b);
-				int maxIndex = 0;
+				int maxIndex = -1;
 				double power = 0.0;
 				if(div % 2 != 0.0) {
 					while(div % 2 != 0) {
@@ -533,12 +528,14 @@ public class Parser {
 				}
 				int temp = (int)(Math.pow(2, maxIndex) * 8);
 				output = 1.0/temp;
+				System.out.println("Temp: " + temp);
 				while(b > output) {
-					output += 1.0/c;
+					output += beatNote(b - output);
 				}
 			}
 		}
-		//System.out.println("BeatNoteOut: " + output);
+		
+		System.out.println("BeatNoteOut: " + output);
 		return output;
 		}
 	
