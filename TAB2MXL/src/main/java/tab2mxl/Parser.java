@@ -393,7 +393,7 @@ public class Parser {
 		boolean output = true;
 		
 		for(Object t : cs) {
-			output = output && t.equals(o) ;
+			output = (output && t.equals(o)) || (output && t.equals('[')) || (output && t.equals(']'))  ;
 		}
 		
 		return output;
