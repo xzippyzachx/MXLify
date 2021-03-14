@@ -24,9 +24,19 @@ public class Main {
 			myFrame.textInputContentPanel.textField.setText(input);
 	}
 	
-	public static void Convert(ArrayList<ArrayList<String>> input)
+	public static void Convert(ArrayList<ArrayList<String>> input, int instrument)
 	{
-		new Parser(input);
+		switch(instrument) {			
+			case 1: //Bass
+				new Parser(input);
+				break;
+			case 2: //Drum
+				new DrumParser(input);
+				break;
+			default: //Guitar
+				new Parser(input);
+		}
+
 		new CreateScore(FileGenerator.filepath);
 	} 
 }

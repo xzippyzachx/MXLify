@@ -31,11 +31,9 @@ public class ClearPopUp extends PopupFactory implements ActionListener{
 	JButton noButton;
 	
 	String input;
-	MyFrame myFrame;	
+	MyFrame myFrame;
 		
 	public ClearPopUp (Component owner, String input, String message){
-				
-		
 		
 		this.input = input;
 		myFrame = (MyFrame) owner;
