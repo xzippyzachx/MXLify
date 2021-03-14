@@ -250,7 +250,7 @@ public class FileGenerator {
 	 * @param fret
 	 * @param note
 	 */
-	public void addNote(int string, int fret, char note, String noteType, int duration, int octave, int dot,boolean alter,boolean hammerStart, boolean hammerContinue, boolean hammerDone)
+	public void addNote(int string, int fret, char note, String noteType, int duration, int octave, int dot,boolean alter,boolean hammerStart, boolean hammerContinue, boolean hammerDone,boolean harmonic)
 	{
 		//if(measureNum > 0) {
 		try {
@@ -289,6 +289,10 @@ public class FileGenerator {
 			myWriter.write(currentIndent + "<technical>");
 			currentIndent += "  ";
 			newLine();
+			if(harmonic) {
+				myWriter.write(currentIndent + "<harmonic default-x=\"3\" default-y=\"24\" placement=\"above\" print-object=\"yes\"/>");
+				newLine();
+			}
 			if(hammerStart){
 				myWriter.write(currentIndent + "<hammer-on number=\"1\" type=\"start\">H</hammer-on>");
 				newLine();
@@ -340,7 +344,7 @@ public class FileGenerator {
 	 * @param noteType
 	 */
 
-	public void addChord(char[] chord, String noteType, int duration, int[] octaves,int[] string, int[] fret, int[] dot,boolean[] alter, int HamLocation, boolean hammerStart, boolean hammerContinue, boolean hammerDone) {
+	public void addChord(char[] chord, String noteType, int duration, int[] octaves,int[] string, int[] fret, int[] dot,boolean[] alter, int HamLocation, boolean hammerStart, boolean hammerContinue, boolean hammerDone,boolean[] harmonic) {
 		//if(measureNum >= 1) {
 		boolean firstDone = false;
 		for (int i = chord.length-1; i>=0;i--) {
@@ -385,6 +389,10 @@ public class FileGenerator {
 					myWriter.write(currentIndent + "<technical>");
 					currentIndent += "  ";
 					newLine();
+					if(harmonic[i]) {
+						myWriter.write(currentIndent + "<harmonic default-x=\"3\" default-y=\"24\" placement=\"above\" print-object=\"yes\"/>");
+						newLine();
+					}
 					if(i == HamLocation &&hammerStart){
 						myWriter.write(currentIndent + "<hammer-on number=\"1\" type=\"start\">H</hammer-on>");
 						newLine();

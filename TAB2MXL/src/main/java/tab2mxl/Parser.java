@@ -111,7 +111,8 @@ public class Parser {
 		boolean defaultOctave = false;
         boolean[] sharp = new boolean[stringAmount];
         boolean sharpnote = false;
-		
+		boolean harmonic = false;
+		boolean[] hchord = new boolean[stringAmount];
 		/*adds the tuning of the strings to the tune array if the tuning is
 		 * specified in the TAB, or the default if it isn't*/
 		for(int i = 0; i < stringAmount; i++) {
@@ -262,7 +263,9 @@ public class Parser {
 				
 				if (Character.isDigit(character) && gate>=7) {
 					fret = Character.getNumericValue(character);
-					
+					if (i-1>0 && columns.get(i-1)[j] == '[') {
+						harmonic = true;
+					}
 					//This checks for double digits
 					char characterForward = columns.get(i+1)[j];
 					if(Character.isDigit(characterForward))
@@ -281,7 +284,8 @@ public class Parser {
 							sharpnote = true;
 						}
 
-						fileGen.addNote(line, fret, tunner.getNote(tune[line-1], fret).charAt(0), noteType(beatNote), getDuration(beatNote), tunner.getOctave(tune[line-1], fret), dot(beatNote),sharpnote, hammerStart,hammerContinue,hammerDone);
+						fileGen.addNote(line, fret, tunner.getNote(tune[line-1], fret).charAt(0), noteType(beatNote), getDuration(beatNote), tunner.getOctave(tune[line-1], fret), dot(beatNote),sharpnote, hammerStart,hammerContinue,hammerDone,harmonic);
+						harmonic = false;
 						if(hammerOn){
 							hammerLength--;
 						}
@@ -304,6 +308,9 @@ public class Parser {
 
 					}
 					else {
+					if (i-1>0 && columns.get(i-1)[j] == '[') {
+						hchord[j] = true;
+					}
 						linearray[j] = line;
 						fretarray[j] = fret;
 						note = tunner.getNote(tune[line-1], fret).charAt(0);
@@ -339,7 +346,7 @@ public class Parser {
 //					System.out.println("BeatNote: " + beatNote);
 				}
 
-				fileGen.addChord(chords,chordType, getDuration(beatNote), chordsOctave,linearray,fretarray, chordDot,sharp,hammerLocation,hammerStart,hammerContinue,hammerDone);
+				fileGen.addChord(chords,chordType, getDuration(beatNote), chordsOctave,linearray,fretarray, chordDot,sharp,hammerLocation,hammerStart,hammerContinue,hammerDone,hchord);
 				linearray = new int[stringAmount];
 				fretarray = new int[stringAmount];
 				chords = new char[stringAmount];
