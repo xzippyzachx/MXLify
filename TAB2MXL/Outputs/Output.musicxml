@@ -94,6 +94,7 @@
         <type>eighth</type>
         <notations>
           <technical>
+            <harmonic default-x="3" default-y="24" placement="above" print-object="yes"/>
             <string>4</string>
             <fret>2</fret>
           </technical>
@@ -196,6 +197,7 @@
         <type>16th</type>
         <notations>
           <technical>
+            <harmonic default-x="3" default-y="24" placement="above" print-object="yes"/>
             <string>6</string>
             <fret>0</fret>
           </technical>
@@ -213,6 +215,7 @@
         <type>16th</type>
         <notations>
           <technical>
+            <harmonic default-x="3" default-y="24" placement="above" print-object="yes"/>
             <string>5</string>
             <fret>2</fret>
           </technical>
@@ -230,6 +233,7 @@
         <type>16th</type>
         <notations>
           <technical>
+            <harmonic default-x="3" default-y="24" placement="above" print-object="yes"/>
             <string>4</string>
             <fret>2</fret>
           </technical>
@@ -238,6 +242,7 @@
         <staff>1</staff>
       </note>
       <note>
+        <chord/>
         <pitch>
           <step>G</step>
           <alter>1</alter>

@@ -414,14 +414,6 @@ public class FileGenerator {
 					tabBack();
 					myWriter.write(currentIndent + "</technical>");
 					newLine();
-					if(i == HamLocation && hammerStart){
-						myWriter.write(currentIndent + "<slur number=\"1\" placement=\"above\" type=\"start\"/>");
-						newLine();
-					}
-					else if(i == HamLocation && hammerDone){
-						myWriter.write(currentIndent + "<slur number=\"1\" type=\"stop\"/>");
-						newLine();
-					}
 					tabBack();
 					myWriter.write(currentIndent + "</notations>");
 					newLine();
@@ -439,6 +431,25 @@ public class FileGenerator {
 			}
 		}
 		//}
+	}
+	
+	public void addRest(int duration, String noteType) {
+		try {
+			myWriter.write(currentIndent + "<note>");
+			currentIndent += "  ";
+			newLine();
+			myWriter.write(currentIndent + "<rest/>");
+			newLine();
+			myWriter.write(currentIndent + "<duration>" + duration + "</duration>");
+			newLine();
+			myWriter.write(currentIndent + "<type>" + noteType + "</type>");
+			newLine();
+			tabBack();
+			myWriter.write(currentIndent + "</note>");
+			newLine();
+		}catch(IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	/**
