@@ -274,6 +274,10 @@ public class Parser {
 						}
 
 						fileGen.addNote(line, fret, tunner.getNote(tune[line-1], fret).charAt(0), noteType(beatNote), getDuration(beatNote), tunner.getOctave(tune[line-1], fret), dot(beatNote),sharpnote, hammerStart,hammerContinue,hammerDone);
+						System.out.println("");
+						System.out.println("Dash: " + dash);
+						System.out.println("Duration: " + getDuration(beatNote));
+						System.out.println("");
 						if(rest > 0) {
 							fileGen.addRest(getDuration(rest), noteType(rest));
 							System.out.println("");
@@ -486,19 +490,19 @@ public class Parser {
 		if(b >= 1.0/256) {
 			if(b >= 2.0) {
 				output = 2.0;
-					output += beatNote(b - output);
+				output += beatNote(b - output);
 			}else if(b >= 1.0) {
 				output = 1.0;
-					output += beatNote(b - output);
+				output += beatNote(b - output);
 			}else if(b >= 1.0/2.0) {
 				output = 1.0/2;
-					output += beatNote(b - output);
+				output += beatNote(b - output);
 			}else if(b >= 1.0/4.0) {
 				output = 1.0/4;
-					output += beatNote(b - output);
+				output += beatNote(b - output);
 			}else if(b  >= 1.0/8.0) {
 				output = 1.0/8;
-					output += beatNote(b - output);
+				output += beatNote(b - output);
 			}else if(b < 1.0/8.0) {
 				double div = ((1.0/8.0)/b);
 				int maxIndex = 0;
@@ -520,7 +524,7 @@ public class Parser {
 				int temp = (int)(Math.pow(2, maxIndex) * 8);
 				output = 1.0/temp;
 				System.out.println("Temp: " + temp);
-					output += beatNote(b - output);
+				output += beatNote(b - output);
 			}
 		}
 		
@@ -583,7 +587,11 @@ public class Parser {
 		double div = getDivisions(beat);
 		double beatTypeNote = 1.0/beatType;
 		output = (noteType * div)/beatTypeNote;
-		return (int)output;
+		System.out.println("DurationOutput: " + output);
+		if(output%0.5 == 0)
+			return (int)output;
+		else
+			return (int)Math.round(output);
 	}
 	
 	private int getDivisions(int beatSig) {
