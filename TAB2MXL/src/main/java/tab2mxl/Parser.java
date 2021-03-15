@@ -102,6 +102,8 @@ public class Parser {
 		char note = ' ';
 		int chordOctave = 0;
 		boolean doubleDigit;
+		boolean doubleDigitColumn;
+		boolean  chordDoubleDigitFlag;
 		boolean chord;
 		boolean hammerOn = false;
 		boolean hammerStart =false;
@@ -112,6 +114,7 @@ public class Parser {
 		int hammerLocation = -1;
 		rest = 0.0;
 		double totalNote = 0.0;
+
 		
 		String[] tune = new String[stringAmount];
 		int[] tuningOctave = new int[stringAmount];
@@ -179,9 +182,12 @@ public class Parser {
 		//Loop through the inputed columns
 		for(int i = 0; i < columns.size(); i++)
 		{
+
 			col = columns.get(i);
-			doubleDigit = false;
+			chordDoubleDigitFlag = false;
 			chord = false;
+			doubleDigitColumn = false;
+
 			if(i > 0) {
 				notesInColumn = 0;
 				for (int s = 0; s < col.length;s++) {
@@ -194,32 +200,47 @@ public class Parser {
 			if(notesInColumn > 1) {
 				chord = true;
 			}
-
+			// row For loop
 			for(int j = 0; j < col.length; j++)
 			{
+				doubleDigit = false;
 				character = col[j];
 
-				if( i+1<columns.size()&& j<col.length && columns.get(i+1)[j] == 'h' && !hammerOn){ // if same row, next col is an h then then begin hammer on
+				//This checks for double digits
+				if(i+1<columns.size() && Character.isDigit(columns.get(i)[j]) && Character.isDigit(columns.get(i+1)[j]))
+				{
+					doubleDigit = true;
+					doubleDigitColumn = true;
+				}
+
+
+				if( i+1<columns.size()&& j<col.length && (columns.get(i+1)[j] == 'h' || (doubleDigit &&columns.get(i+2)[j]== 'h' ) ) && !hammerOn){ // if same row, next col is an h then then begin hammer on
+																 // (i+1) only works for single digit frets
 					int m = i;
+					char currentChar = columns.get(i)[j];
 					hammerLength++;
-					while(m+1<columns.size() && columns.get(m+1)[j] =='h'){ // checks length of hammer on
-						hammerLength++;
-						m +=2;
+					int lastHammerFret = 0;
+					while(Character.isDigit(currentChar) || currentChar == 'h'){ // checks length of hammer on
+						if(currentChar == 'h') hammerLength++;
+						lastHammerFret++;
+						m++;
+						currentChar =  columns.get(m)[j];
 						hammerLocation = j;
 					}
-					hammerDuration = hamererOnDuration(columns.get(i+2)[j],i+2*(hammerLength-1)); // sets necessary flags to true
+					hammerDuration = hamererOnDuration(columns.get(i+2)[j],i+lastHammerFret-1); // sets necessary flags to true
 					hammerOn = true;
 					hammerStart = true;
 
 				}
 
-				else if(character != 'h' && character != '-' && character != '|' && !hammerOn && !doubleDigit) {
+				else if(character != 'h' && character != '-' && character != '|' && !hammerOn &&!chordDoubleDigitFlag) {
 					dash = 1;
 					int offset = 0;
 					char characterForward = columns.get(i+1)[j];
-					if(Character.isDigit(characterForward))
+					if(Character.isDigit(characterForward)) {
+						chordDoubleDigitFlag = true;
 						offset++;
-					
+					}
 					boolean test;
 					for(int k = i+1+offset; k < columns.size()-1; k++) {
 						if(!containsOnlyChar(columns.get(k), '|')) {
@@ -269,13 +290,14 @@ public class Parser {
 					if (i-1>0 && columns.get(i-1)[j] == '[') {
 						harmonic = true;
 					}
+					if(doubleDigit) fret = (fret * 10) + Character.getNumericValue(columns.get(i+1)[j]);
 					//This checks for double digits
-					char characterForward = columns.get(i+1)[j];
-					if(Character.isDigit(characterForward))
-					{
-						doubleDigit = true;
-						fret = (fret * 10) + Character.getNumericValue(characterForward);
-					}
+//					char characterForward = columns.get(i+1)[j];
+//					if(Character.isDigit(columns.get(i)[j])&&Character.isDigit(characterForward))
+//					{
+//						doubleDigit = true;
+//						fret = (fret * 10) + Character.getNumericValue(characterForward);
+//					}
 					
 					if(fret < 0)
 					{
@@ -393,7 +415,7 @@ public class Parser {
 				}
 			}
 			
-			if(doubleDigit) { //Skip next line if double digit
+			if(doubleDigitColumn) { //Skip next line if double digit
 				i++;
 				currentColumn++;
 			}
