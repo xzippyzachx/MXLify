@@ -27,7 +27,7 @@ class FileGeneratorTest {
 		openWriter();
 		assertNotNull(fileGen.myWriter);
 		assertNotNull(fileGen.saveFile);
-		assertNotNull(fileGen.LAST_USED_FOLDER_SAVE);
+		assertNotNull(fileGen.LAST_USED_FOLDER_CONVERT);
 		assertNotNull(fileGen.prefs);
 	}
 

@@ -21,7 +21,9 @@ import gui.TextPrompt.Show;
 import gui_popups.ClearPopUp;
 import tab2mxl.CreateScore;
 import tab2mxl.InstrumentDetection;
+import tab2mxl.LoadManager;
 import tab2mxl.Main;
+import tab2mxl.SaveManager;
 
 public class TextInputContentPanel extends JPanel implements ActionListener {
 	public JTextArea textField;
@@ -31,6 +33,9 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 	
 	JPanel clearPanel;
 	JButton clearButton;
+	
+	JPanel savePanel;
+	JButton saveButton;
 	
 	JScrollPane scroll;
 	
@@ -51,7 +56,7 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 	private static String title;
 	private static String timeSig;
 		
-	TextInputContentPanel(){		
+	TextInputContentPanel(){
 	
 		// creates main content panel, lets layout to vertical, adds padding and sets it as Content Pane
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -64,11 +69,49 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
         titlePanel.setLayout(new GridLayout(0, 3));
         titlePanel.setOpaque(false);
        // titlePanel.setBackground(Color.black);
-        padding = BorderFactory.createEmptyBorder(0, 10,0, 10);
+        padding = BorderFactory.createEmptyBorder(0, 0, 0, 0);
 		titlePanel.setBorder(padding);
+		
+		savePanel = new JPanel();
+		savePanel.setLayout(new FlowLayout(FlowLayout.LEFT,20,0));
+		savePanel.setOpaque(false);
+        
+        saveButton = new JButton("Save");
+        saveButton.setBackground(new Color(33,150,243));
+        saveButton.setForeground(new Color(224,224,224));
+        saveButton.setFocusable(false);
+        saveButton.addActionListener(this);
+        saveButton.setOpaque(true);
+        saveButton.setBorderPainted(false);
+        //Button hover effects
+        saveButton.addMouseListener(new java.awt.event.MouseAdapter() {
+    	    public void mouseEntered(java.awt.event.MouseEvent evt) {
+    	    	saveButton.setBackground(new Color(224,224,224));
+    	    	saveButton.setForeground(new Color(33,150,243));
+    	    }
+    	    public void mouseExited(java.awt.event.MouseEvent evt) {
+    	    	saveButton.setBackground(new Color(33,150,243));
+    	    	saveButton.setForeground(new Color(224,224,224));
+    	    }
+    	});  
+        savePanel.add(saveButton);              
+        titlePanel.add(savePanel);
+        
+        titleLabel = new JLabel("Paste Your Tablature Here");
+     //   titleLabel.setPreferredSize(new Dimension(100,25));
+      //  titleLabel.setMinimumSize(new Dimension(200,100));
+        titleLabel.setHorizontalAlignment(JLabel.CENTER);
+        titleLabel.setOpaque(false);
+        titleLabel.setBackground(new Color(33,150,243));
+        titleLabel.setForeground(Color.white);
+        titleLabel.setSize(new Dimension(100,20));
+        titlePanel.add(titleLabel);
+        //titlePanel.setPreferredSize(new Dimension(30,40));
+       // titlePanel.setOpaque(true);
+        //titlePanel.setBackground(new Color(33,150,243));
         
         clearPanel = new JPanel();
-        clearPanel.setLayout(new FlowLayout(FlowLayout.LEFT,0,0));
+        clearPanel.setLayout(new FlowLayout(FlowLayout.RIGHT, 20,0));
         clearPanel.setOpaque(false);
         
         clearButton = new JButton("Clear");
@@ -78,22 +121,20 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
         clearButton.addActionListener(this);
         clearButton.setOpaque(true);
         clearButton.setBorderPainted(false);
+        //Button hover effects
+        clearButton.addMouseListener(new java.awt.event.MouseAdapter() {
+    	    public void mouseEntered(java.awt.event.MouseEvent evt) {
+    	    	clearButton.setBackground(new Color(224,224,224));
+    	    	clearButton.setForeground(new Color(33,150,243));
+    	    }
+    	    public void mouseExited(java.awt.event.MouseEvent evt) {
+    	    	clearButton.setBackground(new Color(33,150,243));
+    	    	clearButton.setForeground(new Color(224,224,224));
+    	    }
+    	}); 
         clearPanel.add(clearButton);
         titlePanel.add(clearPanel);
         
-        titleLabel = new JLabel("Paste Your Tablature Here");
-
-     //   titleLabel.setPreferredSize(new Dimension(100,25));
-      //  titleLabel.setMinimumSize(new Dimension(200,100));
-        titleLabel.setHorizontalAlignment(JLabel.CENTER);
-        titleLabel.setOpaque(false);
-        titleLabel.setBackground(new Color(33,150,243));
-        titleLabel.setForeground(Color.white);
-        titleLabel.setSize(new Dimension(100,10));
-        titlePanel.add(titleLabel);
-        //titlePanel.setPreferredSize(new Dimension(30,40));
-       // titlePanel.setOpaque(true);
-        //titlePanel.setBackground(new Color(33,150,243));
         this.add(titlePanel);
         
         // generates the text field, sets size,font, and scrollability
@@ -143,7 +184,6 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
         songName = new JTextField();
         songName.setFont(songName.getFont().deriveFont(16f));
         //songName.setHorizontalAlignment(JTextField.CENTER);
-        songName.setText("Title");
         TextPrompt songNamePrompt = new TextPrompt("Song Name", songName,Show.FOCUS_LOST);
         songNamePrompt.setHorizontalAlignment(JTextField.CENTER);
         songNamePrompt.changeAlpha(0.8f);
@@ -156,7 +196,6 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
         timeSignature = new JTextField();
         timeSignature.setFont(timeSignature.getFont().deriveFont(16f));
         //timeSignature.setHorizontalAlignment(JTextField.CENTER);
-        timeSignature.setText("4/4");
         TextPrompt timeSignaturePrompt = new TextPrompt("Time Signature", timeSignature,Show.FOCUS_LOST);
         timeSignaturePrompt.setHorizontalAlignment(JTextField.CENTER);
         timeSignaturePrompt.changeAlpha(0.8f);
@@ -182,6 +221,17 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
         convertButton.addActionListener(this);
         convertButton.setOpaque(true);
         convertButton.setBorderPainted(false);
+        //Button hover effects
+        convertButton.addMouseListener(new java.awt.event.MouseAdapter() {
+    	    public void mouseEntered(java.awt.event.MouseEvent evt) {
+    	    	convertButton.setBackground(new Color(224,224,224));
+    	    	convertButton.setForeground(new Color(33,150,243));
+    	    }
+    	    public void mouseExited(java.awt.event.MouseEvent evt) {
+    	    	convertButton.setBackground(new Color(33,150,243));
+    	    	convertButton.setForeground(new Color(224,224,224));
+    	    }
+    	});
         
         JPanel togglepanel = new JPanel();
         togglepanel.setOpaque(false);
@@ -189,7 +239,7 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
         
         sheetMusicToggle.setColored(true);
         sheetMusicToggle.setSelectedColor(ColorDef.CUSTOM_BLUE);
-        sheetMusicToggle.setRised(false);		
+        sheetMusicToggle.setRised(false);
         sheetMusicToggle.setText("Sheet Music");
         sheetMusicToggle.setForeground(Color.white);
         sheetMusicToggle.addActionListener(new ActionListener() {
@@ -234,11 +284,8 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
-		if(e.getSource() == convertButton)
-		{
-			if(Main.isInPopUp)
-				return;
-	
+		if(e.getSource() == convertButton && !Main.isInPopUp)
+		{	
 			//Detect if the text area is empty
 			if(textField.getText().isEmpty())
 			{
@@ -253,7 +300,7 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 			
 			String[] inputText = textField.getText().split("\n");
 			
-			ArrayList<ArrayList<String>> input = new ArrayList<ArrayList<String>>();						
+			ArrayList<ArrayList<String>> input = new ArrayList<ArrayList<String>>();
 			
 			input = GetInput(inputText); // Convert to double String ArrayList
 			
@@ -263,22 +310,16 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 					
 			errorText.setText("");
 								
-			//Detect if the field is empty
-			if(getTabType().equals("") || getTitle().equals("") || getTimeSig().equals(""))
-			{
-				errorText.setText("Field Empty");
-			}
-			else {
-				int lineLength = input.get(0).size();
-				for (ArrayList<String> line : input) {
-					if(line.size() != lineLength && line.size() != 0)
-					{
-						errorText.setText("Wrong Formatting");
-						break;
-					}
+			//Detect if the text area is empty
+			int lineLength = input.get(0).size();
+			for (ArrayList<String> line : input) {
+				if(line.size() != lineLength && line.size() != 0)
+				{
+					errorText.setText("Wrong Formatting");
+					break;
 				}
 			}
-			
+						
 			/*
 			for (ArrayList<String> line : input) {
 				for (String chr : line) {
@@ -291,16 +332,18 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 			if (errorText.getText() == "")
 			{
 				Main.Convert(input, tabList.getSelectedIndex());
-			}	
+			}
 		}
-		else if(e.getSource() == clearButton)
+		else if(e.getSource() == clearButton && !Main.isInPopUp)
 		{
-			if(Main.isInPopUp)
-				return;
-			
 			if(!Main.myFrame.textInputContentPanel.textField.getText().isEmpty())
 				new ClearPopUp(Main.myFrame, "", "Clear Current Tablature");
 		}
+		else if(e.getSource() == saveButton && !Main.isInPopUp)
+		{
+			new SaveManager("", tabList.getSelectedIndex(), songName.getText(), timeSignature.getText(), textField.getText());
+		}
+		
 	}
 	
 	private ArrayList<ArrayList<String>> GetInput (String[] textInput)
@@ -367,6 +410,8 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 	}
 
 	public static String getTitle() {
+		if(title.isEmpty())
+			return "Title";
 		return title;
 	}
 
@@ -383,6 +428,8 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 	}
 
 	public static String getTimeSig() {
+		if(timeSig.isEmpty())
+			return "4/4";
 		return timeSig;
 	}
 

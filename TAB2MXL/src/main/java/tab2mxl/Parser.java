@@ -492,7 +492,7 @@ public class Parser {
 			}else if(beatNote < check) {
 				if(check - beatNote < check - check2) {
 					//add the rest here
-					//rest = beatNote(beatNote - check2);
+					rest = beatNote(beatNote - check2);
 					System.out.println("DotRest: " + rest);
 				}/*else if() {
 					

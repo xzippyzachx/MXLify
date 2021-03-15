@@ -12,10 +12,10 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 public class FileGenerator {
 
 	public Preferences prefs = Preferences.userRoot().node(getClass().getName());
-	public String LAST_USED_FOLDER_SAVE = "";
+	public String LAST_USED_FOLDER_CONVERT = "";
 	
 	
-	boolean failed = false;
+	public boolean failed = false;
 	static int measureNum = 0;
 	File saveFile;
 	FileWriter myWriter;
@@ -26,22 +26,21 @@ public class FileGenerator {
 	boolean partOpen = false;
 	
 	FileGenerator (String path) {	
+		failed = false;
+		
 		JFileChooser fileChooser = null;
 		int response = 0;
 		if(path == "")
 		{
-			fileChooser = new JFileChooser(prefs.get(LAST_USED_FOLDER_SAVE, new File(".").getAbsolutePath())); // Create file chooser
+			fileChooser = new JFileChooser(prefs.get(LAST_USED_FOLDER_CONVERT, new File(".").getAbsolutePath())); // Create file chooser
 			fileChooser.setFileFilter(new FileNameExtensionFilter("music xml","musicxml","mxl"));
 			response = fileChooser.showSaveDialog(null); //Select file to save
-		}
-		
+		}		
 		
 		if (response == JFileChooser.APPROVE_OPTION) { // if File successively chosen
-			
-
-			
+						
 			if(path == "") {
-				prefs.put(LAST_USED_FOLDER_SAVE, fileChooser.getSelectedFile().getParent()); // Save file path
+				prefs.put(LAST_USED_FOLDER_CONVERT, fileChooser.getSelectedFile().getParent()); // Save file path
 				filepath = fileChooser.getSelectedFile().getAbsolutePath();
 				if (!filepath.substring(filepath.lastIndexOf(".")+1).equals("musicxml") && !filepath.substring(filepath.lastIndexOf(".")+1).equals("mxl"))     
 					filepath += ".musicxml"; //Add extension to file if not already added
