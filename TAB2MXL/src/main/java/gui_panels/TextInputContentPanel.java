@@ -1,6 +1,7 @@
 package gui_panels;
 
 import java.awt.Color;
+
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -22,6 +23,7 @@ import gui_popups.ClearPopUp;
 import tab2mxl.CreateScore;
 import tab2mxl.InstrumentDetection;
 import tab2mxl.Main;
+import gui.UndoRedoTextArea;
 
 public class TextInputContentPanel extends JPanel implements ActionListener {
 	public JTextArea textField;
@@ -97,7 +99,7 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
         this.add(titlePanel);
         
         // generates the text field, sets size,font, and scrollability
-        textField = new JTextArea();
+        textField = new UndoRedoTextArea(); //Create empty text area (Undoable Text Area)
         textField.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
         textField.getDocument().addDocumentListener(new DocumentListener() { // Detect changes to the text area
             @Override
