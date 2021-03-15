@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <score-partwise version="3.1">
   <work>
-    <work-title>Title</work-title>
+    <work-title>Example</work-title>
   </work>
   <part-list>
     <score-part id="P1">
@@ -94,7 +94,6 @@
         <type>eighth</type>
         <notations>
           <technical>
-            <harmonic default-x="3" default-y="24" placement="above" print-object="yes"/>
             <string>4</string>
             <fret>2</fret>
           </technical>
@@ -193,11 +192,10 @@
           <step>E</step>
           <octave>2</octave>
           </pitch>
-        <duration>1</duration>
-        <type>16th</type>
+        <duration>16</duration>
+        <type>whole</type>
         <notations>
           <technical>
-            <harmonic default-x="3" default-y="24" placement="above" print-object="yes"/>
             <string>6</string>
             <fret>0</fret>
           </technical>
@@ -211,11 +209,10 @@
           <step>B</step>
           <octave>2</octave>
           </pitch>
-        <duration>1</duration>
-        <type>16th</type>
+        <duration>16</duration>
+        <type>whole</type>
         <notations>
           <technical>
-            <harmonic default-x="3" default-y="24" placement="above" print-object="yes"/>
             <string>5</string>
             <fret>2</fret>
           </technical>
@@ -229,11 +226,10 @@
           <step>E</step>
           <octave>3</octave>
           </pitch>
-        <duration>1</duration>
-        <type>16th</type>
+        <duration>16</duration>
+        <type>whole</type>
         <notations>
           <technical>
-            <harmonic default-x="3" default-y="24" placement="above" print-object="yes"/>
             <string>4</string>
             <fret>2</fret>
           </technical>
@@ -248,12 +244,11 @@
           <alter>1</alter>
           <octave>3</octave>
           </pitch>
-        <duration>1</duration>
-        <type>16th</type>
+        <duration>16</duration>
+        <type>whole</type>
         <accidental>sharp</accidental>
         <notations>
           <technical>
-            <harmonic default-x="3" default-y="24" placement="above" print-object="yes"/>
             <string>3</string>
             <fret>1</fret>
           </technical>
@@ -267,11 +262,10 @@
           <step>B</step>
           <octave>3</octave>
           </pitch>
-        <duration>1</duration>
-        <type>16th</type>
+        <duration>16</duration>
+        <type>whole</type>
         <notations>
           <technical>
-            <harmonic default-x="3" default-y="24" placement="above" print-object="yes"/>
             <string>2</string>
             <fret>0</fret>
           </technical>
@@ -285,11 +279,10 @@
           <step>E</step>
           <octave>4</octave>
           </pitch>
-        <duration>1</duration>
-        <type>16th</type>
+        <duration>16</duration>
+        <type>whole</type>
         <notations>
           <technical>
-            <harmonic default-x="3" default-y="24" placement="above" print-object="yes"/>
             <string>1</string>
             <fret>0</fret>
           </technical>

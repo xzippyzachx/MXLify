@@ -69,8 +69,8 @@ public class ClearPopUp extends PopupFactory implements ActionListener{
         //Button hover effects
         yesButton.addMouseListener(new java.awt.event.MouseAdapter() {
     	    public void mouseEntered(java.awt.event.MouseEvent evt) {
-    	    	yesButton.setBackground(new Color(60,160,243));
-    	    	yesButton.setForeground(Color.black);
+    	    	yesButton.setBackground(new Color(224,224,224));
+    	    	yesButton.setForeground(new Color(33,150,243));
     	    }
 
     	    public void mouseExited(java.awt.event.MouseEvent evt) {
@@ -92,8 +92,8 @@ public class ClearPopUp extends PopupFactory implements ActionListener{
         //Button hover effects
         noButton.addMouseListener(new MouseAdapter() {
     	    public void mouseEntered(MouseEvent evt) {
-    	    	noButton.setBackground(new Color(60,160,243));
-    	    	noButton.setForeground(Color.black);
+    	    	noButton.setBackground(new Color(224,224,224));
+    	    	noButton.setForeground(new Color(33,150,243));
     	    }
 
     	    public void mouseExited(MouseEvent evt) {

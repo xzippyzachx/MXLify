@@ -73,8 +73,8 @@ public class SuccessPopUp extends PopupFactory implements ActionListener{
         //Button hover effects
         okButton.addMouseListener(new java.awt.event.MouseAdapter() {
     	    public void mouseEntered(java.awt.event.MouseEvent evt) {
-    	    	okButton.setBackground(new Color(60,160,243));
-    	    	okButton.setForeground(Color.black);
+    	    	okButton.setBackground(new Color(224,224,224));
+    	    	okButton.setForeground(new Color(33,150,243));
     	    }
 
     	    public void mouseExited(java.awt.event.MouseEvent evt) {
@@ -97,8 +97,8 @@ public class SuccessPopUp extends PopupFactory implements ActionListener{
         //Button hover effects
         openButton.addMouseListener(new MouseAdapter() {
     	    public void mouseEntered(MouseEvent evt) {
-    	    	openButton.setBackground(new Color(60,160,243));
-    	    	openButton.setForeground(Color.black);
+    	    	openButton.setBackground(new Color(224,224,224));
+    	    	openButton.setForeground(new Color(33,150,243));
     	    }
 
     	    public void mouseExited(MouseEvent evt) {
