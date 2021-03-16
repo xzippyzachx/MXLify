@@ -16,11 +16,13 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 import gui.ColorDef;
+import gui.ColumnTextArea;
 import gui.SteelCheckBox;
 import gui.TextPrompt;
 import gui.TextPrompt.Show;
-import gui_popups.ClearPopUp;
 import gui.UndoRedoTextArea;
+import gui_popups.ClearPopUp;
+import gui.ColumnTextArea;
 import tab2mxl.CreateScore;
 import tab2mxl.InstrumentDetection;
 import tab2mxl.LoadManager;
