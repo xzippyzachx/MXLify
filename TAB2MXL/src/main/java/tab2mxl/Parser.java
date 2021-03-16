@@ -18,6 +18,7 @@ public class Parser {
 	private Tuning tunner;
 	private FileGenerator fileGen;
 	private double rest;
+	private int totalDash;
 	
 	//@SuppressWarnings("unused")
 	Parser(ArrayList<ArrayList<String>> input) {
@@ -89,6 +90,7 @@ public class Parser {
 		int measure = 0;
 		int line = 0;
 		int gate = 0;
+		double totalBeatPerMeasure = (1.0 * beat)/beatType;
 		double beatTypeNote = 1.0/beatType;
 		int div = getDivisions(beat);
 		double dash = 0; 
@@ -275,9 +277,9 @@ public class Parser {
 
 				double beatNote;
 				if(hammerOn){
-					beatNote = beatNote((hammerDuration * beatTypeNote)/div);
+					beatNote = beatNote((hammerDuration * totalBeatPerMeasure)/totalDash);/*beatNote((hammerDuration * beatTypeNote)/div);*/
 				}
-				else { beatNote = beatNote((dash * beatTypeNote)/div);}
+				else {beatNote = beatNote((dash * totalBeatPerMeasure)/totalDash);/*beatNote((dash * beatTypeNote)/div)*/}
 
 				//Finds the string and fret of a note
 				gate++;
@@ -373,11 +375,11 @@ public class Parser {
 			if (chord) {
 				double beatNote;
 				if(hammerOn){
-					beatNote = beatNote((hammerDuration * beatTypeNote)/div);
+					beatNote = beatNote((hammerDuration * totalBeatPerMeasure)/totalDash);/*beatNote((hammerDuration * beatTypeNote)/div);*/
 					totalNote += beatNote;
 				}
 				else {
-					beatNote = beatNote((dash * beatTypeNote)/div);
+					beatNote = beatNote((dash * totalBeatPerMeasure)/totalDash);/*beatNote((dash * beatTypeNote)/div)*/
 				}
 
 				fileGen.addChord(chords,chordType, getDuration(beatNote), chordsOctave,linearray,fretarray, chordDot,sharp,hammerLocation,hammerStart,hammerContinue,hammerDone,hchord);
@@ -435,7 +437,7 @@ public class Parser {
 		boolean output = true;
 		
 		for(Object t : cs) {
-			output = (output && t.equals(o)) || (output && t.equals('[')) || (output && t.equals(']'))  ;
+			output = (output && t.equals(o)) || (output && t.equals('[')) || (output && t.equals(']'));
 		}
 		
 		return output;
@@ -461,7 +463,7 @@ public class Parser {
 			return dash;
 		}
 		return 1;
-	};
+	}
 
 	private boolean containsOnlyInt(int[] cs, int o) {
 		boolean output = true;
@@ -516,9 +518,7 @@ public class Parser {
 					//add the rest here
 					rest = beatNote(beatNote - check2);
 					System.out.println("DotRest: " + rest);
-				}/*else if() {
-					
-				}*/else {
+				}else {
 					break;
 				}
 			}
@@ -576,6 +576,7 @@ public class Parser {
 		}
 		
 		System.out.println("BeatNoteOut: " + output);
+		
 		return output;
 		}
 	
@@ -635,6 +636,14 @@ public class Parser {
 			return (int)output;
 		else
 			return (int)Math.round(output);
+	}
+	
+	private double noteFromDash(int d) {
+		double output = 0.0;
+		
+		output = ((1.0 * beat/beatType)*d)/totalDash;
+		
+		return output;
 	}
 	
 	private int getDivisions(int beatSig) {
@@ -697,6 +706,7 @@ public class Parser {
 		}
 			}*/
 		//System.out.println("");
+		totalDash = hyfenNumber;
 		double beatNote = 1.0/beatType;
 		double bSig  = 1.0 * beatSig;
 		double totalBeatPerMeasure = bSig/beatType;
@@ -722,5 +732,6 @@ public class Parser {
 	
 	static void addTime(String timeSig){
 		misc.put("TimeSig",timeSig);
+		System.out.println("TimeSig: " + timeSig);
 	}
 }
