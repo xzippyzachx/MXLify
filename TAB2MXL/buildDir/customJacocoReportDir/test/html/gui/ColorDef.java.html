@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ColorDef.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">TAB2MXL</a> &gt; <a href="index.source.html" class="el_package">gui</a> &gt; <span class="el_source">ColorDef.java</span></div><h1>ColorDef.java</h1><pre class="source lang-java linenums">package gui;
+
+
+/**
+ * Definition of colors that will be used in gradients etc.
+ * This is useful to assure that you use the same color combinations
+ * in all the different components. Each color is defined in three
+ * brightness levels.
+ * @author hansolo
+ */
+<span class="nc" id="L11">public enum ColorDef</span>
+{
+<span class="nc" id="L13">    RED(new java.awt.Color(162, 0, 0, 255), new java.awt.Color(214, 62, 50, 255), new java.awt.Color(252, 29, 0, 255)),</span>
+<span class="nc" id="L14">    ORANGE(new java.awt.Color(150, 53, 26, 255), new java.awt.Color(252, 81, 0, 255), new java.awt.Color(253, 136, 0, 255)),</span>
+<span class="nc" id="L15">    YELLOW(new java.awt.Color(162, 162, 0, 255), new java.awt.Color(214, 214, 50, 255), new java.awt.Color(252, 252, 29, 255)),</span>
+<span class="nc" id="L16">    GREEN(new java.awt.Color(0, 162, 0, 255), new java.awt.Color(62, 214, 50, 255), new java.awt.Color(29, 252, 0, 255)),</span>
+<span class="nc" id="L17">    BLUE(new java.awt.Color(0, 0, 162, 255), new java.awt.Color(50, 62, 214, 255), new java.awt.Color(0, 29, 252, 255)),</span>
+<span class="nc" id="L18">    GRAY(new java.awt.Color(106, 106, 106, 255), new java.awt.Color(156, 156, 156, 255), new java.awt.Color(205, 205, 205, 255)),</span>
+<span class="nc" id="L19">    CYAN(new java.awt.Color(15, 109, 108, 255), new java.awt.Color(0, 255, 255, 255), new java.awt.Color(179, 255, 255, 255)),</span>
+<span class="nc" id="L20">    MAGENTA(new java.awt.Color(98, 0, 114, 255), new java.awt.Color(255, 0, 255, 255), new java.awt.Color(255, 179, 255, 255)),</span>
+<span class="nc" id="L21">    RAITH(new java.awt.Color(0, 65, 125, 255), new java.awt.Color(0, 106, 172, 255), new java.awt.Color(130, 180, 214, 255)),</span>
+<span class="nc" id="L22">    GREEN_LCD(new java.awt.Color(15, 109, 93, 255), new java.awt.Color(0, 185, 165, 255), new java.awt.Color(48, 255, 204,255)),</span>
+<span class="nc" id="L23">    JUG_GREEN(new java.awt.Color(0x204524), new java.awt.Color(0x32A100), new java.awt.Color(0x81CE00)),</span>
+<span class="nc" id="L24">    WHITE(new java.awt.Color(220, 220, 220, 255), new java.awt.Color(235, 235, 235, 255), java.awt.Color.WHITE),</span>
+	
+<span class="nc" id="L26">	CUSTOM_BLUE(new java.awt.Color(33,150,243), new java.awt.Color(33,150,243), new java.awt.Color(33,150,243));</span>
+
+    public final java.awt.Color DARK;
+    public final java.awt.Color MEDIUM;
+    public final java.awt.Color LIGHT;
+  
+    ColorDef(final java.awt.Color DARK_COLOR, final java.awt.Color MEDIUM_COLOR, final java.awt.Color LIGHT_COLOR)
+<span class="nc" id="L33">    {</span>
+<span class="nc" id="L34">        this.DARK = DARK_COLOR;</span>
+<span class="nc" id="L35">        this.MEDIUM = MEDIUM_COLOR;</span>
+<span class="nc" id="L36">        this.LIGHT = LIGHT_COLOR;</span>
+<span class="nc" id="L37">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

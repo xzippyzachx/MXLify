@@ -151,13 +151,13 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 			@Override
 			public void insertUpdate(DocumentEvent e) {
 				String[] inputText = textField.getText().split("\n");
-				tabList.setSelectedIndex(InstrumentDetection.detectInstrument(GetInput(inputText)));
+				tabList.setSelectedIndex(InstrumentDetection.detectInstrument(GetInput(inputText,false)));
 			}
 			
 			@Override
 			public void removeUpdate(DocumentEvent e) {
 				String[] inputText = textField.getText().split("\n");
-				tabList.setSelectedIndex(InstrumentDetection.detectInstrument(GetInput(inputText)));
+				tabList.setSelectedIndex(InstrumentDetection.detectInstrument(GetInput(inputText,false)));
 			}
         });
         
@@ -296,23 +296,15 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 				errorText.setText("Text Area Empty");
 				return;
 			}
-			else if (!textField.getText().contains("|"))
-			{
-				errorText.setText("Wrong Formatting");
-				return;
-			}
-			
 			String[] inputText = textField.getText().split("\n");
 			
 			ArrayList<ArrayList<String>> input = new ArrayList<ArrayList<String>>();
 			
-			input = GetInput(inputText); // Convert to double String ArrayList
-			
-			setTabType(tabList.getSelectedItem().toString());
-			setTitle(songName.getText());
-			setTimeSig(timeSignature.getText());
-					
-			errorText.setText("");
+			input = GetInput(inputText,true); // Convert to double String ArrayList
+	       
+			if (input == null) {
+				return;
+			}
 								
 			//Detect if the text area is empty
 			int lineLength = input.get(0).size();
@@ -320,7 +312,7 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 				if(line.size() != lineLength && line.size() != 0)
 				{
 					errorText.setText("Wrong Formatting");
-					break;
+					return;
 				}
 			}
 						
@@ -332,11 +324,12 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 				System.out.println("");
 			}
 			*/
+			setTabType(tabList.getSelectedItem().toString());
+			setTitle(songName.getText());
+			setTimeSig(timeSignature.getText());
 			
-			if (errorText.getText() == "")
-			{
-				Main.Convert(input, tabList.getSelectedIndex());
-			}
+			Main.Convert(input, tabList.getSelectedIndex());
+
 		}
 		else if(e.getSource() == clearButton && !Main.isInPopUp)
 		{
@@ -350,13 +343,10 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 		
 	}
 	
-	private ArrayList<ArrayList<String>> GetInput (String[] textInput)
+	private ArrayList<ArrayList<String>> GetInput (String[] textInput, boolean convert)
 	{
+		errorText.setText("");
 		if(textField.getText().isEmpty())
-		{
-			return null;
-		}
-		else if (!textField.getText().contains("|"))
 		{
 			return null;
 		}
@@ -367,6 +357,17 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 			if(line.length() > 1)
 			{
 				line = cleanTextContent(line); //Removes redundant spaces
+				if (!line.contains("|")) {
+					if (convert)
+						errorText.setText("Wrong Formatting");
+					return null;
+				}
+				if (!line.contains("-")) {
+					if (convert)
+						errorText.setText("Wrong Formatting");
+					return null;
+				}
+				
 				String[] lineInput = line.substring(line.indexOf('|')).split("");
 				ArrayList<String> lineInputList = new ArrayList<String>();
 				String tunePlusOctave = line.substring(0, line.indexOf('|')).trim();

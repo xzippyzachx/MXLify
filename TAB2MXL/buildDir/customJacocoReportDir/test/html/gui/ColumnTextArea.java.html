@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ColumnTextArea.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">TAB2MXL</a> &gt; <a href="index.source.html" class="el_package">gui</a> &gt; <span class="el_source">ColumnTextArea.java</span></div><h1>ColumnTextArea.java</h1><pre class="source lang-java linenums">package gui;
+
+import java.awt.Toolkit;
+import java.awt.event.KeyEvent;
+
+import javax.swing.InputMap;
+import javax.swing.JTextArea;
+import javax.swing.KeyStroke;
+import javax.swing.text.JTextComponent;
+import javax.swing.undo.CannotUndoException;
+
+public class ColumnTextArea extends JTextArea{
+
+    private static final long serialVersionUID = 1L;
+    
+<span class="nc" id="L16">    Object[] actionKeys = new Object[2];</span>
+
+    public ColumnTextArea(){
+<span class="nc" id="L19">        super();</span>
+<span class="nc" id="L20">        this.setCaret(new ColumnTextArea.ColumnSelectionCaret());</span>
+
+        //Disable ALT key presses when the textarea is focused
+<span class="nc" id="L23">        this.getInputMap(javax.swing.JComponent.WHEN_FOCUSED).put(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ALT, 0, true), &quot;ALTKEY&quot;);</span>
+<span class="nc" id="L24">        this.getActionMap().put(&quot;ALTKEY&quot;, new javax.swing.AbstractAction() {</span>
+            private static final long serialVersionUID = 1L;
+            @Override
+            public void actionPerformed(java.awt.event.ActionEvent e) {
+<span class="nc" id="L28">            }</span>
+        });
+<span class="nc" id="L30">    }</span>
+
+    @Override
+    public java.lang.String getSelectedText(){
+<span class="nc" id="L34">        javax.swing.text.Highlighter.Highlight[] selections = this.getHighlighter().getHighlights();</span>
+<span class="nc" id="L35">        String text = &quot;&quot;;</span>
+<span class="nc" id="L36">        int cnt = selections.length;</span>
+<span class="nc bnc" id="L37" title="All 2 branches missed.">        if(cnt == 0){</span>
+<span class="nc" id="L38">            text = super.getSelectedText();</span>
+        }else{
+<span class="nc bnc" id="L40" title="All 2 branches missed.">            for (int i=0; i&lt;cnt; i++) {</span>
+<span class="nc" id="L41">                int start = selections[i].getStartOffset();</span>
+<span class="nc" id="L42">                int end = selections[i].getEndOffset();</span>
+<span class="nc" id="L43">                java.lang.String selectedText = &quot;&quot;;</span>
+                try {
+<span class="nc" id="L45">                    selectedText = this.getDocument().getText(start,end-start);</span>
+<span class="nc" id="L46">                } catch (javax.swing.text.BadLocationException e) {</span>
+<span class="nc" id="L47">                    e.printStackTrace();</span>
+<span class="nc" id="L48">                }</span>
+<span class="nc bnc" id="L49" title="All 2 branches missed.">                if(i == 0){</span>
+<span class="nc" id="L50">                    text = selectedText;</span>
+                }else{
+<span class="nc" id="L52">                    text += '\n' + selectedText;</span>
+                }
+            }
+        }
+<span class="nc" id="L56">        return(text);</span>
+    }
+    
+    @Override
+    public void copy(){
+<span class="nc" id="L61">        java.awt.datatransfer.StringSelection ss = new java.awt.datatransfer.StringSelection(this.getSelectedText());</span>
+<span class="nc" id="L62">        java.awt.Toolkit.getDefaultToolkit().getSystemClipboard().setContents(ss,ss);        </span>
+<span class="nc" id="L63">    }</span>
+    
+    
+    public void keyPressed(KeyEvent e) {
+
+<span class="nc bnc" id="L68" title="All 4 branches missed.">		if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE || e.getKeyCode() == KeyEvent.VK_DELETE) { // Backspace/delete</span>
+<span class="nc" id="L69">			javax.swing.text.Highlighter.Highlight[] selections = this.getHighlighter().getHighlights();</span>
+			
+<span class="nc" id="L71">			int cnt = selections.length;</span>
+<span class="nc bnc" id="L72" title="All 2 branches missed.">	        if(cnt == 0){</span>
+	            
+	        }else{
+<span class="nc bnc" id="L75" title="All 2 branches missed.">	            for (int i=0; i&lt;cnt; i++) {</span>
+<span class="nc" id="L76">	                int start = selections[i].getStartOffset();</span>
+<span class="nc" id="L77">	                int end = selections[i].getEndOffset();</span>
+<span class="nc" id="L78">	                replaceRange(&quot;&quot;, start, end);</span>
+	            }
+	        }
+		}
+		
+<span class="nc" id="L83">    }</span>
+    
+    private void disableKeys(InputMap inputMap) {
+<span class="nc" id="L86">        String[] keys = {&quot;BACK_SPACE&quot;, &quot;DELETE&quot;};</span>
+<span class="nc" id="L87">        int i = 0;</span>
+<span class="nc bnc" id="L88" title="All 2 branches missed.">        for (String key : keys) {</span>
+<span class="nc" id="L89">        	actionKeys[i] = inputMap.get(KeyStroke.getKeyStroke(key));</span>
+<span class="nc" id="L90">            inputMap.put(KeyStroke.getKeyStroke(key), &quot;none&quot;);</span>
+<span class="nc" id="L91">            i++;</span>
+        }
+<span class="nc" id="L93">    }</span>
+    
+    private void enableKeys(InputMap inputMap) {
+<span class="nc" id="L96">    	String[] keys = {&quot;BACK_SPACE&quot;, &quot;DELETE&quot;};</span>
+<span class="nc" id="L97">    	int i = 0;</span>
+<span class="nc bnc" id="L98" title="All 2 branches missed.">        for (String key : keys) {        	</span>
+<span class="nc" id="L99">            inputMap.put(KeyStroke.getKeyStroke(key), actionKeys[i]);</span>
+<span class="nc" id="L100">            i++;</span>
+        }        
+<span class="nc" id="L102">    }</span>
+            
+<span class="nc" id="L104">    class ColumnSelectionCaret extends javax.swing.text.DefaultCaret {</span>
+        private static final long serialVersionUID = 1L;
+<span class="nc" id="L106">        java.awt.Point lastPoint = new java.awt.Point(0,0);</span>
+<span class="nc" id="L107">        boolean altDown = false;</span>
+<span class="nc" id="L108">        boolean moving = false;</span>
+
+        @Override
+        public void mouseMoved(java.awt.event.MouseEvent e) {
+<span class="nc" id="L112">            super.mouseMoved(e);</span>
+<span class="nc" id="L113">        }</span>
+
+        @Override
+        public void mouseClicked(java.awt.event.MouseEvent e) {
+<span class="nc" id="L117">            super.mouseClicked(e);</span>
+<span class="nc bnc" id="L118" title="All 2 branches missed.">            if(e.getClickCount()==1){</span>
+<span class="nc" id="L119">                this.getComponent().getHighlighter().removeAllHighlights();</span>
+<span class="nc" id="L120">                enableKeys(getInputMap());</span>
+            }
+<span class="nc" id="L122">        }</span>
+
+        @Override
+        public void mousePressed(java.awt.event.MouseEvent e){
+<span class="nc" id="L126">            super.mousePressed(e);</span>
+<span class="nc" id="L127">            this.lastPoint = new java.awt.Point(e.getX(),e.getY());</span>
+<span class="nc" id="L128">            this.altDown = e.isAltDown();</span>
+<span class="nc bnc" id="L129" title="All 2 branches missed.">            if(this.altDown)</span>
+<span class="nc" id="L130">            	disableKeys(getInputMap());</span>
+<span class="nc" id="L131">        }</span>
+
+        @Override
+        protected void moveCaret(java.awt.event.MouseEvent e) {
+<span class="nc bnc" id="L135" title="All 2 branches missed.">            if(!this.moving){</span>
+<span class="nc" id="L136">                this.getComponent().getHighlighter().removeAllHighlights();               </span>
+<span class="nc" id="L137">                this.moving = true;</span>
+            }
+<span class="nc bnc" id="L139" title="All 2 branches missed.">            if(this.altDown){</span>
+<span class="nc" id="L140">                java.awt.Point pt = new java.awt.Point(e.getX(), e.getY());</span>
+<span class="nc" id="L141">                javax.swing.text.Position.Bias[] biasRet = new javax.swing.text.Position.Bias[1];</span>
+<span class="nc" id="L142">                int pos = getComponent().getUI().viewToModel2D(getComponent(), pt, biasRet);</span>
+<span class="nc bnc" id="L143" title="All 2 branches missed.">                if(biasRet[0] == null)</span>
+<span class="nc" id="L144">                    biasRet[0] = javax.swing.text.Position.Bias.Forward;</span>
+<span class="nc bnc" id="L145" title="All 2 branches missed.">                if (pos &gt;= 0) {</span>
+<span class="nc" id="L146">                    this.setDot(pos);</span>
+<span class="nc" id="L147">                    java.awt.Point start = new java.awt.Point(Math.min(this.lastPoint.x,pt.x), Math.min(this.lastPoint.y,pt.y));</span>
+<span class="nc" id="L148">                    java.awt.Point end = new java.awt.Point(Math.max(this.lastPoint.x,pt.x), Math.max(this.lastPoint.y,pt.y));</span>
+<span class="nc" id="L149">                    this.customHighlight(start,end);</span>
+                }
+<span class="nc" id="L151">            }else{</span>
+<span class="nc" id="L152">                super.moveCaret(e);</span>
+            }
+<span class="nc" id="L154">        }</span>
+        @Override
+        public void mouseReleased(java.awt.event.MouseEvent e){
+<span class="nc" id="L157">            this.moving = false;</span>
+<span class="nc" id="L158">            super.mouseReleased(e);</span>
+<span class="nc" id="L159">        }</span>
+
+        protected void customHighlight(java.awt.Point start, java.awt.Point end) {
+<span class="nc" id="L162">            javax.swing.text.JTextComponent comp = this.getComponent();</span>
+<span class="nc" id="L163">            javax.swing.text.Position.Bias[] biasRet = new javax.swing.text.Position.Bias[1];</span>
+
+<span class="nc" id="L165">            comp.getHighlighter().removeAllHighlights();</span>
+<span class="nc" id="L166">            int y = start.y;</span>
+<span class="nc" id="L167">            int firstX = start.x;</span>
+<span class="nc" id="L168">            int lastX = end.x;</span>
+
+<span class="nc" id="L170">            int pos1 = comp.getUI().viewToModel2D(comp, new java.awt.Point(firstX,y), biasRet);</span>
+<span class="nc" id="L171">            int pos2 = comp.getUI().viewToModel2D(comp, new java.awt.Point(lastX,y), biasRet);</span>
+            try {
+<span class="nc" id="L173">                comp.getHighlighter().addHighlight(pos1, pos2, this.getSelectionPainter());</span>
+            }
+<span class="nc" id="L175">            catch (Exception ex) {</span>
+<span class="nc" id="L176">                ex.printStackTrace();</span>
+<span class="nc" id="L177">            }</span>
+<span class="nc" id="L178">            y++;</span>
+<span class="nc bnc" id="L179" title="All 2 branches missed.">            while (y&lt;end.y) {</span>
+<span class="nc" id="L180">                int pos1new = comp.getUI().viewToModel2D(comp, new java.awt.Point(firstX,y), biasRet);</span>
+<span class="nc" id="L181">                int pos2new = comp.getUI().viewToModel2D(comp, new java.awt.Point(lastX,y), biasRet);</span>
+<span class="nc bnc" id="L182" title="All 2 branches missed.">                if (pos1!=pos1new)  {</span>
+<span class="nc" id="L183">                    pos1=pos1new;</span>
+<span class="nc" id="L184">                    pos2=pos2new;</span>
+                    try {
+<span class="nc" id="L186">                        comp.getHighlighter().addHighlight(pos1, pos2, this.getSelectionPainter());</span>
+                    }
+<span class="nc" id="L188">                    catch (Exception ex) {</span>
+<span class="nc" id="L189">                        ex.printStackTrace();</span>
+<span class="nc" id="L190">                    }</span>
+                }
+<span class="nc" id="L192">                y++;</span>
+<span class="nc" id="L193">            }</span>
+<span class="nc" id="L194">        }</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>
