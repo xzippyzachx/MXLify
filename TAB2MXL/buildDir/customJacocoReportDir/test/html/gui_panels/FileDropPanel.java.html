@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FileDropPanel.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">TAB2MXL</a> &gt; <a href="index.source.html" class="el_package">gui_panels</a> &gt; <span class="el_source">FileDropPanel.java</span></div><h1>FileDropPanel.java</h1><pre class="source lang-java linenums">package gui_panels;
+
+import java.awt.*;
+import java.awt.dnd.DropTarget;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
+import javax.swing.*;
+import javax.swing.border.Border;
+
+import gui.DragDropListener;
+
+@SuppressWarnings(&quot;serial&quot;)
+public class FileDropPanel extends JPanel {
+	
+<span class="nc" id="L16">	public static String dropFilePath = &quot;&quot;;</span>
+	
+<span class="nc" id="L18">	FileDropPanel(){</span>
+		
+
+		// Main Panel for Drop Elements
+<span class="nc" id="L22">		JPanel dropPanel = new JPanel();</span>
+<span class="nc" id="L23">		dropPanel.setLayout(new BoxLayout(dropPanel, BoxLayout.Y_AXIS));// sets layout to vertical</span>
+<span class="nc" id="L24">		Border DropPadding = BorderFactory.createEmptyBorder(0, 0, 0, 10);</span>
+<span class="nc" id="L25">		dropPanel.setBorder(DropPadding);</span>
+		
+		//Title Label -----------------------------------------------------------
+<span class="nc" id="L28">		JLabel dropLabel = new JLabel(&quot;&lt;html&gt;&lt;body style='text-align: center'&gt;Drop Tablature Text File&quot;);				</span>
+		
+<span class="nc" id="L30">		dropLabel.setHorizontalAlignment(JLabel.CENTER);</span>
+		
+<span class="nc" id="L32">		dropLabel.setHorizontalTextPosition(JLabel.CENTER);</span>
+<span class="nc" id="L33">		dropLabel.setAlignmentX(JLabel.CENTER_ALIGNMENT);</span>
+<span class="nc" id="L34">		Border padding = BorderFactory.createEmptyBorder(5, 0, 5, 0);</span>
+<span class="nc" id="L35">		dropLabel.setBorder(padding);</span>
+<span class="nc" id="L36">		dropLabel.setBackground(new Color(33,150,243));</span>
+<span class="nc" id="L37">		dropLabel.setOpaque(true);</span>
+					
+<span class="nc" id="L39">	    dropPanel.add(dropLabel);</span>
+		
+	    //Drop Image Label ------------------------------------------------------
+<span class="nc" id="L42">		JLabel dropLoc = new JLabel();</span>
+		
+<span class="nc" id="L44">		ImageIcon imageIcon = new ImageIcon(&quot;Images/DropImage.png&quot;); // load the image to a imageIcon</span>
+<span class="nc" id="L45">		Image image = imageIcon.getImage(); // transform it </span>
+<span class="nc" id="L46">		Image newImage = image.getScaledInstance(140, 120,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  </span>
+<span class="nc" id="L47">		imageIcon = new ImageIcon(newImage);  // transform it back</span>
+<span class="nc" id="L48">		dropLoc.setIcon(imageIcon);</span>
+		
+<span class="nc" id="L50">		dropLoc.setMinimumSize(new Dimension(300, 120));</span>
+<span class="nc" id="L51">		dropLoc.setPreferredSize(new Dimension(300, 120));</span>
+<span class="nc" id="L52">		dropLoc.setMaximumSize(new Dimension(300, 120));</span>
+		
+<span class="nc" id="L54">		dropLoc.setHorizontalAlignment(JLabel.CENTER);</span>
+<span class="nc" id="L55">		dropLoc.setHorizontalTextPosition(JLabel.CENTER);</span>
+<span class="nc" id="L56">		dropLoc.setAlignmentX(JLabel.CENTER_ALIGNMENT);</span>
+		
+<span class="nc" id="L58">		dropLoc.setBackground(Color.LIGHT_GRAY);</span>
+		
+		//dropLoc hover effects
+<span class="nc" id="L61">		dropLoc.addMouseListener(new MouseAdapter() {</span>
+    	    public void mouseEntered(MouseEvent evt) {
+<span class="nc" id="L63">    	    	dropLoc.setBackground(new Color(207,207,207));</span>
+<span class="nc" id="L64">    	    }</span>
+    	    
+
+    	    public void mouseExited(MouseEvent evt) {
+<span class="nc" id="L68">    	    	dropLoc.setBackground(Color.LIGHT_GRAY);</span>
+<span class="nc" id="L69">    	    }</span>
+		});
+		
+<span class="nc" id="L72">		dropLoc.setOpaque(true);</span>
+		
+<span class="nc" id="L74">		DragDropListener dragDropListener = new DragDropListener();</span>
+<span class="nc" id="L75">		new DropTarget(dropLoc, dragDropListener); // Connect the label with a drag and drop listener</span>
+
+		// Add the label to the content
+<span class="nc" id="L78">		dropPanel.setOpaque(false);</span>
+<span class="nc" id="L79">		dropPanel.add(dropLoc);</span>
+		//dropPanel.add(dropLabel);
+				
+
+    	 
+		
+				
+		/*
+		//Bottom Label ------------------------------------------------------------
+		JLabel dropText = new JLabel(&quot;Drop File in Above Area&quot;);
+		
+		dropText.setBackground(Color.PINK);
+		//dropText.setFont(new Font(,Font.PLAIN, 16));
+		
+		dropText.setMinimumSize(new Dimension(300, 25));
+		dropText.setPreferredSize(new Dimension(300, 25));
+		dropText.setMaximumSize(new Dimension(300, 25));
+		
+		dropText.setHorizontalAlignment(JLabel.CENTER);
+		dropText.setHorizontalTextPosition(JLabel.CENTER);
+		dropText.setAlignmentX(JLabel.CENTER_ALIGNMENT);
+		
+		dropText.setBackground(Color.LIGHT_GRAY);
+		dropText.setOpaque(true);
+		
+		dropPanel.add(dropText);
+		*/
+<span class="nc" id="L106">		this.setOpaque(false);</span>
+<span class="nc" id="L107">		this.add(dropPanel);//Add Drop Panel to File Drop Panel</span>
+<span class="nc" id="L108">		this.setVisible(true); //Set File Drop Panel to Visible</span>
+<span class="nc" id="L109">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

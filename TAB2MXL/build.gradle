@@ -1,6 +1,8 @@
 plugins {
   id 'application'
   id 'java-library'
+  id 'jacoco'
+  
 }
 
 repositories {
@@ -19,7 +21,19 @@ test {
 	testLogging {
 		events 'passed', 'skipped', 'failed'
 	}
+	
+	finalizedBy jacocoTestReport
 }
+
+jacoco {
+	toolVersion "0.8.6"
+	reportsDirectory = file("buildDir/customJacocoReportDir")
+}
+	
+jacocoTestReport {
+	dependsOn test
+}
+
 
 java {
     toolchain {

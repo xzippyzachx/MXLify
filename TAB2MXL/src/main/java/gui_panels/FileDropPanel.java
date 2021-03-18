@@ -11,7 +11,7 @@ import javax.swing.border.Border;
 import gui.DragDropListener;
 
 @SuppressWarnings("serial")
-public class FileDropPanel extends JPanel{
+public class FileDropPanel extends JPanel {
 	
 	public static String dropFilePath = "";
 	
@@ -41,7 +41,7 @@ public class FileDropPanel extends JPanel{
 	    //Drop Image Label ------------------------------------------------------
 		JLabel dropLoc = new JLabel();
 		
-		ImageIcon imageIcon = new ImageIcon("DropImage.png"); // load the image to a imageIcon
+		ImageIcon imageIcon = new ImageIcon("Images/DropImage.png"); // load the image to a imageIcon
 		Image image = imageIcon.getImage(); // transform it 
 		Image newImage = image.getScaledInstance(140, 120,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
 		imageIcon = new ImageIcon(newImage);  // transform it back

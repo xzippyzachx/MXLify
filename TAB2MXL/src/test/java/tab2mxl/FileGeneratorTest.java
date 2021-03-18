@@ -27,7 +27,7 @@ class FileGeneratorTest {
 		openWriter();
 		assertNotNull(fileGen.myWriter);
 		assertNotNull(fileGen.saveFile);
-		assertNotNull(fileGen.LAST_USED_FOLDER_SAVE);
+		assertNotNull(fileGen.LAST_USED_FOLDER_CONVERT);
 		assertNotNull(fileGen.prefs);
 	}
 
@@ -197,7 +197,7 @@ class FileGeneratorTest {
 	@Test
 	void testAddNote() {
 		setUp();
-		fileGen.addNote(1,1,'E', "half", 1, 3, 0,false,false,false,false);
+		fileGen.addNote(1,1,'E', "half", 1, 3, 0,false,false,false,false,false);
 
 		fileGen.end();
 		String fileContent = this.readFile();
@@ -224,7 +224,7 @@ class FileGeneratorTest {
 	@Test
 	void testAddNote2() {
 		openWriter();
-		fileGen.addNote(2,3,'G', "quarter", 1, 2, 0,false,false,false,false);
+		fileGen.addNote(2,3,'G', "quarter", 1, 2, 0,false,false,false,false,false);
 		fileGen.end();
 		String fileContent = this.readFile();
 		String expected = "<note>\n"
@@ -257,7 +257,8 @@ class FileGeneratorTest {
 		int[] oct = new int[] {1,2,3};
 		int[] dot = new int[] {1,2,3};
 		boolean[] alter = new boolean[] {false,false};
-		fileGen.addChord(notes, "half", 1,oct,frets,lines, dot,alter,-1,false,false,false);
+		boolean[] harmonic = new boolean[] {false,false};
+		fileGen.addChord(notes, "half", 1,oct,frets,lines, dot,alter,-1,false,false,false,harmonic);
 		fileGen.end();
 		
 		String fileContent = this.readFile();

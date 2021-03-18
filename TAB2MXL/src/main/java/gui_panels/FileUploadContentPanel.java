@@ -42,11 +42,12 @@ import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import tab2mxl.LoadManager;
 import tab2mxl.Main;
 
 public class FileUploadContentPanel extends JPanel implements ActionListener {
 
-	JButton selectButton;
+	JButton openButton;
 	JButton backButton;
 
 	public Preferences prefs = Preferences.userRoot().node(getClass().getName());
@@ -70,29 +71,6 @@ public class FileUploadContentPanel extends JPanel implements ActionListener {
 		UploadPanel.setLayout(new GridLayout(1,1)); // sets layout of this panel to be vertical
 
 		UploadPanel.setOpaque(false);
-//		JPanel SpacePanelTop = new JPanel(); // makes the top quarter of the UploadPanel empty space
-//		JPanel SpacePanelBottom = new JPanel();  // makes the bottom quarter of the UploadPanel empty space
-		//JPanel LabelPanel = new JPanel(new GridBagLayout()); // allows us centering of the label
-		//JLabel label = new JLabel("Upload Tablature Text File"); // creates label
-		
-//		label.setMinimumSize(new Dimension(300, 50));
-//		label.setPreferredSize(new Dimension(300, 50));
-//		label.setMaximumSize(new Dimension(300, 50));
-//		
-//		label.setHorizontalAlignment(JLabel.CENTER);
-//		label.setHorizontalTextPosition(JLabel.CENTER);
-//		label.setAlignmentX(JLabel.CENTER_ALIGNMENT);
-//		
-//		label.setBackground(new Color(51,153,255));
-//		label.setOpaque(true);
-//		
-//		Border border = BorderFactory.createLineBorder(Color.BLACK, 3);
-//		label.setBorder(border);
-	//	label.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 16)); // sets font for the label
-		
-//		LabelPanel.add(label);
-//		UploadPanel.add(SpacePanelTop);
-//		UploadPanel.add(LabelPanel);
 
 		JPanel ButtonPanel = new JPanel(); // creates panel for button
 		ButtonPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
@@ -103,15 +81,27 @@ public class FileUploadContentPanel extends JPanel implements ActionListener {
 		ButtonPanel.setOpaque(false);
 
 
-		selectButton = new JButton("Select File"); // Select File button
-		selectButton.setBackground(new Color(33,150,243));
-		selectButton.setForeground(new Color(224,224,224));
-		selectButton.setOpaque(true);
-		selectButton.setBorderPainted(false);
+		openButton = new JButton("Open"); // Select File button
+		openButton.setBackground(new Color(33,150,243));
+		openButton.setForeground(new Color(224,224,224));
+		openButton.setOpaque(true);
+		openButton.setBorderPainted(false);
 
-		selectButton.setFocusable(false);
-		selectButton.addActionListener(this); // Button action
-		ButtonPanel.add(selectButton);
+		openButton.setFocusable(false);
+		openButton.addActionListener(this); // Button action
+		//Button hover effects
+        openButton.addMouseListener(new java.awt.event.MouseAdapter() {
+    	    public void mouseEntered(java.awt.event.MouseEvent evt) {
+    	    	openButton.setBackground(new Color(224,224,224));
+    	    	openButton.setForeground(new Color(33,150,243));
+    	    }
+    	    public void mouseExited(java.awt.event.MouseEvent evt) {
+    	    	openButton.setBackground(new Color(33,150,243));
+    	    	openButton.setForeground(new Color(224,224,224));
+    	    }
+    	}); 
+		
+		ButtonPanel.add(openButton);
 		
 		UploadPanel.add(ButtonPanel); // adds button panel to the upload panel
 
@@ -130,14 +120,12 @@ public class FileUploadContentPanel extends JPanel implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
-		if (e.getSource() == selectButton && !Main.isInPopUp) { // Button click
+		if (e.getSource() == openButton && !Main.isInPopUp) { // Button click
 			
-			FileNameExtensionFilter filter = new FileNameExtensionFilter("*.txt", "txt");				
+			FileNameExtensionFilter filter = new FileNameExtensionFilter("*.txt", "txt", ".mxlify", "mxlify");				
 			JFileChooser fileChooser = new JFileChooser(prefs.get(LAST_USED_FOLDER, new File(".").getAbsolutePath())); // Create file chooser
 			fileChooser.setFileFilter(filter); // Only allow .txt files
 			
-			ArrayList<ArrayList<String>> input = new ArrayList<ArrayList<String>>();
-
 			int response = fileChooser.showOpenDialog(null); // Select file to open
 
 			if (response == JFileChooser.APPROVE_OPTION) { // if File successively chosen
@@ -148,6 +136,28 @@ public class FileUploadContentPanel extends JPanel implements ActionListener {
 				prefs.put(LAST_USED_FOLDER, fileChooser.getSelectedFile().getParent()); // Save file path
 
 				try {
+					String fileName = file.getName();
+					String extension = "";
+
+					int i = fileName.lastIndexOf('.');
+					int p = Math.max(fileName.lastIndexOf('/'), fileName.lastIndexOf('\\'));
+
+					if (i > p)
+					    extension = fileName.substring(i+1);
+										
+					if(extension.equals(".mxlify") || extension.equals("mxlify"))
+					{
+						LoadManager loadManager = new LoadManager(file.getPath());
+						String[] loadedData = loadManager.GetLoadedData();
+						if(!loadManager.failed)
+						{
+							Main.myFrame.textInputContentPanel.tabList.setSelectedIndex(Integer.parseInt(loadedData[0]));
+							Main.myFrame.textInputContentPanel.songName.setText(loadedData[1]);
+							Main.myFrame.textInputContentPanel.timeSignature.setText(loadedData[2]);
+						}
+						return;
+					}
+					
 					BufferedReader reader = new BufferedReader(new FileReader (file));
 				    String         line = null;
 				    StringBuilder  stringBuilder = new StringBuilder();
@@ -158,22 +168,10 @@ public class FileUploadContentPanel extends JPanel implements ActionListener {
 			            stringBuilder.append(ls);
 			        }
 
-			        String fileName = ((File) (file)).getName();
-					String extension = "";
-
-					int i = fileName.lastIndexOf('.');
-					int p = Math.max(fileName.lastIndexOf('/'), fileName.lastIndexOf('\\'));
-
-					if (i > p)
-					    extension = fileName.substring(i+1);
-					
-					//System.out.println(extension);
-					
-					if(extension.equals(".txt") || extension.equals("txt"))
+			        if(extension.equals(".txt") || extension.equals("txt"))
 					{
 						Main.FileUploaded(stringBuilder.toString());
-					}								
-			        
+					}			        
 			        
 			        reader.close();
 			    } catch (IOException e1) {

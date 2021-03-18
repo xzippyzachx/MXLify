@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TextPrompt.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">TAB2MXL</a> &gt; <a href="index.source.html" class="el_package">gui</a> &gt; <span class="el_source">TextPrompt.java</span></div><h1>TextPrompt.java</h1><pre class="source lang-java linenums">package gui;
+
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+import javax.swing.border.*;
+import javax.swing.event.*;
+import javax.swing.text.*;
+
+/**
+ *  The TextPrompt class will display a prompt over top of a text component when
+ *  the Document of the text field is empty. The Show property is used to
+ *  determine the visibility of the prompt.
+ *
+ *  The Font and foreground Color of the prompt will default to those properties
+ *  of the parent text component. You are free to change the properties after
+ *  class construction.
+ *  
+ *  DISCLAMER this class was not created by us, it belongs to ROB CAMIK from https://tips4java.wordpress.com/2009/11/29/text-prompt/
+ */
+public class TextPrompt extends JLabel
+	implements FocusListener, DocumentListener
+{
+<span class="nc" id="L24">	public enum Show</span>
+	{
+<span class="nc" id="L26">		ALWAYS,</span>
+<span class="nc" id="L27">		FOCUS_GAINED,</span>
+<span class="nc" id="L28">		FOCUS_LOST;</span>
+	}
+
+	private JTextComponent component;
+	private Document document;
+
+	private Show show;
+	private boolean showPromptOnce;
+	private int focusLost;
+
+	public TextPrompt(String text, JTextComponent component)
+	{
+<span class="nc" id="L40">		this(text, component, Show.ALWAYS);</span>
+<span class="nc" id="L41">	}</span>
+
+	public TextPrompt(String text, JTextComponent component, Show show)
+<span class="nc" id="L44">	{</span>
+<span class="nc" id="L45">		this.component = component;</span>
+<span class="nc" id="L46">		setShow( show );</span>
+<span class="nc" id="L47">		document = component.getDocument();</span>
+
+<span class="nc" id="L49">		setText( text );</span>
+<span class="nc" id="L50">		setFont( component.getFont() );</span>
+<span class="nc" id="L51">		setForeground( component.getForeground() );</span>
+<span class="nc" id="L52">		setBorder( new EmptyBorder(component.getInsets()) );</span>
+<span class="nc" id="L53">		setHorizontalAlignment(JLabel.LEADING);</span>
+
+<span class="nc" id="L55">		component.addFocusListener( this );</span>
+<span class="nc" id="L56">		document.addDocumentListener( this );</span>
+
+<span class="nc" id="L58">		component.setLayout( new BorderLayout() );</span>
+<span class="nc" id="L59">		component.add( this );</span>
+<span class="nc" id="L60">		checkForPrompt();</span>
+<span class="nc" id="L61">	}</span>
+
+	/**
+	 *  Convenience method to change the alpha value of the current foreground
+	 *  Color to the specifice value.
+	 *
+	 *  @param alpha value in the range of 0 - 1.0.
+	 */
+	public void changeAlpha(float alpha)
+	{
+<span class="nc" id="L71">		changeAlpha( (int)(alpha * 255) );</span>
+<span class="nc" id="L72">	}</span>
+
+	/**
+	 *  Convenience method to change the alpha value of the current foreground
+	 *  Color to the specifice value.
+	 *
+	 *  @param alpha value in the range of 0 - 255.
+	 */
+	public void changeAlpha(int alpha)
+	{
+<span class="nc bnc" id="L82" title="All 4 branches missed.">		alpha = alpha &gt; 255 ? 255 : alpha &lt; 0 ? 0 : alpha;</span>
+
+<span class="nc" id="L84">		Color foreground = getForeground();</span>
+<span class="nc" id="L85">		int red = foreground.getRed();</span>
+<span class="nc" id="L86">		int green = foreground.getGreen();</span>
+<span class="nc" id="L87">		int blue = foreground.getBlue();</span>
+
+<span class="nc" id="L89">		Color withAlpha = new Color(red, green, blue, alpha);</span>
+<span class="nc" id="L90">		super.setForeground( withAlpha );</span>
+<span class="nc" id="L91">	}</span>
+
+	/**
+	 *  Convenience method to change the style of the current Font. The style
+	 *  values are found in the Font class. Common values might be:
+	 *  Font.BOLD, Font.ITALIC and Font.BOLD + Font.ITALIC.
+	 *
+	 *  @param style value representing the the new style of the Font.
+	 */
+	public void changeStyle(int style)
+	{
+<span class="nc" id="L102">		setFont( getFont().deriveFont( style ) );</span>
+<span class="nc" id="L103">	}</span>
+
+	/**
+	 *  Get the Show property
+	 *
+	 *  @return the Show property.
+	 */
+	public Show getShow()
+	{
+<span class="nc" id="L112">		return show;</span>
+	}
+
+	/**
+	 *  Set the prompt Show property to control when the promt is shown.
+	 *  Valid values are:
+	 *
+	 *  Show.AWLAYS (default) - always show the prompt
+	 *  Show.Focus_GAINED - show the prompt when the component gains focus
+	 *      (and hide the prompt when focus is lost)
+	 *  Show.Focus_LOST - show the prompt when the component loses focus
+	 *      (and hide the prompt when focus is gained)
+	 *
+	 *  @param show a valid Show enum
+	 */
+	public void setShow(Show show)
+	{
+<span class="nc" id="L129">		this.show = show;</span>
+<span class="nc" id="L130">	}</span>
+
+	/**
+	 *  Get the showPromptOnce property
+	 *
+	 *  @return the showPromptOnce property.
+	 */
+	public boolean getShowPromptOnce()
+	{
+<span class="nc" id="L139">		return showPromptOnce;</span>
+	}
+
+	/**
+	 *  Show the prompt once. Once the component has gained/lost focus
+	 *  once, the prompt will not be shown again.
+	 *
+	 *  @param showPromptOnce  when true the prompt will only be shown once,
+	 *                         otherwise it will be shown repeatedly.
+	 */
+	public void setShowPromptOnce(boolean showPromptOnce)
+	{
+<span class="nc" id="L151">		this.showPromptOnce = showPromptOnce;</span>
+<span class="nc" id="L152">	}</span>
+
+	/**
+	 *	Check whether the prompt should be visible or not. The visibility
+	 *  will change on updates to the Document and on focus changes.
+	 */
+	private void checkForPrompt()
+	{
+		//  Text has been entered, remove the prompt
+
+<span class="nc bnc" id="L162" title="All 2 branches missed.">		if (document.getLength() &gt; 0)</span>
+		{
+<span class="nc" id="L164">			setVisible( false );</span>
+<span class="nc" id="L165">			return;</span>
+		}
+
+		//  Prompt has already been shown once, remove it
+
+<span class="nc bnc" id="L170" title="All 4 branches missed.">		if (showPromptOnce &amp;&amp; focusLost &gt; 0)</span>
+		{
+<span class="nc" id="L172">			setVisible(false);</span>
+<span class="nc" id="L173">			return;</span>
+		}
+
+		//  Check the Show property and component focus to determine if the
+		//  prompt should be displayed.
+
+<span class="nc bnc" id="L179" title="All 2 branches missed.">        if (component.hasFocus())</span>
+        {
+<span class="nc bnc" id="L181" title="All 4 branches missed.">        	if (show == Show.ALWAYS</span>
+        	||  show ==	Show.FOCUS_GAINED)
+<span class="nc" id="L183">        		setVisible( true );</span>
+        	else
+<span class="nc" id="L185">        		setVisible( false );</span>
+        }
+        else
+        {
+<span class="nc bnc" id="L189" title="All 4 branches missed.">        	if (show == Show.ALWAYS</span>
+        	||  show ==	Show.FOCUS_LOST)
+<span class="nc" id="L191">        		setVisible( true );</span>
+        	else
+<span class="nc" id="L193">        		setVisible( false );</span>
+        }
+<span class="nc" id="L195">	}</span>
+
+//  Implement FocusListener
+
+	public void focusGained(FocusEvent e)
+	{
+<span class="nc" id="L201">		checkForPrompt();</span>
+<span class="nc" id="L202">	}</span>
+
+	public void focusLost(FocusEvent e)
+	{
+<span class="nc" id="L206">		focusLost++;</span>
+<span class="nc" id="L207">		checkForPrompt();</span>
+<span class="nc" id="L208">	}</span>
+
+//  Implement DocumentListener
+
+	public void insertUpdate(DocumentEvent e)
+	{
+<span class="nc" id="L214">		checkForPrompt();</span>
+<span class="nc" id="L215">	}</span>
+
+	public void removeUpdate(DocumentEvent e)
+	{
+<span class="nc" id="L219">		checkForPrompt();</span>
+<span class="nc" id="L220">	}</span>
+
+<span class="nc" id="L222">	public void changedUpdate(DocumentEvent e) {}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

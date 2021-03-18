@@ -12,10 +12,10 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 public class FileGenerator {
 
 	public Preferences prefs = Preferences.userRoot().node(getClass().getName());
-	public String LAST_USED_FOLDER_SAVE = "";
+	public String LAST_USED_FOLDER_CONVERT = "";
 	
 	
-	boolean failed = false;
+	public boolean failed = false;
 	static int measureNum = 0;
 	File saveFile;
 	FileWriter myWriter;
@@ -26,22 +26,21 @@ public class FileGenerator {
 	boolean partOpen = false;
 	
 	FileGenerator (String path) {	
+		failed = false;
+		
 		JFileChooser fileChooser = null;
 		int response = 0;
 		if(path == "")
 		{
-			fileChooser = new JFileChooser(prefs.get(LAST_USED_FOLDER_SAVE, new File(".").getAbsolutePath())); // Create file chooser
+			fileChooser = new JFileChooser(prefs.get(LAST_USED_FOLDER_CONVERT, new File(".").getAbsolutePath())); // Create file chooser
 			fileChooser.setFileFilter(new FileNameExtensionFilter("music xml","musicxml","mxl"));
 			response = fileChooser.showSaveDialog(null); //Select file to save
-		}
-		
+		}		
 		
 		if (response == JFileChooser.APPROVE_OPTION) { // if File successively chosen
-			
-
-			
+						
 			if(path == "") {
-				prefs.put(LAST_USED_FOLDER_SAVE, fileChooser.getSelectedFile().getParent()); // Save file path
+				prefs.put(LAST_USED_FOLDER_CONVERT, fileChooser.getSelectedFile().getParent()); // Save file path
 				filepath = fileChooser.getSelectedFile().getAbsolutePath();
 				if (!filepath.substring(filepath.lastIndexOf(".")+1).equals("musicxml") && !filepath.substring(filepath.lastIndexOf(".")+1).equals("mxl"))     
 					filepath += ".musicxml"; //Add extension to file if not already added
@@ -250,7 +249,7 @@ public class FileGenerator {
 	 * @param fret
 	 * @param note
 	 */
-	public void addNote(int string, int fret, char note, String noteType, int duration, int octave, int dot,boolean alter,boolean hammerStart, boolean hammerContinue, boolean hammerDone)
+	public void addNote(int string, int fret, char note, String noteType, int duration, int octave, int dot,boolean alter,boolean hammerStart, boolean hammerContinue, boolean hammerDone,boolean harmonic)
 	{
 		//if(measureNum > 0) {
 		try {
@@ -289,6 +288,10 @@ public class FileGenerator {
 			myWriter.write(currentIndent + "<technical>");
 			currentIndent += "  ";
 			newLine();
+			if(harmonic) {
+				myWriter.write(currentIndent + "<harmonic default-x=\"3\" default-y=\"24\" placement=\"above\" print-object=\"yes\"/>");
+				newLine();
+			}
 			if(hammerStart){
 				myWriter.write(currentIndent + "<hammer-on number=\"1\" type=\"start\">H</hammer-on>");
 				newLine();
@@ -340,7 +343,7 @@ public class FileGenerator {
 	 * @param noteType
 	 */
 
-	public void addChord(char[] chord, String noteType, int duration, int[] octaves,int[] string, int[] fret, int[] dot,boolean[] alter, int HamLocation, boolean hammerStart, boolean hammerContinue, boolean hammerDone) {
+	public void addChord(char[] chord, String noteType, int duration, int[] octaves,int[] string, int[] fret, int[] dot,boolean[] alter, int HamLocation, boolean hammerStart, boolean hammerContinue, boolean hammerDone,boolean[] harmonic) {
 		//if(measureNum >= 1) {
 		boolean firstDone = false;
 		for (int i = chord.length-1; i>=0;i--) {
@@ -385,6 +388,10 @@ public class FileGenerator {
 					myWriter.write(currentIndent + "<technical>");
 					currentIndent += "  ";
 					newLine();
+					if(harmonic[i]) {
+						myWriter.write(currentIndent + "<harmonic default-x=\"3\" default-y=\"24\" placement=\"above\" print-object=\"yes\"/>");
+						newLine();
+					}
 					if(i == HamLocation &&hammerStart){
 						myWriter.write(currentIndent + "<hammer-on number=\"1\" type=\"start\">H</hammer-on>");
 						newLine();
@@ -406,14 +413,6 @@ public class FileGenerator {
 					tabBack();
 					myWriter.write(currentIndent + "</technical>");
 					newLine();
-					if(i == HamLocation && hammerStart){
-						myWriter.write(currentIndent + "<slur number=\"1\" placement=\"above\" type=\"start\"/>");
-						newLine();
-					}
-					else if(i == HamLocation && hammerDone){
-						myWriter.write(currentIndent + "<slur number=\"1\" type=\"stop\"/>");
-						newLine();
-					}
 					tabBack();
 					myWriter.write(currentIndent + "</notations>");
 					newLine();
@@ -431,6 +430,25 @@ public class FileGenerator {
 			}
 		}
 		//}
+	}
+	
+	public void addRest(int duration, String noteType) {
+		try {
+			myWriter.write(currentIndent + "<note>");
+			currentIndent += "  ";
+			newLine();
+			myWriter.write(currentIndent + "<rest/>");
+			newLine();
+			myWriter.write(currentIndent + "<duration>" + duration + "</duration>");
+			newLine();
+			myWriter.write(currentIndent + "<type>" + noteType + "</type>");
+			newLine();
+			tabBack();
+			myWriter.write(currentIndent + "</note>");
+			newLine();
+		}catch(IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	/**
