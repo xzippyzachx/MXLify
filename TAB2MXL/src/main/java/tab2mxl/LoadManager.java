@@ -9,6 +9,8 @@ import java.util.prefs.Preferences;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import gui_popups.ClearPopUp;
+
 public class LoadManager {
 
 	public Preferences prefs = Preferences.userRoot().node(getClass().getName());
@@ -85,14 +87,17 @@ public class LoadManager {
 						            stringBuilder.append(ls);
 						            break;
 							}
-						else
+						else if (!line.split(" ")[0].equals("title") && !line.split(" ")[0].equals("timesig"))
 						{
 							stringBuilder.append(line);
 				            stringBuilder.append(ls);
 						}
 			        }
 
-					Main.myFrame.textInputContentPanel.textField.setText(stringBuilder.toString());
+					if(!Main.myFrame.textInputContentPanel.textField.getText().isEmpty())
+						new ClearPopUp(Main.myFrame, stringBuilder.toString(), "Override Current Tablature");
+					else
+						Main.myFrame.textInputContentPanel.textField.setText(stringBuilder.toString());
 				}
 
 		        reader.close();

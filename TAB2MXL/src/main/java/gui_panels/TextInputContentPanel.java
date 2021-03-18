@@ -46,7 +46,7 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 	JPanel inputpanel;	
 	JButton convertButton;
 	
-	String[] tabTypes = {"Guitar", "Bass", "Drums"};
+	String[] tabTypes = {"Guitar", "Bass" /*, "Drums" */};
 	JPanel detailsPanel;
 	JComboBox tabList;
 	JTextField timeSignature;
