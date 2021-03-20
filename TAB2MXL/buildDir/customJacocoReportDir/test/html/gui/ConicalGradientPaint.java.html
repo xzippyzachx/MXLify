@@ -1,0 +1,424 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ConicalGradientPaint.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">TAB2MXL</a> &gt; <a href="index.source.html" class="el_package">gui</a> &gt; <span class="el_source">ConicalGradientPaint.java</span></div><h1>ConicalGradientPaint.java</h1><pre class="source lang-java linenums">package gui;
+
+
+/**
+ * A paint class that creates conical gradients around a given center point
+ * It could be used in the same way as LinearGradientPaint and RadialGradientPaint
+ * and follows the same syntax.
+ * You could use floats from 0.0 to 1.0 for the fractions which is standard but it's
+ * also possible to use angles from 0.0 to 360 degrees which is most of the times
+ * much easier to handle.
+ * Gradients always start at the top with a clockwise direction and you could
+ * rotate the gradient around the center by given offset.
+ * The offset could also be defined from -0.5 to +0.5 or -180 to +180 degrees.
+ * If you would like to use degrees instead of values from 0 to 1 you have to use
+ * the full constructor and set the USE_DEGREES variable to true
+ * @version 1.0
+ * @author hansolo
+ */
+public final class ConicalGradientPaint implements java.awt.Paint
+{
+    private final java.awt.geom.Point2D CENTER;
+    private final double[] FRACTION_ANGLES;
+    private final double[] RED_STEP_LOOKUP;
+    private final double[] GREEN_STEP_LOOKUP;
+    private final double[] BLUE_STEP_LOOKUP;
+    private final double[] ALPHA_STEP_LOOKUP;
+    private final java.awt.Color[] COLORS;
+    private static final float INT_TO_FLOAT_CONST = 1f / 255f;
+
+    /**
+     * Standard constructor which takes the FRACTIONS in values from 0.0f to 1.0f
+     * @param CENTER
+     * @param GIVEN_FRACTIONS
+     * @param GIVEN_COLORS
+     * @throws IllegalArgumentException
+     */
+    public ConicalGradientPaint(final java.awt.geom.Point2D CENTER, final float[] GIVEN_FRACTIONS, final java.awt.Color[] GIVEN_COLORS) throws IllegalArgumentException
+    {
+<span class="nc" id="L39">        this(false, CENTER, 0.0f, GIVEN_FRACTIONS, GIVEN_COLORS);</span>
+<span class="nc" id="L40">    }</span>
+
+    /**
+     * Enhanced constructor which takes the FRACTIONS in degress from 0.0f to 360.0f and
+     * also an GIVEN_OFFSET in degrees around the rotation CENTER
+     * @param USE_DEGREES
+     * @param CENTER
+     * @param GIVEN_OFFSET
+     * @param GIVEN_FRACTIONS
+     * @param GIVEN_COLORS
+     * @throws IllegalArgumentException
+     */
+    public ConicalGradientPaint(final boolean USE_DEGREES, final java.awt.geom.Point2D CENTER, final float GIVEN_OFFSET, final float[] GIVEN_FRACTIONS, final java.awt.Color[] GIVEN_COLORS) throws IllegalArgumentException
+<span class="nc" id="L53">    {</span>
+        // Check that fractions and colors are of the same size
+<span class="nc bnc" id="L55" title="All 2 branches missed.">        if (GIVEN_FRACTIONS.length != GIVEN_COLORS.length)</span>
+        {
+<span class="nc" id="L57">            throw new IllegalArgumentException(&quot;Fractions and colors must be equal in size&quot;);</span>
+        }
+
+<span class="nc" id="L60">        final java.util.ArrayList&lt;Float&gt; FRACTION_LIST = new java.util.ArrayList&lt;Float&gt;(GIVEN_FRACTIONS.length);</span>
+        final float OFFSET;
+<span class="nc bnc" id="L62" title="All 2 branches missed.">        if (USE_DEGREES)</span>
+        {
+<span class="nc" id="L64">            final double DEG_FRACTION = 1f / 360f;</span>
+<span class="nc bnc" id="L65" title="All 2 branches missed.">            if (Double.compare((GIVEN_OFFSET * DEG_FRACTION), -0.5) == 0)</span>
+            {
+<span class="nc" id="L67">                OFFSET = -0.5f;</span>
+            }
+<span class="nc bnc" id="L69" title="All 2 branches missed.">            else if (Double.compare((GIVEN_OFFSET * DEG_FRACTION), 0.5) == 0)</span>
+            {
+<span class="nc" id="L71">                OFFSET = 0.5f;</span>
+            }
+            else
+            {
+<span class="nc" id="L75">                OFFSET = (float) (GIVEN_OFFSET * DEG_FRACTION);</span>
+            }
+<span class="nc bnc" id="L77" title="All 2 branches missed.">            for (float fraction : GIVEN_FRACTIONS)</span>
+            {
+<span class="nc" id="L79">                FRACTION_LIST.add((float) (fraction * DEG_FRACTION));</span>
+            }
+<span class="nc" id="L81">        }</span>
+        else
+        {
+            // Now it seems to work with rotation of 0.5f, below is the old code to correct the problem
+//            if (GIVEN_OFFSET == -0.5)
+//            {
+//                // This is needed because of problems in the creation of the Raster
+//                // with a angle offset of exactly -0.5
+//                OFFSET = -0.49999f;
+//            }
+//            else if (GIVEN_OFFSET == 0.5)
+//            {
+//                // This is needed because of problems in the creation of the Raster
+//                // with a angle offset of exactly +0.5
+//                OFFSET = 0.499999f;
+//            }
+//            else
+            {
+<span class="nc" id="L99">                OFFSET = GIVEN_OFFSET;</span>
+            }
+<span class="nc bnc" id="L101" title="All 2 branches missed.">            for (float fraction : GIVEN_FRACTIONS)</span>
+            {
+<span class="nc" id="L103">                FRACTION_LIST.add(fraction);</span>
+            }
+        }
+
+        // Check for valid offset
+<span class="nc bnc" id="L108" title="All 4 branches missed.">        if (OFFSET &gt; 0.5f || OFFSET &lt; -0.5f)</span>
+        {
+<span class="nc" id="L110">            throw new IllegalArgumentException(&quot;Offset has to be in the range of -0.5 to 0.5&quot;);</span>
+        }
+
+        // Adjust fractions and colors array in the case where startvalue != 0.0f and/or endvalue != 1.0f
+<span class="nc" id="L114">        final java.util.List&lt;java.awt.Color&gt; COLOR_LIST = new java.util.ArrayList&lt;java.awt.Color&gt;(GIVEN_COLORS.length);</span>
+<span class="nc" id="L115">        COLOR_LIST.addAll(java.util.Arrays.asList(GIVEN_COLORS));</span>
+
+        // Assure that fractions start with 0.0f
+<span class="nc bnc" id="L118" title="All 2 branches missed.">        if (FRACTION_LIST.get(0) != 0.0f)</span>
+        {
+<span class="nc" id="L120">            FRACTION_LIST.add(0, 0.0f);</span>
+<span class="nc" id="L121">            final java.awt.Color TMP_COLOR = COLOR_LIST.get(0);</span>
+<span class="nc" id="L122">            COLOR_LIST.add(0, TMP_COLOR);</span>
+        }
+
+        // Assure that fractions end with 1.0f
+<span class="nc bnc" id="L126" title="All 2 branches missed.">        if (FRACTION_LIST.get(FRACTION_LIST.size() - 1) != 1.0f)</span>
+        {
+<span class="nc" id="L128">            FRACTION_LIST.add(1.0f);</span>
+<span class="nc" id="L129">            COLOR_LIST.add(GIVEN_COLORS[0]);</span>
+        }
+
+        // Recalculate the fractions and colors with the given offset
+<span class="nc" id="L133">        final java.util.Map&lt;Float, java.awt.Color&gt; FRACTION_COLORS = recalculate(FRACTION_LIST, COLOR_LIST, OFFSET);</span>
+
+        // Clear the original FRACTION_LIST and COLOR_LIST
+<span class="nc" id="L136">        FRACTION_LIST.clear();</span>
+<span class="nc" id="L137">        COLOR_LIST.clear();</span>
+
+        // Sort the hashmap by fraction and add the values to the FRACION_LIST and COLOR_LIST
+<span class="nc" id="L140">        final java.util.SortedSet&lt;Float&gt; SORTED_FRACTIONS= new java.util.TreeSet&lt;Float&gt;(FRACTION_COLORS.keySet());</span>
+<span class="nc" id="L141">        final java.util.Iterator&lt;Float&gt; ITERATOR = SORTED_FRACTIONS.iterator();</span>
+<span class="nc bnc" id="L142" title="All 2 branches missed.">        while (ITERATOR.hasNext())</span>
+        {
+<span class="nc" id="L144">            final float CURRENT_FRACTION = ITERATOR.next();</span>
+<span class="nc" id="L145">            FRACTION_LIST.add(CURRENT_FRACTION);</span>
+<span class="nc" id="L146">            COLOR_LIST.add(FRACTION_COLORS.get(CURRENT_FRACTION));</span>
+<span class="nc" id="L147">        }</span>
+
+        // Set the values
+<span class="nc" id="L150">        this.CENTER = CENTER;</span>
+<span class="nc" id="L151">        COLORS = COLOR_LIST.toArray(new java.awt.Color[]{});</span>
+
+        // Prepare lookup table for the angles of each fraction
+<span class="nc" id="L154">        final int MAX_FRACTIONS = FRACTION_LIST.size();</span>
+<span class="nc" id="L155">        this.FRACTION_ANGLES = new double[MAX_FRACTIONS];</span>
+<span class="nc bnc" id="L156" title="All 2 branches missed.">        for (int i = 0 ; i &lt; MAX_FRACTIONS ; i++)</span>
+        {
+<span class="nc" id="L158">            FRACTION_ANGLES[i] = FRACTION_LIST.get(i) * 360;</span>
+        }
+
+        // Prepare lookup tables for the color stepsize of each color
+<span class="nc" id="L162">        RED_STEP_LOOKUP = new double[COLORS.length];</span>
+<span class="nc" id="L163">        GREEN_STEP_LOOKUP = new double[COLORS.length];</span>
+<span class="nc" id="L164">        BLUE_STEP_LOOKUP = new double[COLORS.length];</span>
+<span class="nc" id="L165">        ALPHA_STEP_LOOKUP = new double[COLORS.length];</span>
+
+<span class="nc bnc" id="L167" title="All 2 branches missed.">        for (int i = 0 ; i &lt; (COLORS.length - 1) ; i++)</span>
+        {
+<span class="nc" id="L169">            RED_STEP_LOOKUP[i] = ((COLORS[i + 1].getRed() - COLORS[i].getRed()) * INT_TO_FLOAT_CONST) / (FRACTION_ANGLES[i + 1] - FRACTION_ANGLES[i]);</span>
+<span class="nc" id="L170">            GREEN_STEP_LOOKUP[i] = ((COLORS[i + 1].getGreen() - COLORS[i].getGreen()) * INT_TO_FLOAT_CONST) / (FRACTION_ANGLES[i + 1] - FRACTION_ANGLES[i]);</span>
+<span class="nc" id="L171">            BLUE_STEP_LOOKUP[i] = ((COLORS[i + 1].getBlue() - COLORS[i].getBlue()) * INT_TO_FLOAT_CONST) / (FRACTION_ANGLES[i + 1] - FRACTION_ANGLES[i]);</span>
+<span class="nc" id="L172">            ALPHA_STEP_LOOKUP[i] = ((COLORS[i + 1].getAlpha() - COLORS[i].getAlpha()) * INT_TO_FLOAT_CONST) / (FRACTION_ANGLES[i + 1] - FRACTION_ANGLES[i]);</span>
+        }
+<span class="nc" id="L174">    }</span>
+
+    /**
+     * Recalculates the fractions in the FRACTION_LIST and their associated colors in the COLOR_LIST with a given OFFSET.
+     * Because the conical gradients always starts with 0 at the top and clockwise direction
+     * you could rotate the defined conical gradient from -180 to 180 degrees which equals values from -0.5 to +0.5
+     * @param FRACTION_LIST
+     * @param COLOR_LIST
+     * @param OFFSET
+     * @return Hashmap that contains the recalculated fractions and colors after a given rotation
+     */
+    private java.util.HashMap&lt;Float, java.awt.Color&gt; recalculate(final java.util.List&lt;Float&gt; FRACTION_LIST, final java.util.List&lt;java.awt.Color&gt; COLOR_LIST, final float OFFSET)
+    {
+        // Recalculate the fractions and colors with the given offset
+<span class="nc" id="L188">        final int MAX_FRACTIONS = FRACTION_LIST.size();</span>
+<span class="nc" id="L189">        final java.util.HashMap&lt;Float, java.awt.Color&gt; FRACTION_COLORS = new java.util.HashMap&lt;Float, java.awt.Color&gt;(MAX_FRACTIONS);</span>
+<span class="nc bnc" id="L190" title="All 2 branches missed.">        for (int i = 0 ; i &lt; MAX_FRACTIONS ; i++)</span>
+        {
+            // Add offset to fraction
+<span class="nc" id="L193">            final float TMP_FRACTION = FRACTION_LIST.get(i) + OFFSET;</span>
+
+            // Color related to current fraction
+<span class="nc" id="L196">            final java.awt.Color TMP_COLOR = COLOR_LIST.get(i);</span>
+
+            // Check each fraction for limits (0...1)
+<span class="nc bnc" id="L199" title="All 2 branches missed.">            if (TMP_FRACTION &lt;= 0)</span>
+            {
+<span class="nc" id="L201">                FRACTION_COLORS.put(1.0f + TMP_FRACTION + 0.0001f, TMP_COLOR);</span>
+
+                final float NEXT_FRACTION;
+                final java.awt.Color NEXT_COLOR;
+<span class="nc bnc" id="L205" title="All 2 branches missed.">                if (i &lt; MAX_FRACTIONS - 1)</span>
+                {
+<span class="nc" id="L207">                    NEXT_FRACTION = FRACTION_LIST.get(i + 1) + OFFSET;</span>
+<span class="nc" id="L208">                    NEXT_COLOR = COLOR_LIST.get(i + 1);</span>
+                }
+                else
+                {
+<span class="nc" id="L212">                    NEXT_FRACTION = 1 - FRACTION_LIST.get(0) + OFFSET;</span>
+<span class="nc" id="L213">                    NEXT_COLOR = COLOR_LIST.get(0);</span>
+                }
+<span class="nc bnc" id="L215" title="All 2 branches missed.">                if (NEXT_FRACTION &gt; 0)</span>
+                {
+<span class="nc" id="L217">                    final java.awt.Color NEW_FRACTION_COLOR = getColorFromFraction(TMP_COLOR, NEXT_COLOR, (int) ((NEXT_FRACTION - TMP_FRACTION) * 10000), (int) ((-TMP_FRACTION) * 10000));</span>
+<span class="nc" id="L218">                    FRACTION_COLORS.put(0.0f, NEW_FRACTION_COLOR);</span>
+<span class="nc" id="L219">                    FRACTION_COLORS.put(1.0f, NEW_FRACTION_COLOR);</span>
+                }
+<span class="nc" id="L221">            }</span>
+<span class="nc bnc" id="L222" title="All 2 branches missed.">            else if(TMP_FRACTION &gt;= 1)</span>
+            {
+<span class="nc" id="L224">                FRACTION_COLORS.put(TMP_FRACTION - 1.0f - 0.0001f, TMP_COLOR);</span>
+
+                final float PREVIOUS_FRACTION;
+                final java.awt.Color PREVIOUS_COLOR;
+<span class="nc bnc" id="L228" title="All 2 branches missed.">                if (i &gt; 0)</span>
+                {
+<span class="nc" id="L230">                    PREVIOUS_FRACTION = FRACTION_LIST.get(i - 1) + OFFSET;</span>
+<span class="nc" id="L231">                    PREVIOUS_COLOR = COLOR_LIST.get(i - 1);</span>
+                }
+                else
+                {
+<span class="nc" id="L235">                    PREVIOUS_FRACTION = FRACTION_LIST.get(MAX_FRACTIONS - 1) + OFFSET;</span>
+<span class="nc" id="L236">                    PREVIOUS_COLOR = COLOR_LIST.get(MAX_FRACTIONS - 1);</span>
+                }
+<span class="nc bnc" id="L238" title="All 2 branches missed.">                if (PREVIOUS_FRACTION &lt; 1)</span>
+                {
+<span class="nc" id="L240">                    final java.awt.Color NEW_FRACTION_COLOR = getColorFromFraction(TMP_COLOR, PREVIOUS_COLOR, (int) ((TMP_FRACTION - PREVIOUS_FRACTION) * 10000), (int) (TMP_FRACTION - 1.0f) * 10000);</span>
+<span class="nc" id="L241">                    FRACTION_COLORS.put(1.0f, NEW_FRACTION_COLOR);</span>
+<span class="nc" id="L242">                    FRACTION_COLORS.put(0.0f, NEW_FRACTION_COLOR);</span>
+                }
+<span class="nc" id="L244">            }</span>
+            else
+            {
+<span class="nc" id="L247">                FRACTION_COLORS.put(TMP_FRACTION, TMP_COLOR);</span>
+            }
+        }
+
+        // Clear the original FRACTION_LIST and COLOR_LIST
+<span class="nc" id="L252">        FRACTION_LIST.clear();</span>
+<span class="nc" id="L253">        COLOR_LIST.clear();</span>
+
+<span class="nc" id="L255">        return FRACTION_COLORS;</span>
+    }
+
+    /**
+     * With the START_COLOR at the beginning and the DESTINATION_COLOR at the end of the given RANGE the method will calculate
+     * and return the color that equals the given VALUE.
+     * e.g. a START_COLOR of BLACK (R:0, G:0, B:0, A:255) and a DESTINATION_COLOR of WHITE(R:255, G:255, B:255, A:255)
+     * with a given RANGE of 100 and a given VALUE of 50 will return the color that is exactly in the middle of the
+     * gradient between black and white which is gray(R:128, G:128, B:128, A:255)
+     * So this method is really useful to calculate colors in gradients between two given colors.
+     * @param START_COLOR
+     * @param DESTINATION_COLOR
+     * @param RANGE
+     * @param VALUE
+     * @return Color calculated from a range of values by given value
+     */
+    public java.awt.Color getColorFromFraction(final java.awt.Color START_COLOR, final java.awt.Color DESTINATION_COLOR, final int RANGE, final int VALUE)
+    {
+<span class="nc" id="L273">        final float SOURCE_RED = START_COLOR.getRed() * INT_TO_FLOAT_CONST;</span>
+<span class="nc" id="L274">        final float SOURCE_GREEN = START_COLOR.getGreen() * INT_TO_FLOAT_CONST;</span>
+<span class="nc" id="L275">        final float SOURCE_BLUE = START_COLOR.getBlue() * INT_TO_FLOAT_CONST;</span>
+<span class="nc" id="L276">        final float SOURCE_ALPHA = START_COLOR.getAlpha() * INT_TO_FLOAT_CONST;</span>
+
+<span class="nc" id="L278">        final float DESTINATION_RED = DESTINATION_COLOR.getRed() * INT_TO_FLOAT_CONST;</span>
+<span class="nc" id="L279">        final float DESTINATION_GREEN = DESTINATION_COLOR.getGreen() * INT_TO_FLOAT_CONST;</span>
+<span class="nc" id="L280">        final float DESTINATION_BLUE = DESTINATION_COLOR.getBlue() * INT_TO_FLOAT_CONST;</span>
+<span class="nc" id="L281">        final float DESTINATION_ALPHA = DESTINATION_COLOR.getAlpha() * INT_TO_FLOAT_CONST;</span>
+
+<span class="nc" id="L283">        final float RED_DELTA = DESTINATION_RED - SOURCE_RED;</span>
+<span class="nc" id="L284">        final float GREEN_DELTA = DESTINATION_GREEN - SOURCE_GREEN;</span>
+<span class="nc" id="L285">        final float BLUE_DELTA = DESTINATION_BLUE - SOURCE_BLUE;</span>
+<span class="nc" id="L286">        final float ALPHA_DELTA = DESTINATION_ALPHA - SOURCE_ALPHA;</span>
+
+<span class="nc" id="L288">        final float RED_FRACTION = RED_DELTA / RANGE;</span>
+<span class="nc" id="L289">        final float GREEN_FRACTION = GREEN_DELTA / RANGE;</span>
+<span class="nc" id="L290">        final float BLUE_FRACTION = BLUE_DELTA / RANGE;</span>
+<span class="nc" id="L291">        final float ALPHA_FRACTION = ALPHA_DELTA / RANGE;</span>
+        //System.out.println(DISTANCE + &quot;     &quot; + CURRENT_FRACTION);
+
+<span class="nc" id="L294">        return new java.awt.Color(SOURCE_RED + RED_FRACTION * VALUE, SOURCE_GREEN + GREEN_FRACTION * VALUE, SOURCE_BLUE + BLUE_FRACTION * VALUE, SOURCE_ALPHA + ALPHA_FRACTION * VALUE);</span>
+    }
+
+    @Override
+    public java.awt.PaintContext createContext(final java.awt.image.ColorModel COLOR_MODEL, final java.awt.Rectangle DEVICE_BOUNDS, final java.awt.geom.Rectangle2D USER_BOUNDS, final java.awt.geom.AffineTransform TRANSFORM, final java.awt.RenderingHints HINTS)
+    {
+<span class="nc" id="L300">        final java.awt.geom.Point2D TRANSFORMED_CENTER = TRANSFORM.transform(CENTER, null);</span>
+<span class="nc" id="L301">        return new ConicalGradientPaintContext(TRANSFORMED_CENTER);</span>
+    }
+
+    @Override
+    public int getTransparency()
+    {
+<span class="nc" id="L307">        return java.awt.Transparency.TRANSLUCENT;</span>
+    }
+
+    private final class ConicalGradientPaintContext implements java.awt.PaintContext
+    {
+        final private java.awt.geom.Point2D CENTER;
+
+        public ConicalGradientPaintContext(final java.awt.geom.Point2D CENTER)
+<span class="nc" id="L315">        {</span>
+<span class="nc" id="L316">            this.CENTER = new java.awt.geom.Point2D.Double(CENTER.getX(), CENTER.getY());</span>
+<span class="nc" id="L317">        }</span>
+
+        @Override
+        public void dispose()
+        {
+<span class="nc" id="L322">        }</span>
+
+        @Override
+        public java.awt.image.ColorModel getColorModel()
+        {
+<span class="nc" id="L327">            return java.awt.image.ColorModel.getRGBdefault();</span>
+        }
+
+        @Override
+        public java.awt.image.Raster getRaster(final int X, final int Y, final int TILE_WIDTH, final int TILE_HEIGHT)
+        {
+<span class="nc" id="L333">            final double ROTATION_CENTER_X = -X + CENTER.getX();</span>
+<span class="nc" id="L334">            final double ROTATION_CENTER_Y = -Y + CENTER.getY();</span>
+
+<span class="nc" id="L336">            final int MAX = FRACTION_ANGLES.length;</span>
+
+            // Create raster for given colormodel
+<span class="nc" id="L339">            final java.awt.image.WritableRaster RASTER = getColorModel().createCompatibleWritableRaster(TILE_WIDTH, TILE_HEIGHT);</span>
+
+            // Create data array with place for red, green, blue and alpha values
+<span class="nc" id="L342">            int[] data = new int[(TILE_WIDTH * TILE_HEIGHT * 4)];</span>
+
+            double dx;
+            double dy;
+            double distance;
+            double angle;
+<span class="nc" id="L348">            double currentRed = 0;</span>
+<span class="nc" id="L349">            double currentGreen = 0;</span>
+<span class="nc" id="L350">            double currentBlue = 0 ;</span>
+<span class="nc" id="L351">            double currentAlpha = 0;</span>
+
+<span class="nc bnc" id="L353" title="All 2 branches missed.">            for (int py = 0; py &lt; TILE_HEIGHT; py++)</span>
+            {
+<span class="nc bnc" id="L355" title="All 2 branches missed.">                for (int px = 0; px &lt; TILE_WIDTH; px++)</span>
+                {
+
+                    // Calculate the distance between the current position and the rotation angle
+<span class="nc" id="L359">                    dx = px - ROTATION_CENTER_X;</span>
+<span class="nc" id="L360">                    dy = py - ROTATION_CENTER_Y;</span>
+<span class="nc" id="L361">                    distance = Math.sqrt(dx * dx + dy * dy);</span>
+
+                    // Avoid division by zero
+<span class="nc bnc" id="L364" title="All 2 branches missed.">                    if (distance == 0)</span>
+                    {
+<span class="nc" id="L366">                        distance = 1;</span>
+                    }
+
+                    // 0 degree on top
+<span class="nc" id="L370">                    angle = Math.abs(Math.toDegrees(Math.acos(dx / distance)));</span>
+
+<span class="nc bnc" id="L372" title="All 4 branches missed.">                    if (dx &gt;= 0 &amp;&amp; dy &lt;= 0)</span>
+                    {
+<span class="nc" id="L374">                        angle = 90.0 - angle;</span>
+                    }
+<span class="nc bnc" id="L376" title="All 4 branches missed.">                    else if (dx &gt;= 0 &amp;&amp; dy &gt;= 0)</span>
+                    {
+<span class="nc" id="L378">                        angle += 90.0;</span>
+                    }
+<span class="nc bnc" id="L380" title="All 4 branches missed.">                    else if (dx &lt;= 0 &amp;&amp; dy &gt;= 0)</span>
+                    {
+<span class="nc" id="L382">                        angle += 90.0;</span>
+                    }
+<span class="nc bnc" id="L384" title="All 4 branches missed.">                    else if (dx &lt;= 0 &amp;&amp; dy &lt;= 0)</span>
+                    {
+<span class="nc" id="L386">                        angle = 450.0 - angle;</span>
+                    }
+
+                    // Check for each angle in fractionAngles array
+<span class="nc bnc" id="L390" title="All 2 branches missed.">                    for (int i = 0 ; i &lt; (MAX - 1) ; i++)</span>
+                    {
+<span class="nc bnc" id="L392" title="All 2 branches missed.">                        if ((angle &gt;= FRACTION_ANGLES[i]) )</span>
+                        {
+<span class="nc" id="L394">                            currentRed = COLORS[i].getRed() * INT_TO_FLOAT_CONST + (angle - FRACTION_ANGLES[i]) * RED_STEP_LOOKUP[i];</span>
+<span class="nc" id="L395">                            currentGreen = COLORS[i].getGreen() * INT_TO_FLOAT_CONST + (angle - FRACTION_ANGLES[i]) * GREEN_STEP_LOOKUP[i];</span>
+<span class="nc" id="L396">                            currentBlue = COLORS[i].getBlue() * INT_TO_FLOAT_CONST + (angle - FRACTION_ANGLES[i]) * BLUE_STEP_LOOKUP[i];</span>
+<span class="nc" id="L397">                            currentAlpha = COLORS[i].getAlpha() * INT_TO_FLOAT_CONST + (angle - FRACTION_ANGLES[i]) * ALPHA_STEP_LOOKUP[i];</span>
+                            continue;
+                        }
+                    }
+
+                    // Fill data array with calculated color values
+<span class="nc" id="L403">                    final int BASE = (py * TILE_WIDTH + px) * 4;</span>
+<span class="nc" id="L404">                    data[BASE + 0] = (int) (currentRed * 255);</span>
+<span class="nc" id="L405">                    data[BASE + 1] = (int) (currentGreen * 255);</span>
+<span class="nc" id="L406">                    data[BASE + 2] = (int) (currentBlue * 255);</span>
+<span class="nc" id="L407">                    data[BASE + 3] = (int) (currentAlpha * 255);</span>
+                }
+            }
+
+            // Fill the raster with the data
+<span class="nc" id="L412">            RASTER.setPixels(0, 0, TILE_WIDTH, TILE_HEIGHT, data);</span>
+
+<span class="nc" id="L414">            return RASTER;</span>
+        }
+    }
+
+    @Override
+    public String toString()
+    {
+<span class="nc" id="L421">        return &quot;ConicalGradientPaint&quot;;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

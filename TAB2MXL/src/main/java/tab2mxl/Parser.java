@@ -9,6 +9,7 @@ import gui_popups.SuccessPopUp;
 
 public class Parser {
 
+	int instrument;
 	int stringAmount;
 	int tabLineAmount;
 	private int beat;
@@ -21,10 +22,11 @@ public class Parser {
 	private int totalDash;
 	
 	//@SuppressWarnings("unused")
-	Parser(ArrayList<ArrayList<String>> input) {
+	Parser(ArrayList<ArrayList<String>> input, int in) {
 		stringAmount = 0;
 		tabLineAmount = 1;
 		misc = new HashMap<String, String>();
+		instrument = in;
 		
 		addTitle(TextInputContentPanel.getTitle());
 		addTabType(TextInputContentPanel.getTabType());
@@ -115,7 +117,6 @@ public class Parser {
 		rest = 0.0;
 		double totalNote = 0.0;
 
-		
 		String[] tune = new String[stringAmount];
 		int[] tuningOctave = new int[stringAmount];
 		boolean defaultTune = false;
@@ -149,7 +150,7 @@ public class Parser {
 		}
 		
 		if(containsOnlyInt(tuningOctave, -1)) {
-			tuningOctave = Tuning.getDefaultTuningOctave(stringAmount);
+			tuningOctave = Tuning.getDefaultTuningOctave(stringAmount, instrument);
 			defaultOctave = true;
 		}
 		tunner = new Tuning(tune, stringAmount, tuningOctave);

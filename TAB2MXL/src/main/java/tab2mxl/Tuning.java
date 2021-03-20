@@ -12,15 +12,18 @@ public class Tuning {
 	//hash map for the relation between the strings and the frets
 	private HashMap<String, List<String>> stringNotes;
 	private HashMap<String, List<Integer>> stringOctaves;
-	private String[] tuning;
 	private int[] tuningOctave;
+	private String[] tuning;
+	private int instrument;
 	//Default tuning for different string amounts.
+	private static final String[] DEFAULT_TUNING4 = {"G", "D", "A", "E"};
 	private static final String[] DEFAULT_TUNING5 = {"B", "G", "D", "A", "E"};
 	private static final String[] DEFAULT_TUNING6 = {"e", "B", "G", "D", "A", "E"};
 	private static final String[] DEFAULT_TUNING7 = {"e", "B", "G", "D", "A", "E", "B"};
 	private static final String[] DEFAULT_TUNING8 = {"e", "B", "G", "D", "A", "E", "B", "F#"};
 	private static final String[] DEFAULT_TUNING9 = {"e", "B", "G", "D", "A", "E", "B", "F#", "C#"};
 	//Default tuning octaves
+	private static final int[] DEFAULT_OCTAVE4 = {3,3,2,2};
 	private static final int[] DEFAULT_OCTAVE5 = {3,3,3,2,2};
 	private static final int[] DEFAULT_OCTAVE6 = {4,3,3,3,2,2};
 	private static final int[] DEFAULT_OCTAVE7 = {4,3,3,3,2,2,2};
@@ -39,9 +42,6 @@ public class Tuning {
 		int octave = 0;
 		tuning = tune;
 		tuningOctave = tuneOctave;
-		/*for(String s : tuning) {
-			System.out.println(s + "-----");
-		}*/
 		
 		String fileName = "GuitarNotesMod.txt";
 		stringNotes = new HashMap<String, List<String>>();
@@ -133,6 +133,8 @@ public class Tuning {
 	public static String[] getDefaultTuning(int stringAmount) {
 		String[] output = null;
 		
+		if(stringAmount == 4)
+			output = Tuning.DEFAULT_TUNING4;
 		if(stringAmount == 5)
 			output = Tuning.DEFAULT_TUNING5;
 		if(stringAmount == 6)
@@ -147,9 +149,11 @@ public class Tuning {
 		return output;		
 	}
 	
-	public static int[] getDefaultTuningOctave(int stringAmount) {
+	public static int[] getDefaultTuningOctave(int stringAmount, int i) {
 		int[] output = null;
 		
+		if(stringAmount == 4)
+			output = Tuning.DEFAULT_OCTAVE4;
 		if(stringAmount == 5)
 			output = Tuning.DEFAULT_OCTAVE5;
 		if(stringAmount == 6)
@@ -160,6 +164,12 @@ public class Tuning {
 			output = Tuning.DEFAULT_OCTAVE8;
 		if(stringAmount == 9)
 			output = Tuning.DEFAULT_OCTAVE9;
+		
+		if(i == 1) {
+			for(int j = 0; j < output.length; j++) {
+				output[j]--;
+			}
+		}
 		
 		return output;
 	}
