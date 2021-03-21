@@ -14,7 +14,6 @@ public class Tuning {
 	private HashMap<String, List<Integer>> stringOctaves;
 	private int[] tuningOctave;
 	private String[] tuning;
-	private int instrument;
 	//Default tuning for different string amounts.
 	private static final String[] DEFAULT_TUNING4 = {"G", "D", "A", "E"};
 	private static final String[] DEFAULT_TUNING5 = {"B", "G", "D", "A", "E"};
@@ -43,7 +42,7 @@ public class Tuning {
 		tuning = tune;
 		tuningOctave = tuneOctave;
 		
-		String fileName = "GuitarNotesMod.txt";
+		String fileName = "GuitarNotes.txt";
 		stringNotes = new HashMap<String, List<String>>();
 		stringOctaves = new HashMap<String, List<Integer>>();
 		tuningFile = new File(fileName);
@@ -179,7 +178,7 @@ public class Tuning {
 	}
 	
 	public int getOctave(String string, int fret) {
-		int output = stringOctaves.get(string).get(fret);
+		int output = stringOctaves.get(string).get(fret%12);
 		
 		return output;
 	}
