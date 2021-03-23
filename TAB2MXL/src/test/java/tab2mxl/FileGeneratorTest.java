@@ -34,7 +34,7 @@ class FileGeneratorTest {
 	@Test
 	void testAddInfo1() {
 		openWriter();
-		fileGen.addInfo("Example Title");
+		fileGen.addInfo("Example Title", "Guitar");
 		fileGen.end();
 		
 		fileContent = this.readFile();
@@ -57,7 +57,7 @@ class FileGeneratorTest {
 	@Test
 	void testAddInfo2() {
 		openWriter();
-		fileGen.addInfo("");
+		fileGen.addInfo("", "");
 		fileGen.end();
 		
 		fileContent = this.readFile();
@@ -68,7 +68,7 @@ class FileGeneratorTest {
 				+ "  </work>\n"
 				+ "  <part-list>\n"
 				+ "    <score-part id=\"P1\">\n"
-				+ "      <part-name>Guitar</part-name>\n"
+				+ "      <part-name></part-name>\n"
 				+ "    </score-part>\n"
 				+ "  </part-list>\n"
 				+ "</score-partwise>";
@@ -79,7 +79,7 @@ class FileGeneratorTest {
 	@Test
 	void testAddInfo3() {
 		openWriter();
-		fileGen.addInfo(" ");
+		fileGen.addInfo(" ", " ");
 		fileGen.end();
 		
 		fileContent = this.readFile();
@@ -90,7 +90,7 @@ class FileGeneratorTest {
 				+ "  </work>\n"
 				+ "  <part-list>\n"
 				+ "    <score-part id=\"P1\">\n"
-				+ "      <part-name>Guitar</part-name>\n"
+				+ "      <part-name> </part-name>\n"
 				+ "    </score-part>\n"
 				+ "  </part-list>\n"
 				+ "</score-partwise>";
@@ -360,7 +360,7 @@ class FileGeneratorTest {
 	@Test
 	void testCurrentIndent() {
 		openWriter();
-		fileGen.addInfo("Title Example");
+		fileGen.addInfo("Title Example", "Bass");
 		fileGen.openMeasure(1);
 		fileGen.closeMeasure();
 		fileGen.end();
@@ -373,7 +373,7 @@ class FileGeneratorTest {
 				+ "  </work>\n"
 				+ "  <part-list>\n"
 				+ "    <score-part id=\"P1\">\n"
-				+ "      <part-name>Guitar</part-name>\n"
+				+ "      <part-name>Bass</part-name>\n"
 				+ "    </score-part>\n"
 				+ "  </part-list>\n"
 				+ "  <measure number=\"" + 1 + "\">\n" 
