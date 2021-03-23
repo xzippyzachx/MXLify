@@ -26,8 +26,8 @@ public class Parser {
 		tabLineAmount = 1;
 		misc = new HashMap<String, String>();
 		
-		addInstrument(TextInputContentPanel.getInstrument());
-		addTitle(TextInputContentPanel.getTitle());		
+		addTitle(TextInputContentPanel.getTitle());
+		addTabType(TextInputContentPanel.getTabType());
 		addTime(TextInputContentPanel.getTimeSig());
 		
 		//set the time signature to default if the inputed time signature isn't in the right format
@@ -77,7 +77,7 @@ public class Parser {
 				for(int l = 0; l < stringAmount; l++) {
 					columns.get(columns.size()-1)[l] = input.get(l + (layer * stringAmount) + layer).get(i).charAt(0);
 				}
-			}		
+					}		
 		}
 
 		char[] chords = new char[stringAmount];
@@ -152,7 +152,6 @@ public class Parser {
 			tuningOctave = Tuning.getDefaultTuningOctave(stringAmount);
 			defaultOctave = true;
 		}
-		System.out.println(tune);
 		tunner = new Tuning(tune, stringAmount, tuningOctave);
 
 		if(tunner.unSupportedOctave == true && !defaultOctave)
@@ -175,7 +174,7 @@ public class Parser {
 		//Calling the methods in the FileGenerator to build the MusicXML
 		
 		//Start the musicxml file
-		fileGen.addInfo(misc.get("Title"), misc.get("Instrument"));
+		fileGen.addInfo(misc.get("Title"));
 		
 		//Open part
 		fileGen.openPart(1);
@@ -722,15 +721,17 @@ public class Parser {
             return (int)Math.round(division);
 	}
 
-	static void addInstrument(String instrument){
-		misc.put("Instrument", instrument);
-	}
 
 	static void addTitle(String title){
-		misc.put("Title", title);
+		misc.put("Title",title);
 	}
-		
+	
+	static void addTabType(String tabType){
+		misc.put("TabType",tabType);
+	}
+	
 	static void addTime(String timeSig){
-		misc.put("TimeSig", timeSig);
+		misc.put("TimeSig",timeSig);
+		System.out.println("TimeSig: " + timeSig);
 	}
 }

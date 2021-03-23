@@ -151,7 +151,7 @@ public class FileUploadContentPanel extends JPanel implements ActionListener {
 						String[] loadedData = loadManager.GetLoadedData();
 						if(!loadManager.failed)
 						{
-							Main.myFrame.textInputContentPanel.instrumentList.setSelectedIndex(Integer.parseInt(loadedData[0]));
+							Main.myFrame.textInputContentPanel.tabList.setSelectedIndex(Integer.parseInt(loadedData[0]));
 							Main.myFrame.textInputContentPanel.songName.setText(loadedData[1]);
 							Main.myFrame.textInputContentPanel.timeSignature.setText(loadedData[2]);
 						}

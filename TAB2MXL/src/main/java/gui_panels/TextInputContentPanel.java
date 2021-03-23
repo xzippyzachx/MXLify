@@ -46,9 +46,9 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 	JPanel inputpanel;	
 	JButton convertButton;
 	
-	String[] instruments = {"Guitar", "Bass", "Drums"};
+	String[] tabTypes = {"Guitar", "Bass", "Drums"};
 	JPanel detailsPanel;
-	JComboBox<Object> instrumentList;
+	JComboBox tabList;
 	JTextField timeSignature;
 	JTextField songName;
 	SteelCheckBox sheetMusicToggle;
@@ -56,7 +56,7 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 	JPanel errorPanel;
 	public JLabel errorText;
 	
-	private static String instrument;
+	private static String tabType;
 	private static String title;
 	private static String timeSig;
 		
@@ -151,13 +151,13 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 			@Override
 			public void insertUpdate(DocumentEvent e) {
 				String[] inputText = textField.getText().split("\n");
-				instrumentList.setSelectedIndex(InstrumentDetection.detectInstrument(GetInput(inputText,false)));
+				tabList.setSelectedIndex(InstrumentDetection.detectInstrument(GetInput(inputText,false)));
 			}
 			
 			@Override
 			public void removeUpdate(DocumentEvent e) {
 				String[] inputText = textField.getText().split("\n");
-				instrumentList.setSelectedIndex(InstrumentDetection.detectInstrument(GetInput(inputText,false)));
+				tabList.setSelectedIndex(InstrumentDetection.detectInstrument(GetInput(inputText,false)));
 			}
         });
         
@@ -177,9 +177,9 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
         tabListPanel.setLayout(new GridLayout(0, 1));
         tabListPanel.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 20));
         tabListPanel.setOpaque(false);
-        instrumentList = new JComboBox<Object>(instruments);
-        instrumentList.setSelectedIndex(0);
-        tabListPanel.add(instrumentList);
+        tabList = new JComboBox<Object>(tabTypes);
+        tabList.setSelectedIndex(0);
+        tabListPanel.add(tabList);
         
         JPanel songNamePanel = new JPanel();
         songNamePanel.setLayout(new GridLayout(0, 1));
@@ -324,12 +324,11 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 				System.out.println("");
 			}
 			*/
-			
-			setInstrument(instrumentList.getSelectedItem().toString());
+			setTabType(tabList.getSelectedItem().toString());
 			setTitle(songName.getText());
 			setTimeSig(timeSignature.getText());
 			
-			Main.Convert(input, instrumentList.getSelectedIndex());
+			Main.Convert(input, tabList.getSelectedIndex());
 
 		}
 		else if(e.getSource() == clearButton && !Main.isInPopUp)
@@ -339,7 +338,7 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 		}
 		else if(e.getSource() == saveButton && !Main.isInPopUp)
 		{
-			new SaveManager("", instrumentList.getSelectedIndex(), songName.getText(), timeSignature.getText(), textField.getText());
+			new SaveManager("", tabList.getSelectedIndex(), songName.getText(), timeSignature.getText(), textField.getText());
 		}
 		
 	}
@@ -425,12 +424,12 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 		TextInputContentPanel.title = title;
 	}
 
-	public static String getInstrument() {
-		return instrument;
+	public static String getTabType() {
+		return tabType;
 	}
 
-	public static void setInstrument(String instrument) {
-		TextInputContentPanel.instrument = instrument;
+	public static void setTabType(String tabType) {
+		TextInputContentPanel.tabType = tabType;
 	}
 
 	public static String getTimeSig() {
