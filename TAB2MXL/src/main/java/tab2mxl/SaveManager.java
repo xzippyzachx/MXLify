@@ -44,7 +44,7 @@ public class SaveManager {
 				saveFile = new File(filepath);
 			}
 			else {
-				filepath= path;
+				filepath = path;
 				saveFile = new File(filepath);
 			}
 			

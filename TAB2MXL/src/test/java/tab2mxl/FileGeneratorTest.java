@@ -392,7 +392,6 @@ class FileGeneratorTest {
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
-		System.out.println(fileContent + "\n\n--------------------------------------\n");
 		return fileContent;
 	}	
 	
