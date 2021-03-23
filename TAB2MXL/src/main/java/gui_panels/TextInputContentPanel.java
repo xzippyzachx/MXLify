@@ -415,7 +415,7 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 	}
 
 	public static String getTitle() {
-		if(title.isEmpty())
+		if(title == null || title.isEmpty())
 			return "Title";
 		return title;
 	}
@@ -433,7 +433,7 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 	}
 
 	public static String getTimeSig() {
-		if(timeSig.isEmpty())
+		if(timeSig == null || timeSig.isEmpty())
 			return "4/4";
 		return timeSig;
 	}

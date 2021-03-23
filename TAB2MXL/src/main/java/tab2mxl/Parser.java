@@ -21,7 +21,7 @@ public class Parser {
 	private int totalDash;
 	
 	//@SuppressWarnings("unused")
-	Parser(ArrayList<ArrayList<String>> input) {
+	Parser(ArrayList<ArrayList<String>> input, String path) {
 		stringAmount = 0;
 		tabLineAmount = 1;
 		misc = new HashMap<String, String>();
@@ -166,7 +166,7 @@ public class Parser {
 		}
 
 		//Create the file generator to generate the MusicXML file
-		fileGen = new FileGenerator("");
+		fileGen = new FileGenerator(path);
 		
 		if(fileGen.failed) //Check if failed to save file to location
 			return;

@@ -28,13 +28,13 @@ public class Main {
 	{
 		switch(instrument) {			
 			case 1: //Bass
-				new Parser(input);
+				new Parser(input, "");
 				break;
 			case 2: //Drum
 				new DrumParser(input);
 				break;
 			default: //Guitar
-				new Parser(input);
+				new Parser(input, "");
 		}
 
 		new CreateScore(FileGenerator.filepath);
