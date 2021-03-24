@@ -25,7 +25,7 @@ public class FileGenerator {
 	boolean measureOpen = false;
 	boolean partOpen = false;
 	
-	FileGenerator (String path) {	
+	FileGenerator (String path) {
 		failed = false;
 		
 		JFileChooser fileChooser = null;
@@ -89,7 +89,7 @@ public class FileGenerator {
 	 * Adds the initial info to the beginning of the MusicXML
 	 * @param title
 	 */
-	public void addInfo(String title)
+	public void addInfo(String title, String instrument)
 	{
 		try {
 			myWriter.write(currentIndent + "<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
@@ -111,7 +111,7 @@ public class FileGenerator {
 			myWriter.write(currentIndent + "<score-part id=\"P1\">");
 			currentIndent += "  ";
 			newLine();
-			myWriter.write(currentIndent + "<part-name>Guitar</part-name>");
+			myWriter.write(currentIndent + "<part-name>" + instrument + "</part-name>");
 			newLine();
 			tabBack();
 			myWriter.write(currentIndent + "</score-part>");			
