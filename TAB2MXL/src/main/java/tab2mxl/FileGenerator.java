@@ -25,7 +25,7 @@ public class FileGenerator {
 	boolean measureOpen = false;
 	boolean partOpen = false;
 	
-	FileGenerator (String path) {	
+	FileGenerator (String path) {
 		failed = false;
 		
 		JFileChooser fileChooser = null;

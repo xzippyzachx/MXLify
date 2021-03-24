@@ -13,7 +13,7 @@ import org.junit.jupiter.api.Test;
 
 import gui_panels.MyFrame;
 
-class MyFrameTest {
+public class MyFrameTest {
 	
 	static MyFrame testFrame;
 	

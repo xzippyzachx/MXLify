@@ -9,8 +9,8 @@
 # Ignore Gradle build output directory
 Outputs/*
 Saves/*
-SaveLoadTests/*
 build/*
 buildDir/*
 /.DS_Store
 /exampleemajor.musicxml.txt
+/build/

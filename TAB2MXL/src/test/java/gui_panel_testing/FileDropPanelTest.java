@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test;
 
 import gui_panels.FileDropPanel;
 
-class FileDropPanelTest {
+public class FileDropPanelTest {
 	
 	static FileDropPanel testPanel;
 	Color labelBackground = new Color(33,150,243);

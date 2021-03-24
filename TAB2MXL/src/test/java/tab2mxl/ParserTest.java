@@ -33,7 +33,8 @@ class ParserTest {
 						 + "|-0---------------|-0---------------|";
 		
 		String[] inputText = textField.split("\n");
-		ArrayList<ArrayList<String>> input = GetInput(inputText);
+		
+		ArrayList<ArrayList<String>> input = GetInput(inputText);		
 		new Parser(input, path);
 		
 		fileContent = this.readFile(path);
@@ -1177,7 +1178,7 @@ class ParserTest {
 		Parser.misc = new HashMap<String, String>();
 		Parser.addInstrument("Guitar");
 		
-		assertEquals(Parser.misc.get("TabType"), "Guitar");
+		assertEquals(Parser.misc.get("Instrument"), "Guitar");
 	}
 
 	@Test

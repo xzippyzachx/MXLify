@@ -11,7 +11,7 @@ public class Main {
 	public static boolean isInPopUp;
 	static ClearPopUp clearPopUp;
 	static ClearPopUp successPopUp;
-	
+
 	public static void main(String[] args) {
 		myFrame = new MyFrame();
 	}
