@@ -36,7 +36,7 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 	JLabel titleLabel;
 	
 	JPanel clearPanel;
-	JButton clearButton;
+	public JButton clearButton;
 	
 	JPanel savePanel;
 	JButton saveButton;
@@ -46,7 +46,7 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 	JPanel inputpanel;	
 	JButton convertButton;
 	
-	String[] tabTypes = {"Guitar", "Bass" /*, "Drums" */};
+	String[] tabTypes = {"Guitar", "Bass", "Drums"};
 	JPanel detailsPanel;
 	JComboBox tabList;
 	JTextField timeSignature;
@@ -55,6 +55,7 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 	
 	JPanel errorPanel;
 	public JLabel errorText;
+	public ClearPopUp clearPopUp;
 	
 	private static String tabType;
 	private static String title;
@@ -334,7 +335,7 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 		else if(e.getSource() == clearButton && !Main.isInPopUp)
 		{
 			if(!Main.myFrame.textInputContentPanel.textField.getText().isEmpty())
-				new ClearPopUp(Main.myFrame, "", "Clear Current Tablature");
+				clearPopUp = new ClearPopUp(Main.myFrame, "", "Clear Current Tablature");
 		}
 		else if(e.getSource() == saveButton && !Main.isInPopUp)
 		{
@@ -415,7 +416,7 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 	}
 
 	public static String getTitle() {
-		if(title.isEmpty())
+		if(title == null || title.isEmpty())
 			return "Title";
 		return title;
 	}
@@ -433,7 +434,7 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 	}
 
 	public static String getTimeSig() {
-		if(timeSig.isEmpty())
+		if(timeSig == null || timeSig.isEmpty())
 			return "4/4";
 		return timeSig;
 	}
