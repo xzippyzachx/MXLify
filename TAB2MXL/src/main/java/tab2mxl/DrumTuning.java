@@ -9,7 +9,7 @@ public class DrumTuning {
 	private HashMap<String, String> drumNotes;
 	private HashMap<String, Integer> drumOctaves;
 	private HashMap<String, String> drumID;
-	private HashMap<String, Integer> drumVoice;
+	//private HashMap<String, Integer> drumVoice;
 	
 	private String[] drums;
 	private int drumAmount;
@@ -22,7 +22,6 @@ public class DrumTuning {
 		drumNotes = new HashMap<String, String>();
 		drumOctaves = new HashMap<String, Integer>();
 		drumID = new HashMap<String, String>();
-		drumVoice = new HashMap<String, Integer>();
 		drums = drum;
 		drumAmount = d;
 		unSupportedDrum = false;
