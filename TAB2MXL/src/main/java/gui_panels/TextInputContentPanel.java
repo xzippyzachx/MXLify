@@ -36,7 +36,7 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 	JLabel titleLabel;
 	
 	JPanel clearPanel;
-	JButton clearButton;
+	public JButton clearButton;
 	
 	JPanel savePanel;
 	JButton saveButton;
@@ -55,6 +55,7 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 	
 	JPanel errorPanel;
 	public JLabel errorText;
+	public ClearPopUp clearPopUp;
 	
 	private static String instrument;
 	private static String title;
@@ -335,7 +336,7 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 		else if(e.getSource() == clearButton && !Main.isInPopUp)
 		{
 			if(!Main.myFrame.textInputContentPanel.textField.getText().isEmpty())
-				new ClearPopUp(Main.myFrame, "", "Clear Current Tablature");
+				clearPopUp = new ClearPopUp(Main.myFrame, "", "Clear Current Tablature");
 		}
 		else if(e.getSource() == saveButton && !Main.isInPopUp)
 		{
