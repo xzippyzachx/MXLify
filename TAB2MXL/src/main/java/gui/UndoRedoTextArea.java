@@ -14,7 +14,7 @@ import javax.swing.undo.CannotUndoException;
 import javax.swing.undo.UndoManager;
 
 @SuppressWarnings("serial")
-public class UndoRedoTextArea extends JTextArea implements UndoableEditListener, FocusListener, KeyListener {
+public class UndoRedoTextArea extends ColumnTextArea implements UndoableEditListener, FocusListener, KeyListener {
 
 	private UndoManager manager; // Manager to track changes
 
@@ -23,7 +23,7 @@ public class UndoRedoTextArea extends JTextArea implements UndoableEditListener,
 	}
 
 	public UndoRedoTextArea(String text) { // Text area with starting text
-		super(text);
+		super();
 		getDocument().addUndoableEditListener(this);
 		this.addKeyListener(this);
 		this.addFocusListener(this);
@@ -50,8 +50,10 @@ public class UndoRedoTextArea extends JTextArea implements UndoableEditListener,
 		manager.addEdit(e.getEdit()); // Add edits to history in manager
 	}
 
+	@Override
 	public void keyPressed(KeyEvent e) {
-
+		super.keyPressed(e);
+		
 		if ((e.getKeyCode() == KeyEvent.VK_Z) && (e.isControlDown())) { // Control-Z
 
 			try {
@@ -80,5 +82,5 @@ public class UndoRedoTextArea extends JTextArea implements UndoableEditListener,
 	public void keyTyped(KeyEvent arg0) {
 		// TODO Auto-generated method stub
 	}
-
+	
 }

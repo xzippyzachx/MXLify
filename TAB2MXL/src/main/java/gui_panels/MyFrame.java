@@ -18,7 +18,7 @@ public class MyFrame extends JFrame{
 
 	//Screens
 	public JPanel mainContentPanel;
-	FileUploadContentPanel fileUploadContentPanel;
+	public FileUploadContentPanel fileUploadContentPanel;
 	public TextInputContentPanel textInputContentPanel;
 	Color frameColour = new Color(0,90,108);
 	
@@ -62,7 +62,6 @@ public class MyFrame extends JFrame{
 		this.setTitle("MXLify");
 		this.setLocationRelativeTo(null); //Open in center of screen
 		this.setVisible(true);	
-
 	}
 	
 	private ImageIcon getBackgroundImage() {

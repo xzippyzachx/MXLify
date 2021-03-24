@@ -16,11 +16,13 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 import gui.ColorDef;
+import gui.ColumnTextArea;
 import gui.SteelCheckBox;
 import gui.TextPrompt;
 import gui.TextPrompt.Show;
-import gui_popups.ClearPopUp;
 import gui.UndoRedoTextArea;
+import gui_popups.ClearPopUp;
+import gui.ColumnTextArea;
 import tab2mxl.CreateScore;
 import tab2mxl.InstrumentDetection;
 import tab2mxl.LoadManager;
@@ -34,7 +36,7 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 	JLabel titleLabel;
 	
 	JPanel clearPanel;
-	JButton clearButton;
+	public JButton clearButton;
 	
 	JPanel savePanel;
 	JButton saveButton;
@@ -44,17 +46,18 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 	JPanel inputpanel;	
 	JButton convertButton;
 	
-	String[] tabTypes = {"Guitar", "Bass", "Drums"};
+	String[] instruments  = {"Guitar", "Bass", "Drums"};
 	JPanel detailsPanel;
-	JComboBox tabList;
+	JComboBox<Object> instrumentList;
 	JTextField timeSignature;
 	JTextField songName;
 	SteelCheckBox sheetMusicToggle;
 	
 	JPanel errorPanel;
 	public JLabel errorText;
+	public ClearPopUp clearPopUp;
 	
-	private static String tabType;
+	private static String instrument;
 	private static String title;
 	private static String timeSig;
 		
@@ -149,13 +152,13 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 			@Override
 			public void insertUpdate(DocumentEvent e) {
 				String[] inputText = textField.getText().split("\n");
-				tabList.setSelectedIndex(InstrumentDetection.detectInstrument(GetInput(inputText)));
+				instrumentList.setSelectedIndex(InstrumentDetection.detectInstrument(GetInput(inputText,false)));
 			}
 			
 			@Override
 			public void removeUpdate(DocumentEvent e) {
 				String[] inputText = textField.getText().split("\n");
-				tabList.setSelectedIndex(InstrumentDetection.detectInstrument(GetInput(inputText)));
+				instrumentList.setSelectedIndex(InstrumentDetection.detectInstrument(GetInput(inputText,false)));
 			}
         });
         
@@ -175,9 +178,9 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
         tabListPanel.setLayout(new GridLayout(0, 1));
         tabListPanel.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 20));
         tabListPanel.setOpaque(false);
-        tabList = new JComboBox<Object>(tabTypes);
-        tabList.setSelectedIndex(0);
-        tabListPanel.add(tabList);
+        instrumentList = new JComboBox<Object>(instruments);
+        instrumentList.setSelectedIndex(0);
+        tabListPanel.add(instrumentList);
         
         JPanel songNamePanel = new JPanel();
         songNamePanel.setLayout(new GridLayout(0, 1));
@@ -294,23 +297,15 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 				errorText.setText("Text Area Empty");
 				return;
 			}
-			else if (!textField.getText().contains("|"))
-			{
-				errorText.setText("Wrong Formatting");
-				return;
-			}
-			
 			String[] inputText = textField.getText().split("\n");
 			
 			ArrayList<ArrayList<String>> input = new ArrayList<ArrayList<String>>();
 			
-			input = GetInput(inputText); // Convert to double String ArrayList
-			
-			setTabType(tabList.getSelectedItem().toString());
-			setTitle(songName.getText());
-			setTimeSig(timeSignature.getText());
-					
-			errorText.setText("");
+			input = GetInput(inputText,true); // Convert to double String ArrayList
+	       
+			if (input == null) {
+				return;
+			}
 								
 			//Detect if the text area is empty
 			int lineLength = input.get(0).size();
@@ -318,7 +313,7 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 				if(line.size() != lineLength && line.size() != 0)
 				{
 					errorText.setText("Wrong Formatting");
-					break;
+					return;
 				}
 			}
 						
@@ -330,31 +325,29 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 				System.out.println("");
 			}
 			*/
+			setInstrument(instrumentList.getSelectedItem().toString());
+			setTitle(songName.getText());
+			setTimeSig(timeSignature.getText());
 			
-			if (errorText.getText() == "")
-			{
-				Main.Convert(input, tabList.getSelectedIndex());
-			}
+			Main.Convert(input, instrumentList.getSelectedIndex());
+
 		}
 		else if(e.getSource() == clearButton && !Main.isInPopUp)
 		{
 			if(!Main.myFrame.textInputContentPanel.textField.getText().isEmpty())
-				new ClearPopUp(Main.myFrame, "", "Clear Current Tablature");
+				clearPopUp = new ClearPopUp(Main.myFrame, "", "Clear Current Tablature");
 		}
 		else if(e.getSource() == saveButton && !Main.isInPopUp)
 		{
-			new SaveManager("", tabList.getSelectedIndex(), songName.getText(), timeSignature.getText(), textField.getText());
+			new SaveManager("", instrumentList.getSelectedIndex(), songName.getText(), timeSignature.getText(), textField.getText());
 		}
 		
 	}
 	
-	private ArrayList<ArrayList<String>> GetInput (String[] textInput)
+	private ArrayList<ArrayList<String>> GetInput (String[] textInput, boolean convert)
 	{
+		errorText.setText("");
 		if(textField.getText().isEmpty())
-		{
-			return null;
-		}
-		else if (!textField.getText().contains("|"))
 		{
 			return null;
 		}
@@ -365,6 +358,17 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 			if(line.length() > 1)
 			{
 				line = cleanTextContent(line); //Removes redundant spaces
+				if (!line.contains("|")) {
+					if (convert)
+						errorText.setText("Wrong Formatting");
+					return null;
+				}
+				if (!line.contains("-")) {
+					if (convert)
+						errorText.setText("Wrong Formatting");
+					return null;
+				}
+				
 				String[] lineInput = line.substring(line.indexOf('|')).split("");
 				ArrayList<String> lineInputList = new ArrayList<String>();
 				String tunePlusOctave = line.substring(0, line.indexOf('|')).trim();
@@ -412,7 +416,7 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 	}
 
 	public static String getTitle() {
-		if(title.isEmpty())
+		if(title == null || title.isEmpty())
 			return "Title";
 		return title;
 	}
@@ -421,16 +425,18 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 		TextInputContentPanel.title = title;
 	}
 
-	public static String getTabType() {
-		return tabType;
+	public static String getInstrument() {
+		if(instrument == null || instrument.isEmpty())
+			return "Guitar";
+		return instrument;
 	}
 
-	public static void setTabType(String tabType) {
-		TextInputContentPanel.tabType = tabType;
+	public static void setInstrument(String instrument) {
+		TextInputContentPanel.instrument = instrument;
 	}
 
 	public static String getTimeSig() {
-		if(timeSig.isEmpty())
+		if(timeSig == null || timeSig.isEmpty())
 			return "4/4";
 		return timeSig;
 	}

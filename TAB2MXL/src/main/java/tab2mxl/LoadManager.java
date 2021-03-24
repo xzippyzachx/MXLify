@@ -9,12 +9,15 @@ import java.util.prefs.Preferences;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import gui_popups.ClearPopUp;
+
 public class LoadManager {
 
 	public Preferences prefs = Preferences.userRoot().node(getClass().getName());
 	public String LAST_USED_FOLDER_LOAD = "";
 	
 	private String[] loadedData = new String[3];
+	private String loadedText = "";
 	
 	File loadFile;
 	public boolean failed = false;
@@ -85,14 +88,19 @@ public class LoadManager {
 						            stringBuilder.append(ls);
 						            break;
 							}
-						else
+						else if (!line.split(" ")[0].equals("title") && !line.split(" ")[0].equals("timesig"))
 						{
 							stringBuilder.append(line);
 				            stringBuilder.append(ls);
 						}
 			        }
-
-					Main.myFrame.textInputContentPanel.textField.setText(stringBuilder.toString());
+					
+					if(!Main.myFrame.textInputContentPanel.textField.getText().isEmpty())
+						new ClearPopUp(Main.myFrame, stringBuilder.toString(), "Override Current Tablature");
+					else
+						Main.myFrame.textInputContentPanel.textField.setText(stringBuilder.toString());
+					
+					loadedText = stringBuilder.toString();
 				}
 
 		        reader.close();
@@ -108,5 +116,10 @@ public class LoadManager {
 	public String[] GetLoadedData()
 	{		
 		return loadedData;
+	}
+	
+	public String GetLoadedText()
+	{		
+		return loadedText;
 	}
 }

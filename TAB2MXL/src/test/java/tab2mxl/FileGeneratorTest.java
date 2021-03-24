@@ -34,7 +34,7 @@ class FileGeneratorTest {
 	@Test
 	void testAddInfo1() {
 		openWriter();
-		fileGen.addInfo("Example Title");
+		fileGen.addInfo("Example Title", "Guitar");
 		fileGen.end();
 		
 		fileContent = this.readFile();
@@ -57,7 +57,7 @@ class FileGeneratorTest {
 	@Test
 	void testAddInfo2() {
 		openWriter();
-		fileGen.addInfo("");
+		fileGen.addInfo("", "Guitar");
 		fileGen.end();
 		
 		fileContent = this.readFile();
@@ -79,7 +79,7 @@ class FileGeneratorTest {
 	@Test
 	void testAddInfo3() {
 		openWriter();
-		fileGen.addInfo(" ");
+		fileGen.addInfo(" ", "Guitar");
 		fileGen.end();
 		
 		fileContent = this.readFile();
@@ -360,7 +360,7 @@ class FileGeneratorTest {
 	@Test
 	void testCurrentIndent() {
 		openWriter();
-		fileGen.addInfo("Title Example");
+		fileGen.addInfo("Title Example", "Guitar");
 		fileGen.openMeasure(1);
 		fileGen.closeMeasure();
 		fileGen.end();
@@ -392,7 +392,6 @@ class FileGeneratorTest {
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
-		System.out.println(fileContent + "\n\n--------------------------------------\n");
 		return fileContent;
 	}	
 	

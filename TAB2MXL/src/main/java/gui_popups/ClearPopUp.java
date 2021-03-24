@@ -27,8 +27,8 @@ public class ClearPopUp extends PopupFactory implements ActionListener{
 
 	Popup popup;
 	
-	JButton yesButton;
-	JButton noButton;
+	public JButton yesButton;
+	public JButton noButton;
 	
 	String input;
 	MyFrame myFrame;

@@ -22,14 +22,14 @@ public class Parser {
 	private int totalDash;
 	
 	//@SuppressWarnings("unused")
-	Parser(ArrayList<ArrayList<String>> input, int in) {
+	Parser(ArrayList<ArrayList<String>> input, int in ,String path) {
 		stringAmount = 0;
 		tabLineAmount = 1;
 		misc = new HashMap<String, String>();
 		instrument = in;
 		
 		addTitle(TextInputContentPanel.getTitle());
-		addTabType(TextInputContentPanel.getTabType());
+		addInstrument(TextInputContentPanel.getInstrument());
 		addTime(TextInputContentPanel.getTimeSig());
 		
 		//set the time signature to default if the inputed time signature isn't in the right format
@@ -79,7 +79,7 @@ public class Parser {
 				for(int l = 0; l < stringAmount; l++) {
 					columns.get(columns.size()-1)[l] = input.get(l + (layer * stringAmount) + layer).get(i).charAt(0);
 				}
-					}		
+			}
 		}
 
 		char[] chords = new char[stringAmount];
@@ -167,7 +167,7 @@ public class Parser {
 		}
 
 		//Create the file generator to generate the MusicXML file
-		fileGen = new FileGenerator("");
+		fileGen = new FileGenerator(path);
 		
 		if(fileGen.failed) //Check if failed to save file to location
 			return;
@@ -175,7 +175,7 @@ public class Parser {
 		//Calling the methods in the FileGenerator to build the MusicXML
 		
 		//Start the musicxml file
-		fileGen.addInfo(misc.get("Title"));
+		fileGen.addInfo(misc.get("Title"), misc.get("Instrument"));
 		
 		//Open part
 		fileGen.openPart(1);
@@ -724,15 +724,14 @@ public class Parser {
 
 
 	static void addTitle(String title){
-		misc.put("Title",title);
+		misc.put("Title", title);
 	}
 	
-	static void addTabType(String tabType){
-		misc.put("TabType",tabType);
+	static void addInstrument(String instrument){
+		misc.put("Instrument", instrument);
 	}
 	
 	static void addTime(String timeSig){
-		misc.put("TimeSig",timeSig);
-		System.out.println("TimeSig: " + timeSig);
+		misc.put("TimeSig", timeSig);
 	}
 }

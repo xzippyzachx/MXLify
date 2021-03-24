@@ -11,7 +11,7 @@ public class Main {
 	public static boolean isInPopUp;
 	static ClearPopUp clearPopUp;
 	static ClearPopUp successPopUp;
-	
+
 	public static void main(String[] args) {
 		myFrame = new MyFrame();
 	}
@@ -28,13 +28,13 @@ public class Main {
 	{
 		switch(instrument) {
 			case 1: //Bass
-				new Parser(input, instrument);//added instrument to Parser to use in Tuning class
+				new Parser(input, instrument, "");//added instrument to Parser to use in Tuning class
 				break;
 			case 2: //Drum
 				new DrumParser(input);
 				break;
 			default: //Guitar
-				new Parser(input, instrument);
+				new Parser(input, instrument, "");
 		}
 
 		new CreateScore(FileGenerator.filepath);
