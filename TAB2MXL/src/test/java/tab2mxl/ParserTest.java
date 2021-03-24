@@ -1175,7 +1175,7 @@ class ParserTest {
 	@Test
 	void testAddTabType() {
 		Parser.misc = new HashMap<String, String>();
-		Parser.addTabType("Guitar");
+		Parser.addInstrument("Guitar");
 		
 		assertEquals(Parser.misc.get("TabType"), "Guitar");
 	}
