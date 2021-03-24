@@ -30,6 +30,7 @@ public class Tuning {
 	private static final int[] DEFAULT_OCTAVE9 = {4,3,3,3,2,2,2,1,1};
 	//the file containing the notes for each string and fret
 	private File tuningFile;
+	private final String FILE_NAME = "GuitarNotes.txt";
 	
 	public boolean unSupportedTune;
 	public boolean unSupportedOctave;
@@ -41,11 +42,10 @@ public class Tuning {
 		int octave = 0;
 		tuning = tune;
 		tuningOctave = tuneOctave;
-		
-		String fileName = "GuitarNotes.txt";
+
 		stringNotes = new HashMap<String, List<String>>();
 		stringOctaves = new HashMap<String, List<Integer>>();
-		tuningFile = new File(fileName);
+		tuningFile = new File(FILE_NAME);
 		
 		//name for each string of the guitar, either E, B,...etc
 		String stringName = "";
@@ -114,7 +114,7 @@ public class Tuning {
 			noteScanner.close();
 			
 		}catch(FileNotFoundException e) {
-			e.getMessage();
+			System.out.println(e.getMessage());
 		}
 	}
 	
@@ -178,9 +178,8 @@ public class Tuning {
 	}
 	
 	public int getOctave(String string, int fret) {
-		int output = stringOctaves.get(string).get(fret%12);
 		
-		return output;
+		return stringOctaves.get(string).get(fret%12);
 	}
 	
 	//to get the note for each specified string and fret
