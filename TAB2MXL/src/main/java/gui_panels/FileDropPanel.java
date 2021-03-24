@@ -14,18 +14,20 @@ import gui.DragDropListener;
 public class FileDropPanel extends JPanel {
 	
 	public static String dropFilePath = "";
-	
-	FileDropPanel(){
-		
+	JPanel dropPanel;
+	JLabel dropLabel;
+	JLabel dropLoc;
+
+	public FileDropPanel(){
 
 		// Main Panel for Drop Elements
-		JPanel dropPanel = new JPanel();
+		dropPanel = new JPanel();
 		dropPanel.setLayout(new BoxLayout(dropPanel, BoxLayout.Y_AXIS));// sets layout to vertical
 		Border DropPadding = BorderFactory.createEmptyBorder(0, 0, 0, 10);
 		dropPanel.setBorder(DropPadding);
 		
 		//Title Label -----------------------------------------------------------
-		JLabel dropLabel = new JLabel("<html><body style='text-align: center'>Drop Tablature Text File");				
+		dropLabel = new JLabel("<html><body style='text-align: center'>Drop Tablature Text File");				
 		
 		dropLabel.setHorizontalAlignment(JLabel.CENTER);
 		
@@ -39,7 +41,7 @@ public class FileDropPanel extends JPanel {
 	    dropPanel.add(dropLabel);
 		
 	    //Drop Image Label ------------------------------------------------------
-		JLabel dropLoc = new JLabel();
+		dropLoc = new JLabel();
 		
 		ImageIcon imageIcon = new ImageIcon("Images/DropImage.png"); // load the image to a imageIcon
 		Image image = imageIcon.getImage(); // transform it 
@@ -106,5 +108,21 @@ public class FileDropPanel extends JPanel {
 		this.setOpaque(false);
 		this.add(dropPanel);//Add Drop Panel to File Drop Panel
 		this.setVisible(true); //Set File Drop Panel to Visible
+	}
+	
+	public static String getDropFilePath() {
+		return dropFilePath;
+	}
+
+	public JPanel getDropPanel() {
+		return dropPanel;
+	}
+
+	public JLabel getDropLabel() {
+		return dropLabel;
+	}
+
+	public JLabel getDropLoc() {
+		return dropLoc;
 	}
 }
