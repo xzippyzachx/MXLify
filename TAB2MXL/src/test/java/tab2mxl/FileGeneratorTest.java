@@ -309,7 +309,7 @@ class FileGeneratorTest {
 	@Test
 	void testOpenMeasure() {
 		openWriter();
-		fileGen.openMeasure(1);
+		fileGen.openMeasure(1, false, 0);
 		fileGen.end();
 		String fileContent = this.readFile();
 		String expected = "<measure number=\"" + 1 + "\">\n" + "</score-partwise>";
@@ -319,7 +319,7 @@ class FileGeneratorTest {
 	@Test
 	void testOpenMeasure2() {
 		openWriter();
-		fileGen.openMeasure(4);
+		fileGen.openMeasure(4, false, 0);
 		fileGen.end();
 		String fileContent = this.readFile();
 		String expected = "<measure number=\"" + 4 + "\">\n" + "</score-partwise>";
@@ -329,7 +329,7 @@ class FileGeneratorTest {
 	@Test
 	void testOpenMeasure3() {
 		openWriter();
-		fileGen.openMeasure(0);
+		fileGen.openMeasure(0, false, 0);
 		fileGen.end();
 		String fileContent = this.readFile();
 		String expected = "<measure number=\"" + 0 + "\">\n" + "</score-partwise>";
@@ -340,7 +340,7 @@ class FileGeneratorTest {
 	@Test
 	void testCloseMeasure() {
 		openWriter();
-		fileGen.closeMeasure();
+		fileGen.closeMeasure(false, 0);
 		fileGen.end();
 		String fileContent = this.readFile();
 		String expected =  "</measure>\n" 
@@ -361,8 +361,8 @@ class FileGeneratorTest {
 	void testCurrentIndent() {
 		openWriter();
 		fileGen.addInfo("Title Example", "Guitar");
-		fileGen.openMeasure(1);
-		fileGen.closeMeasure();
+		fileGen.openMeasure(1, false, 0);
+		fileGen.closeMeasure(false, 0);
 		fileGen.end();
 		String fileContent = this.readFile();
 		
