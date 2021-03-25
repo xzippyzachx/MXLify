@@ -455,14 +455,42 @@ public class FileGenerator {
 	 * Adds a new measure opening to the MusicXML
 	 * @param measureNumber
 	 */
-	public void openMeasure(int measureNumber)
+	public void openMeasure(int measureNumber, boolean isRepeat, int repeatAmount)
 	{
 		try {
 			myWriter.write(currentIndent + "<measure number=\"" + measureNumber + "\">");
 			currentIndent += "  ";
 			newLine();
+			
+			if(isRepeat)
+			{
+				myWriter.write(currentIndent + "<barline location=\"left\">");
+				currentIndent += "  ";
+				newLine();
+				myWriter.write(currentIndent + "<bar-style>heavy-light</bar-style>");
+				newLine();
+				myWriter.write(currentIndent + "<repeat direction=\"forward\" times=\"" + repeatAmount + "\"/>");
+				tabBack();
+				newLine();
+				myWriter.write(currentIndent + "</barline>");
+				newLine();
+				myWriter.write(currentIndent + "<direction placement=\"above\">");
+				currentIndent += "  ";
+				newLine();
+				myWriter.write(currentIndent + "<direction-type>");
+				currentIndent += "  ";
+				newLine();
+				myWriter.write(currentIndent + "<words relative-x=\"256.17\" relative-y=\"16.01\">Repeat " + repeatAmount + " times</words>");
+				tabBack();
+				newLine();
+				myWriter.write(currentIndent + "</direction-type>");
+				tabBack();
+				newLine();
+		        myWriter.write(currentIndent + "</direction>");
+		        newLine();
+			}
+	        
 			measureOpen = true;
-			//measureNum = measureNumber;
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -471,13 +499,28 @@ public class FileGenerator {
 	/**
 	 * Adds a measure closing to the MusicXML
 	 */
-	public void closeMeasure()
+	public void closeMeasure(boolean isRepeat, int repeatAmount)
 	{
 		try {
+			if(isRepeat)
+			{
+				myWriter.write(currentIndent + "<barline location=\"right\">");
+				currentIndent += "  ";
+				newLine();
+				myWriter.write(currentIndent + "<bar-style>light-heavy</bar-style>");
+				newLine();
+				myWriter.write(currentIndent + "<repeat direction=\"backward\" times=\"" + repeatAmount + "\"/>");
+				tabBack();
+				newLine();
+				myWriter.write(currentIndent + "</barline>");
+				newLine();
+			}
+	        
 			tabBack();
 			myWriter.write(currentIndent + "</measure>");
 			newLine();
-			measureOpen = false;
+			
+			measureOpen = false;			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

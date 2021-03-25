@@ -33,9 +33,8 @@ class ParserTest {
 						 + "|-0---------------|-0---------------|";
 		
 		String[] inputText = textField.split("\n");
-		
 		ArrayList<ArrayList<String>> input = GetInput(inputText);		
-		new Parser(input, path);
+		new Parser(input, 0, path);
 		
 		fileContent = this.readFile(path);
 		expected ="<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n"
@@ -351,7 +350,7 @@ class ParserTest {
 		
 		String[] inputText = textField.split("\n");
 		ArrayList<ArrayList<String>> input = GetInput(inputText);
-		new Parser(input, path);
+		new Parser(input, 0, path);
 		
 		fileContent = this.readFile(path);
 		expected ="<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n"
@@ -684,7 +683,7 @@ class ParserTest {
 		
 		String[] inputText = textField.split("\n");
 		ArrayList<ArrayList<String>> input = GetInput(inputText);
-		new Parser(input, path);
+		new Parser(input, 0, path);
 		
 		fileContent = this.readFile(path);
 		expected ="<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n"

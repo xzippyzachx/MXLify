@@ -46,7 +46,7 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 	JPanel inputpanel;	
 	JButton convertButton;
 	
-	String[] instruments  = {"Guitar", "Bass", "Drums"};
+	String[] instruments = {"Guitar", "Bass", "Drums"};
 	JPanel detailsPanel;
 	JComboBox<Object> instrumentList;
 	JTextField timeSignature;
@@ -325,6 +325,7 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 				System.out.println("");
 			}
 			*/
+			
 			setInstrument(instrumentList.getSelectedItem().toString());
 			setTitle(songName.getText());
 			setTimeSig(timeSignature.getText());
