@@ -2,6 +2,7 @@ package gui;
 
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 import javax.swing.InputMap;
 import javax.swing.JTextArea;
@@ -64,10 +65,8 @@ public class ColumnTextArea extends JTextArea{
     
     
     public void keyPressed(KeyEvent e) {
-
 		if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE || e.getKeyCode() == KeyEvent.VK_DELETE) { // Backspace/delete
 			javax.swing.text.Highlighter.Highlight[] selections = this.getHighlighter().getHighlights();
-			
 			int cnt = selections.length;
 	        if(cnt == 0){
 	            
@@ -77,9 +76,14 @@ public class ColumnTextArea extends JTextArea{
 	                int end = selections[i].getEndOffset();
 	                replaceRange("", start, end);
 	            }
-	        }
+	        } 
 		}
-		
+    }
+    
+    public void keyReleased(KeyEvent e) {
+    	if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE || e.getKeyCode() == KeyEvent.VK_DELETE) { // Backspace/delete
+    		enableKeys(getInputMap());
+		}    	
     }
     
     private void disableKeys(InputMap inputMap) {
@@ -193,4 +197,5 @@ public class ColumnTextArea extends JTextArea{
             }
         }
     }
+
 }

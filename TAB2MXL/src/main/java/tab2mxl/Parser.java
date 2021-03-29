@@ -452,8 +452,7 @@ public class Parser {
 			
 			//Skip next 2 columns
 			if(startRepeat)
-			{		
-				System.out.println("startRepeat");
+			{
 				i+= 2;
 				currentColumn += 2;
 				startRepeat = false;
@@ -462,7 +461,6 @@ public class Parser {
 			//Skip 1 column if end of repeat
 			if(endRepeat)
 			{
-				System.out.println("endRepeat");
 				//Skip next column
 				i++;
 				currentColumn++;
