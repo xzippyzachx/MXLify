@@ -13,8 +13,7 @@ public class FileGenerator {
 
 	public Preferences prefs = Preferences.userRoot().node(getClass().getName());
 	public String LAST_USED_FOLDER_CONVERT = "";
-	
-	
+		
 	public boolean failed = false;
 	static int measureNum = 0;
 	File saveFile;
@@ -25,7 +24,10 @@ public class FileGenerator {
 	boolean measureOpen = false;
 	boolean partOpen = false;
 	
-	FileGenerator (String path) {
+	StringBuilder stringBuilder;
+	
+	FileGenerator (String path) {		
+		stringBuilder = new StringBuilder();
 		failed = false;
 		
 		JFileChooser fileChooser = null;
@@ -71,6 +73,7 @@ public class FileGenerator {
 	{
 		try {
 			myWriter.write("\n");
+			stringBuilder.append("\n");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -85,6 +88,26 @@ public class FileGenerator {
 		}
 	}
 	
+	private void write(String line)
+	{
+		try {
+			myWriter.write(line);
+			appendString(line);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private void appendString(String line)
+	{		
+		if(line.equals("  <part id=\"P1\">"))
+			stringBuilder.append("  <part id=\"P2\">");
+		else if(line.equals("          <sign>G</sign>"))
+			stringBuilder.append("          <sign>TAB</sign>");
+		else
+			stringBuilder.append(line);
+	}
+	
 	/**
 	 * Adds the initial info to the beginning of the MusicXML
 	 * @param title
@@ -92,7 +115,7 @@ public class FileGenerator {
 	public void addInfo(String title, String instrument)
 	{
 		try {
-			myWriter.write(currentIndent + "<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+			myWriter.write(currentIndent + "<?xml version=\"1.0\" encoding=\"UTF-8\"?>");		
 			newLine();
 			myWriter.write(currentIndent + "<score-partwise version=\"3.1\">");
 			currentIndent += "  ";
@@ -114,18 +137,24 @@ public class FileGenerator {
 			myWriter.write(currentIndent + "<part-name>" + instrument + "</part-name>");
 			newLine();
 			tabBack();
-			myWriter.write(currentIndent + "</score-part>");			
+			myWriter.write(currentIndent + "</score-part>");		
+			newLine();
+			myWriter.write(currentIndent + "<score-part id=\"P2\">");
+			currentIndent += "  ";
+			newLine();
+			myWriter.write(currentIndent + "<part-name>" + instrument + "</part-name>");
+			newLine();
+			tabBack();
+			myWriter.write(currentIndent + "</score-part>");	
 			newLine();
 			tabBack();
 			myWriter.write(currentIndent + "</part-list>");			
 			newLine();
-			
 		} catch (IOException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}			
 	}
-	
-
 	
 	/**
 	 * Adds a new part opening to the MusicXML
@@ -133,14 +162,10 @@ public class FileGenerator {
 	 */
 	public void openPart(int partNumber)
 	{
-		try {
-			myWriter.write(currentIndent + "<part id=\"P" + partNumber + "\">");
-			currentIndent += "  ";
-			newLine();
-			partOpen = true;
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		write(currentIndent + "<part id=\"P" + partNumber + "\">");
+		currentIndent += "  ";
+		newLine();
+		partOpen = true;
 	}
 	
 	/**
@@ -148,14 +173,10 @@ public class FileGenerator {
 	 */
 	public void closePart()
 	{
-		try {
-			tabBack();
-			myWriter.write(currentIndent + "</part>");
-			newLine();
-			partOpen = false;
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		tabBack();
+		write(currentIndent + "</part>");
+		newLine();
+		partOpen = false;
 	}
 	
 	/**
@@ -168,79 +189,71 @@ public class FileGenerator {
 	 * @param tune
 	 */
 	public void attributes(int division, int keySignature, int beat, int beatType, String clef, String[] tune, int[] tuneOctave) {
-		try {
-			myWriter.write(currentIndent + "<attributes>");
+		write(currentIndent + "<attributes>");
+		currentIndent += "  ";
+		newLine();
+		write(currentIndent + "<divisions>"+division+"</divisions>");
+		newLine();
+		write(currentIndent + "<key>");
+		currentIndent += "  ";	
+		newLine();
+		write(currentIndent + "<fifths>"+0+"</fifths>");
+		newLine();
+		write(currentIndent + "<mode>"+"major"+"</mode>");			
+		newLine();
+		tabBack();
+		write(currentIndent + "</key>");
+		newLine();
+		write(currentIndent + "<time>");
+		currentIndent += "  ";
+		newLine();
+		write(currentIndent + "<beats>"+beat+"</beats>");
+		newLine();
+		write(currentIndent + "<beat-type>"+beatType+"</beat-type>");			
+		newLine();
+		tabBack();
+		write(currentIndent + "</time>");
+		newLine();
+		//write(currentIndent + "<staves>" + 2 + "</staves>");
+		//newLine();
+		write(currentIndent + "<clef>");
+		currentIndent += "  ";
+		newLine();
+		write(currentIndent + "<sign>"+clef+"</sign>");
+		newLine();
+		write(currentIndent + "<line>"+2+"</line>");
+		newLine();
+		write(currentIndent + "<clef-octave-change>"+(-1)+"</clef-octave-change>");
+		newLine();
+		tabBack();
+		write(currentIndent + "</clef>");			
+		newLine();
+		write(currentIndent + "<staff-details>");
+		currentIndent += "  ";
+		newLine();
+		write(currentIndent + "<staff-lines>" + tune.length + "</staff-lines>");
+		newLine();
+		
+		for(int i = 0; i < tune.length; i++)
+		{
+			write(currentIndent + "<staff-tuning line=\"" + (i + 1) + "\">");
 			currentIndent += "  ";
 			newLine();
-			myWriter.write(currentIndent + "<divisions>"+division+"</divisions>");
+			write(currentIndent + "<tuning-step>" + tune[tune.length - i - 1].toUpperCase() + "</tuning-step>");
 			newLine();
-			myWriter.write(currentIndent + "<key>");
-			currentIndent += "  ";	
-			newLine();
-			myWriter.write(currentIndent + "<fifths>"+0+"</fifths>");
-			newLine();
-			myWriter.write(currentIndent + "<mode>"+"major"+"</mode>");			
+			write(currentIndent + "<tuning-octave>" + tuneOctave[tuneOctave.length - i - 1] + "</tuning-octave>");
 			newLine();
 			tabBack();
-			myWriter.write(currentIndent + "</key>");
+			write(currentIndent + "</staff-tuning>");
 			newLine();
-			myWriter.write(currentIndent + "<time>");
-			currentIndent += "  ";
-			newLine();
-			myWriter.write(currentIndent + "<beats>"+beat+"</beats>");
-			newLine();
-			myWriter.write(currentIndent + "<beat-type>"+beatType+"</beat-type>");			
-			newLine();
-			tabBack();
-			myWriter.write(currentIndent + "</time>");
-			newLine();
-			//myWriter.write(currentIndent + "<staves>" + 2 + "</staves>");
-			//newLine();
-			myWriter.write(currentIndent + "<clef>");
-			currentIndent += "  ";
-			newLine();
-			myWriter.write(currentIndent + "<sign>"+clef+"</sign>");
-			newLine();
-			myWriter.write(currentIndent + "<line>"+2+"</line>");
-			newLine();
-			myWriter.write(currentIndent + "<clef-octave-change>"+(-1)+"</clef-octave-change>");
-			newLine();
-			tabBack();
-			myWriter.write(currentIndent + "</clef>");			
-			newLine();
-			myWriter.write(currentIndent + "<staff-details>");
-			currentIndent += "  ";
-			newLine();
-			myWriter.write(currentIndent + "<staff-lines>" + tune.length + "</staff-lines>");
-			newLine();
-			
-			for(int i = 0; i < tune.length; i++)
-			{
-				myWriter.write(currentIndent + "<staff-tuning line=\"" + (i + 1) + "\">");
-				currentIndent += "  ";
-				newLine();
-				myWriter.write(currentIndent + "<tuning-step>" + tune[tune.length - i - 1].toUpperCase() + "</tuning-step>");
-				newLine();
-				myWriter.write(currentIndent + "<tuning-octave>" + tuneOctave[tuneOctave.length - i - 1] + "</tuning-octave>");
-				newLine();
-				tabBack();
-				myWriter.write(currentIndent + "</staff-tuning>");
-				newLine();
-			}
-			
-			tabBack();
-			myWriter.write(currentIndent + "</staff-details>");
-			newLine();
-			
-			tabBack();
-			myWriter.write(currentIndent + "</attributes>");
-			newLine();
-			
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
 		
+		tabBack();
+		write(currentIndent + "</staff-details>");
+		newLine();		
+		tabBack();
+		write(currentIndent + "</attributes>");
+		newLine();		
 	}
 	
 	/**
@@ -251,90 +264,84 @@ public class FileGenerator {
 	 */
 	public void addNote(int string, int fret, char note, String noteType, int duration, int octave, int dot,boolean alter,boolean hammerStart, boolean hammerContinue, boolean hammerDone,boolean harmonic)
 	{
-		//if(measureNum > 0) {
-		try {
-			myWriter.write(currentIndent + "<note>");
-			currentIndent += "  ";
+		write(currentIndent + "<note>");
+		currentIndent += "  ";
+		newLine();
+		write(currentIndent + "<pitch>");
+		currentIndent += "  ";
+		newLine();
+		write(currentIndent + "<step>" + note + "</step>");
+		newLine();
+		if (alter) {
+			write(currentIndent + "<alter>" + 1 + "</alter>");
 			newLine();
-			myWriter.write(currentIndent + "<pitch>");
-			currentIndent += "  ";
-			newLine();
-			myWriter.write(currentIndent + "<step>" + note + "</step>");
-			newLine();
-			if (alter) {
-				myWriter.write(currentIndent + "<alter>" + 1 + "</alter>");
-				newLine();
-			}
-			myWriter.write(currentIndent + "<octave>" + octave + "</octave>");
-			newLine();
-			tabBack();
-			myWriter.write(currentIndent + "</pitch>"); 
-			newLine();
-			myWriter.write(currentIndent + "<duration>" + duration + "</duration>"); 
-			newLine();
-			myWriter.write(currentIndent + "<type>" + noteType +"</type>"); 
-			newLine();
-			for(int i  = 0; i < dot; i++) {
-				myWriter.write(currentIndent + "<dot/>");
-				newLine();
-			}
-			if(alter){
-				myWriter.write(currentIndent + "<accidental>sharp</accidental>");
-				newLine();
-			}
-			myWriter.write(currentIndent + "<notations>");
-			newLine();
-			currentIndent += "  ";
-			myWriter.write(currentIndent + "<technical>");
-			currentIndent += "  ";
-			newLine();
-			if(harmonic) {
-				myWriter.write(currentIndent + "<harmonic default-x=\"3\" default-y=\"24\" placement=\"above\" print-object=\"yes\"/>");
-				newLine();
-			}
-			if(hammerStart){
-				myWriter.write(currentIndent + "<hammer-on number=\"1\" type=\"start\">H</hammer-on>");
-				newLine();
-			}
-			else if(hammerContinue){
-				myWriter.write(currentIndent + "<hammer-on number=\"1\" type=\"stop\"/>");
-				newLine();
-				myWriter.write(currentIndent + "<hammer-on number=\"1\" type=\"start\">H</hammer-on>");
-				newLine();
-			}
-			else if(hammerDone){
-				myWriter.write(currentIndent + "<hammer-on number=\"1\" type=\"stop\"/>");
-				newLine();
-			}
-			myWriter.write(currentIndent + "<string>" + string + "</string>");
-			newLine();
-			myWriter.write(currentIndent + "<fret>" + fret + "</fret>");
-			newLine();
-			tabBack();
-			myWriter.write(currentIndent + "</technical>");
-			newLine();
-			if(hammerStart){
-				myWriter.write(currentIndent + "<slur number=\"1\" placement=\"above\" type=\"start\"/>");
-				newLine();
-			}
-			else if(hammerDone){
-				myWriter.write(currentIndent + "<slur number=\"1\" type=\"stop\"/>");
-				newLine();
-			}
-			tabBack();
-			myWriter.write(currentIndent + "</notations>");
-			newLine();
-			myWriter.write(currentIndent + "<stem>down</stem>"); 
-			newLine();
-			myWriter.write(currentIndent + "<staff>1</staff>");
-			newLine();
-			tabBack();
-			myWriter.write(currentIndent + "</note>");		
-			newLine();
-		} catch (IOException e) {
-			e.printStackTrace();
 		}
-		//}
+		write(currentIndent + "<octave>" + octave + "</octave>");
+		newLine();
+		tabBack();
+		write(currentIndent + "</pitch>"); 
+		newLine();
+		write(currentIndent + "<duration>" + duration + "</duration>"); 
+		newLine();
+		write(currentIndent + "<type>" + noteType +"</type>"); 
+		newLine();
+		for(int i  = 0; i < dot; i++) {
+			write(currentIndent + "<dot/>");
+			newLine();
+		}
+		if(alter){
+			write(currentIndent + "<accidental>sharp</accidental>");
+			newLine();
+		}
+		write(currentIndent + "<notations>");
+		newLine();
+		currentIndent += "  ";
+		write(currentIndent + "<technical>");
+		currentIndent += "  ";
+		newLine();
+		if(harmonic) {
+			write(currentIndent + "<harmonic default-x=\"3\" default-y=\"24\" placement=\"above\" print-object=\"yes\"/>");
+			newLine();
+		}
+		if(hammerStart){
+			write(currentIndent + "<hammer-on number=\"1\" type=\"start\">H</hammer-on>");
+			newLine();
+		}
+		else if(hammerContinue){
+			write(currentIndent + "<hammer-on number=\"1\" type=\"stop\"/>");
+			newLine();
+			write(currentIndent + "<hammer-on number=\"1\" type=\"start\">H</hammer-on>");
+			newLine();
+		}
+		else if(hammerDone){
+			write(currentIndent + "<hammer-on number=\"1\" type=\"stop\"/>");
+			newLine();
+		}
+		write(currentIndent + "<string>" + string + "</string>");
+		newLine();
+		write(currentIndent + "<fret>" + fret + "</fret>");
+		newLine();
+		tabBack();
+		write(currentIndent + "</technical>");
+		newLine();
+		if(hammerStart){
+			write(currentIndent + "<slur number=\"1\" placement=\"above\" type=\"start\"/>");
+			newLine();
+		}
+		else if(hammerDone){
+			write(currentIndent + "<slur number=\"1\" type=\"stop\"/>");
+			newLine();
+		}
+		tabBack();
+		write(currentIndent + "</notations>");
+		newLine();
+//		write(currentIndent + "<stem>down</stem>"); 
+//		newLine();
+//		write(currentIndent + "<staff>1</staff>");
+//		newLine();
+		tabBack();
+		write(currentIndent + "</note>");		
+		newLine();
 	}
 	
 	/**
@@ -342,113 +349,102 @@ public class FileGenerator {
 	 * @param chord
 	 * @param noteType
 	 */
-
 	public void addChord(char[] chord, String noteType, int duration, int[] octaves,int[] string, int[] fret, int[] dot,boolean[] alter, int HamLocation, boolean hammerStart, boolean hammerContinue, boolean hammerDone,boolean[] harmonic) {
-		//if(measureNum >= 1) {
 		boolean firstDone = false;
 		for (int i = chord.length-1; i>=0;i--) {
 			if(string[i] != 0) {
-				try {	
-					myWriter.write(currentIndent + "<note>");
-					currentIndent += "  ";
+				write(currentIndent + "<note>");
+				currentIndent += "  ";
+				newLine();
+				if(firstDone) {
+					write(currentIndent + "<chord/>");
 					newLine();
-					if(firstDone) {
-						myWriter.write(currentIndent + "<chord/>");
-						newLine();
-					}
-					myWriter.write(currentIndent + "<pitch>");
-					currentIndent += "  ";
+				}
+				write(currentIndent + "<pitch>");
+				currentIndent += "  ";
+				newLine();
+				write(currentIndent + "<step>" + chord[i] + "</step>");
+				newLine();
+				if (alter[i]) {
+					write(currentIndent + "<alter>" + 1 + "</alter>");
 					newLine();
-					myWriter.write(currentIndent + "<step>" + chord[i] + "</step>");
+				}
+				write(currentIndent + "<octave>" + octaves[i]+ "</octave>");
+				newLine();
+				write(currentIndent + "</pitch>"); 
+				newLine();
+				tabBack();
+				write(currentIndent + "<duration>" + duration + "</duration>"); 
+				newLine();
+				write(currentIndent + "<type>" + noteType +"</type>"); 
+				newLine();
+				for(int j  = 0; j < dot[i]; j++) {
+					write(currentIndent + "<dot/>");
 					newLine();
-					if (alter[i]) {
-						myWriter.write(currentIndent + "<alter>" + 1 + "</alter>");
-						newLine();
-					}
-					myWriter.write(currentIndent + "<octave>" + octaves[i]+ "</octave>");
+				}
+				if(alter[i]){
+					write(currentIndent + "<accidental>sharp</accidental>");
 					newLine();
-					myWriter.write(currentIndent + "</pitch>"); 
+				}
+				write(currentIndent + "<notations>");
+				newLine();
+				currentIndent += "  ";
+				write(currentIndent + "<technical>");
+				currentIndent += "  ";
+				newLine();
+				if(harmonic[i]) {
+					write(currentIndent + "<harmonic default-x=\"3\" default-y=\"24\" placement=\"above\" print-object=\"yes\"/>");
 					newLine();
-					tabBack();
-					myWriter.write(currentIndent + "<duration>" + duration + "</duration>"); 
+				}
+				if(i == HamLocation &&hammerStart){
+					write(currentIndent + "<hammer-on number=\"1\" type=\"start\">H</hammer-on>");
 					newLine();
-					myWriter.write(currentIndent + "<type>" + noteType +"</type>"); 
+				}
+				else if(i == HamLocation && hammerContinue){
+					write(currentIndent + "<hammer-on number=\"1\" type=\"stop\"/>");
 					newLine();
-					for(int j  = 0; j < dot[i]; j++) {
-						myWriter.write(currentIndent + "<dot/>");
-						newLine();
-					}
-					if(alter[i]){
-						myWriter.write(currentIndent + "<accidental>sharp</accidental>");
-						newLine();
-					}
-					myWriter.write(currentIndent + "<notations>");
+					write(currentIndent + "<hammer-on number=\"1\" type=\"start\">H</hammer-on>");
 					newLine();
-					currentIndent += "  ";
-					myWriter.write(currentIndent + "<technical>");
-					currentIndent += "  ";
+				}
+				else if(i == HamLocation && hammerDone){
+					write(currentIndent + "<hammer-on number=\"1\" type=\"stop\"/>");
 					newLine();
-					if(harmonic[i]) {
-						myWriter.write(currentIndent + "<harmonic default-x=\"3\" default-y=\"24\" placement=\"above\" print-object=\"yes\"/>");
-						newLine();
-					}
-					if(i == HamLocation &&hammerStart){
-						myWriter.write(currentIndent + "<hammer-on number=\"1\" type=\"start\">H</hammer-on>");
-						newLine();
-					}
-					else if(i == HamLocation && hammerContinue){
-						myWriter.write(currentIndent + "<hammer-on number=\"1\" type=\"stop\"/>");
-						newLine();
-						myWriter.write(currentIndent + "<hammer-on number=\"1\" type=\"start\">H</hammer-on>");
-						newLine();
-					}
-					else if(i == HamLocation && hammerDone){
-						myWriter.write(currentIndent + "<hammer-on number=\"1\" type=\"stop\"/>");
-						newLine();
-					}
-					myWriter.write(currentIndent + "<string>" + string[i] + "</string>");
-					newLine();
-					myWriter.write(currentIndent + "<fret>" + fret[i] + "</fret>");
-					newLine();
-					tabBack();
-					myWriter.write(currentIndent + "</technical>");
-					newLine();
-					tabBack();
-					myWriter.write(currentIndent + "</notations>");
-					newLine();
-					myWriter.write(currentIndent + "<stem>down</stem>"); 
-					newLine();
-					myWriter.write(currentIndent + "<staff>1</staff>");
-					newLine();
-					tabBack();
-					myWriter.write(currentIndent + "</note>");		
-					newLine();
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
+				}
+				write(currentIndent + "<string>" + string[i] + "</string>");
+				newLine();
+				write(currentIndent + "<fret>" + fret[i] + "</fret>");
+				newLine();
+				tabBack();
+				write(currentIndent + "</technical>");
+				newLine();
+				tabBack();
+				write(currentIndent + "</notations>");
+				newLine();
+				write(currentIndent + "<stem>down</stem>"); 
+				newLine();
+				write(currentIndent + "<staff>1</staff>");
+				newLine();
+				tabBack();
+				write(currentIndent + "</note>");		
+				newLine();
 				firstDone = true;
 			}
-		}
-		//}
+		}		
 	}
 	
 	public void addRest(int duration, String noteType) {
-		try {
-			myWriter.write(currentIndent + "<note>");
-			currentIndent += "  ";
-			newLine();
-			myWriter.write(currentIndent + "<rest/>");
-			newLine();
-			myWriter.write(currentIndent + "<duration>" + duration + "</duration>");
-			newLine();
-			myWriter.write(currentIndent + "<type>" + noteType + "</type>");
-			newLine();
-			tabBack();
-			myWriter.write(currentIndent + "</note>");
-			newLine();
-		}catch(IOException e) {
-			e.printStackTrace();
-		}
+		write(currentIndent + "<note>");
+		currentIndent += "  ";
+		newLine();
+		write(currentIndent + "<rest/>");
+		newLine();
+		write(currentIndent + "<duration>" + duration + "</duration>");
+		newLine();
+		write(currentIndent + "<type>" + noteType + "</type>");
+		newLine();
+		tabBack();
+		write(currentIndent + "</note>");
+		newLine();
 	}
 	
 	/**
@@ -457,43 +453,39 @@ public class FileGenerator {
 	 */
 	public void openMeasure(int measureNumber, boolean isRepeat, int repeatAmount)
 	{
-		try {
-			myWriter.write(currentIndent + "<measure number=\"" + measureNumber + "\">");
+		write(currentIndent + "<measure number=\"" + measureNumber + "\">");
+		currentIndent += "  ";
+		newLine();
+		
+		if(isRepeat)
+		{
+			write(currentIndent + "<barline location=\"left\">");
 			currentIndent += "  ";
 			newLine();
-			
-			if(isRepeat)
-			{
-				myWriter.write(currentIndent + "<barline location=\"left\">");
-				currentIndent += "  ";
-				newLine();
-				myWriter.write(currentIndent + "<bar-style>heavy-light</bar-style>");
-				newLine();
-				myWriter.write(currentIndent + "<repeat direction=\"forward\" times=\"" + repeatAmount + "\"/>");
-				tabBack();
-				newLine();
-				myWriter.write(currentIndent + "</barline>");
-				newLine();
-				myWriter.write(currentIndent + "<direction placement=\"above\">");
-				currentIndent += "  ";
-				newLine();
-				myWriter.write(currentIndent + "<direction-type>");
-				currentIndent += "  ";
-				newLine();
-				myWriter.write(currentIndent + "<words relative-x=\"256.17\" relative-y=\"16.01\">Repeat " + repeatAmount + " times</words>");
-				tabBack();
-				newLine();
-				myWriter.write(currentIndent + "</direction-type>");
-				tabBack();
-				newLine();
-		        myWriter.write(currentIndent + "</direction>");
-		        newLine();
-			}
-	        
-			measureOpen = true;
-		} catch (IOException e) {
-			e.printStackTrace();
+			write(currentIndent + "<bar-style>heavy-light</bar-style>");
+			newLine();
+			write(currentIndent + "<repeat direction=\"forward\" times=\"" + repeatAmount + "\"/>");
+			tabBack();
+			newLine();
+			write(currentIndent + "</barline>");
+			newLine();
+			write(currentIndent + "<direction placement=\"above\">");
+			currentIndent += "  ";
+			newLine();
+			write(currentIndent + "<direction-type>");
+			currentIndent += "  ";
+			newLine();
+			write(currentIndent + "<words default-x=\"15\" default-y=\"15\" font-size=\"9\" font-style=\"italic\">Repeat " + repeatAmount + "x</words>");
+			tabBack();
+			newLine();
+			write(currentIndent + "</direction-type>");
+			tabBack();
+			newLine();
+	        write(currentIndent + "</direction>");
+	        newLine();
 		}
+        
+		measureOpen = true;
 	}
 	
 	/**
@@ -501,29 +493,25 @@ public class FileGenerator {
 	 */
 	public void closeMeasure(boolean isRepeat, int repeatAmount)
 	{
-		try {
-			if(isRepeat)
-			{
-				myWriter.write(currentIndent + "<barline location=\"right\">");
-				currentIndent += "  ";
-				newLine();
-				myWriter.write(currentIndent + "<bar-style>light-heavy</bar-style>");
-				newLine();
-				myWriter.write(currentIndent + "<repeat direction=\"backward\" times=\"" + repeatAmount + "\"/>");
-				tabBack();
-				newLine();
-				myWriter.write(currentIndent + "</barline>");
-				newLine();
-			}
-	        
-			tabBack();
-			myWriter.write(currentIndent + "</measure>");
+		if(isRepeat)
+		{
+			write(currentIndent + "<barline location=\"right\">");
+			currentIndent += "  ";
 			newLine();
-			
-			measureOpen = false;			
-		} catch (IOException e) {
-			e.printStackTrace();
+			write(currentIndent + "<bar-style>light-heavy</bar-style>");
+			newLine();
+			write(currentIndent + "<repeat direction=\"backward\" times=\"" + repeatAmount + "\"/>");
+			tabBack();
+			newLine();
+			write(currentIndent + "</barline>");
+			newLine();
 		}
+		
+		tabBack();
+		write(currentIndent + "</measure>");
+		newLine();
+		
+		measureOpen = false;
 	}
 	
 	/**
@@ -532,7 +520,8 @@ public class FileGenerator {
 	public void end()
 	{
 		try {
-			myWriter.write("</score-partwise>");			
+			myWriter.write(stringBuilder.toString().replaceAll("(?m)^[ \t]*\r?\n", ""));
+			myWriter.write("</score-partwise>");
 			myWriter.close();
 		} catch (IOException e) {
 			e.printStackTrace();
