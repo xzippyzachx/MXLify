@@ -59,8 +59,6 @@ public class Tuning {
 			
 			while(noteScanner.hasNextLine()) {
 				int fret = 0;
-				notes = new ArrayList<String>();
-				octaves = new ArrayList<Integer>();
 				line  = noteScanner.nextLine();
 				
 				//getting the name for each string
@@ -68,7 +66,9 @@ public class Tuning {
 				/*Checking to add the notes only if they are the same as
 				 * the one specified in the tuning array*/
 				for(int string  = 0; string < tuning.length; string++) {
-					if(stringName.equals(tuning[string]) && octaveCheck(tuningOctave[string])) {
+					notes = new ArrayList<String>();
+					octaves = new ArrayList<Integer>();
+					if(stringName.equals(tuning[string].toUpperCase()) && octaveCheck(tuningOctave[string])) {
 						octave = tuningOctave[string];
 						//adding the notes to the notes ArrayList
 						for(int i = 0; i < line.length()-1; i++) {
@@ -88,19 +88,30 @@ public class Tuning {
 								fret++;
 							}
 						}
-						//adding the stringName as the key and the List of notes as the notes for each fret
-						stringNotes.put(stringName, notes);
-						stringOctaves.put(stringName, octaves);
+						/*adding the stringName and the string number as the key 
+						 * and the List of notes as the notes for each fret
+						 * as well as the list of octaves*/
+						String key = stringName+(string+1);
+						stringNotes.put(key, notes);
+						stringOctaves.put(key, octaves);
 					}
 				}
 			}
-			/*for(String s : stringOctaves.keySet()) {
+			for(String s : stringOctaves.keySet()) {
 				System.out.print(s + "||");
 				for(int i = 0; i < stringOctaves.get(s).size(); i++) {
 					System.out.print(stringOctaves.get(s).get(i) + "|");
 				}
 				System.out.print("\n");
-			}*/
+			}
+			
+			for(String s : stringNotes.keySet()) {
+				System.out.print(s + "||");
+				for(int i = 0; i < stringNotes.get(s).size(); i++) {
+					System.out.print(stringNotes.get(s).get(i) + "|");
+				}
+				System.out.print("\n");
+			}
 			
 			//Faruq make this check the notes file please - Zach
 			//Temporary way to check if the tuning is valid. Need to actually check if the Note Tunes file contains the tune 
@@ -177,16 +188,19 @@ public class Tuning {
 		return tuningOctave;
 	}
 	
-	public int getOctave(String string, int fret) {
-		
-		return stringOctaves.get(string).get(fret%12);
+	public int getOctave(String string, int fret, int line) {
+		String key = string.toUpperCase() + line;
+		int i = fret/12;
+		return (stringOctaves.get(key).get(fret%12)+i);
 	}
 	
 	//to get the note for each specified string and fret
-	public String getNote(String string, int fret) {
+	public String getNote(String string, int fret, int line) {
+		String key = string.toUpperCase() + line;
+		System.out.println("Key: " + key);
 		if(fret < 0)
 			return string;
-		String output = stringNotes.get(string).get(fret);
+		String output = stringNotes.get(key).get(fret%12);
 		
 		return output;
 	}

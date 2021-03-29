@@ -25,7 +25,7 @@ public class FileGenerator {
 <span class="fc" id="L25">	boolean measureOpen = false;</span>
 <span class="fc" id="L26">	boolean partOpen = false;</span>
 	
-<span class="fc" id="L28">	FileGenerator (String path) {	</span>
+<span class="fc" id="L28">	FileGenerator (String path) {</span>
 <span class="fc" id="L29">		failed = false;</span>
 		
 <span class="fc" id="L31">		JFileChooser fileChooser = null;</span>
@@ -89,7 +89,7 @@ public class FileGenerator {
 	 * Adds the initial info to the beginning of the MusicXML
 	 * @param title
 	 */
-	public void addInfo(String title)
+	public void addInfo(String title, String instrument)
 	{
 		try {
 <span class="fc" id="L95">			myWriter.write(currentIndent + &quot;&lt;?xml version=\&quot;1.0\&quot; encoding=\&quot;UTF-8\&quot;?&gt;&quot;);</span>
@@ -111,7 +111,7 @@ public class FileGenerator {
 <span class="fc" id="L111">			myWriter.write(currentIndent + &quot;&lt;score-part id=\&quot;P1\&quot;&gt;&quot;);</span>
 <span class="fc" id="L112">			currentIndent += &quot;  &quot;;</span>
 <span class="fc" id="L113">			newLine();</span>
-<span class="fc" id="L114">			myWriter.write(currentIndent + &quot;&lt;part-name&gt;Guitar&lt;/part-name&gt;&quot;);</span>
+<span class="fc" id="L114">			myWriter.write(currentIndent + &quot;&lt;part-name&gt;&quot; + instrument + &quot;&lt;/part-name&gt;&quot;);</span>
 <span class="fc" id="L115">			newLine();</span>
 <span class="fc" id="L116">			tabBack();</span>
 <span class="fc" id="L117">			myWriter.write(currentIndent + &quot;&lt;/score-part&gt;&quot;);			</span>
@@ -261,9 +261,9 @@ public class FileGenerator {
 <span class="fc" id="L261">			newLine();</span>
 <span class="fc" id="L262">			myWriter.write(currentIndent + &quot;&lt;step&gt;&quot; + note + &quot;&lt;/step&gt;&quot;);</span>
 <span class="fc" id="L263">			newLine();</span>
-<span class="pc bpc" id="L264" title="1 of 2 branches missed.">			if (alter) {</span>
-<span class="nc" id="L265">				myWriter.write(currentIndent + &quot;&lt;alter&gt;&quot; + 1 + &quot;&lt;/alter&gt;&quot;);</span>
-<span class="nc" id="L266">				newLine();</span>
+<span class="fc bfc" id="L264" title="All 2 branches covered.">			if (alter) {</span>
+<span class="fc" id="L265">				myWriter.write(currentIndent + &quot;&lt;alter&gt;&quot; + 1 + &quot;&lt;/alter&gt;&quot;);</span>
+<span class="fc" id="L266">				newLine();</span>
 			}
 <span class="fc" id="L268">			myWriter.write(currentIndent + &quot;&lt;octave&gt;&quot; + octave + &quot;&lt;/octave&gt;&quot;);</span>
 <span class="fc" id="L269">			newLine();</span>
@@ -274,13 +274,13 @@ public class FileGenerator {
 <span class="fc" id="L274">			newLine();</span>
 <span class="fc" id="L275">			myWriter.write(currentIndent + &quot;&lt;type&gt;&quot; + noteType +&quot;&lt;/type&gt;&quot;); </span>
 <span class="fc" id="L276">			newLine();</span>
-<span class="pc bpc" id="L277" title="1 of 2 branches missed.">			for(int i  = 0; i &lt; dot; i++) {</span>
-<span class="nc" id="L278">				myWriter.write(currentIndent + &quot;&lt;dot/&gt;&quot;);</span>
-<span class="nc" id="L279">				newLine();</span>
+<span class="fc bfc" id="L277" title="All 2 branches covered.">			for(int i  = 0; i &lt; dot; i++) {</span>
+<span class="fc" id="L278">				myWriter.write(currentIndent + &quot;&lt;dot/&gt;&quot;);</span>
+<span class="fc" id="L279">				newLine();</span>
 			}
-<span class="pc bpc" id="L281" title="1 of 2 branches missed.">			if(alter){</span>
-<span class="nc" id="L282">				myWriter.write(currentIndent + &quot;&lt;accidental&gt;sharp&lt;/accidental&gt;&quot;);</span>
-<span class="nc" id="L283">				newLine();</span>
+<span class="fc bfc" id="L281" title="All 2 branches covered.">			if(alter){</span>
+<span class="fc" id="L282">				myWriter.write(currentIndent + &quot;&lt;accidental&gt;sharp&lt;/accidental&gt;&quot;);</span>
+<span class="fc" id="L283">				newLine();</span>
 			}
 <span class="fc" id="L285">			myWriter.write(currentIndent + &quot;&lt;notations&gt;&quot;);</span>
 <span class="fc" id="L286">			newLine();</span>
@@ -292,19 +292,19 @@ public class FileGenerator {
 <span class="nc" id="L292">				myWriter.write(currentIndent + &quot;&lt;harmonic default-x=\&quot;3\&quot; default-y=\&quot;24\&quot; placement=\&quot;above\&quot; print-object=\&quot;yes\&quot;/&gt;&quot;);</span>
 <span class="nc" id="L293">				newLine();</span>
 			}
-<span class="pc bpc" id="L295" title="1 of 2 branches missed.">			if(hammerStart){</span>
-<span class="nc" id="L296">				myWriter.write(currentIndent + &quot;&lt;hammer-on number=\&quot;1\&quot; type=\&quot;start\&quot;&gt;H&lt;/hammer-on&gt;&quot;);</span>
-<span class="nc" id="L297">				newLine();</span>
+<span class="fc bfc" id="L295" title="All 2 branches covered.">			if(hammerStart){</span>
+<span class="fc" id="L296">				myWriter.write(currentIndent + &quot;&lt;hammer-on number=\&quot;1\&quot; type=\&quot;start\&quot;&gt;H&lt;/hammer-on&gt;&quot;);</span>
+<span class="fc" id="L297">				newLine();</span>
 			}
-<span class="pc bpc" id="L299" title="1 of 2 branches missed.">			else if(hammerContinue){</span>
-<span class="nc" id="L300">				myWriter.write(currentIndent + &quot;&lt;hammer-on number=\&quot;1\&quot; type=\&quot;stop\&quot;/&gt;&quot;);</span>
-<span class="nc" id="L301">				newLine();</span>
-<span class="nc" id="L302">				myWriter.write(currentIndent + &quot;&lt;hammer-on number=\&quot;1\&quot; type=\&quot;start\&quot;&gt;H&lt;/hammer-on&gt;&quot;);</span>
-<span class="nc" id="L303">				newLine();</span>
+<span class="fc bfc" id="L299" title="All 2 branches covered.">			else if(hammerContinue){</span>
+<span class="fc" id="L300">				myWriter.write(currentIndent + &quot;&lt;hammer-on number=\&quot;1\&quot; type=\&quot;stop\&quot;/&gt;&quot;);</span>
+<span class="fc" id="L301">				newLine();</span>
+<span class="fc" id="L302">				myWriter.write(currentIndent + &quot;&lt;hammer-on number=\&quot;1\&quot; type=\&quot;start\&quot;&gt;H&lt;/hammer-on&gt;&quot;);</span>
+<span class="fc" id="L303">				newLine();</span>
 			}
-<span class="pc bpc" id="L305" title="1 of 2 branches missed.">			else if(hammerDone){</span>
-<span class="nc" id="L306">				myWriter.write(currentIndent + &quot;&lt;hammer-on number=\&quot;1\&quot; type=\&quot;stop\&quot;/&gt;&quot;);</span>
-<span class="nc" id="L307">				newLine();</span>
+<span class="fc bfc" id="L305" title="All 2 branches covered.">			else if(hammerDone){</span>
+<span class="fc" id="L306">				myWriter.write(currentIndent + &quot;&lt;hammer-on number=\&quot;1\&quot; type=\&quot;stop\&quot;/&gt;&quot;);</span>
+<span class="fc" id="L307">				newLine();</span>
 			}
 <span class="fc" id="L309">			myWriter.write(currentIndent + &quot;&lt;string&gt;&quot; + string + &quot;&lt;/string&gt;&quot;);</span>
 <span class="fc" id="L310">			newLine();</span>
@@ -313,13 +313,13 @@ public class FileGenerator {
 <span class="fc" id="L313">			tabBack();</span>
 <span class="fc" id="L314">			myWriter.write(currentIndent + &quot;&lt;/technical&gt;&quot;);</span>
 <span class="fc" id="L315">			newLine();</span>
-<span class="pc bpc" id="L316" title="1 of 2 branches missed.">			if(hammerStart){</span>
-<span class="nc" id="L317">				myWriter.write(currentIndent + &quot;&lt;slur number=\&quot;1\&quot; placement=\&quot;above\&quot; type=\&quot;start\&quot;/&gt;&quot;);</span>
-<span class="nc" id="L318">				newLine();</span>
+<span class="fc bfc" id="L316" title="All 2 branches covered.">			if(hammerStart){</span>
+<span class="fc" id="L317">				myWriter.write(currentIndent + &quot;&lt;slur number=\&quot;1\&quot; placement=\&quot;above\&quot; type=\&quot;start\&quot;/&gt;&quot;);</span>
+<span class="fc" id="L318">				newLine();</span>
 			}
-<span class="pc bpc" id="L320" title="1 of 2 branches missed.">			else if(hammerDone){</span>
-<span class="nc" id="L321">				myWriter.write(currentIndent + &quot;&lt;slur number=\&quot;1\&quot; type=\&quot;stop\&quot;/&gt;&quot;);</span>
-<span class="nc" id="L322">				newLine();</span>
+<span class="fc bfc" id="L320" title="All 2 branches covered.">			else if(hammerDone){</span>
+<span class="fc" id="L321">				myWriter.write(currentIndent + &quot;&lt;slur number=\&quot;1\&quot; type=\&quot;stop\&quot;/&gt;&quot;);</span>
+<span class="fc" id="L322">				newLine();</span>
 			}
 <span class="fc" id="L324">			tabBack();</span>
 <span class="fc" id="L325">			myWriter.write(currentIndent + &quot;&lt;/notations&gt;&quot;);</span>
@@ -361,9 +361,9 @@ public class FileGenerator {
 <span class="fc" id="L361">					newLine();</span>
 <span class="fc" id="L362">					myWriter.write(currentIndent + &quot;&lt;step&gt;&quot; + chord[i] + &quot;&lt;/step&gt;&quot;);</span>
 <span class="fc" id="L363">					newLine();</span>
-<span class="pc bpc" id="L364" title="1 of 2 branches missed.">					if (alter[i]) {</span>
-<span class="nc" id="L365">						myWriter.write(currentIndent + &quot;&lt;alter&gt;&quot; + 1 + &quot;&lt;/alter&gt;&quot;);</span>
-<span class="nc" id="L366">						newLine();</span>
+<span class="fc bfc" id="L364" title="All 2 branches covered.">					if (alter[i]) {</span>
+<span class="fc" id="L365">						myWriter.write(currentIndent + &quot;&lt;alter&gt;&quot; + 1 + &quot;&lt;/alter&gt;&quot;);</span>
+<span class="fc" id="L366">						newLine();</span>
 					}
 <span class="fc" id="L368">					myWriter.write(currentIndent + &quot;&lt;octave&gt;&quot; + octaves[i]+ &quot;&lt;/octave&gt;&quot;);</span>
 <span class="fc" id="L369">					newLine();</span>
@@ -378,9 +378,9 @@ public class FileGenerator {
 <span class="fc" id="L378">						myWriter.write(currentIndent + &quot;&lt;dot/&gt;&quot;);</span>
 <span class="fc" id="L379">						newLine();</span>
 					}
-<span class="pc bpc" id="L381" title="1 of 2 branches missed.">					if(alter[i]){</span>
-<span class="nc" id="L382">						myWriter.write(currentIndent + &quot;&lt;accidental&gt;sharp&lt;/accidental&gt;&quot;);</span>
-<span class="nc" id="L383">						newLine();</span>
+<span class="fc bfc" id="L381" title="All 2 branches covered.">					if(alter[i]){</span>
+<span class="fc" id="L382">						myWriter.write(currentIndent + &quot;&lt;accidental&gt;sharp&lt;/accidental&gt;&quot;);</span>
+<span class="fc" id="L383">						newLine();</span>
 					}
 <span class="fc" id="L385">					myWriter.write(currentIndent + &quot;&lt;notations&gt;&quot;);</span>
 <span class="fc" id="L386">					newLine();</span>

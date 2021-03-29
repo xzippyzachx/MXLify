@@ -7,34 +7,34 @@ import java.util.ArrayList;
 	
 	public static int detectInstrument(ArrayList&lt;ArrayList&lt;String&gt;&gt; input)
 	{
-<span class="nc bnc" id="L10" title="All 2 branches missed.">		if(input == null)</span>
-<span class="nc" id="L11">			return 0;</span>
+<span class="fc bfc" id="L10" title="All 2 branches covered.">		if(input == null)</span>
+<span class="fc" id="L11">			return 0;</span>
 		
-<span class="nc" id="L13">		boolean hasX = false;</span>
-<span class="nc" id="L14">		boolean hasO = false;</span>
+<span class="fc" id="L13">		boolean hasX = false;</span>
+<span class="fc" id="L14">		boolean hasO = false;</span>
 		
-<span class="nc bnc" id="L16" title="All 2 branches missed.">		for(ArrayList&lt;String&gt; line : input) {</span>
-<span class="nc bnc" id="L17" title="All 2 branches missed.">			for(String character : line)</span>
+<span class="fc bfc" id="L16" title="All 2 branches covered.">		for(ArrayList&lt;String&gt; line : input) {</span>
+<span class="fc bfc" id="L17" title="All 2 branches covered.">			for(String character : line)</span>
 			{
-<span class="nc bnc" id="L19" title="All 2 branches missed.">				if(character.toLowerCase().equals(&quot;x&quot;))</span>
+<span class="pc bpc" id="L19" title="1 of 2 branches missed.">				if(character.toLowerCase().equals(&quot;x&quot;))</span>
 <span class="nc" id="L20">					hasX = true;</span>
-<span class="nc bnc" id="L21" title="All 2 branches missed.">				if(character.toLowerCase().equals(&quot;o&quot;))</span>
+<span class="pc bpc" id="L21" title="1 of 2 branches missed.">				if(character.toLowerCase().equals(&quot;o&quot;))</span>
 <span class="nc" id="L22">					hasO = true;</span>
-<span class="nc bnc" id="L23" title="All 4 branches missed.">				if(hasX &amp;&amp; hasO)</span>
+<span class="pc bpc" id="L23" title="3 of 4 branches missed.">				if(hasX &amp;&amp; hasO)</span>
 <span class="nc" id="L24">					return 2;</span>
-<span class="nc" id="L25">			}</span>
-<span class="nc" id="L26">		}</span>
+<span class="fc" id="L25">			}</span>
+<span class="fc" id="L26">		}</span>
 		
-<span class="nc" id="L28">		int stringAmount = 0;</span>
+<span class="fc" id="L28">		int stringAmount = 0;</span>
 		
-<span class="nc bnc" id="L30" title="All 2 branches missed.">		for(int i = 0; i &lt; input.size(); i++) {			</span>
-<span class="nc bnc" id="L31" title="All 2 branches missed.">			if(input.get(i).size() &lt; 2)</span>
+<span class="fc bfc" id="L30" title="All 2 branches covered.">		for(int i = 0; i &lt; input.size(); i++) {			</span>
+<span class="pc bpc" id="L31" title="1 of 2 branches missed.">			if(input.get(i).size() &lt; 2)</span>
 <span class="nc" id="L32">				break;</span>
-<span class="nc" id="L33">			stringAmount++;</span>
+<span class="fc" id="L33">			stringAmount++;</span>
 		}
 		
-<span class="nc bnc" id="L36" title="All 4 branches missed.">		if(stringAmount == 6 || stringAmount == 0)</span>
-<span class="nc" id="L37">			return 0;</span>
+<span class="pc bpc" id="L36" title="3 of 4 branches missed.">		if(stringAmount == 6 || stringAmount == 0)</span>
+<span class="fc" id="L37">			return 0;</span>
 		
 <span class="nc bnc" id="L39" title="All 2 branches missed.">		if(stringAmount &lt; 6)</span>
 <span class="nc" id="L40">			return 1;</span>

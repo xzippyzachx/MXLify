@@ -14,72 +14,74 @@ import javax.swing.undo.CannotUndoException;
 import javax.swing.undo.UndoManager;
 
 @SuppressWarnings(&quot;serial&quot;)
-public class UndoRedoTextArea extends JTextArea implements UndoableEditListener, FocusListener, KeyListener {
+public class UndoRedoTextArea extends ColumnTextArea implements UndoableEditListener, FocusListener, KeyListener {
 
 	private UndoManager manager; // Manager to track changes
 
 	public UndoRedoTextArea() { // Empty text area
-<span class="nc" id="L22">		this(new String());</span>
-<span class="nc" id="L23">	}</span>
+<span class="fc" id="L22">		this(new String());</span>
+<span class="fc" id="L23">	}</span>
 
 	public UndoRedoTextArea(String text) { // Text area with starting text
-<span class="nc" id="L26">		super(text);</span>
-<span class="nc" id="L27">		getDocument().addUndoableEditListener(this);</span>
-<span class="nc" id="L28">		this.addKeyListener(this);</span>
-<span class="nc" id="L29">		this.addFocusListener(this);</span>
-<span class="nc" id="L30">	}</span>
+<span class="fc" id="L26">		super();</span>
+<span class="fc" id="L27">		getDocument().addUndoableEditListener(this);</span>
+<span class="fc" id="L28">		this.addKeyListener(this);</span>
+<span class="fc" id="L29">		this.addFocusListener(this);</span>
+<span class="fc" id="L30">	}</span>
 
 	private void createUndoMananger() { // Create manager - new manager, and set limit to 25
-<span class="nc" id="L33">		manager = new UndoManager();</span>
-<span class="nc" id="L34">		manager.setLimit(25);</span>
-<span class="nc" id="L35">	}</span>
+<span class="fc" id="L33">		manager = new UndoManager();</span>
+<span class="fc" id="L34">		manager.setLimit(25);</span>
+<span class="fc" id="L35">	}</span>
 
 	private void removeUndoMananger() { // Remove manager - end
-<span class="nc" id="L38">		manager.end();</span>
-<span class="nc" id="L39">	}</span>
+<span class="fc" id="L38">		manager.end();</span>
+<span class="fc" id="L39">	}</span>
 
 	public void focusGained(FocusEvent fe) { // Create a manager when focus is on text area
-<span class="nc" id="L42">		createUndoMananger();</span>
-<span class="nc" id="L43">	}</span>
+<span class="fc" id="L42">		createUndoMananger();</span>
+<span class="fc" id="L43">	}</span>
 
 	public void focusLost(FocusEvent fe) { // Remove manager when focus is not on text area
-<span class="nc" id="L46">		removeUndoMananger();</span>
-<span class="nc" id="L47">	}</span>
+<span class="fc" id="L46">		removeUndoMananger();</span>
+<span class="fc" id="L47">	}</span>
 
 	public void undoableEditHappened(UndoableEditEvent e) {
-<span class="nc" id="L50">		manager.addEdit(e.getEdit()); // Add edits to history in manager</span>
-<span class="nc" id="L51">	}</span>
+<span class="fc" id="L50">		manager.addEdit(e.getEdit()); // Add edits to history in manager</span>
+<span class="fc" id="L51">	}</span>
 
+	@Override
 	public void keyPressed(KeyEvent e) {
-
-<span class="nc bnc" id="L55" title="All 4 branches missed.">		if ((e.getKeyCode() == KeyEvent.VK_Z) &amp;&amp; (e.isControlDown())) { // Control-Z</span>
-
-			try {
-<span class="nc" id="L58">				manager.undo();                                         // Try to undo text</span>
-<span class="nc" id="L59">			} catch (CannotUndoException cue) {                         // If cannot, audible beep</span>
-<span class="nc" id="L60">				Toolkit.getDefaultToolkit().beep();</span>
-<span class="nc" id="L61">			}</span>
-		}
-
-<span class="nc bnc" id="L64" title="All 4 branches missed.">		if ((e.getKeyCode() == KeyEvent.VK_Y) &amp;&amp; (e.isControlDown())) { // Control-Y</span>
+<span class="nc" id="L55">		super.keyPressed(e);</span>
+		
+<span class="nc bnc" id="L57" title="All 4 branches missed.">		if ((e.getKeyCode() == KeyEvent.VK_Z) &amp;&amp; (e.isControlDown())) { // Control-Z</span>
 
 			try {
-<span class="nc" id="L67">				manager.redo();                                         // Try to redo text</span>
-<span class="nc" id="L68">			} catch (CannotRedoException cue) {                         // If cannot, audible beep</span>
-<span class="nc" id="L69">				Toolkit.getDefaultToolkit().beep();</span>
-<span class="nc" id="L70">			}</span>
+<span class="nc" id="L60">				manager.undo();                                         // Try to undo text</span>
+<span class="nc" id="L61">			} catch (CannotUndoException cue) {                         // If cannot, audible beep</span>
+<span class="nc" id="L62">				Toolkit.getDefaultToolkit().beep();</span>
+<span class="nc" id="L63">			}</span>
 		}
-<span class="nc" id="L72">	}</span>
+
+<span class="nc bnc" id="L66" title="All 4 branches missed.">		if ((e.getKeyCode() == KeyEvent.VK_Y) &amp;&amp; (e.isControlDown())) { // Control-Y</span>
+
+			try {
+<span class="nc" id="L69">				manager.redo();                                         // Try to redo text</span>
+<span class="nc" id="L70">			} catch (CannotRedoException cue) {                         // If cannot, audible beep</span>
+<span class="nc" id="L71">				Toolkit.getDefaultToolkit().beep();</span>
+<span class="nc" id="L72">			}</span>
+		}
+<span class="nc" id="L74">	}</span>
 
 	@Override
 	public void keyReleased(KeyEvent arg0) {
 		// TODO Auto-generated method stub
-<span class="nc" id="L77">	}</span>
+<span class="nc" id="L79">	}</span>
 
 	@Override
 	public void keyTyped(KeyEvent arg0) {
 		// TODO Auto-generated method stub
-<span class="nc" id="L82">	}</span>
-
+<span class="nc" id="L84">	}</span>
+	
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

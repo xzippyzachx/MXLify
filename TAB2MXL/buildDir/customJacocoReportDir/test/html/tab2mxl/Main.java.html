@@ -4,17 +4,17 @@ import java.util.ArrayList;
 import gui_panels.MyFrame;
 import gui_popups.ClearPopUp;
 
-<span class="nc" id="L7">public class Main {</span>
+<span class="fc" id="L7">public class Main {</span>
 	
 	public static MyFrame myFrame;
 	
 	public static boolean isInPopUp;
 	static ClearPopUp clearPopUp;
 	static ClearPopUp successPopUp;
-	
+
 	public static void main(String[] args) {
-<span class="nc" id="L16">		myFrame = new MyFrame();</span>
-<span class="nc" id="L17">	}</span>
+<span class="fc" id="L16">		myFrame = new MyFrame();</span>
+<span class="fc" id="L17">	}</span>
 
 	public static void FileUploaded(String input)
 	{
@@ -26,18 +26,19 @@ import gui_popups.ClearPopUp;
 	
 	public static void Convert(ArrayList&lt;ArrayList&lt;String&gt;&gt; input, int instrument)
 	{
-<span class="nc bnc" id="L29" title="All 3 branches missed.">		switch(instrument) {			</span>
+<span class="nc" id="L29">		System.out.println(&quot;I: &quot; + instrument);</span>
+<span class="nc bnc" id="L30" title="All 3 branches missed.">		switch(instrument) {</span>
 			case 1: //Bass
-<span class="nc" id="L31">				new Parser(input);</span>
-<span class="nc" id="L32">				break;</span>
+<span class="nc" id="L32">				new Parser(input, instrument, &quot;&quot;);//added instrument to Parser to use in Tuning class</span>
+<span class="nc" id="L33">				break;</span>
 			case 2: //Drum
-<span class="nc" id="L34">				new DrumParser(input);</span>
-<span class="nc" id="L35">				break;</span>
+<span class="nc" id="L35">				new DrumParser(input);</span>
+<span class="nc" id="L36">				break;</span>
 			default: //Guitar
-<span class="nc" id="L37">				new Parser(input);</span>
+<span class="nc" id="L38">				new Parser(input, instrument, &quot;&quot;);</span>
 		}
 
-<span class="nc" id="L40">		new CreateScore(FileGenerator.filepath);</span>
-<span class="nc" id="L41">	} </span>
+<span class="nc" id="L41">		new CreateScore(FileGenerator.filepath);</span>
+<span class="nc" id="L42">	} </span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

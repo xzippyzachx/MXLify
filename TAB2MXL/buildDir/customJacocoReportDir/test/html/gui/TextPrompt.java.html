@@ -21,11 +21,11 @@ import javax.swing.text.*;
 public class TextPrompt extends JLabel
 	implements FocusListener, DocumentListener
 {
-<span class="nc" id="L24">	public enum Show</span>
+<span class="fc" id="L24">	public enum Show</span>
 	{
-<span class="nc" id="L26">		ALWAYS,</span>
-<span class="nc" id="L27">		FOCUS_GAINED,</span>
-<span class="nc" id="L28">		FOCUS_LOST;</span>
+<span class="fc" id="L26">		ALWAYS,</span>
+<span class="fc" id="L27">		FOCUS_GAINED,</span>
+<span class="fc" id="L28">		FOCUS_LOST;</span>
 	}
 
 	private JTextComponent component;
@@ -41,24 +41,24 @@ public class TextPrompt extends JLabel
 <span class="nc" id="L41">	}</span>
 
 	public TextPrompt(String text, JTextComponent component, Show show)
-<span class="nc" id="L44">	{</span>
-<span class="nc" id="L45">		this.component = component;</span>
-<span class="nc" id="L46">		setShow( show );</span>
-<span class="nc" id="L47">		document = component.getDocument();</span>
+<span class="fc" id="L44">	{</span>
+<span class="fc" id="L45">		this.component = component;</span>
+<span class="fc" id="L46">		setShow( show );</span>
+<span class="fc" id="L47">		document = component.getDocument();</span>
 
-<span class="nc" id="L49">		setText( text );</span>
-<span class="nc" id="L50">		setFont( component.getFont() );</span>
-<span class="nc" id="L51">		setForeground( component.getForeground() );</span>
-<span class="nc" id="L52">		setBorder( new EmptyBorder(component.getInsets()) );</span>
-<span class="nc" id="L53">		setHorizontalAlignment(JLabel.LEADING);</span>
+<span class="fc" id="L49">		setText( text );</span>
+<span class="fc" id="L50">		setFont( component.getFont() );</span>
+<span class="fc" id="L51">		setForeground( component.getForeground() );</span>
+<span class="fc" id="L52">		setBorder( new EmptyBorder(component.getInsets()) );</span>
+<span class="fc" id="L53">		setHorizontalAlignment(JLabel.LEADING);</span>
 
-<span class="nc" id="L55">		component.addFocusListener( this );</span>
-<span class="nc" id="L56">		document.addDocumentListener( this );</span>
+<span class="fc" id="L55">		component.addFocusListener( this );</span>
+<span class="fc" id="L56">		document.addDocumentListener( this );</span>
 
-<span class="nc" id="L58">		component.setLayout( new BorderLayout() );</span>
-<span class="nc" id="L59">		component.add( this );</span>
-<span class="nc" id="L60">		checkForPrompt();</span>
-<span class="nc" id="L61">	}</span>
+<span class="fc" id="L58">		component.setLayout( new BorderLayout() );</span>
+<span class="fc" id="L59">		component.add( this );</span>
+<span class="fc" id="L60">		checkForPrompt();</span>
+<span class="fc" id="L61">	}</span>
 
 	/**
 	 *  Convenience method to change the alpha value of the current foreground
@@ -68,8 +68,8 @@ public class TextPrompt extends JLabel
 	 */
 	public void changeAlpha(float alpha)
 	{
-<span class="nc" id="L71">		changeAlpha( (int)(alpha * 255) );</span>
-<span class="nc" id="L72">	}</span>
+<span class="fc" id="L71">		changeAlpha( (int)(alpha * 255) );</span>
+<span class="fc" id="L72">	}</span>
 
 	/**
 	 *  Convenience method to change the alpha value of the current foreground
@@ -79,16 +79,16 @@ public class TextPrompt extends JLabel
 	 */
 	public void changeAlpha(int alpha)
 	{
-<span class="nc bnc" id="L82" title="All 4 branches missed.">		alpha = alpha &gt; 255 ? 255 : alpha &lt; 0 ? 0 : alpha;</span>
+<span class="pc bpc" id="L82" title="2 of 4 branches missed.">		alpha = alpha &gt; 255 ? 255 : alpha &lt; 0 ? 0 : alpha;</span>
 
-<span class="nc" id="L84">		Color foreground = getForeground();</span>
-<span class="nc" id="L85">		int red = foreground.getRed();</span>
-<span class="nc" id="L86">		int green = foreground.getGreen();</span>
-<span class="nc" id="L87">		int blue = foreground.getBlue();</span>
+<span class="fc" id="L84">		Color foreground = getForeground();</span>
+<span class="fc" id="L85">		int red = foreground.getRed();</span>
+<span class="fc" id="L86">		int green = foreground.getGreen();</span>
+<span class="fc" id="L87">		int blue = foreground.getBlue();</span>
 
-<span class="nc" id="L89">		Color withAlpha = new Color(red, green, blue, alpha);</span>
-<span class="nc" id="L90">		super.setForeground( withAlpha );</span>
-<span class="nc" id="L91">	}</span>
+<span class="fc" id="L89">		Color withAlpha = new Color(red, green, blue, alpha);</span>
+<span class="fc" id="L90">		super.setForeground( withAlpha );</span>
+<span class="fc" id="L91">	}</span>
 
 	/**
 	 *  Convenience method to change the style of the current Font. The style
@@ -126,8 +126,8 @@ public class TextPrompt extends JLabel
 	 */
 	public void setShow(Show show)
 	{
-<span class="nc" id="L129">		this.show = show;</span>
-<span class="nc" id="L130">	}</span>
+<span class="fc" id="L129">		this.show = show;</span>
+<span class="fc" id="L130">	}</span>
 
 	/**
 	 *  Get the showPromptOnce property
@@ -159,7 +159,7 @@ public class TextPrompt extends JLabel
 	{
 		//  Text has been entered, remove the prompt
 
-<span class="nc bnc" id="L162" title="All 2 branches missed.">		if (document.getLength() &gt; 0)</span>
+<span class="pc bpc" id="L162" title="1 of 2 branches missed.">		if (document.getLength() &gt; 0)</span>
 		{
 <span class="nc" id="L164">			setVisible( false );</span>
 <span class="nc" id="L165">			return;</span>
@@ -167,7 +167,7 @@ public class TextPrompt extends JLabel
 
 		//  Prompt has already been shown once, remove it
 
-<span class="nc bnc" id="L170" title="All 4 branches missed.">		if (showPromptOnce &amp;&amp; focusLost &gt; 0)</span>
+<span class="pc bpc" id="L170" title="3 of 4 branches missed.">		if (showPromptOnce &amp;&amp; focusLost &gt; 0)</span>
 		{
 <span class="nc" id="L172">			setVisible(false);</span>
 <span class="nc" id="L173">			return;</span>
@@ -176,7 +176,7 @@ public class TextPrompt extends JLabel
 		//  Check the Show property and component focus to determine if the
 		//  prompt should be displayed.
 
-<span class="nc bnc" id="L179" title="All 2 branches missed.">        if (component.hasFocus())</span>
+<span class="pc bpc" id="L179" title="1 of 2 branches missed.">        if (component.hasFocus())</span>
         {
 <span class="nc bnc" id="L181" title="All 4 branches missed.">        	if (show == Show.ALWAYS</span>
         	||  show ==	Show.FOCUS_GAINED)
@@ -186,13 +186,13 @@ public class TextPrompt extends JLabel
         }
         else
         {
-<span class="nc bnc" id="L189" title="All 4 branches missed.">        	if (show == Show.ALWAYS</span>
+<span class="pc bpc" id="L189" title="2 of 4 branches missed.">        	if (show == Show.ALWAYS</span>
         	||  show ==	Show.FOCUS_LOST)
-<span class="nc" id="L191">        		setVisible( true );</span>
+<span class="fc" id="L191">        		setVisible( true );</span>
         	else
 <span class="nc" id="L193">        		setVisible( false );</span>
         }
-<span class="nc" id="L195">	}</span>
+<span class="fc" id="L195">	}</span>
 
 //  Implement FocusListener
 

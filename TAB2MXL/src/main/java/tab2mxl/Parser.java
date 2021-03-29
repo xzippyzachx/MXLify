@@ -59,7 +59,7 @@ public class Parser {
 //		System.out.println("beat: " + beat);
 //		System.out.println("beatType: " + beatType);
 		
-		for(int i = 0; i < input.size(); i++) {			
+		for(int i = 0; i < input.size(); i++) {		
 			if(input.get(i).size() < 2)
 				break;
 			stringAmount++;
@@ -68,8 +68,11 @@ public class Parser {
 		for(int i = 0; i < input.size(); i++) {
 			if(input.get(i).size() < 2 && input.get(i-1).size() > 2 && i != input.size())
 				tabLineAmount++;
+			/*if(input.get(i).size() < 2 && input.get(i-1).size() < 2 && i != input.size())
+				input.remove(i);*/
 		}
-				
+		System.out.println("TabLineAmount: " + tabLineAmount);
+		
 		//Transpose columns to rows (do you mean rows to col?)
 		columns = new ArrayList<char[]>();
 		
@@ -306,12 +309,12 @@ public class Parser {
 						fret = 0;
 					}
 					if (!chord) {
-						if (tunner.getNote(tune[line-1],fret).substring(tunner.getNote(tune[line-1], fret).length()-1,tunner.getNote(tune[line-1], fret).length()).equals("#")){
+						if (tunner.getNote(tune[line-1], fret, line).substring(tunner.getNote(tune[line-1], fret, line).length()-1,tunner.getNote(tune[line-1], fret, line).length()).equals("#")){
 							sharpnote = true;
 						}
 
 
-						fileGen.addNote(line, fret, tunner.getNote(tune[line-1], fret).charAt(0), noteType(beatNote), getDuration(beatNote), tunner.getOctave(tune[line-1], fret), dot(beatNote),sharpnote, hammerStart,hammerContinue,hammerDone,harmonic);
+						fileGen.addNote(line, fret, tunner.getNote(tune[line-1], fret, line).charAt(0), noteType(beatNote), getDuration(beatNote), tunner.getOctave(tune[line-1], fret, line), dot(beatNote),sharpnote, hammerStart,hammerContinue,hammerDone,harmonic);
 						harmonic = false;
 						System.out.println("");
 						System.out.println("Dash: " + dash);
@@ -353,13 +356,13 @@ public class Parser {
     					}
 						linearray[j] = line;
 						fretarray[j] = fret;
-						note = tunner.getNote(tune[line-1], fret).charAt(0);
-						chordOctave = tunner.getOctave(tune[line-1], fret);
+						note = tunner.getNote(tune[line-1], fret, line).charAt(0);
+						chordOctave = tunner.getOctave(tune[line-1], fret, line);
 						chords[j] = note;
 						chordsOctave[j] = chordOctave;
 						chordType = noteType(beatNote);
 						chordDot[j] = dot(beatNote);
-						if (tunner.getNote(tune[line-1], fret).substring(tunner.getNote(tune[line-1], fret).length()-1,tunner.getNote(tune[line-1], fret).length()).equals("#")){
+						if (tunner.getNote(tune[line-1], fret, line).substring(tunner.getNote(tune[line-1], fret, line).length()-1,tunner.getNote(tune[line-1], fret, line).length()).equals("#")){
 							sharp[j] = true;
 						}
 						else 
@@ -651,6 +654,7 @@ public class Parser {
 		int hyfenNumber = 0;
 		int boundary = 0;
 		int value = 0;
+		int doubleDigit = 0;
 		//System.out.println("");
 		
 		for(int i = 0; i < columns.size(); i++) {
@@ -667,14 +671,18 @@ public class Parser {
 			}
 			if(!containsOnlyChar(columns.get(i), '-')) {
 				value++;
-				//System.out.println("Value: " + value);
+				if(doubleDigit(columns.get(i), columns.get(i+1)))
+					doubleDigit++;
+				System.out.println("Value: " + value);
 			}
 			if(boundary == 1 && value > 1) {				
 				hyfenNumber++;
 				//System.out.println("Hyfen Increase: " + hyfenNumber);
 			}
 		}
-		
+		hyfenNumber -= doubleDigit;
+		System.out.println("HyfenNumber: " + hyfenNumber);
+		System.out.println("DoubleDigit: " + doubleDigit);
 		/*
 		for(int i=0;i< columns.size();i++) {
 			
@@ -721,7 +729,26 @@ public class Parser {
         else
             return (int)Math.round(division);
 	}
-
+	
+	private boolean doubleDigit(char[] b, char[] a) {
+		String nb = "";
+		String na = "";
+		String n = "";
+		boolean output = false;
+		
+		for(int i  = 0; i < b.length; i++) {
+			nb = Character.toString(b[i]);
+			na = Character.toString(a[i]);
+			n = nb + na;
+			try {
+				Integer.parseInt(n);
+				output = output || true;
+			}catch(NumberFormatException e) {
+				output = output || false;
+			}
+		}
+		return output;
+	}
 
 	static void addTitle(String title){
 		misc.put("Title", title);

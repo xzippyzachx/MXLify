@@ -9,105 +9,118 @@ import java.util.prefs.Preferences;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import gui_popups.ClearPopUp;
+
 public class LoadManager {
 
-<span class="nc" id="L14">	public Preferences prefs = Preferences.userRoot().node(getClass().getName());</span>
-<span class="nc" id="L15">	public String LAST_USED_FOLDER_LOAD = &quot;&quot;;</span>
+<span class="fc" id="L16">	public Preferences prefs = Preferences.userRoot().node(getClass().getName());</span>
+<span class="fc" id="L17">	public String LAST_USED_FOLDER_LOAD = &quot;&quot;;</span>
 	
-<span class="nc" id="L17">	private String[] loadedData = new String[3];</span>
+<span class="fc" id="L19">	private String[] loadedData = new String[3];</span>
+<span class="fc" id="L20">	private String loadedText = &quot;&quot;;</span>
 	
 	File loadFile;
-<span class="nc" id="L20">	public boolean failed = false;</span>
+<span class="fc" id="L23">	public boolean failed = false;</span>
 	
 	public LoadManager (String path)
-<span class="nc" id="L23">	{</span>
-<span class="nc" id="L24">		failed = false;</span>
-<span class="nc" id="L25">		JFileChooser fileChooser = null;</span>
-<span class="nc" id="L26">		int response = 0;</span>
+<span class="fc" id="L26">	{</span>
+<span class="fc" id="L27">		failed = false;</span>
+<span class="fc" id="L28">		JFileChooser fileChooser = null;</span>
+<span class="fc" id="L29">		int response = 0;</span>
 		
-<span class="nc bnc" id="L28" title="All 2 branches missed.">		if(path == &quot;&quot;)</span>
+<span class="pc bpc" id="L31" title="1 of 2 branches missed.">		if(path == &quot;&quot;)</span>
 		{
-<span class="nc" id="L30">			FileNameExtensionFilter filter = new FileNameExtensionFilter(&quot;*.mxlify&quot;, &quot;mxlify&quot;);				</span>
-<span class="nc" id="L31">			fileChooser = new JFileChooser(prefs.get(LAST_USED_FOLDER_LOAD, new File(&quot;.&quot;).getAbsolutePath())); // Create file chooser</span>
-<span class="nc" id="L32">			fileChooser.setFileFilter(filter); // Only allow .mxlify files</span>
-<span class="nc" id="L33">			response = fileChooser.showSaveDialog(null); //Select file to save</span>
+<span class="nc" id="L33">			FileNameExtensionFilter filter = new FileNameExtensionFilter(&quot;*.mxlify&quot;, &quot;mxlify&quot;);				</span>
+<span class="nc" id="L34">			fileChooser = new JFileChooser(prefs.get(LAST_USED_FOLDER_LOAD, new File(&quot;.&quot;).getAbsolutePath())); // Create file chooser</span>
+<span class="nc" id="L35">			fileChooser.setFileFilter(filter); // Only allow .mxlify files</span>
+<span class="nc" id="L36">			response = fileChooser.showSaveDialog(null); //Select file to save</span>
 		}
 
-<span class="nc bnc" id="L36" title="All 2 branches missed.">		if (response == JFileChooser.APPROVE_OPTION) { // if File successively chosen</span>
+<span class="pc bpc" id="L39" title="1 of 2 branches missed.">		if (response == JFileChooser.APPROVE_OPTION) { // if File successively chosen</span>
 
-<span class="nc bnc" id="L38" title="All 2 branches missed.">			if(path == &quot;&quot;)</span>
+<span class="pc bpc" id="L41" title="1 of 2 branches missed.">			if(path == &quot;&quot;)</span>
 			{
-<span class="nc" id="L40">				loadFile = new File(fileChooser.getSelectedFile().getAbsolutePath());</span>
-<span class="nc" id="L41">				prefs.put(LAST_USED_FOLDER_LOAD, fileChooser.getSelectedFile().getParent()); // Save file path</span>
+<span class="nc" id="L43">				loadFile = new File(fileChooser.getSelectedFile().getAbsolutePath());</span>
+<span class="nc" id="L44">				prefs.put(LAST_USED_FOLDER_LOAD, fileChooser.getSelectedFile().getParent()); // Save file path</span>
 			}
 			else
 			{
-<span class="nc" id="L45">				loadFile = new File(path);</span>
+<span class="fc" id="L48">				loadFile = new File(path);</span>
 			}
 
 			try {
-<span class="nc" id="L49">		        String fileName = ((File) (loadFile)).getName();</span>
-<span class="nc" id="L50">				String extension = &quot;&quot;;</span>
+<span class="fc" id="L52">		        String fileName = ((File) (loadFile)).getName();</span>
+<span class="fc" id="L53">				String extension = &quot;&quot;;</span>
 
-<span class="nc" id="L52">				int i = fileName.lastIndexOf('.');</span>
-<span class="nc" id="L53">				int p = Math.max(fileName.lastIndexOf('/'), fileName.lastIndexOf('\\'));</span>
+<span class="fc" id="L55">				int i = fileName.lastIndexOf('.');</span>
+<span class="fc" id="L56">				int p = Math.max(fileName.lastIndexOf('/'), fileName.lastIndexOf('\\'));</span>
 
-<span class="nc bnc" id="L55" title="All 2 branches missed.">				if (i &gt; p)</span>
-<span class="nc" id="L56">				    extension = fileName.substring(i+1);</span>
+<span class="pc bpc" id="L58" title="1 of 2 branches missed.">				if (i &gt; p)</span>
+<span class="fc" id="L59">				    extension = fileName.substring(i+1);</span>
 				
 				//System.out.println(extension);
 				
-<span class="nc" id="L60">				BufferedReader reader = new BufferedReader(new FileReader (loadFile));</span>
-<span class="nc" id="L61">			    String         line = null;</span>
-<span class="nc" id="L62">			    StringBuilder  stringBuilder = new StringBuilder();</span>
-<span class="nc" id="L63">			    String         ls = System.getProperty(&quot;line.separator&quot;);</span>
+<span class="fc" id="L63">				BufferedReader reader = new BufferedReader(new FileReader (loadFile));</span>
+<span class="fc" id="L64">			    String         line = null;</span>
+<span class="fc" id="L65">			    StringBuilder  stringBuilder = new StringBuilder();</span>
+<span class="fc" id="L66">			    String         ls = System.getProperty(&quot;line.separator&quot;);</span>
 				
-<span class="nc bnc" id="L65" title="All 4 branches missed.">				if(extension.equals(&quot;.mxlify&quot;) || extension.equals(&quot;mxlify&quot;))</span>
+<span class="pc bpc" id="L68" title="2 of 4 branches missed.">				if(extension.equals(&quot;.mxlify&quot;) || extension.equals(&quot;mxlify&quot;))</span>
 				{
-<span class="nc bnc" id="L67" title="All 2 branches missed.">					while((line = reader.readLine()) != null) {</span>
+<span class="fc bfc" id="L70" title="All 2 branches covered.">					while((line = reader.readLine()) != null) {</span>
 			        	
-<span class="nc bnc" id="L69" title="All 2 branches missed.">						if(line.split(&quot; &quot;).length &gt; 1)</span>
-<span class="nc bnc" id="L70" title="All 5 branches missed.">							switch (line.split(&quot; &quot;)[0])</span>
+<span class="fc bfc" id="L72" title="All 2 branches covered.">						if(line.split(&quot; &quot;).length &gt; 1)</span>
+<span class="pc bpc" id="L73" title="2 of 5 branches missed.">							switch (line.split(&quot; &quot;)[0])</span>
 							{
 								case &quot;instrument&quot;:
-<span class="nc bnc" id="L73" title="All 2 branches missed.">									loadedData[0] = (line.split(&quot; &quot;)[1].equals(&quot;null&quot;)) ? &quot;&quot; : line.split(&quot; &quot;)[1];</span>
-<span class="nc" id="L74">									break;</span>
+<span class="pc bpc" id="L76" title="1 of 2 branches missed.">									loadedData[0] = (line.split(&quot; &quot;)[1].equals(&quot;null&quot;)) ? &quot;&quot; : line.split(&quot; &quot;)[1];</span>
+<span class="fc" id="L77">									break;</span>
 								case &quot;title&quot;:
-<span class="nc bnc" id="L76" title="All 2 branches missed.">									loadedData[1] = (line.split(&quot; &quot;)[1].equals(&quot;null&quot;)) ? &quot;&quot; : line.split(&quot; &quot;)[1];</span>
-<span class="nc" id="L77">									break;</span>
+<span class="pc bpc" id="L79" title="1 of 2 branches missed.">									loadedData[1] = (line.split(&quot; &quot;)[1].equals(&quot;null&quot;)) ? &quot;&quot; : line.split(&quot; &quot;)[1];</span>
+<span class="fc" id="L80">									break;</span>
 								case &quot;timesig&quot;:
-<span class="nc bnc" id="L79" title="All 2 branches missed.">									loadedData[2] = (line.split(&quot; &quot;)[1].equals(&quot;null&quot;)) ? &quot;&quot; : line.split(&quot; &quot;)[1];</span>
-<span class="nc" id="L80">									break;</span>
+<span class="pc bpc" id="L82" title="1 of 2 branches missed.">									loadedData[2] = (line.split(&quot; &quot;)[1].equals(&quot;null&quot;)) ? &quot;&quot; : line.split(&quot; &quot;)[1];</span>
+<span class="fc" id="L83">									break;</span>
 								case &quot;&quot;:
-<span class="nc" id="L82">									break;</span>
+<span class="nc" id="L85">									break;</span>
 								default:
-<span class="nc" id="L84">									stringBuilder.append(line);</span>
-<span class="nc" id="L85">						            stringBuilder.append(ls);</span>
-<span class="nc" id="L86">						            break;</span>
+<span class="nc" id="L87">									stringBuilder.append(line);</span>
+<span class="nc" id="L88">						            stringBuilder.append(ls);</span>
+<span class="fc" id="L89">						            break;</span>
 							}
-						else
+<span class="pc bpc" id="L91" title="2 of 4 branches missed.">						else if (!line.split(&quot; &quot;)[0].equals(&quot;title&quot;) &amp;&amp; !line.split(&quot; &quot;)[0].equals(&quot;timesig&quot;))</span>
 						{
-<span class="nc" id="L90">							stringBuilder.append(line);</span>
-<span class="nc" id="L91">				            stringBuilder.append(ls);</span>
+<span class="fc" id="L93">							stringBuilder.append(line);</span>
+<span class="fc" id="L94">				            stringBuilder.append(ls);</span>
 						}
 			        }
-
-<span class="nc" id="L95">					Main.myFrame.textInputContentPanel.textField.setText(stringBuilder.toString());</span>
+					
+<span class="pc bpc" id="L98" title="1 of 2 branches missed.">					if(!Main.myFrame.textInputContentPanel.textField.getText().isEmpty())</span>
+<span class="nc" id="L99">						new ClearPopUp(Main.myFrame, stringBuilder.toString(), &quot;Override Current Tablature&quot;);</span>
+					else
+<span class="fc" id="L101">						Main.myFrame.textInputContentPanel.textField.setText(stringBuilder.toString());</span>
+					
+<span class="fc" id="L103">					loadedText = stringBuilder.toString();</span>
 				}
 
-<span class="nc" id="L98">		        reader.close();</span>
-<span class="nc" id="L99">		    } catch (IOException e1) {</span>
-<span class="nc" id="L100">				e1.printStackTrace();</span>
-<span class="nc" id="L101">			}</span>
+<span class="fc" id="L106">		        reader.close();</span>
+<span class="nc" id="L107">		    } catch (IOException e1) {</span>
+<span class="nc" id="L108">				e1.printStackTrace();</span>
+<span class="pc" id="L109">			}</span>
 		} else
 		{
-<span class="nc" id="L104">			failed = true;</span>
+<span class="nc" id="L112">			failed = true;</span>
 		}
-<span class="nc" id="L106">	}</span>
+<span class="fc" id="L114">	}</span>
 	
 	public String[] GetLoadedData()
 	{		
-<span class="nc" id="L110">		return loadedData;</span>
+<span class="fc" id="L118">		return loadedData;</span>
+	}
+	
+	public String GetLoadedText()
+	{		
+<span class="fc" id="L123">		return loadedText;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

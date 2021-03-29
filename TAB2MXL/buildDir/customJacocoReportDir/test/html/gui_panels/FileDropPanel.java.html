@@ -13,70 +13,72 @@ import gui.DragDropListener;
 @SuppressWarnings(&quot;serial&quot;)
 public class FileDropPanel extends JPanel {
 	
-<span class="nc" id="L16">	public static String dropFilePath = &quot;&quot;;</span>
-	
-<span class="nc" id="L18">	FileDropPanel(){</span>
-		
+<span class="fc" id="L16">	public static String dropFilePath = &quot;&quot;;</span>
+	JPanel dropPanel;
+	JLabel dropLabel;
+	JLabel dropLoc;
+
+<span class="fc" id="L21">	public FileDropPanel(){</span>
 
 		// Main Panel for Drop Elements
-<span class="nc" id="L22">		JPanel dropPanel = new JPanel();</span>
-<span class="nc" id="L23">		dropPanel.setLayout(new BoxLayout(dropPanel, BoxLayout.Y_AXIS));// sets layout to vertical</span>
-<span class="nc" id="L24">		Border DropPadding = BorderFactory.createEmptyBorder(0, 0, 0, 10);</span>
-<span class="nc" id="L25">		dropPanel.setBorder(DropPadding);</span>
+<span class="fc" id="L24">		dropPanel = new JPanel();</span>
+<span class="fc" id="L25">		dropPanel.setLayout(new BoxLayout(dropPanel, BoxLayout.Y_AXIS));// sets layout to vertical</span>
+<span class="fc" id="L26">		Border DropPadding = BorderFactory.createEmptyBorder(0, 0, 0, 10);</span>
+<span class="fc" id="L27">		dropPanel.setBorder(DropPadding);</span>
 		
 		//Title Label -----------------------------------------------------------
-<span class="nc" id="L28">		JLabel dropLabel = new JLabel(&quot;&lt;html&gt;&lt;body style='text-align: center'&gt;Drop Tablature Text File&quot;);				</span>
+<span class="fc" id="L30">		dropLabel = new JLabel(&quot;&lt;html&gt;&lt;body style='text-align: center'&gt;Drop Tablature Text File&quot;);				</span>
 		
-<span class="nc" id="L30">		dropLabel.setHorizontalAlignment(JLabel.CENTER);</span>
+<span class="fc" id="L32">		dropLabel.setHorizontalAlignment(JLabel.CENTER);</span>
 		
-<span class="nc" id="L32">		dropLabel.setHorizontalTextPosition(JLabel.CENTER);</span>
-<span class="nc" id="L33">		dropLabel.setAlignmentX(JLabel.CENTER_ALIGNMENT);</span>
-<span class="nc" id="L34">		Border padding = BorderFactory.createEmptyBorder(5, 0, 5, 0);</span>
-<span class="nc" id="L35">		dropLabel.setBorder(padding);</span>
-<span class="nc" id="L36">		dropLabel.setBackground(new Color(33,150,243));</span>
-<span class="nc" id="L37">		dropLabel.setOpaque(true);</span>
+<span class="fc" id="L34">		dropLabel.setHorizontalTextPosition(JLabel.CENTER);</span>
+<span class="fc" id="L35">		dropLabel.setAlignmentX(JLabel.CENTER_ALIGNMENT);</span>
+<span class="fc" id="L36">		Border padding = BorderFactory.createEmptyBorder(5, 0, 5, 0);</span>
+<span class="fc" id="L37">		dropLabel.setBorder(padding);</span>
+<span class="fc" id="L38">		dropLabel.setBackground(new Color(33,150,243));</span>
+<span class="fc" id="L39">		dropLabel.setOpaque(true);</span>
 					
-<span class="nc" id="L39">	    dropPanel.add(dropLabel);</span>
+<span class="fc" id="L41">	    dropPanel.add(dropLabel);</span>
 		
 	    //Drop Image Label ------------------------------------------------------
-<span class="nc" id="L42">		JLabel dropLoc = new JLabel();</span>
+<span class="fc" id="L44">		dropLoc = new JLabel();</span>
 		
-<span class="nc" id="L44">		ImageIcon imageIcon = new ImageIcon(&quot;Images/DropImage.png&quot;); // load the image to a imageIcon</span>
-<span class="nc" id="L45">		Image image = imageIcon.getImage(); // transform it </span>
-<span class="nc" id="L46">		Image newImage = image.getScaledInstance(140, 120,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  </span>
-<span class="nc" id="L47">		imageIcon = new ImageIcon(newImage);  // transform it back</span>
-<span class="nc" id="L48">		dropLoc.setIcon(imageIcon);</span>
+<span class="fc" id="L46">		ImageIcon imageIcon = new ImageIcon(&quot;Images/DropImage.png&quot;); // load the image to a imageIcon</span>
+<span class="fc" id="L47">		Image image = imageIcon.getImage(); // transform it </span>
+<span class="fc" id="L48">		Image newImage = image.getScaledInstance(140, 120,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  </span>
+<span class="fc" id="L49">		imageIcon = new ImageIcon(newImage);  // transform it back</span>
+<span class="fc" id="L50">		dropLoc.setIcon(imageIcon);</span>
 		
-<span class="nc" id="L50">		dropLoc.setMinimumSize(new Dimension(300, 120));</span>
-<span class="nc" id="L51">		dropLoc.setPreferredSize(new Dimension(300, 120));</span>
-<span class="nc" id="L52">		dropLoc.setMaximumSize(new Dimension(300, 120));</span>
+<span class="fc" id="L52">		dropLoc.setMinimumSize(new Dimension(300, 120));</span>
+<span class="fc" id="L53">		dropLoc.setPreferredSize(new Dimension(300, 120));</span>
+<span class="fc" id="L54">		dropLoc.setMaximumSize(new Dimension(300, 120));</span>
 		
-<span class="nc" id="L54">		dropLoc.setHorizontalAlignment(JLabel.CENTER);</span>
-<span class="nc" id="L55">		dropLoc.setHorizontalTextPosition(JLabel.CENTER);</span>
-<span class="nc" id="L56">		dropLoc.setAlignmentX(JLabel.CENTER_ALIGNMENT);</span>
+<span class="fc" id="L56">		dropLoc.setHorizontalAlignment(JLabel.CENTER);</span>
+<span class="fc" id="L57">		dropLoc.setHorizontalTextPosition(JLabel.CENTER);</span>
+<span class="fc" id="L58">		dropLoc.setAlignmentX(JLabel.CENTER_ALIGNMENT);</span>
 		
-<span class="nc" id="L58">		dropLoc.setBackground(Color.LIGHT_GRAY);</span>
+<span class="fc" id="L60">		dropLoc.setBackground(Color.LIGHT_GRAY);</span>
 		
 		//dropLoc hover effects
-<span class="nc" id="L61">		dropLoc.addMouseListener(new MouseAdapter() {</span>
+<span class="fc" id="L63">		dropLoc.addMouseListener(new MouseAdapter() {</span>
     	    public void mouseEntered(MouseEvent evt) {
-<span class="nc" id="L63">    	    	dropLoc.setBackground(new Color(207,207,207));</span>
-<span class="nc" id="L64">    	    }</span>
+<span class="nc" id="L65">    	    	dropLoc.setBackground(new Color(207,207,207));</span>
+<span class="nc" id="L66">    	    }</span>
     	    
 
     	    public void mouseExited(MouseEvent evt) {
-<span class="nc" id="L68">    	    	dropLoc.setBackground(Color.LIGHT_GRAY);</span>
-<span class="nc" id="L69">    	    }</span>
+<span class="nc" id="L70">    	    	dropLoc.setBackground(Color.LIGHT_GRAY);</span>
+<span class="nc" id="L71">    	    }</span>
 		});
 		
-<span class="nc" id="L72">		dropLoc.setOpaque(true);</span>
+<span class="fc" id="L74">		dropLoc.setOpaque(true);</span>
 		
-<span class="nc" id="L74">		DragDropListener dragDropListener = new DragDropListener();</span>
-<span class="nc" id="L75">		new DropTarget(dropLoc, dragDropListener); // Connect the label with a drag and drop listener</span>
+<span class="fc" id="L76">		DragDropListener dragDropListener = new DragDropListener();</span>
+<span class="fc" id="L77">		new DropTarget(dropLoc, dragDropListener); // Connect the label with a drag and drop listener</span>
 
 		// Add the label to the content
-<span class="nc" id="L78">		dropPanel.setOpaque(false);</span>
-<span class="nc" id="L79">		dropPanel.add(dropLoc);</span>
+<span class="fc" id="L80">		dropPanel.setOpaque(false);</span>
+<span class="fc" id="L81">		dropPanel.add(dropLoc);</span>
 		//dropPanel.add(dropLabel);
 				
 
@@ -103,9 +105,25 @@ public class FileDropPanel extends JPanel {
 		
 		dropPanel.add(dropText);
 		*/
-<span class="nc" id="L106">		this.setOpaque(false);</span>
-<span class="nc" id="L107">		this.add(dropPanel);//Add Drop Panel to File Drop Panel</span>
-<span class="nc" id="L108">		this.setVisible(true); //Set File Drop Panel to Visible</span>
-<span class="nc" id="L109">	}</span>
+<span class="fc" id="L108">		this.setOpaque(false);</span>
+<span class="fc" id="L109">		this.add(dropPanel);//Add Drop Panel to File Drop Panel</span>
+<span class="fc" id="L110">		this.setVisible(true); //Set File Drop Panel to Visible</span>
+<span class="fc" id="L111">	}</span>
+	
+	public static String getDropFilePath() {
+<span class="fc" id="L114">		return dropFilePath;</span>
+	}
+
+	public JPanel getDropPanel() {
+<span class="fc" id="L118">		return dropPanel;</span>
+	}
+
+	public JLabel getDropLabel() {
+<span class="fc" id="L122">		return dropLabel;</span>
+	}
+
+	public JLabel getDropLoc() {
+<span class="fc" id="L126">		return dropLoc;</span>
+	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>
