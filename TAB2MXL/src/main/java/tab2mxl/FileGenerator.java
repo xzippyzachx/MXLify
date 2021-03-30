@@ -97,7 +97,8 @@ public class FileGenerator {
 			e.printStackTrace();
 		}
 	}
-	
+
+
 	private void appendString(String line)
 	{		
 		if(line.equals("  <part id=\"P1\">"))
@@ -155,7 +156,366 @@ public class FileGenerator {
 			e.printStackTrace();
 		}			
 	}
-	
+
+	public void addInfoDrums(String title)  {
+		try {
+			myWriter.write(currentIndent + "<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+			newLine();
+			myWriter.write(currentIndent + "<score-partwise version=\"3.1\">");
+			currentIndent += "  ";
+			newLine();
+			myWriter.write(currentIndent + "<work>");
+			currentIndent += "  ";
+			newLine();
+			myWriter.write(currentIndent + "<work-title>" + title + "</work-title>");
+			newLine();
+			tabBack();
+			myWriter.write(currentIndent + "</work>");
+			newLine();
+			myWriter.write(currentIndent + "<part-list>");
+			currentIndent += "  ";
+			newLine();
+			myWriter.write(currentIndent + "<score-part id=\"P1\">");
+			newLine();
+
+			//Add
+			myWriter.write(currentIndent + "<part-name>Drumset</part-name>");
+			newLine();
+
+			myWriter.write(currentIndent +  "<score-instrument id=\"P1-I36\">");
+			currentIndent += "  ";
+			newLine();
+			myWriter.write(currentIndent +  "<instrument-name>Bass Drum 1</instrument-name>");
+			newLine();
+			myWriter.write(currentIndent +  "</score-instrument>");
+			tabBack();
+			newLine();
+
+			myWriter.write(currentIndent +  "<score-instrument id=\"P1-I37\">");
+			currentIndent += "  ";
+			newLine();
+			myWriter.write(currentIndent +  "<instrument-name>Bass Drum 2</instrument-name>");
+			newLine();
+			myWriter.write(currentIndent +  "</score-instrument>");
+			tabBack();
+			newLine();
+
+			myWriter.write(currentIndent +  "<score-instrument id=\"P1-I38\">");
+			currentIndent += "  ";
+			newLine();
+			myWriter.write(currentIndent +  "<instrument-name>Side Stick</instrument-name>");
+			newLine();
+			myWriter.write(currentIndent +  "</score-instrument>");
+			tabBack();
+			newLine();
+
+			myWriter.write(currentIndent +  "<score-instrument id=\"P1-I39\">");
+			currentIndent += "  ";
+			newLine();
+			myWriter.write(currentIndent +  "<instrument-name>Snare</instrument-name>");
+			newLine();
+			myWriter.write(currentIndent +  "</score-instrument>");
+			tabBack();
+			newLine();
+
+			myWriter.write(currentIndent +  "<score-instrument id=\"P1-I42\">");
+			currentIndent += "  ";
+			newLine();
+			myWriter.write(currentIndent +  "<instrument-name>Low Floor Tom</instrument-name>");
+			newLine();
+			myWriter.write(currentIndent +  "</score-instrument>");
+			tabBack();
+			newLine();
+
+			myWriter.write(currentIndent +  "<score-instrument id=\"P1-I43\">");
+			currentIndent += "  ";
+			newLine();
+			myWriter.write(currentIndent +  "<instrument-name>Closed Hi-Hat</instrument-name>");
+			newLine();
+			myWriter.write(currentIndent +  "</score-instrument>");
+			tabBack();
+			newLine();
+
+			myWriter.write(currentIndent +  "<score-instrument id=\"P1-I44\">");
+			currentIndent += "  ";
+			newLine();
+			myWriter.write(currentIndent +  "<instrument-name>High Floor Tom</instrument-name>");
+			newLine();
+			myWriter.write(currentIndent +  "</score-instrument>");
+			tabBack();
+			newLine();
+
+			myWriter.write(currentIndent +  "<score-instrument id=\"P1-I45\">");
+			currentIndent += "  ";
+			newLine();
+			myWriter.write(currentIndent +  "<instrument-name>Pedal Hi-Hat</instrument-name>");
+			newLine();
+			myWriter.write(currentIndent +  "</score-instrument>");
+			tabBack();
+			newLine();
+
+			myWriter.write(currentIndent +  "<score-instrument id=\"P1-I46\">");
+			currentIndent += "  ";
+			newLine();
+			myWriter.write(currentIndent +  "<instrument-name>Low Tom</instrument-name>");
+			newLine();
+			myWriter.write(currentIndent +  "</score-instrument>");
+			tabBack();
+			newLine();
+
+			myWriter.write(currentIndent +  "<score-instrument id=\"P1-I47\">");
+			currentIndent += "  ";
+			newLine();
+			myWriter.write(currentIndent +  "<instrument-name>Open Hi-Hat</instrument-name>");
+			newLine();
+			myWriter.write(currentIndent +  "</score-instrument>");
+			tabBack();
+			newLine();
+
+			myWriter.write(currentIndent +  "<score-instrument id=\"P1-I48\">");
+			currentIndent += "  ";
+			newLine();
+			myWriter.write(currentIndent +  "<instrument-name>Low-Mid Tom</instrument-name>");
+			newLine();
+			myWriter.write(currentIndent +  "</score-instrument>");
+			tabBack();
+			newLine();
+
+			myWriter.write(currentIndent +  "<score-instrument id=\"P1-I49\">");
+			currentIndent += "  ";
+			newLine();
+			myWriter.write(currentIndent +  "<instrument-name>Hi-Mid Tom</instrument-name>");
+			newLine();
+			myWriter.write(currentIndent +  "</score-instrument>");
+			tabBack();
+			newLine();
+
+			myWriter.write(currentIndent +  "<score-instrument id=\"P1-I50\">");
+			currentIndent += "  ";
+			newLine();
+			myWriter.write(currentIndent +  "<instrument-name>Crash Cymbal 1</instrument-name>");
+			newLine();
+			myWriter.write(currentIndent +  "</score-instrument>");
+			tabBack();
+			newLine();
+
+			myWriter.write(currentIndent +  "<score-instrument id=\"P1-I51\">");
+			currentIndent += "  ";
+			newLine();
+			myWriter.write(currentIndent +  "<instrument-name>High Tom</instrument-name>");
+			newLine();
+			myWriter.write(currentIndent +  "</score-instrument>");
+			tabBack();
+			newLine();
+
+			myWriter.write(currentIndent +  "<score-instrument id=\"P1-I52\">");
+			currentIndent += "  ";
+			newLine();
+			myWriter.write(currentIndent +  "<instrument-name>Ride Cymbal 1</instrument-name>");
+			newLine();
+			myWriter.write(currentIndent +  "</score-instrument>");
+			tabBack();
+			newLine();
+
+			myWriter.write(currentIndent +  "<score-instrument id=\"P1-I53\">");
+			currentIndent += "  ";
+			newLine();
+			myWriter.write(currentIndent +  "<instrument-name>Chinese Cymbal</instrument-name>");
+			newLine();
+			myWriter.write(currentIndent +  "</score-instrument>");
+			tabBack();
+			newLine();
+
+			myWriter.write(currentIndent +  "<score-instrument id=\"P1-I54\">");
+			currentIndent += "  ";
+			newLine();
+			myWriter.write(currentIndent +  "<instrument-name>Ride Bell</instrument-name>");
+			newLine();
+			myWriter.write(currentIndent +  "</score-instrument>");
+			tabBack();
+			newLine();
+
+			myWriter.write(currentIndent +  "<score-instrument id=\"P1-I55\">");
+			currentIndent += "  ";
+			newLine();
+			myWriter.write(currentIndent +  "<instrument-name>Tambourine</instrument-name>");
+			newLine();
+			myWriter.write(currentIndent +  "</score-instrument>");
+			tabBack();
+			newLine();
+
+			myWriter.write(currentIndent +  "<score-instrument id=\"P1-I56\">");
+			currentIndent += "  ";
+			newLine();
+			myWriter.write(currentIndent +  "<instrument-name>Splash Cymbal</instrument-name>");
+			newLine();
+			myWriter.write(currentIndent +  "</score-instrument>");
+			tabBack();
+			newLine();
+
+			myWriter.write(currentIndent +  "<score-instrument id=\"P1-I57\">");
+			currentIndent += "  ";
+			newLine();
+			myWriter.write(currentIndent +  "<instrument-name>Cowbell</instrument-name>");
+			newLine();
+			myWriter.write(currentIndent +  "</score-instrument>");
+			tabBack();
+			newLine();
+
+			myWriter.write(currentIndent +  "<score-instrument id=\"P1-I58\">");
+			currentIndent += "  ";
+			newLine();
+			myWriter.write(currentIndent +  "<instrument-name>Crash Cymbal 2</instrument-name>");
+			newLine();
+			myWriter.write(currentIndent +  "</score-instrument>");
+			tabBack();
+			newLine();
+
+			myWriter.write(currentIndent +  "<score-instrument id=\"P1-I60\">");
+			currentIndent += "  ";
+			newLine();
+			myWriter.write(currentIndent +  "<instrument-name>Ride Cymbal 2</instrument-name>");
+			newLine();
+			myWriter.write(currentIndent +  "</score-instrument>");
+			tabBack();
+			newLine();
+
+			myWriter.write(currentIndent +  "<score-instrument id=\"P1-I64\">");
+			currentIndent += "  ";
+			newLine();
+			myWriter.write(currentIndent +  "<instrument-name>Open Hi Conga</instrument-name>");
+			newLine();
+			myWriter.write(currentIndent +  "</score-instrument>");
+			tabBack();
+			newLine();
+
+			myWriter.write(currentIndent +  "<score-instrument id=\"P1-I65\">");
+			currentIndent += "  ";
+			newLine();
+			myWriter.write(currentIndent +  "<instrument-name>Low Conga</instrument-name>");
+			newLine();
+			myWriter.write(currentIndent +  "</score-instrument>");
+			tabBack();
+			newLine();
+
+			myWriter.write(currentIndent +  "</score-part>");
+			tabBack();
+			newLine();
+			myWriter.write(currentIndent +  "</part-list>");
+			newLine();
+			tabBack();
+			myWriter.write(currentIndent +  "<part id=\"P1\">");
+			newLine();
+			tabBack();
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+
+
+	public void attributesDrum(int division, int beat, int beatType) {
+		write(currentIndent + "<attributes>");
+		currentIndent += "  ";
+		newLine();
+		write(currentIndent + "<divisions>"+division+"</divisions>");
+		newLine();
+		write(currentIndent + "<key>");
+		currentIndent += "  ";
+		newLine();
+		write(currentIndent + "<fifths>"+0+"</fifths>");
+		newLine();
+		tabBack();
+		write(currentIndent + "</key>");
+		newLine();
+		write(currentIndent + "<time>");
+		currentIndent += "  ";
+		newLine();
+		write(currentIndent + "<beats>"+beat+"</beats>");
+		newLine();
+		write(currentIndent + "<beat-type>"+beatType+"</beat-type>");
+		newLine();
+		tabBack();
+		write(currentIndent + "</time>");
+		newLine();
+		tabBack();
+		write(currentIndent + "<clef>");
+		currentIndent += "  ";
+		newLine();
+		write(currentIndent + "<sign>percussion</sign>");
+		newLine();
+		write(currentIndent + "<line>"+2+"</line>");
+		newLine();
+		write(currentIndent + "</clef>");
+		newLine();
+		tabBack();
+		write(currentIndent + "</attributes>");
+		newLine();
+	}
+
+	public void addDrumNote(String noteHead, int duration, String displayStep, int displayOctave, String instrumentID, String noteType, int voice){
+
+		try {
+			myWriter.write(currentIndent + "<note>");
+			newLine();
+			currentIndent += "  ";
+			myWriter.write(currentIndent + "<unpitched>");
+			newLine();
+			currentIndent += "  ";
+
+			myWriter.write(currentIndent + "<display-step>" + displayStep + "</display-step>");
+			newLine();
+			myWriter.write(currentIndent + "<display-octave>" + displayOctave + "</display-octave>");
+			newLine();
+			myWriter.write(currentIndent + "</unpitched>");
+			newLine();
+			tabBack();
+
+			myWriter.write(currentIndent + "<duration>" + duration + "</duration>");
+			newLine();
+			myWriter.write(currentIndent + "<instrument id=\"" + instrumentID + "\"/>");
+			newLine();
+			myWriter.write(currentIndent + "<voice>" + voice + "</voice>" );
+			newLine();
+			myWriter.write(currentIndent + "<type>" + noteType + "</type>");
+			newLine();
+			if(noteHead.equals("x")){
+				myWriter.write(currentIndent + "<notehead>" + noteHead + "</notehead>");
+				newLine();
+			}
+			myWriter.write(currentIndent + "</note>");
+			newLine();
+			tabBack();
+
+		} catch (IOException e){
+			e.printStackTrace();
+		}
+
+	}
+	public void Backup(int totalDuration){
+
+		try {
+			myWriter.write(currentIndent + "<backup>");
+			newLine();
+			currentIndent += "  ";
+
+			myWriter.write(currentIndent + "<duration>" + totalDuration + "</duration>");
+			newLine();
+			myWriter.write(currentIndent + "</backup>");
+			newLine();
+			tabBack();
+
+		} catch (IOException e){
+			e.printStackTrace();
+		}
+
+
+	}
+
+
+
+
 	/**
 	 * Adds a new part opening to the MusicXML
 	 * @param partNumber
@@ -453,6 +813,7 @@ public class FileGenerator {
 	 */
 	public void openMeasure(int measureNumber, boolean isRepeat, int repeatAmount)
 	{
+		System.out.println("OPEN MEASURE METHOD");
 		write(currentIndent + "<measure number=\"" + measureNumber + "\">");
 		currentIndent += "  ";
 		newLine();
