@@ -95,7 +95,7 @@ public class DrumParser {
 		for (int i= 0;i< Measure.size();i++) {                                     //For each measure
 
 			System.out.println("Entered measure: " + i);
-			fileGen.openMeasure(i + 1, false, 0);
+			fileGen.openDrumMeasure(i + 1);
 
 			if(i == 0){                                                            //first measure
 				fileGen.attributesDrum((int) ((divisionsArray.get(0))/1), beat, beatType );    //Add attributes
@@ -146,11 +146,11 @@ public class DrumParser {
 			 totalDuration = 0;
 			System.out.println("closing measure");
 			 if(fileGen.measureOpen){
-				 fileGen.closeMeasure(false, 0);
+				 fileGen.closeDrumMeasure();
 			 }
 
 		}
-		fileGen.closePart();
+		fileGen.closeDrumPart();
 		fileGen.end();
 
 		// Printing for testing
