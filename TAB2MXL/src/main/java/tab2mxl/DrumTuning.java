@@ -83,8 +83,8 @@ public class DrumTuning {
 		return drumID.get(drum+symbol);
 	}
 	
-	public int getVoice(String drum) {
-		if(drum == "BD") {
+	public static int getVoice(String drum) {
+		if(drum.equals("BD")) {
 			return 2;
 		}else {
 			return 1;
