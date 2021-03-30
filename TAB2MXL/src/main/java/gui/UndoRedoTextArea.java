@@ -75,7 +75,7 @@ public class UndoRedoTextArea extends ColumnTextArea implements UndoableEditList
 
 	@Override
 	public void keyReleased(KeyEvent arg0) {
-		// TODO Auto-generated method stub
+		super.keyReleased(arg0);
 	}
 
 	@Override

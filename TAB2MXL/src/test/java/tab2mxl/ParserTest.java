@@ -33,7 +33,6 @@ class ParserTest {
 						 + "|-0---------------|-0---------------|";
 		
 		String[] inputText = textField.split("\n");
-		
 		ArrayList<ArrayList<String>> input = GetInput(inputText);		
 		new Parser(input, 0, path);
 		
