@@ -413,45 +413,61 @@ public class FileGenerator {
 		}
 	}
 
+	public void openDrumMeasure(int measureNumber){
+		try {
+			myWriter.write(currentIndent + "<measure number=\"" + measureNumber + "\">");
+			currentIndent += "  ";
+			newLine();
+			measureOpen = true;
+		}
+		catch(IOException e){
 
+		}
+
+	}
 
 	public void attributesDrum(int division, int beat, int beatType) {
-		write(currentIndent + "<attributes>");
-		currentIndent += "  ";
-		newLine();
-		write(currentIndent + "<divisions>"+division+"</divisions>");
-		newLine();
-		write(currentIndent + "<key>");
-		currentIndent += "  ";
-		newLine();
-		write(currentIndent + "<fifths>"+0+"</fifths>");
-		newLine();
-		tabBack();
-		write(currentIndent + "</key>");
-		newLine();
-		write(currentIndent + "<time>");
-		currentIndent += "  ";
-		newLine();
-		write(currentIndent + "<beats>"+beat+"</beats>");
-		newLine();
-		write(currentIndent + "<beat-type>"+beatType+"</beat-type>");
-		newLine();
-		tabBack();
-		write(currentIndent + "</time>");
-		newLine();
-		tabBack();
-		write(currentIndent + "<clef>");
-		currentIndent += "  ";
-		newLine();
-		write(currentIndent + "<sign>percussion</sign>");
-		newLine();
-		write(currentIndent + "<line>"+2+"</line>");
-		newLine();
-		write(currentIndent + "</clef>");
-		newLine();
-		tabBack();
-		write(currentIndent + "</attributes>");
-		newLine();
+		try {
+			myWriter.write(currentIndent + "<attributes>");
+			currentIndent += "  ";
+			newLine();
+			myWriter.write(currentIndent + "<divisions>" + division + "</divisions>");
+			newLine();
+			myWriter.write(currentIndent + "<key>");
+			currentIndent += "  ";
+			newLine();
+			myWriter.write(currentIndent + "<fifths>" + 0 + "</fifths>");
+			newLine();
+			tabBack();
+			myWriter.write(currentIndent + "</key>");
+			newLine();
+			myWriter.write(currentIndent + "<time>");
+			currentIndent += "  ";
+			newLine();
+			myWriter.write(currentIndent + "<beats>" + beat + "</beats>");
+			newLine();
+			myWriter.write(currentIndent + "<beat-type>" + beatType + "</beat-type>");
+			newLine();
+			tabBack();
+			myWriter.write(currentIndent + "</time>");
+			newLine();
+			tabBack();
+			myWriter.write(currentIndent + "<clef>");
+			currentIndent += "  ";
+			newLine();
+			myWriter.write(currentIndent + "<sign>percussion</sign>");
+			newLine();
+			myWriter.write(currentIndent + "<line>" + 2 + "</line>");
+			newLine();
+			myWriter.write(currentIndent + "</clef>");
+			newLine();
+			tabBack();
+			myWriter.write(currentIndent + "</attributes>");
+			newLine();
+		}
+		catch(IOException e){
+
+		}
 	}
 
 	public void addDrumNote(String noteHead, int duration, String displayStep, int displayOctave, String instrumentID, String noteType, int voice){
@@ -513,6 +529,44 @@ public class FileGenerator {
 
 	}
 
+	public void openDrumPart(int partNumber)
+	{
+		try {
+		myWriter.write(currentIndent + "<part id=\"P" + partNumber + "\">");
+		currentIndent += "  ";
+		newLine();
+		partOpen = true;
+		}
+		catch(IOException e){
+
+		}
+	}
+
+	public void closeDrumPart()
+	{
+		try {
+		tabBack();
+		myWriter.write(currentIndent + "</part>");
+		newLine();
+		partOpen = false;
+		}
+		catch(IOException e){
+
+		}
+	}
+
+	public void closeDrumMeasure(){
+		try {
+			tabBack();
+			myWriter.write(currentIndent + "</measure>");
+			newLine();
+			measureOpen = false;
+		}
+		catch(IOException e){
+
+		}
+	}
+
 
 
 
@@ -559,7 +613,7 @@ public class FileGenerator {
 		newLine();
 		write(currentIndent + "<fifths>"+0+"</fifths>");
 		newLine();
-		write(currentIndent + "<mode>"+"major"+"</mode>");			
+		write(currentIndent + "<mode>"+"major"+"</mode>");
 		newLine();
 		tabBack();
 		write(currentIndent + "</key>");
@@ -569,7 +623,7 @@ public class FileGenerator {
 		newLine();
 		write(currentIndent + "<beats>"+beat+"</beats>");
 		newLine();
-		write(currentIndent + "<beat-type>"+beatType+"</beat-type>");			
+		write(currentIndent + "<beat-type>"+beatType+"</beat-type>");
 		newLine();
 		tabBack();
 		write(currentIndent + "</time>");
@@ -586,7 +640,7 @@ public class FileGenerator {
 		write(currentIndent + "<clef-octave-change>"+(-1)+"</clef-octave-change>");
 		newLine();
 		tabBack();
-		write(currentIndent + "</clef>");			
+		write(currentIndent + "</clef>");
 		newLine();
 		write(currentIndent + "<staff-details>");
 		currentIndent += "  ";
@@ -639,11 +693,11 @@ public class FileGenerator {
 		write(currentIndent + "<octave>" + octave + "</octave>");
 		newLine();
 		tabBack();
-		write(currentIndent + "</pitch>"); 
+		write(currentIndent + "</pitch>");
 		newLine();
-		write(currentIndent + "<duration>" + duration + "</duration>"); 
+		write(currentIndent + "<duration>" + duration + "</duration>");
 		newLine();
-		write(currentIndent + "<type>" + noteType +"</type>"); 
+		write(currentIndent + "<type>" + noteType +"</type>");
 		newLine();
 		for(int i  = 0; i < dot; i++) {
 			write(currentIndent + "<dot/>");
@@ -700,7 +754,7 @@ public class FileGenerator {
 //		write(currentIndent + "<staff>1</staff>");
 //		newLine();
 		tabBack();
-		write(currentIndent + "</note>");		
+		write(currentIndent + "</note>");
 		newLine();
 	}
 	
@@ -731,12 +785,12 @@ public class FileGenerator {
 				}
 				write(currentIndent + "<octave>" + octaves[i]+ "</octave>");
 				newLine();
-				write(currentIndent + "</pitch>"); 
+				write(currentIndent + "</pitch>");
 				newLine();
 				tabBack();
-				write(currentIndent + "<duration>" + duration + "</duration>"); 
+				write(currentIndent + "<duration>" + duration + "</duration>");
 				newLine();
-				write(currentIndent + "<type>" + noteType +"</type>"); 
+				write(currentIndent + "<type>" + noteType +"</type>");
 				newLine();
 				for(int j  = 0; j < dot[i]; j++) {
 					write(currentIndent + "<dot/>");
@@ -780,12 +834,12 @@ public class FileGenerator {
 				tabBack();
 				write(currentIndent + "</notations>");
 				newLine();
-				write(currentIndent + "<stem>down</stem>"); 
+				write(currentIndent + "<stem>down</stem>");
 				newLine();
 				write(currentIndent + "<staff>1</staff>");
 				newLine();
 				tabBack();
-				write(currentIndent + "</note>");		
+				write(currentIndent + "</note>");
 				newLine();
 				firstDone = true;
 			}
