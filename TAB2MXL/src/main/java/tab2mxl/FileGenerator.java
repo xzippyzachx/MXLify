@@ -813,6 +813,7 @@ public class FileGenerator {
 	 */
 	public void openMeasure(int measureNumber, boolean isRepeat, int repeatAmount)
 	{
+		System.out.println("OPEN MEASURE METHOD");
 		write(currentIndent + "<measure number=\"" + measureNumber + "\">");
 		currentIndent += "  ";
 		newLine();
