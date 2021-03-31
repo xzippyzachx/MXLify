@@ -138,8 +138,9 @@ public class Parser {
         //Harmonic
         boolean harmonic = false;
 		boolean[] hchord = new boolean[stringAmount];
-		
-		
+		boolean grace = false;
+		int gdash = 0;
+		boolean breakout = false;
 		/*adds the tuning of the strings to the tune array if the tuning is
 		 * specified in the TAB, or the default if it isn't*/
 		for(int i = 0; i < stringAmount; i++) {
@@ -244,7 +245,7 @@ public class Parser {
 						}
 					}
 				}
-				if (count == 6) {
+				if (count == stringAmount) {
 					measure++;
 					count = 0;					
 					
@@ -269,9 +270,27 @@ public class Parser {
 					doubleDigit = true;
 					doubleDigitColumn = true;
 				}
-
+                if (i<columns.size() && columns.get(i)[j] == 'g'){
+                    grace = true;
+                    char gcharacter = 'g';
+                    while(gcharacter == 'g' || Character.isDigit(gcharacter) || gcharacter == 'h' || gcharacter == 'p') {
+                    	for(int z = 0; z < col.length; z++)
+                    	{
+                    	if(Character.isDigit(columns.get(z)[j]) && dash > 0) {
+                    		    breakout = true;
+                    			break;
+                		}
+                		}
+                    	if (breakout == true){
+                    		break;
+                    	}
+                    	dash++;
+                    	gcharacter = columns.get(i+1)[j];
+                    	
+                }
+                }
 				//Hammer on
-				if(i+1 < columns.size() && j<col.length && (columns.get(i+1)[j] == 'h' || (doubleDigit &&columns.get(i+2)[j]== 'h' ) ) && !hammerOn){ // if same row, next col is an h then then begin hammer on
+				if(i+1 < columns.size() && j<col.length && (columns.get(i+1)[j] == 'h' || (doubleDigit &&columns.get(i+2)[j]== 'h')) && !hammerOn){ // if same row, next col is an h then then begin hammer on
 																 // (i+1) only works for single digit frets
 					int m = i;
 					char currentChar = columns.get(i)[j];
@@ -339,8 +358,9 @@ public class Parser {
 						}
 
 
-						fileGen.addNote(line, fret, tunner.getNote(tune[line-1], fret).charAt(0), noteType(beatNote), getDuration(beatNote), tunner.getOctave(tune[line-1], fret), dot(beatNote),sharpnote, hammerStart,hammerContinue,hammerDone,harmonic);
+						fileGen.addNote(line, fret, tunner.getNote(tune[line-1], fret).charAt(0), noteType(beatNote), getDuration(beatNote), tunner.getOctave(tune[line-1], fret), dot(beatNote),sharpnote, hammerStart,hammerContinue,hammerDone,harmonic,grace);
 						harmonic = false;
+						grace = false;
 //						System.out.println("");
 //						System.out.println("Dash: " + dash);
 //						System.out.println("Duration: " + getDuration(beatNote));

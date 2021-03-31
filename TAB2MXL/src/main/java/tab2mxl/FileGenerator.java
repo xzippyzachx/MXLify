@@ -249,16 +249,20 @@ public class FileGenerator {
 	 * @param fret
 	 * @param note
 	 */
-	public void addNote(int string, int fret, char note, String noteType, int duration, int octave, int dot,boolean alter,boolean hammerStart, boolean hammerContinue, boolean hammerDone,boolean harmonic)
+	public void addNote(int string, int fret, char note, String noteType, int duration, int octave, int dot,boolean alter,boolean hammerStart, boolean hammerContinue, boolean hammerDone,boolean harmonic,boolean grace)
 	{
 		//if(measureNum > 0) {
 		try {
 			myWriter.write(currentIndent + "<note>");
 			currentIndent += "  ";
 			newLine();
+			if (grace) {
+				 myWriter.write(currentIndent + "<grace/>");
+				 newLine();
+				}
 			myWriter.write(currentIndent + "<pitch>");
-			currentIndent += "  ";
 			newLine();
+			currentIndent += "  ";
 			myWriter.write(currentIndent + "<step>" + note + "</step>");
 			newLine();
 			if (alter) {
