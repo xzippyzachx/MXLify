@@ -248,7 +248,7 @@ public class Parser {
 						}
 					}
 				}
-				if (count == 6) {
+				if (count == stringAmount) {
 					measure++;
 					count = 0;					
 					
@@ -411,7 +411,7 @@ public class Parser {
 							sharp[j] = false;
 					}
 				}
-				if (line == 6) {
+				if (line == stringAmount) {
 					line = 0;
 				}	
 			}
