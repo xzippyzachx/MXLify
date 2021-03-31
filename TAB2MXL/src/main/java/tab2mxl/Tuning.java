@@ -15,9 +15,9 @@ public class Tuning {
 	private int[] tuningOctave;
 	private String[] tuning;
 	//Default tuning for different string amounts.
-//	private static final String[] DEFAULT_TUNING1 = {"E"};
-//	private static final String[] DEFAULT_TUNING2 = {"A", "E"};
-//	private static final String[] DEFAULT_TUNING3 = {"D", "A", "E"};
+	private static final String[] DEFAULT_TUNING1 = {"E"};
+	private static final String[] DEFAULT_TUNING2 = {"A", "E"};
+	private static final String[] DEFAULT_TUNING3 = {"D", "A", "E"};
 	private static final String[] DEFAULT_TUNING4 = {"G", "D", "A", "E"};
 	private static final String[] DEFAULT_TUNING5 = {"B", "G", "D", "A", "E"};
 	private static final String[] DEFAULT_TUNING6 = {"e", "B", "G", "D", "A", "E"};
@@ -25,9 +25,9 @@ public class Tuning {
 	private static final String[] DEFAULT_TUNING8 = {"e", "B", "G", "D", "A", "E", "B", "F#"};
 	private static final String[] DEFAULT_TUNING9 = {"e", "B", "G", "D", "A", "E", "B", "F#", "C#"};
 	//Default tuning octaves
-//	private static final int[] DEFAULT_OCTAVE1 = {2};
-//	private static final int[] DEFAULT_OCTAVE2 = {2,2};
-//	private static final int[] DEFAULT_OCTAVE3 = {3,2,2};
+	private static final int[] DEFAULT_OCTAVE1 = {2};
+	private static final int[] DEFAULT_OCTAVE2 = {2,2};
+	private static final int[] DEFAULT_OCTAVE3 = {3,2,2};
 	private static final int[] DEFAULT_OCTAVE4 = {3,3,2,2};
 	private static final int[] DEFAULT_OCTAVE5 = {3,3,3,2,2};
 	private static final int[] DEFAULT_OCTAVE6 = {4,3,3,3,2,2};
@@ -151,15 +151,15 @@ public class Tuning {
 		
 		switch (stringAmount)
 		{
-//			case 1:
-//				output = Tuning.DEFAULT_TUNING1;
-//				break;
-//			case 2:
-//				output = Tuning.DEFAULT_TUNING2;
-//				break;
-//			case 3:
-//				output = Tuning.DEFAULT_TUNING3;
-//				break;
+			case 1:
+				output = Tuning.DEFAULT_TUNING1;
+				break;
+			case 2:
+				output = Tuning.DEFAULT_TUNING2;
+				break;
+			case 3:
+				output = Tuning.DEFAULT_TUNING3;
+				break;
 			case 4:
 				output = Tuning.DEFAULT_TUNING4;
 				break;
@@ -190,15 +190,15 @@ public class Tuning {
 		
 		switch (stringAmount)
 		{
-//			case 1:
-//				output = Tuning.DEFAULT_OCTAVE1;
-//				break;
-//			case 2:
-//				output = Tuning.DEFAULT_OCTAVE2;
-//				break;
-//			case 3:
-//				output = Tuning.DEFAULT_OCTAVE3;
-//				break;
+			case 1:
+				output = Tuning.DEFAULT_OCTAVE1;
+				break;
+			case 2:
+				output = Tuning.DEFAULT_OCTAVE2;
+				break;
+			case 3:
+				output = Tuning.DEFAULT_OCTAVE3;
+				break;
 			case 4:
 				output = Tuning.DEFAULT_OCTAVE4;
 				break;
