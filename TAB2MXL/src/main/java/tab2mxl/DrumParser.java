@@ -200,6 +200,7 @@ public class DrumParser {
 		fileGen.end();
 		
 		new SuccessPopUp(Main.myFrame, FileGenerator.filepath);
+
 		// Printing for testing
 		int i = 0;
 		for (ArrayList<ArrayList<String>> measure : Measure){
