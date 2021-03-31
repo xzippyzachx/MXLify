@@ -16,16 +16,13 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 import gui.ColorDef;
-import gui.ColumnTextArea;
 import gui.SteelCheckBox;
 import gui.TextPrompt;
 import gui.TextPrompt.Show;
 import gui.UndoRedoTextArea;
 import gui_popups.ClearPopUp;
-import gui.ColumnTextArea;
 import tab2mxl.CreateScore;
 import tab2mxl.InstrumentDetection;
-import tab2mxl.LoadManager;
 import tab2mxl.Main;
 import tab2mxl.SaveManager;
 
@@ -55,6 +52,7 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 	
 	JPanel errorPanel;
 	public JLabel errorText;
+	public JLabel warningText;
 	public ClearPopUp clearPopUp;
 	
 	private static String instrument;
@@ -253,8 +251,6 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 				if(e.getID() == ActionEvent.ACTION_PERFORMED){
 					TextInputContentPanel.scoremake = !TextInputContentPanel.scoremake;
 				}
-				//TextInputContentPanel.scoremake = e.getStateChange() == ItemEvent.SELECTED;
-				//System.out.println(TextInputContentPanel.scoremake);
 				if( TextInputContentPanel.scoremake && !CreateScore.isWindows()){
 					JOptionPane.showMessageDialog(null,"We've detected you're running this application on MacOS, please read Section 6.5 of the User Manual before using this feature to prevent any errors");
 				}
@@ -271,9 +267,12 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
         
         errorPanel = new JPanel();
         errorPanel.setLayout(new FlowLayout());
-        errorText = new JLabel("");        
+        errorText = new JLabel("");
         errorText.setForeground(Color.red);
-        errorPanel.add(errorText);
+		warningText = new JLabel("");
+		warningText.setForeground(Color.yellow);
+		errorPanel.add(errorText);
+		errorPanel.add(warningText);
         errorPanel.setPreferredSize(new Dimension(100, 30));
         errorPanel.setOpaque(false);
         
@@ -358,7 +357,9 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 	private ArrayList<ArrayList<String>> GetInput (String[] textInput, boolean convert)
 	{
 		errorText.setText("");
+		warningText.setText("");
 		if(textField.getText().isEmpty())
+
 		{
 			return null;
 		}
@@ -372,13 +373,21 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 				if (!line.contains("|")) {
 					if (convert)
 						errorText.setText("Wrong Formatting");
+
 					return null;
 				}
 				if (!line.contains("-")) {
 					if (convert)
 						errorText.setText("Wrong Formatting");
+
 					return null;
 				}
+				if (line.contains("|") && line.contains(" ") ) {
+					if (convert)
+						warningText.setText("Warning: Space in the Tab");
+
+				}
+
 				
 				String[] lineInput = line.substring(line.indexOf('|')).split("");
 				ArrayList<String> lineInputList = new ArrayList<String>();
@@ -408,7 +417,7 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 				input.add(new ArrayList<String>());
 			}
 		}
-		
+
 		return input;
 	}
 	
