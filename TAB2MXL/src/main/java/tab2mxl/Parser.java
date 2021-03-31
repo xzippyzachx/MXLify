@@ -340,20 +340,10 @@ public class Parser {
 						if (tunner.getNote(tune[line-1], fret, line).substring(tunner.getNote(tune[line-1], fret, line).length()-1,tunner.getNote(tune[line-1], fret, line).length()).equals("#")){
 							sharpnote = true;
 						}
-
-
-						fileGen.addNote(line, fret, tunner.getNote(tune[line-1], fret, line).charAt(0), noteType(beatNote), getDuration(beatNote), tunner.getOctave(tune[line-1], fret, line), dot(beatNote),sharpnote, hammerStart,hammerContinue,hammerDone,harmonic);
+						fileGen.addNote(line, fret, tunner.getNote(tune[line-1], fret, line).charAt(0), noteType(beatNote), getDuration(beatNote) - getDuration(rest), tunner.getOctave(tune[line-1], fret, line), dot(beatNote),sharpnote, hammerStart,hammerContinue,hammerDone,harmonic);
 						harmonic = false;
-//						System.out.println("");
-//						System.out.println("Dash: " + dash);
-//						System.out.println("Duration: " + getDuration(beatNote));
-//						System.out.println("");
 						if(rest > 0) {
-							fileGen.addRest(getDuration(rest), noteType(rest));
-//							System.out.println("");
-//							System.out.println("RestDuration : " + getDuration(rest));
-//							System.out.println("RestType : " + noteType(rest));
-//							System.out.println("");
+							fileGen.addRest(getDuration(rest), noteType(rest), -1);
 							rest = 0.0;
 						}
 							
@@ -414,13 +404,9 @@ public class Parser {
 					beatNote = beatNote((dash * totalBeatPerMeasure)/totalDash);/*beatNote((dash * beatTypeNote)/div)*/
 				}
 
-				fileGen.addChord(chords,chordType, getDuration(beatNote), chordsOctave,linearray,fretarray, chordDot,sharp,hammerLocation,hammerStart,hammerContinue,hammerDone,hchord);
+				fileGen.addChord(chords,chordType, getDuration(beatNote) - getDuration(rest), chordsOctave,linearray,fretarray, chordDot,sharp,hammerLocation,hammerStart,hammerContinue,hammerDone,hchord);
 				if(rest > 0) {
-					fileGen.addRest(getDuration(rest), noteType(rest));
-//					System.out.println("");
-//					System.out.println("RestDuration : " + getDuration(rest));
-//					System.out.println("RestType : " + noteType(rest));
-//					System.out.println("");
+					fileGen.addRest(getDuration(rest), noteType(rest), -1);
 					rest = 0.0;
 				}
 				linearray = new int[stringAmount];

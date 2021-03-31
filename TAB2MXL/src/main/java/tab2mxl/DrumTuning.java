@@ -84,7 +84,7 @@ public class DrumTuning {
 	}
 	
 	public static int getVoice(String drum) {
-		if(drum.equals("BD")) {
+		if(drum.trim().equals("BD")||drum.trim().equals("BA")||drum.trim().equals("B")) {
 			return 2;
 		}else {
 			return 1;
