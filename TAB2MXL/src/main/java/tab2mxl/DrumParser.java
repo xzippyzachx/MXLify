@@ -1,5 +1,6 @@
 package tab2mxl;
 import gui_panels.TextInputContentPanel;
+import gui_popups.SuccessPopUp;
 
 import java.io.File;
 import java.util.HashMap;
@@ -152,6 +153,8 @@ public class DrumParser {
 		}
 		fileGen.closeDrumPart();
 		fileGen.end();
+		
+		new SuccessPopUp(Main.myFrame, FileGenerator.filepath);
 
 		// Printing for testing
 		int i = 0;

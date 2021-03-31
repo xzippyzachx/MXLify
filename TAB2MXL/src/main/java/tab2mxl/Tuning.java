@@ -15,6 +15,9 @@ public class Tuning {
 	private int[] tuningOctave;
 	private String[] tuning;
 	//Default tuning for different string amounts.
+//	private static final String[] DEFAULT_TUNING1 = {"E"};
+//	private static final String[] DEFAULT_TUNING2 = {"A", "E"};
+//	private static final String[] DEFAULT_TUNING3 = {"D", "A", "E"};
 	private static final String[] DEFAULT_TUNING4 = {"G", "D", "A", "E"};
 	private static final String[] DEFAULT_TUNING5 = {"B", "G", "D", "A", "E"};
 	private static final String[] DEFAULT_TUNING6 = {"e", "B", "G", "D", "A", "E"};
@@ -22,6 +25,9 @@ public class Tuning {
 	private static final String[] DEFAULT_TUNING8 = {"e", "B", "G", "D", "A", "E", "B", "F#"};
 	private static final String[] DEFAULT_TUNING9 = {"e", "B", "G", "D", "A", "E", "B", "F#", "C#"};
 	//Default tuning octaves
+//	private static final int[] DEFAULT_OCTAVE1 = {2};
+//	private static final int[] DEFAULT_OCTAVE2 = {2,2};
+//	private static final int[] DEFAULT_OCTAVE3 = {3,2,2};
 	private static final int[] DEFAULT_OCTAVE4 = {3,3,2,2};
 	private static final int[] DEFAULT_OCTAVE5 = {3,3,3,2,2};
 	private static final int[] DEFAULT_OCTAVE6 = {4,3,3,3,2,2};
@@ -132,18 +138,38 @@ public class Tuning {
 	public static String[] getDefaultTuning(int stringAmount) {
 		String[] output = null;
 		
-		if(stringAmount == 4)
-			output = Tuning.DEFAULT_TUNING4;
-		if(stringAmount == 5)
-			output = Tuning.DEFAULT_TUNING5;
-		if(stringAmount == 6)
-			output = Tuning.DEFAULT_TUNING6;
-		if(stringAmount == 7)
-			output = Tuning.DEFAULT_TUNING7;
-		if(stringAmount == 8)
-			output = Tuning.DEFAULT_TUNING8;
-		if(stringAmount == 9)
-			output = Tuning.DEFAULT_TUNING9;
+		switch (stringAmount)
+		{
+//			case 1:
+//				output = Tuning.DEFAULT_TUNING1;
+//				break;
+//			case 2:
+//				output = Tuning.DEFAULT_TUNING2;
+//				break;
+//			case 3:
+//				output = Tuning.DEFAULT_TUNING3;
+//				break;
+			case 4:
+				output = Tuning.DEFAULT_TUNING4;
+				break;
+			case 5:
+				output = Tuning.DEFAULT_TUNING5;
+				break;
+			case 6:
+				output = Tuning.DEFAULT_TUNING6;
+				break;
+			case 7:
+				output = Tuning.DEFAULT_TUNING7;
+				break;
+			case 8:
+				output = Tuning.DEFAULT_TUNING8;
+				break;
+			case 9:
+				output = Tuning.DEFAULT_TUNING9;
+				break;				
+			default:
+				break;
+		}
 		
 		return output;		
 	}
@@ -151,19 +177,39 @@ public class Tuning {
 	public static int[] getDefaultTuningOctave(int stringAmount, int i) {
 		int[] output = null;
 		
-		if(stringAmount == 4)
-			output = Tuning.DEFAULT_OCTAVE4;
-		if(stringAmount == 5)
-			output = Tuning.DEFAULT_OCTAVE5;
-		if(stringAmount == 6)
-			output = Tuning.DEFAULT_OCTAVE6;
-		if(stringAmount == 7)
-			output = Tuning.DEFAULT_OCTAVE7;
-		if(stringAmount == 8)
-			output = Tuning.DEFAULT_OCTAVE8;
-		if(stringAmount == 9)
-			output = Tuning.DEFAULT_OCTAVE9;
-		
+		switch (stringAmount)
+		{
+//			case 1:
+//				output = Tuning.DEFAULT_OCTAVE1;
+//				break;
+//			case 2:
+//				output = Tuning.DEFAULT_OCTAVE2;
+//				break;
+//			case 3:
+//				output = Tuning.DEFAULT_OCTAVE3;
+//				break;
+			case 4:
+				output = Tuning.DEFAULT_OCTAVE4;
+				break;
+			case 5:
+				output = Tuning.DEFAULT_OCTAVE5;
+				break;
+			case 6:
+				output = Tuning.DEFAULT_OCTAVE6;
+				break;
+			case 7:
+				output = Tuning.DEFAULT_OCTAVE7;
+				break;
+			case 8:
+				output = Tuning.DEFAULT_OCTAVE8;
+				break;
+			case 9:
+				output = Tuning.DEFAULT_OCTAVE9;
+				break;				
+			default:
+				break;
+		}
+
 		if(i == 1) {
 			for(int j = 0; j < output.length; j++) {
 				output[j]--;
