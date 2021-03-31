@@ -27,110 +27,110 @@ public class ClearPopUp extends PopupFactory implements ActionListener{
 
 	Popup popup;
 	
-	JButton yesButton;
-	JButton noButton;
+	public JButton yesButton;
+	public JButton noButton;
 	
 	String input;
 	MyFrame myFrame;
 		
-<span class="nc" id="L36">	public ClearPopUp (Component owner, String input, String message){</span>
+<span class="fc" id="L36">	public ClearPopUp (Component owner, String input, String message){</span>
 		
-<span class="nc" id="L38">		this.input = input;</span>
-<span class="nc" id="L39">		myFrame = (MyFrame) owner;</span>
+<span class="fc" id="L38">		this.input = input;</span>
+<span class="fc" id="L39">		myFrame = (MyFrame) owner;</span>
 		
-<span class="nc" id="L41">        JPanel panel = new JPanel(); </span>
-<span class="nc" id="L42">        panel.setPreferredSize(new Dimension(300, 100));</span>
-<span class="nc" id="L43">        panel.setBorder(BorderFactory.createLineBorder(Color.black));</span>
+<span class="fc" id="L41">        JPanel panel = new JPanel(); </span>
+<span class="fc" id="L42">        panel.setPreferredSize(new Dimension(300, 100));</span>
+<span class="fc" id="L43">        panel.setBorder(BorderFactory.createLineBorder(Color.black));</span>
         
-<span class="nc" id="L45">        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));</span>
+<span class="fc" id="L45">        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));</span>
         
         
-<span class="nc" id="L48">        JPanel titlepanel = new JPanel();</span>
-<span class="nc" id="L49">        titlepanel.setLayout(new FlowLayout());</span>
-<span class="nc" id="L50">        JLabel title = new JLabel(message);</span>
-<span class="nc" id="L51">        title.setForeground(new Color(232, 32, 21));</span>
-<span class="nc" id="L52">        title.setFont(new Font(title.getName(), Font.BOLD, 14));</span>
-<span class="nc" id="L53">        Border titlePadding = BorderFactory.createEmptyBorder(15, 10, 0, 10);</span>
-<span class="nc" id="L54">        title.setBorder(titlePadding);</span>
-<span class="nc" id="L55">        titlepanel.add(title);</span>
+<span class="fc" id="L48">        JPanel titlepanel = new JPanel();</span>
+<span class="fc" id="L49">        titlepanel.setLayout(new FlowLayout());</span>
+<span class="fc" id="L50">        JLabel title = new JLabel(message);</span>
+<span class="fc" id="L51">        title.setForeground(new Color(232, 32, 21));</span>
+<span class="fc" id="L52">        title.setFont(new Font(title.getName(), Font.BOLD, 14));</span>
+<span class="fc" id="L53">        Border titlePadding = BorderFactory.createEmptyBorder(15, 10, 0, 10);</span>
+<span class="fc" id="L54">        title.setBorder(titlePadding);</span>
+<span class="fc" id="L55">        titlepanel.add(title);</span>
         
-<span class="nc" id="L57">        JPanel inputPanel = new JPanel();</span>
-<span class="nc" id="L58">        inputPanel.setLayout(new FlowLayout());     </span>
+<span class="fc" id="L57">        JPanel inputPanel = new JPanel();</span>
+<span class="fc" id="L58">        inputPanel.setLayout(new FlowLayout());     </span>
         
-<span class="nc" id="L60">        yesButton = new JButton(&quot;Yes&quot;);</span>
-<span class="nc" id="L61">        yesButton.setBorderPainted(false);</span>
-<span class="nc" id="L62">        yesButton.setBackground(new Color(33,150,243));</span>
-<span class="nc" id="L63">        yesButton.setForeground(new Color(224,224,224));</span>
-<span class="nc" id="L64">        yesButton.setFocusable(false);</span>
-<span class="nc" id="L65">        yesButton.addActionListener(this);</span>
-<span class="nc" id="L66">        yesButton.setOpaque(true);</span>
-<span class="nc" id="L67">        yesButton.setBorderPainted(false);</span>
+<span class="fc" id="L60">        yesButton = new JButton(&quot;Yes&quot;);</span>
+<span class="fc" id="L61">        yesButton.setBorderPainted(false);</span>
+<span class="fc" id="L62">        yesButton.setBackground(new Color(33,150,243));</span>
+<span class="fc" id="L63">        yesButton.setForeground(new Color(224,224,224));</span>
+<span class="fc" id="L64">        yesButton.setFocusable(false);</span>
+<span class="fc" id="L65">        yesButton.addActionListener(this);</span>
+<span class="fc" id="L66">        yesButton.setOpaque(true);</span>
+<span class="fc" id="L67">        yesButton.setBorderPainted(false);</span>
         
         //Button hover effects
-<span class="nc" id="L70">        yesButton.addMouseListener(new java.awt.event.MouseAdapter() {</span>
+<span class="fc" id="L70">        yesButton.addMouseListener(new java.awt.event.MouseAdapter() {</span>
     	    public void mouseEntered(java.awt.event.MouseEvent evt) {
-<span class="nc" id="L72">    	    	yesButton.setBackground(new Color(224,224,224));</span>
-<span class="nc" id="L73">    	    	yesButton.setForeground(new Color(33,150,243));</span>
-<span class="nc" id="L74">    	    }</span>
+<span class="fc" id="L72">    	    	yesButton.setBackground(new Color(224,224,224));</span>
+<span class="fc" id="L73">    	    	yesButton.setForeground(new Color(33,150,243));</span>
+<span class="fc" id="L74">    	    }</span>
 
     	    public void mouseExited(java.awt.event.MouseEvent evt) {
 <span class="nc" id="L77">    	    	yesButton.setBackground(new Color(33,150,243));</span>
 <span class="nc" id="L78">    	    	yesButton.setForeground(new Color(224,224,224));</span>
 <span class="nc" id="L79">    	    }</span>
     	});        
-<span class="nc" id="L81">        inputPanel.add(yesButton);        </span>
+<span class="fc" id="L81">        inputPanel.add(yesButton);        </span>
         
-<span class="nc" id="L83">        noButton = new JButton(&quot;No&quot;);</span>
-<span class="nc" id="L84">        noButton.setBorderPainted(false);</span>
-<span class="nc" id="L85">        noButton.setBackground(new Color(33,150,243));</span>
-<span class="nc" id="L86">        noButton.setForeground(new Color(224,224,224));</span>
-<span class="nc" id="L87">        noButton.setFocusable(false);</span>
-<span class="nc" id="L88">        noButton.addActionListener(this);</span>
-<span class="nc" id="L89">        noButton.setOpaque(true);</span>
-<span class="nc" id="L90">        noButton.setBorderPainted(false);</span>
+<span class="fc" id="L83">        noButton = new JButton(&quot;No&quot;);</span>
+<span class="fc" id="L84">        noButton.setBorderPainted(false);</span>
+<span class="fc" id="L85">        noButton.setBackground(new Color(33,150,243));</span>
+<span class="fc" id="L86">        noButton.setForeground(new Color(224,224,224));</span>
+<span class="fc" id="L87">        noButton.setFocusable(false);</span>
+<span class="fc" id="L88">        noButton.addActionListener(this);</span>
+<span class="fc" id="L89">        noButton.setOpaque(true);</span>
+<span class="fc" id="L90">        noButton.setBorderPainted(false);</span>
         
         //Button hover effects
-<span class="nc" id="L93">        noButton.addMouseListener(new MouseAdapter() {</span>
+<span class="fc" id="L93">        noButton.addMouseListener(new MouseAdapter() {</span>
     	    public void mouseEntered(MouseEvent evt) {
-<span class="nc" id="L95">    	    	noButton.setBackground(new Color(224,224,224));</span>
-<span class="nc" id="L96">    	    	noButton.setForeground(new Color(33,150,243));</span>
-<span class="nc" id="L97">    	    }</span>
+<span class="fc" id="L95">    	    	noButton.setBackground(new Color(224,224,224));</span>
+<span class="fc" id="L96">    	    	noButton.setForeground(new Color(33,150,243));</span>
+<span class="fc" id="L97">    	    }</span>
 
     	    public void mouseExited(MouseEvent evt) {
 <span class="nc" id="L100">    	    	noButton.setBackground(new Color(33,150,243));</span>
 <span class="nc" id="L101">    	    	noButton.setForeground(new Color(224,224,224));</span>
 <span class="nc" id="L102">    	    }</span>
     	});        
-<span class="nc" id="L104">        inputPanel.add(noButton);</span>
+<span class="fc" id="L104">        inputPanel.add(noButton);</span>
         
-<span class="nc" id="L106">        Border buttonPadding = BorderFactory.createEmptyBorder(0, 10, 0, 10);</span>
-<span class="nc" id="L107">        inputPanel.setBorder(buttonPadding);</span>
+<span class="fc" id="L106">        Border buttonPadding = BorderFactory.createEmptyBorder(0, 10, 0, 10);</span>
+<span class="fc" id="L107">        inputPanel.setBorder(buttonPadding);</span>
         
-<span class="nc" id="L109">        panel.add(titlepanel);</span>
-<span class="nc" id="L110">        panel.add(inputPanel);</span>
+<span class="fc" id="L109">        panel.add(titlepanel);</span>
+<span class="fc" id="L110">        panel.add(inputPanel);</span>
         
-<span class="nc" id="L112">        Point pt = myFrame.mainContentPanel.getLocationOnScreen();</span>
-<span class="nc" id="L113">        Dimension frameSize = myFrame.getBounds().getSize();</span>
+<span class="fc" id="L112">        Point pt = myFrame.mainContentPanel.getLocationOnScreen();</span>
+<span class="fc" id="L113">        Dimension frameSize = myFrame.getBounds().getSize();</span>
         
-<span class="nc" id="L115">        popup = this.getPopup(myFrame, panel, pt.x + frameSize.width/2 - 150, pt.y + frameSize.height/2 - 50);</span>
-<span class="nc" id="L116">        popup.show();</span>
-<span class="nc" id="L117">        Main.isInPopUp = true;</span>
-<span class="nc" id="L118">}</span>
+<span class="fc" id="L115">        popup = this.getPopup(myFrame, panel, pt.x + frameSize.width/2 - 150, pt.y + frameSize.height/2 - 50);</span>
+<span class="fc" id="L116">        popup.show();</span>
+<span class="fc" id="L117">        Main.isInPopUp = true;</span>
+<span class="fc" id="L118">}</span>
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-<span class="nc bnc" id="L122" title="All 2 branches missed.">		if(e.getSource() == yesButton)</span>
+<span class="fc bfc" id="L122" title="All 2 branches covered.">		if(e.getSource() == yesButton)</span>
 		{
-<span class="nc" id="L124">			myFrame.textInputContentPanel.textField.setText(input);</span>
-<span class="nc" id="L125">			popup.hide();</span>
-<span class="nc" id="L126">			Main.isInPopUp = false;</span>
+<span class="fc" id="L124">			myFrame.textInputContentPanel.textField.setText(input);</span>
+<span class="fc" id="L125">			popup.hide();</span>
+<span class="fc" id="L126">			Main.isInPopUp = false;</span>
 		}
 		else
 		{
-<span class="nc" id="L130">			popup.hide();</span>
-<span class="nc" id="L131">			Main.isInPopUp = false;</span>
+<span class="fc" id="L130">			popup.hide();</span>
+<span class="fc" id="L131">			Main.isInPopUp = false;</span>
 		}
-<span class="nc" id="L133">	}	</span>
+<span class="fc" id="L133">	}	</span>
 	
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

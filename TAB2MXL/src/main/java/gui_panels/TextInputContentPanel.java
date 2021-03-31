@@ -308,6 +308,31 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 			}
 								
 			//Detect if the text area is empty
+			
+			//Detect if the text area is empty	
+			/*int lineLength = 0;
+			for(int i = 0; i < input.size(); i++) {
+				if(input.get(i).size() != 0) {
+					lineLength = input.get(i).size();
+					break;
+				}else {
+					System.out.println("Remove");
+					input.remove(i);
+				}
+			}
+			
+			System.out.println("Input size: " + input.size());
+			
+			for (ArrayList<String> line : input) {
+				if(line.size() != lineLength && line.size() != 0)
+				{
+					System.out.println("Line size: " + line.size());
+					System.out.println("Line length: " + lineLength);
+					errorText.setText("Wrong Formatting");
+					return;
+				}
+			}*/
+			
 			int lineLength = input.get(0).size();
 			for (ArrayList<String> line : input) {
 				if(line.size() != lineLength && line.size() != 0)

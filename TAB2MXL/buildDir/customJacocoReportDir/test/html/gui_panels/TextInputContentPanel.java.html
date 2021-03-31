@@ -16,11 +16,13 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 import gui.ColorDef;
+import gui.ColumnTextArea;
 import gui.SteelCheckBox;
 import gui.TextPrompt;
 import gui.TextPrompt.Show;
-import gui_popups.ClearPopUp;
 import gui.UndoRedoTextArea;
+import gui_popups.ClearPopUp;
+import gui.ColumnTextArea;
 import tab2mxl.CreateScore;
 import tab2mxl.InstrumentDetection;
 import tab2mxl.LoadManager;
@@ -29,12 +31,12 @@ import tab2mxl.SaveManager;
 
 public class TextInputContentPanel extends JPanel implements ActionListener {
 	public JTextArea textField;
-<span class="nc" id="L32">	public static boolean scoremake = false;</span>
+<span class="fc" id="L34">	public static boolean scoremake = false;</span>
 	JPanel titlePanel;
 	JLabel titleLabel;
 	
 	JPanel clearPanel;
-	JButton clearButton;
+	public JButton clearButton;
 	
 	JPanel savePanel;
 	JButton saveButton;
@@ -44,283 +46,276 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 	JPanel inputpanel;	
 	JButton convertButton;
 	
-<span class="nc" id="L47">	String[] tabTypes = {&quot;Guitar&quot;, &quot;Bass&quot;, &quot;Drums&quot;};</span>
+<span class="fc" id="L49">	String[] instruments  = {&quot;Guitar&quot;, &quot;Bass&quot;, &quot;Drums&quot;};</span>
 	JPanel detailsPanel;
-	JComboBox tabList;
+	JComboBox&lt;Object&gt; instrumentList;
 	JTextField timeSignature;
 	JTextField songName;
 	SteelCheckBox sheetMusicToggle;
 	
 	JPanel errorPanel;
 	public JLabel errorText;
+	public ClearPopUp clearPopUp;
 	
-	private static String tabType;
+	private static String instrument;
 	private static String title;
 	private static String timeSig;
 		
-<span class="nc" id="L61">	TextInputContentPanel(){</span>
+<span class="fc" id="L64">	TextInputContentPanel(){</span>
 	
 		// creates main content panel, lets layout to vertical, adds padding and sets it as Content Pane
-<span class="nc" id="L64">		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));</span>
-<span class="nc" id="L65">		Border padding = BorderFactory.createEmptyBorder(4, 10,0, 10);</span>
-<span class="nc" id="L66">		this.setBorder(padding);</span>
+<span class="fc" id="L67">		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));</span>
+<span class="fc" id="L68">		Border padding = BorderFactory.createEmptyBorder(4, 10,0, 10);</span>
+<span class="fc" id="L69">		this.setBorder(padding);</span>
 		
         // creates Title Container and adds label to the Content panel
-<span class="nc" id="L69">        titlePanel = new JPanel();        </span>
+<span class="fc" id="L72">        titlePanel = new JPanel();        </span>
         
-<span class="nc" id="L71">        titlePanel.setLayout(new GridLayout(0, 3));</span>
-<span class="nc" id="L72">        titlePanel.setOpaque(false);</span>
+<span class="fc" id="L74">        titlePanel.setLayout(new GridLayout(0, 3));</span>
+<span class="fc" id="L75">        titlePanel.setOpaque(false);</span>
        // titlePanel.setBackground(Color.black);
-<span class="nc" id="L74">        padding = BorderFactory.createEmptyBorder(0, 0, 0, 0);</span>
-<span class="nc" id="L75">		titlePanel.setBorder(padding);</span>
+<span class="fc" id="L77">        padding = BorderFactory.createEmptyBorder(0, 0, 0, 0);</span>
+<span class="fc" id="L78">		titlePanel.setBorder(padding);</span>
 		
-<span class="nc" id="L77">		savePanel = new JPanel();</span>
-<span class="nc" id="L78">		savePanel.setLayout(new FlowLayout(FlowLayout.LEFT,20,0));</span>
-<span class="nc" id="L79">		savePanel.setOpaque(false);</span>
+<span class="fc" id="L80">		savePanel = new JPanel();</span>
+<span class="fc" id="L81">		savePanel.setLayout(new FlowLayout(FlowLayout.LEFT,20,0));</span>
+<span class="fc" id="L82">		savePanel.setOpaque(false);</span>
         
-<span class="nc" id="L81">        saveButton = new JButton(&quot;Save&quot;);</span>
-<span class="nc" id="L82">        saveButton.setBackground(new Color(33,150,243));</span>
-<span class="nc" id="L83">        saveButton.setForeground(new Color(224,224,224));</span>
-<span class="nc" id="L84">        saveButton.setFocusable(false);</span>
-<span class="nc" id="L85">        saveButton.addActionListener(this);</span>
-<span class="nc" id="L86">        saveButton.setOpaque(true);</span>
-<span class="nc" id="L87">        saveButton.setBorderPainted(false);</span>
+<span class="fc" id="L84">        saveButton = new JButton(&quot;Save&quot;);</span>
+<span class="fc" id="L85">        saveButton.setBackground(new Color(33,150,243));</span>
+<span class="fc" id="L86">        saveButton.setForeground(new Color(224,224,224));</span>
+<span class="fc" id="L87">        saveButton.setFocusable(false);</span>
+<span class="fc" id="L88">        saveButton.addActionListener(this);</span>
+<span class="fc" id="L89">        saveButton.setOpaque(true);</span>
+<span class="fc" id="L90">        saveButton.setBorderPainted(false);</span>
         //Button hover effects
-<span class="nc" id="L89">        saveButton.addMouseListener(new java.awt.event.MouseAdapter() {</span>
+<span class="fc" id="L92">        saveButton.addMouseListener(new java.awt.event.MouseAdapter() {</span>
     	    public void mouseEntered(java.awt.event.MouseEvent evt) {
-<span class="nc" id="L91">    	    	saveButton.setBackground(new Color(224,224,224));</span>
-<span class="nc" id="L92">    	    	saveButton.setForeground(new Color(33,150,243));</span>
-<span class="nc" id="L93">    	    }</span>
+<span class="nc" id="L94">    	    	saveButton.setBackground(new Color(224,224,224));</span>
+<span class="nc" id="L95">    	    	saveButton.setForeground(new Color(33,150,243));</span>
+<span class="nc" id="L96">    	    }</span>
     	    public void mouseExited(java.awt.event.MouseEvent evt) {
-<span class="nc" id="L95">    	    	saveButton.setBackground(new Color(33,150,243));</span>
-<span class="nc" id="L96">    	    	saveButton.setForeground(new Color(224,224,224));</span>
-<span class="nc" id="L97">    	    }</span>
+<span class="nc" id="L98">    	    	saveButton.setBackground(new Color(33,150,243));</span>
+<span class="nc" id="L99">    	    	saveButton.setForeground(new Color(224,224,224));</span>
+<span class="nc" id="L100">    	    }</span>
     	});  
-<span class="nc" id="L99">        savePanel.add(saveButton);              </span>
-<span class="nc" id="L100">        titlePanel.add(savePanel);</span>
+<span class="fc" id="L102">        savePanel.add(saveButton);              </span>
+<span class="fc" id="L103">        titlePanel.add(savePanel);</span>
         
-<span class="nc" id="L102">        titleLabel = new JLabel(&quot;Paste Your Tablature Here&quot;);</span>
+<span class="fc" id="L105">        titleLabel = new JLabel(&quot;Paste Your Tablature Here&quot;);</span>
      //   titleLabel.setPreferredSize(new Dimension(100,25));
       //  titleLabel.setMinimumSize(new Dimension(200,100));
-<span class="nc" id="L105">        titleLabel.setHorizontalAlignment(JLabel.CENTER);</span>
-<span class="nc" id="L106">        titleLabel.setOpaque(false);</span>
-<span class="nc" id="L107">        titleLabel.setBackground(new Color(33,150,243));</span>
-<span class="nc" id="L108">        titleLabel.setForeground(Color.white);</span>
-<span class="nc" id="L109">        titleLabel.setSize(new Dimension(100,20));</span>
-<span class="nc" id="L110">        titlePanel.add(titleLabel);</span>
+<span class="fc" id="L108">        titleLabel.setHorizontalAlignment(JLabel.CENTER);</span>
+<span class="fc" id="L109">        titleLabel.setOpaque(false);</span>
+<span class="fc" id="L110">        titleLabel.setBackground(new Color(33,150,243));</span>
+<span class="fc" id="L111">        titleLabel.setForeground(Color.white);</span>
+<span class="fc" id="L112">        titleLabel.setSize(new Dimension(100,20));</span>
+<span class="fc" id="L113">        titlePanel.add(titleLabel);</span>
         //titlePanel.setPreferredSize(new Dimension(30,40));
        // titlePanel.setOpaque(true);
         //titlePanel.setBackground(new Color(33,150,243));
         
-<span class="nc" id="L115">        clearPanel = new JPanel();</span>
-<span class="nc" id="L116">        clearPanel.setLayout(new FlowLayout(FlowLayout.RIGHT, 20,0));</span>
-<span class="nc" id="L117">        clearPanel.setOpaque(false);</span>
+<span class="fc" id="L118">        clearPanel = new JPanel();</span>
+<span class="fc" id="L119">        clearPanel.setLayout(new FlowLayout(FlowLayout.RIGHT, 20,0));</span>
+<span class="fc" id="L120">        clearPanel.setOpaque(false);</span>
         
-<span class="nc" id="L119">        clearButton = new JButton(&quot;Clear&quot;);</span>
-<span class="nc" id="L120">        clearButton.setBackground(new Color(33,150,243));</span>
-<span class="nc" id="L121">        clearButton.setForeground(new Color(224,224,224));</span>
-<span class="nc" id="L122">        clearButton.setFocusable(false);</span>
-<span class="nc" id="L123">        clearButton.addActionListener(this);</span>
-<span class="nc" id="L124">        clearButton.setOpaque(true);</span>
-<span class="nc" id="L125">        clearButton.setBorderPainted(false);</span>
+<span class="fc" id="L122">        clearButton = new JButton(&quot;Clear&quot;);</span>
+<span class="fc" id="L123">        clearButton.setBackground(new Color(33,150,243));</span>
+<span class="fc" id="L124">        clearButton.setForeground(new Color(224,224,224));</span>
+<span class="fc" id="L125">        clearButton.setFocusable(false);</span>
+<span class="fc" id="L126">        clearButton.addActionListener(this);</span>
+<span class="fc" id="L127">        clearButton.setOpaque(true);</span>
+<span class="fc" id="L128">        clearButton.setBorderPainted(false);</span>
         //Button hover effects
-<span class="nc" id="L127">        clearButton.addMouseListener(new java.awt.event.MouseAdapter() {</span>
+<span class="fc" id="L130">        clearButton.addMouseListener(new java.awt.event.MouseAdapter() {</span>
     	    public void mouseEntered(java.awt.event.MouseEvent evt) {
-<span class="nc" id="L129">    	    	clearButton.setBackground(new Color(224,224,224));</span>
-<span class="nc" id="L130">    	    	clearButton.setForeground(new Color(33,150,243));</span>
-<span class="nc" id="L131">    	    }</span>
+<span class="fc" id="L132">    	    	clearButton.setBackground(new Color(224,224,224));</span>
+<span class="fc" id="L133">    	    	clearButton.setForeground(new Color(33,150,243));</span>
+<span class="fc" id="L134">    	    }</span>
     	    public void mouseExited(java.awt.event.MouseEvent evt) {
-<span class="nc" id="L133">    	    	clearButton.setBackground(new Color(33,150,243));</span>
-<span class="nc" id="L134">    	    	clearButton.setForeground(new Color(224,224,224));</span>
-<span class="nc" id="L135">    	    }</span>
+<span class="fc" id="L136">    	    	clearButton.setBackground(new Color(33,150,243));</span>
+<span class="fc" id="L137">    	    	clearButton.setForeground(new Color(224,224,224));</span>
+<span class="fc" id="L138">    	    }</span>
     	}); 
-<span class="nc" id="L137">        clearPanel.add(clearButton);</span>
-<span class="nc" id="L138">        titlePanel.add(clearPanel);</span>
+<span class="fc" id="L140">        clearPanel.add(clearButton);</span>
+<span class="fc" id="L141">        titlePanel.add(clearPanel);</span>
         
-<span class="nc" id="L140">        this.add(titlePanel);</span>
+<span class="fc" id="L143">        this.add(titlePanel);</span>
         
         // generates the text field, sets size,font, and scrollability
-<span class="nc" id="L143">        textField = new UndoRedoTextArea(); //Create empty text area (Undoable Text Area)</span>
-<span class="nc" id="L144">        textField.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));</span>
-<span class="nc" id="L145">        textField.getDocument().addDocumentListener(new DocumentListener() { // Detect changes to the text area</span>
+<span class="fc" id="L146">        textField = new UndoRedoTextArea(); //Create empty text area (Undoable Text Area)</span>
+<span class="fc" id="L147">        textField.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));</span>
+<span class="fc" id="L148">        textField.getDocument().addDocumentListener(new DocumentListener() { // Detect changes to the text area</span>
             @Override
-<span class="nc" id="L147">            public void changedUpdate(DocumentEvent arg0) { }</span>
+<span class="nc" id="L150">            public void changedUpdate(DocumentEvent arg0) { }</span>
             
 			@Override
 			public void insertUpdate(DocumentEvent e) {
-<span class="nc" id="L151">				String[] inputText = textField.getText().split(&quot;\n&quot;);</span>
-<span class="nc" id="L152">				tabList.setSelectedIndex(InstrumentDetection.detectInstrument(GetInput(inputText)));</span>
-<span class="nc" id="L153">			}</span>
+<span class="fc" id="L154">				String[] inputText = textField.getText().split(&quot;\n&quot;);</span>
+<span class="fc" id="L155">				instrumentList.setSelectedIndex(InstrumentDetection.detectInstrument(GetInput(inputText,false)));</span>
+<span class="fc" id="L156">			}</span>
 			
 			@Override
 			public void removeUpdate(DocumentEvent e) {
-<span class="nc" id="L157">				String[] inputText = textField.getText().split(&quot;\n&quot;);</span>
-<span class="nc" id="L158">				tabList.setSelectedIndex(InstrumentDetection.detectInstrument(GetInput(inputText)));</span>
-<span class="nc" id="L159">			}</span>
+<span class="fc" id="L160">				String[] inputText = textField.getText().split(&quot;\n&quot;);</span>
+<span class="fc" id="L161">				instrumentList.setSelectedIndex(InstrumentDetection.detectInstrument(GetInput(inputText,false)));</span>
+<span class="fc" id="L162">			}</span>
         });
         
         //textField.setFont(f);
-<span class="nc" id="L163">        this.add(textField);</span>
-<span class="nc" id="L164">        scroll = new JScrollPane (textField);</span>
-<span class="nc" id="L165">        scroll.setPreferredSize(new Dimension(800, 500));</span>
-<span class="nc" id="L166">        scroll.setMinimumSize(new Dimension(480, 300));</span>
-<span class="nc" id="L167">        scroll.setSize(getPreferredSize());;</span>
-<span class="nc" id="L168">        this.add(scroll);</span>
+<span class="fc" id="L166">        this.add(textField);</span>
+<span class="fc" id="L167">        scroll = new JScrollPane (textField);</span>
+<span class="fc" id="L168">        scroll.setPreferredSize(new Dimension(800, 500));</span>
+<span class="fc" id="L169">        scroll.setMinimumSize(new Dimension(480, 300));</span>
+<span class="fc" id="L170">        scroll.setSize(getPreferredSize());;</span>
+<span class="fc" id="L171">        this.add(scroll);</span>
         
-<span class="nc" id="L170">        detailsPanel = new JPanel();        </span>
-<span class="nc" id="L171">        detailsPanel.setLayout(new GridLayout(1,3));</span>
-<span class="nc" id="L172">        detailsPanel.setOpaque(false);</span>
+<span class="fc" id="L173">        detailsPanel = new JPanel();        </span>
+<span class="fc" id="L174">        detailsPanel.setLayout(new GridLayout(1,3));</span>
+<span class="fc" id="L175">        detailsPanel.setOpaque(false);</span>
                         
-<span class="nc" id="L174">        JPanel tabListPanel = new JPanel();</span>
-<span class="nc" id="L175">        tabListPanel.setLayout(new GridLayout(0, 1));</span>
-<span class="nc" id="L176">        tabListPanel.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 20));</span>
-<span class="nc" id="L177">        tabListPanel.setOpaque(false);</span>
-<span class="nc" id="L178">        tabList = new JComboBox&lt;Object&gt;(tabTypes);</span>
-<span class="nc" id="L179">        tabList.setSelectedIndex(0);</span>
-<span class="nc" id="L180">        tabListPanel.add(tabList);</span>
+<span class="fc" id="L177">        JPanel tabListPanel = new JPanel();</span>
+<span class="fc" id="L178">        tabListPanel.setLayout(new GridLayout(0, 1));</span>
+<span class="fc" id="L179">        tabListPanel.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 20));</span>
+<span class="fc" id="L180">        tabListPanel.setOpaque(false);</span>
+<span class="fc" id="L181">        instrumentList = new JComboBox&lt;Object&gt;(instruments);</span>
+<span class="fc" id="L182">        instrumentList.setSelectedIndex(0);</span>
+<span class="fc" id="L183">        tabListPanel.add(instrumentList);</span>
         
-<span class="nc" id="L182">        JPanel songNamePanel = new JPanel();</span>
-<span class="nc" id="L183">        songNamePanel.setLayout(new GridLayout(0, 1));</span>
-<span class="nc" id="L184">        songNamePanel.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 20));</span>
-<span class="nc" id="L185">        songNamePanel.setOpaque(false);</span>
-<span class="nc" id="L186">        songName = new JTextField();</span>
-<span class="nc" id="L187">        songName.setFont(songName.getFont().deriveFont(16f));</span>
+<span class="fc" id="L185">        JPanel songNamePanel = new JPanel();</span>
+<span class="fc" id="L186">        songNamePanel.setLayout(new GridLayout(0, 1));</span>
+<span class="fc" id="L187">        songNamePanel.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 20));</span>
+<span class="fc" id="L188">        songNamePanel.setOpaque(false);</span>
+<span class="fc" id="L189">        songName = new JTextField();</span>
+<span class="fc" id="L190">        songName.setFont(songName.getFont().deriveFont(16f));</span>
         //songName.setHorizontalAlignment(JTextField.CENTER);
-<span class="nc" id="L189">        TextPrompt songNamePrompt = new TextPrompt(&quot;Song Name&quot;, songName,Show.FOCUS_LOST);</span>
-<span class="nc" id="L190">        songNamePrompt.setHorizontalAlignment(JTextField.CENTER);</span>
-<span class="nc" id="L191">        songNamePrompt.changeAlpha(0.8f);</span>
-<span class="nc" id="L192">        songNamePanel.add(songName);</span>
+<span class="fc" id="L192">        TextPrompt songNamePrompt = new TextPrompt(&quot;Song Name&quot;, songName,Show.FOCUS_LOST);</span>
+<span class="fc" id="L193">        songNamePrompt.setHorizontalAlignment(JTextField.CENTER);</span>
+<span class="fc" id="L194">        songNamePrompt.changeAlpha(0.8f);</span>
+<span class="fc" id="L195">        songNamePanel.add(songName);</span>
         
-<span class="nc" id="L194">        JPanel timeSignaturePanel = new JPanel();</span>
-<span class="nc" id="L195">        timeSignaturePanel.setLayout(new GridLayout(0, 1));</span>
-<span class="nc" id="L196">        timeSignaturePanel.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 20));</span>
-<span class="nc" id="L197">        timeSignaturePanel.setOpaque(false);</span>
-<span class="nc" id="L198">        timeSignature = new JTextField();</span>
-<span class="nc" id="L199">        timeSignature.setFont(timeSignature.getFont().deriveFont(16f));</span>
+<span class="fc" id="L197">        JPanel timeSignaturePanel = new JPanel();</span>
+<span class="fc" id="L198">        timeSignaturePanel.setLayout(new GridLayout(0, 1));</span>
+<span class="fc" id="L199">        timeSignaturePanel.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 20));</span>
+<span class="fc" id="L200">        timeSignaturePanel.setOpaque(false);</span>
+<span class="fc" id="L201">        timeSignature = new JTextField();</span>
+<span class="fc" id="L202">        timeSignature.setFont(timeSignature.getFont().deriveFont(16f));</span>
         //timeSignature.setHorizontalAlignment(JTextField.CENTER);
-<span class="nc" id="L201">        TextPrompt timeSignaturePrompt = new TextPrompt(&quot;Time Signature&quot;, timeSignature,Show.FOCUS_LOST);</span>
-<span class="nc" id="L202">        timeSignaturePrompt.setHorizontalAlignment(JTextField.CENTER);</span>
-<span class="nc" id="L203">        timeSignaturePrompt.changeAlpha(0.8f);</span>
-<span class="nc" id="L204">        timeSignaturePanel.add(timeSignature);</span>
+<span class="fc" id="L204">        TextPrompt timeSignaturePrompt = new TextPrompt(&quot;Time Signature&quot;, timeSignature,Show.FOCUS_LOST);</span>
+<span class="fc" id="L205">        timeSignaturePrompt.setHorizontalAlignment(JTextField.CENTER);</span>
+<span class="fc" id="L206">        timeSignaturePrompt.changeAlpha(0.8f);</span>
+<span class="fc" id="L207">        timeSignaturePanel.add(timeSignature);</span>
         
-<span class="nc" id="L206">        Border detailsPadding = BorderFactory.createEmptyBorder(20, 0, 20, 0);</span>
-<span class="nc" id="L207">        detailsPanel.setBorder(detailsPadding);</span>
+<span class="fc" id="L209">        Border detailsPadding = BorderFactory.createEmptyBorder(20, 0, 20, 0);</span>
+<span class="fc" id="L210">        detailsPanel.setBorder(detailsPadding);</span>
         
         
-<span class="nc" id="L210">        detailsPanel.add(tabListPanel);</span>
+<span class="fc" id="L213">        detailsPanel.add(tabListPanel);</span>
 //        detailsPanel.add(new JPanel());
-<span class="nc" id="L212">        detailsPanel.add(songNamePanel);</span>
+<span class="fc" id="L215">        detailsPanel.add(songNamePanel);</span>
 //        detailsPanel.add(new JPanel());
-<span class="nc" id="L214">        detailsPanel.add(timeSignaturePanel);</span>
+<span class="fc" id="L217">        detailsPanel.add(timeSignaturePanel);</span>
         
         // creates the container for the button, generates the button and sets an action on click
-<span class="nc" id="L217">        inputpanel = new JPanel();</span>
-<span class="nc" id="L218">        inputpanel.setLayout(new FlowLayout());</span>
-<span class="nc" id="L219">        convertButton = new JButton(&quot;Convert To MusicXML&quot;);</span>
-<span class="nc" id="L220">        convertButton.setBackground(new Color(33,150,243));</span>
-<span class="nc" id="L221">        convertButton.setForeground(new Color(224,224,224));</span>
-<span class="nc" id="L222">        convertButton.setFocusable(false);</span>
-<span class="nc" id="L223">        convertButton.addActionListener(this);</span>
-<span class="nc" id="L224">        convertButton.setOpaque(true);</span>
-<span class="nc" id="L225">        convertButton.setBorderPainted(false);</span>
+<span class="fc" id="L220">        inputpanel = new JPanel();</span>
+<span class="fc" id="L221">        inputpanel.setLayout(new FlowLayout());</span>
+<span class="fc" id="L222">        convertButton = new JButton(&quot;Convert To MusicXML&quot;);</span>
+<span class="fc" id="L223">        convertButton.setBackground(new Color(33,150,243));</span>
+<span class="fc" id="L224">        convertButton.setForeground(new Color(224,224,224));</span>
+<span class="fc" id="L225">        convertButton.setFocusable(false);</span>
+<span class="fc" id="L226">        convertButton.addActionListener(this);</span>
+<span class="fc" id="L227">        convertButton.setOpaque(true);</span>
+<span class="fc" id="L228">        convertButton.setBorderPainted(false);</span>
         //Button hover effects
-<span class="nc" id="L227">        convertButton.addMouseListener(new java.awt.event.MouseAdapter() {</span>
+<span class="fc" id="L230">        convertButton.addMouseListener(new java.awt.event.MouseAdapter() {</span>
     	    public void mouseEntered(java.awt.event.MouseEvent evt) {
-<span class="nc" id="L229">    	    	convertButton.setBackground(new Color(224,224,224));</span>
-<span class="nc" id="L230">    	    	convertButton.setForeground(new Color(33,150,243));</span>
-<span class="nc" id="L231">    	    }</span>
+<span class="nc" id="L232">    	    	convertButton.setBackground(new Color(224,224,224));</span>
+<span class="nc" id="L233">    	    	convertButton.setForeground(new Color(33,150,243));</span>
+<span class="nc" id="L234">    	    }</span>
     	    public void mouseExited(java.awt.event.MouseEvent evt) {
-<span class="nc" id="L233">    	    	convertButton.setBackground(new Color(33,150,243));</span>
-<span class="nc" id="L234">    	    	convertButton.setForeground(new Color(224,224,224));</span>
-<span class="nc" id="L235">    	    }</span>
+<span class="nc" id="L236">    	    	convertButton.setBackground(new Color(33,150,243));</span>
+<span class="nc" id="L237">    	    	convertButton.setForeground(new Color(224,224,224));</span>
+<span class="nc" id="L238">    	    }</span>
     	});
         
-<span class="nc" id="L238">        JPanel togglepanel = new JPanel();</span>
-<span class="nc" id="L239">        togglepanel.setOpaque(false);</span>
-<span class="nc" id="L240">        sheetMusicToggle = new SteelCheckBox();</span>
+<span class="fc" id="L241">        JPanel togglepanel = new JPanel();</span>
+<span class="fc" id="L242">        togglepanel.setOpaque(false);</span>
+<span class="fc" id="L243">        sheetMusicToggle = new SteelCheckBox();</span>
         
-<span class="nc" id="L242">        sheetMusicToggle.setColored(true);</span>
-<span class="nc" id="L243">        sheetMusicToggle.setSelectedColor(ColorDef.CUSTOM_BLUE);</span>
-<span class="nc" id="L244">        sheetMusicToggle.setRised(false);</span>
-<span class="nc" id="L245">        sheetMusicToggle.setText(&quot;Sheet Music&quot;);</span>
-<span class="nc" id="L246">        sheetMusicToggle.setForeground(Color.white);</span>
-<span class="nc" id="L247">        sheetMusicToggle.addActionListener(new ActionListener() {</span>
+<span class="fc" id="L245">        sheetMusicToggle.setColored(true);</span>
+<span class="fc" id="L246">        sheetMusicToggle.setSelectedColor(ColorDef.CUSTOM_BLUE);</span>
+<span class="fc" id="L247">        sheetMusicToggle.setRised(false);</span>
+<span class="fc" id="L248">        sheetMusicToggle.setText(&quot;Sheet Music&quot;);</span>
+<span class="fc" id="L249">        sheetMusicToggle.setForeground(Color.white);</span>
+<span class="fc" id="L250">        sheetMusicToggle.addActionListener(new ActionListener() {</span>
 			@Override
 			public void actionPerformed(ActionEvent e) {
-<span class="nc bnc" id="L250" title="All 2 branches missed.">				if(e.getID() == ActionEvent.ACTION_PERFORMED){</span>
-<span class="nc bnc" id="L251" title="All 2 branches missed.">					TextInputContentPanel.scoremake = !TextInputContentPanel.scoremake;</span>
+<span class="nc bnc" id="L253" title="All 2 branches missed.">				if(e.getID() == ActionEvent.ACTION_PERFORMED){</span>
+<span class="nc bnc" id="L254" title="All 2 branches missed.">					TextInputContentPanel.scoremake = !TextInputContentPanel.scoremake;</span>
 				}
 				//TextInputContentPanel.scoremake = e.getStateChange() == ItemEvent.SELECTED;
 				//System.out.println(TextInputContentPanel.scoremake);
-<span class="nc bnc" id="L255" title="All 4 branches missed.">				if( TextInputContentPanel.scoremake &amp;&amp; !CreateScore.isWindows()){</span>
-<span class="nc" id="L256">					JOptionPane.showMessageDialog(null,&quot;We've detected you're running this application on MacOS, please read Section 6.5 of the User Manual before using this feature to prevent any errors&quot;);</span>
+<span class="nc bnc" id="L258" title="All 4 branches missed.">				if( TextInputContentPanel.scoremake &amp;&amp; !CreateScore.isWindows()){</span>
+<span class="nc" id="L259">					JOptionPane.showMessageDialog(null,&quot;We've detected you're running this application on MacOS, please read Section 6.5 of the User Manual before using this feature to prevent any errors&quot;);</span>
 				}
-<span class="nc" id="L258">			}</span>
+<span class="nc" id="L261">			}</span>
 		});
-<span class="nc" id="L260">        togglepanel.add(sheetMusicToggle);</span>
-<span class="nc" id="L261">		Border togglePadding = BorderFactory.createEmptyBorder(0, 40, 0, 0);</span>
-<span class="nc" id="L262">		togglepanel.setBorder(togglePadding);</span>
-<span class="nc" id="L263">        inputpanel.add(convertButton);</span>
-<span class="nc" id="L264">        inputpanel.add(togglepanel);</span>
-<span class="nc" id="L265">        Border buttonPadding = BorderFactory.createEmptyBorder(10, 10, 0, 10);</span>
-<span class="nc" id="L266">        inputpanel.setBorder(buttonPadding);</span>
-<span class="nc" id="L267">        inputpanel.setOpaque(false);</span>
+<span class="fc" id="L263">        togglepanel.add(sheetMusicToggle);</span>
+<span class="fc" id="L264">		Border togglePadding = BorderFactory.createEmptyBorder(0, 40, 0, 0);</span>
+<span class="fc" id="L265">		togglepanel.setBorder(togglePadding);</span>
+<span class="fc" id="L266">        inputpanel.add(convertButton);</span>
+<span class="fc" id="L267">        inputpanel.add(togglepanel);</span>
+<span class="fc" id="L268">        Border buttonPadding = BorderFactory.createEmptyBorder(10, 10, 0, 10);</span>
+<span class="fc" id="L269">        inputpanel.setBorder(buttonPadding);</span>
+<span class="fc" id="L270">        inputpanel.setOpaque(false);</span>
         
-<span class="nc" id="L269">        errorPanel = new JPanel();</span>
-<span class="nc" id="L270">        errorPanel.setLayout(new FlowLayout());</span>
-<span class="nc" id="L271">        errorText = new JLabel(&quot;&quot;);        </span>
-<span class="nc" id="L272">        errorText.setForeground(Color.red);</span>
-<span class="nc" id="L273">        errorPanel.add(errorText);</span>
-<span class="nc" id="L274">        errorPanel.setPreferredSize(new Dimension(100, 30));</span>
-<span class="nc" id="L275">        errorPanel.setOpaque(false);</span>
+<span class="fc" id="L272">        errorPanel = new JPanel();</span>
+<span class="fc" id="L273">        errorPanel.setLayout(new FlowLayout());</span>
+<span class="fc" id="L274">        errorText = new JLabel(&quot;&quot;);        </span>
+<span class="fc" id="L275">        errorText.setForeground(Color.red);</span>
+<span class="fc" id="L276">        errorPanel.add(errorText);</span>
+<span class="fc" id="L277">        errorPanel.setPreferredSize(new Dimension(100, 30));</span>
+<span class="fc" id="L278">        errorPanel.setOpaque(false);</span>
         
         //adds the button container to the content panel
-<span class="nc" id="L278">        this.add(detailsPanel);</span>
-<span class="nc" id="L279">        this.add(inputpanel);</span>
-<span class="nc" id="L280">        this.add(errorPanel);</span>
+<span class="fc" id="L281">        this.add(detailsPanel);</span>
+<span class="fc" id="L282">        this.add(inputpanel);</span>
+<span class="fc" id="L283">        this.add(errorPanel);</span>
 
-<span class="nc" id="L282">        this.setOpaque(false);</span>
-<span class="nc" id="L283">        this.setVisible(true);</span>
-<span class="nc" id="L284">	}</span>
+<span class="fc" id="L285">        this.setOpaque(false);</span>
+<span class="fc" id="L286">        this.setVisible(true);</span>
+<span class="fc" id="L287">	}</span>
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
-<span class="nc bnc" id="L289" title="All 4 branches missed.">		if(e.getSource() == convertButton &amp;&amp; !Main.isInPopUp)</span>
+<span class="pc bpc" id="L292" title="3 of 4 branches missed.">		if(e.getSource() == convertButton &amp;&amp; !Main.isInPopUp)</span>
 		{	
 			//Detect if the text area is empty
-<span class="nc bnc" id="L292" title="All 2 branches missed.">			if(textField.getText().isEmpty())</span>
+<span class="nc bnc" id="L295" title="All 2 branches missed.">			if(textField.getText().isEmpty())</span>
 			{
-<span class="nc" id="L294">				errorText.setText(&quot;Text Area Empty&quot;);</span>
-<span class="nc" id="L295">				return;</span>
+<span class="nc" id="L297">				errorText.setText(&quot;Text Area Empty&quot;);</span>
+<span class="nc" id="L298">				return;</span>
 			}
-<span class="nc bnc" id="L297" title="All 2 branches missed.">			else if (!textField.getText().contains(&quot;|&quot;))</span>
-			{
-<span class="nc" id="L299">				errorText.setText(&quot;Wrong Formatting&quot;);</span>
-<span class="nc" id="L300">				return;</span>
+<span class="nc" id="L300">			String[] inputText = textField.getText().split(&quot;\n&quot;);</span>
+			
+<span class="nc" id="L302">			ArrayList&lt;ArrayList&lt;String&gt;&gt; input = new ArrayList&lt;ArrayList&lt;String&gt;&gt;();</span>
+			
+<span class="nc" id="L304">			input = GetInput(inputText,true); // Convert to double String ArrayList</span>
+	       
+<span class="nc bnc" id="L306" title="All 2 branches missed.">			if (input == null) {</span>
+<span class="nc" id="L307">				return;</span>
 			}
-			
-<span class="nc" id="L303">			String[] inputText = textField.getText().split(&quot;\n&quot;);</span>
-			
-<span class="nc" id="L305">			ArrayList&lt;ArrayList&lt;String&gt;&gt; input = new ArrayList&lt;ArrayList&lt;String&gt;&gt;();</span>
-			
-<span class="nc" id="L307">			input = GetInput(inputText); // Convert to double String ArrayList</span>
-			
-<span class="nc" id="L309">			setTabType(tabList.getSelectedItem().toString());</span>
-<span class="nc" id="L310">			setTitle(songName.getText());</span>
-<span class="nc" id="L311">			setTimeSig(timeSignature.getText());</span>
-					
-<span class="nc" id="L313">			errorText.setText(&quot;&quot;);</span>
 								
 			//Detect if the text area is empty
-<span class="nc" id="L316">			int lineLength = input.get(0).size();</span>
-<span class="nc bnc" id="L317" title="All 2 branches missed.">			for (ArrayList&lt;String&gt; line : input) {</span>
-<span class="nc bnc" id="L318" title="All 4 branches missed.">				if(line.size() != lineLength &amp;&amp; line.size() != 0)</span>
+<span class="nc" id="L311">			int lineLength = input.get(0).size();</span>
+<span class="nc bnc" id="L312" title="All 2 branches missed.">			for (ArrayList&lt;String&gt; line : input) {</span>
+<span class="nc bnc" id="L313" title="All 4 branches missed.">				if(line.size() != lineLength &amp;&amp; line.size() != 0)</span>
 				{
-<span class="nc" id="L320">					errorText.setText(&quot;Wrong Formatting&quot;);</span>
-<span class="nc" id="L321">					break;</span>
+<span class="nc" id="L315">					errorText.setText(&quot;Wrong Formatting&quot;);</span>
+<span class="nc" id="L316">					return;</span>
 				}
-<span class="nc" id="L323">			}</span>
+<span class="nc" id="L318">			}</span>
 						
 			/*
 			for (ArrayList&lt;String&gt; line : input) {
@@ -330,114 +325,125 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 				System.out.println(&quot;&quot;);
 			}
 			*/
+<span class="nc" id="L328">			setInstrument(instrumentList.getSelectedItem().toString());</span>
+<span class="nc" id="L329">			setTitle(songName.getText());</span>
+<span class="nc" id="L330">			setTimeSig(timeSignature.getText());</span>
 			
-<span class="nc bnc" id="L334" title="All 2 branches missed.">			if (errorText.getText() == &quot;&quot;)</span>
-			{
-<span class="nc" id="L336">				Main.Convert(input, tabList.getSelectedIndex());</span>
-			}
-<span class="nc" id="L338">		}</span>
-<span class="nc bnc" id="L339" title="All 4 branches missed.">		else if(e.getSource() == clearButton &amp;&amp; !Main.isInPopUp)</span>
+<span class="nc" id="L332">			Main.Convert(input, instrumentList.getSelectedIndex());</span>
+
+<span class="nc" id="L334">		}</span>
+<span class="pc bpc" id="L335" title="2 of 4 branches missed.">		else if(e.getSource() == clearButton &amp;&amp; !Main.isInPopUp)</span>
 		{
-<span class="nc bnc" id="L341" title="All 2 branches missed.">			if(!Main.myFrame.textInputContentPanel.textField.getText().isEmpty())</span>
-<span class="nc" id="L342">				new ClearPopUp(Main.myFrame, &quot;&quot;, &quot;Clear Current Tablature&quot;);</span>
+<span class="fc bfc" id="L337" title="All 2 branches covered.">			if(!Main.myFrame.textInputContentPanel.textField.getText().isEmpty())</span>
+<span class="fc" id="L338">				clearPopUp = new ClearPopUp(Main.myFrame, &quot;&quot;, &quot;Clear Current Tablature&quot;);</span>
 		}
-<span class="nc bnc" id="L344" title="All 4 branches missed.">		else if(e.getSource() == saveButton &amp;&amp; !Main.isInPopUp)</span>
+<span class="nc bnc" id="L340" title="All 4 branches missed.">		else if(e.getSource() == saveButton &amp;&amp; !Main.isInPopUp)</span>
 		{
-<span class="nc" id="L346">			new SaveManager(&quot;&quot;, tabList.getSelectedIndex(), songName.getText(), timeSignature.getText(), textField.getText());</span>
+<span class="nc" id="L342">			new SaveManager(&quot;&quot;, instrumentList.getSelectedIndex(), songName.getText(), timeSignature.getText(), textField.getText());</span>
 		}
 		
-<span class="nc" id="L349">	}</span>
+<span class="fc" id="L345">	}</span>
 	
-	private ArrayList&lt;ArrayList&lt;String&gt;&gt; GetInput (String[] textInput)
+	private ArrayList&lt;ArrayList&lt;String&gt;&gt; GetInput (String[] textInput, boolean convert)
 	{
-<span class="nc bnc" id="L353" title="All 2 branches missed.">		if(textField.getText().isEmpty())</span>
+<span class="fc" id="L349">		errorText.setText(&quot;&quot;);</span>
+<span class="fc bfc" id="L350" title="All 2 branches covered.">		if(textField.getText().isEmpty())</span>
 		{
-<span class="nc" id="L355">			return null;</span>
-		}
-<span class="nc bnc" id="L357" title="All 2 branches missed.">		else if (!textField.getText().contains(&quot;|&quot;))</span>
-		{
-<span class="nc" id="L359">			return null;</span>
+<span class="fc" id="L352">			return null;</span>
 		}
 		
-<span class="nc" id="L362">		ArrayList&lt;ArrayList&lt;String&gt;&gt; input = new ArrayList&lt;ArrayList&lt;String&gt;&gt;();</span>
+<span class="fc" id="L355">		ArrayList&lt;ArrayList&lt;String&gt;&gt; input = new ArrayList&lt;ArrayList&lt;String&gt;&gt;();</span>
 		
-<span class="nc bnc" id="L364" title="All 2 branches missed.">		for (String line : textInput) {</span>
-<span class="nc bnc" id="L365" title="All 2 branches missed.">			if(line.length() &gt; 1)</span>
+<span class="fc bfc" id="L357" title="All 2 branches covered.">		for (String line : textInput) {</span>
+<span class="pc bpc" id="L358" title="1 of 2 branches missed.">			if(line.length() &gt; 1)</span>
 			{
-<span class="nc" id="L367">				line = cleanTextContent(line); //Removes redundant spaces</span>
-<span class="nc" id="L368">				String[] lineInput = line.substring(line.indexOf('|')).split(&quot;&quot;);</span>
-<span class="nc" id="L369">				ArrayList&lt;String&gt; lineInputList = new ArrayList&lt;String&gt;();</span>
-<span class="nc" id="L370">				String tunePlusOctave = line.substring(0, line.indexOf('|')).trim();</span>
-<span class="nc" id="L371">				String tune = &quot;&quot;;</span>
-<span class="nc" id="L372">				String octave = &quot;&quot;;</span>
-<span class="nc bnc" id="L373" title="All 2 branches missed.">				if(tunePlusOctave.length() &gt; 0) {</span>
-					try {
-<span class="nc" id="L375">						octave = &quot;&quot; + Integer.parseInt(tunePlusOctave.substring(tunePlusOctave.length()-1));</span>
-<span class="nc" id="L376">						tune = tunePlusOctave.substring(0, tunePlusOctave.length()-1);</span>
-<span class="nc" id="L377">					}catch(NumberFormatException e1){</span>
-<span class="nc" id="L378">						octave = &quot;&quot;;</span>
-<span class="nc" id="L379">						tune = tunePlusOctave;</span>
-<span class="nc" id="L380">					}</span>
+<span class="fc" id="L360">				line = cleanTextContent(line); //Removes redundant spaces</span>
+<span class="fc bfc" id="L361" title="All 2 branches covered.">				if (!line.contains(&quot;|&quot;)) {</span>
+<span class="pc bpc" id="L362" title="1 of 2 branches missed.">					if (convert)</span>
+<span class="nc" id="L363">						errorText.setText(&quot;Wrong Formatting&quot;);</span>
+<span class="fc" id="L364">					return null;</span>
 				}
-<span class="nc" id="L382">				lineInputList.add(tune.trim());</span>
-<span class="nc" id="L383">				lineInputList.add(octave.trim());</span>
+<span class="pc bpc" id="L366" title="1 of 2 branches missed.">				if (!line.contains(&quot;-&quot;)) {</span>
+<span class="nc bnc" id="L367" title="All 2 branches missed.">					if (convert)</span>
+<span class="nc" id="L368">						errorText.setText(&quot;Wrong Formatting&quot;);</span>
+<span class="nc" id="L369">					return null;</span>
+				}
+				
+<span class="fc" id="L372">				String[] lineInput = line.substring(line.indexOf('|')).split(&quot;&quot;);</span>
+<span class="fc" id="L373">				ArrayList&lt;String&gt; lineInputList = new ArrayList&lt;String&gt;();</span>
+<span class="fc" id="L374">				String tunePlusOctave = line.substring(0, line.indexOf('|')).trim();</span>
+<span class="fc" id="L375">				String tune = &quot;&quot;;</span>
+<span class="fc" id="L376">				String octave = &quot;&quot;;</span>
+<span class="pc bpc" id="L377" title="1 of 2 branches missed.">				if(tunePlusOctave.length() &gt; 0) {</span>
+					try {
+<span class="nc" id="L379">						octave = &quot;&quot; + Integer.parseInt(tunePlusOctave.substring(tunePlusOctave.length()-1));</span>
+<span class="nc" id="L380">						tune = tunePlusOctave.substring(0, tunePlusOctave.length()-1);</span>
+<span class="nc" id="L381">					}catch(NumberFormatException e1){</span>
+<span class="nc" id="L382">						octave = &quot;&quot;;</span>
+<span class="nc" id="L383">						tune = tunePlusOctave;</span>
+<span class="nc" id="L384">					}</span>
+				}
+<span class="fc" id="L386">				lineInputList.add(tune.trim());</span>
+<span class="fc" id="L387">				lineInputList.add(octave.trim());</span>
 				//lineInputList.add(tune);
-<span class="nc bnc" id="L385" title="All 2 branches missed.">				for(String character : lineInput) {</span>
-<span class="nc" id="L386">					lineInputList.add(character);</span>
+<span class="fc bfc" id="L389" title="All 2 branches covered.">				for(String character : lineInput) {</span>
+<span class="fc" id="L390">					lineInputList.add(character);</span>
 			    }
 				
-<span class="nc" id="L389">				input.add(lineInputList);</span>
-<span class="nc" id="L390">			}</span>
+<span class="fc" id="L393">				input.add(lineInputList);</span>
+<span class="fc" id="L394">			}</span>
 			else
 			{
-<span class="nc" id="L393">				input.add(new ArrayList&lt;String&gt;());</span>
+<span class="nc" id="L397">				input.add(new ArrayList&lt;String&gt;());</span>
 			}
 		}
 		
-<span class="nc" id="L397">		return input;</span>
+<span class="fc" id="L401">		return input;</span>
 	}
 	
 	private static String cleanTextContent(String text) 
 	{
 	    // strips off all non-ASCII characters
-<span class="nc" id="L403">	    text = text.replaceAll(&quot;[^\\x00-\\x7F]&quot;, &quot;&quot;);</span>
+<span class="fc" id="L407">	    text = text.replaceAll(&quot;[^\\x00-\\x7F]&quot;, &quot;&quot;);</span>
 	 
 	    // erases all the ASCII control characters
-<span class="nc" id="L406">	    text = text.replaceAll(&quot;[\\p{Cntrl}&amp;&amp;[^\r\n\t]]&quot;, &quot;&quot;);</span>
+<span class="fc" id="L410">	    text = text.replaceAll(&quot;[\\p{Cntrl}&amp;&amp;[^\r\n\t]]&quot;, &quot;&quot;);</span>
 	     
 	    // removes non-printable characters from Unicode
-<span class="nc" id="L409">	    text = text.replaceAll(&quot;\\p{C}&quot;, &quot;&quot;);</span>
+<span class="fc" id="L413">	    text = text.replaceAll(&quot;\\p{C}&quot;, &quot;&quot;);</span>
 	 
-<span class="nc" id="L411">	    return text.trim();</span>
+<span class="fc" id="L415">	    return text.trim();</span>
 	}
 
 	public static String getTitle() {
-<span class="nc bnc" id="L415" title="All 2 branches missed.">		if(title.isEmpty())</span>
-<span class="nc" id="L416">			return &quot;Title&quot;;</span>
-<span class="nc" id="L417">		return title;</span>
+<span class="pc bpc" id="L419" title="3 of 4 branches missed.">		if(title == null || title.isEmpty())</span>
+<span class="fc" id="L420">			return &quot;Title&quot;;</span>
+<span class="nc" id="L421">		return title;</span>
 	}
 
 	public static void setTitle(String title) {
-<span class="nc" id="L421">		TextInputContentPanel.title = title;</span>
-<span class="nc" id="L422">	}</span>
+<span class="nc" id="L425">		TextInputContentPanel.title = title;</span>
+<span class="nc" id="L426">	}</span>
 
-	public static String getTabType() {
-<span class="nc" id="L425">		return tabType;</span>
+	public static String getInstrument() {
+<span class="pc bpc" id="L429" title="3 of 4 branches missed.">		if(instrument == null || instrument.isEmpty())</span>
+<span class="fc" id="L430">			return &quot;Guitar&quot;;</span>
+<span class="nc" id="L431">		return instrument;</span>
 	}
 
-	public static void setTabType(String tabType) {
-<span class="nc" id="L429">		TextInputContentPanel.tabType = tabType;</span>
-<span class="nc" id="L430">	}</span>
+	public static void setInstrument(String instrument) {
+<span class="nc" id="L435">		TextInputContentPanel.instrument = instrument;</span>
+<span class="nc" id="L436">	}</span>
 
 	public static String getTimeSig() {
-<span class="nc bnc" id="L433" title="All 2 branches missed.">		if(timeSig.isEmpty())</span>
-<span class="nc" id="L434">			return &quot;4/4&quot;;</span>
-<span class="nc" id="L435">		return timeSig;</span>
+<span class="pc bpc" id="L439" title="3 of 4 branches missed.">		if(timeSig == null || timeSig.isEmpty())</span>
+<span class="fc" id="L440">			return &quot;4/4&quot;;</span>
+<span class="nc" id="L441">		return timeSig;</span>
 	}
 
 	public static void setTimeSig(String timeSig) {
-<span class="nc" id="L439">		TextInputContentPanel.timeSig = timeSig;</span>
-<span class="nc" id="L440">	}</span>
+<span class="nc" id="L445">		TextInputContentPanel.timeSig = timeSig;</span>
+<span class="nc" id="L446">	}</span>
 		
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

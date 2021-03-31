@@ -10,33 +10,33 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class SaveManager {
 
-<span class="nc" id="L13">	public Preferences prefs = Preferences.userRoot().node(getClass().getName());</span>
-<span class="nc" id="L14">	public String LAST_USED_FOLDER_SAVE = &quot;&quot;;</span>
-<span class="nc" id="L15">	public boolean failed = false;</span>
+<span class="fc" id="L13">	public Preferences prefs = Preferences.userRoot().node(getClass().getName());</span>
+<span class="fc" id="L14">	public String LAST_USED_FOLDER_SAVE = &quot;&quot;;</span>
+<span class="fc" id="L15">	public boolean failed = false;</span>
 	
 	File saveFile;
 	FileWriter myWriter;
 	static String filepath;
 	
 	public SaveManager (String path, int instrument, String title, String timesig, String textArea)
-<span class="nc" id="L22">	{</span>
-<span class="nc bnc" id="L23" title="All 2 branches missed.">		if(textArea.isEmpty())</span>
+<span class="fc" id="L22">	{</span>
+<span class="pc bpc" id="L23" title="1 of 2 branches missed.">		if(textArea.isEmpty())</span>
 <span class="nc" id="L24">			return;</span>
 		
-<span class="nc" id="L26">		failed = false;</span>
-<span class="nc" id="L27">		JFileChooser fileChooser = null;</span>
-<span class="nc" id="L28">		int response = 0;</span>
+<span class="fc" id="L26">		failed = false;</span>
+<span class="fc" id="L27">		JFileChooser fileChooser = null;</span>
+<span class="fc" id="L28">		int response = 0;</span>
 		
-<span class="nc bnc" id="L30" title="All 2 branches missed.">		if(path == &quot;&quot;)</span>
+<span class="pc bpc" id="L30" title="1 of 2 branches missed.">		if(path == &quot;&quot;)</span>
 		{
 <span class="nc" id="L32">			fileChooser = new JFileChooser(prefs.get(LAST_USED_FOLDER_SAVE, new File(&quot;.&quot;).getAbsolutePath())); // Create file chooser</span>
 <span class="nc" id="L33">			fileChooser.setFileFilter(new FileNameExtensionFilter(&quot;mxlify&quot;,&quot;mxlify&quot;));</span>
 <span class="nc" id="L34">			response = fileChooser.showSaveDialog(null); //Select file to save</span>
 		}
 				
-<span class="nc bnc" id="L37" title="All 2 branches missed.">		if (response == JFileChooser.APPROVE_OPTION) { // if File successively chosen</span>
+<span class="pc bpc" id="L37" title="1 of 2 branches missed.">		if (response == JFileChooser.APPROVE_OPTION) { // if File successively chosen</span>
 						
-<span class="nc bnc" id="L39" title="All 2 branches missed.">			if(path == &quot;&quot;) {</span>
+<span class="pc bpc" id="L39" title="1 of 2 branches missed.">			if(path == &quot;&quot;) {</span>
 <span class="nc" id="L40">				prefs.put(LAST_USED_FOLDER_SAVE, fileChooser.getSelectedFile().getParent()); // Save file path</span>
 <span class="nc" id="L41">				filepath = fileChooser.getSelectedFile().getAbsolutePath();</span>
 <span class="nc bnc" id="L42" title="All 2 branches missed.">				if (!filepath.substring(filepath.lastIndexOf(&quot;.&quot;)+1).equals(&quot;mxlify&quot;))     </span>
@@ -44,31 +44,31 @@ public class SaveManager {
 <span class="nc" id="L44">				saveFile = new File(filepath);</span>
 			}
 			else {
-<span class="nc" id="L47">				filepath= path;</span>
-<span class="nc" id="L48">				saveFile = new File(filepath);</span>
+<span class="fc" id="L47">				filepath = path;</span>
+<span class="fc" id="L48">				saveFile = new File(filepath);</span>
 			}
 			
 			try {
-<span class="nc" id="L52">		      myWriter = new FileWriter(saveFile);</span>
+<span class="fc" id="L52">		      myWriter = new FileWriter(saveFile);</span>
 		      
-<span class="nc" id="L54">		      myWriter.write(&quot;instrument &quot; + instrument);</span>
-<span class="nc" id="L55">		      myWriter.write(&quot;\n&quot;);</span>
-<span class="nc" id="L56">		      myWriter.write(&quot;title &quot; + title);</span>
-<span class="nc" id="L57">		      myWriter.write(&quot;\n&quot;);</span>
-<span class="nc" id="L58">		      myWriter.write(&quot;timesig &quot; + timesig);</span>
-<span class="nc" id="L59">		      myWriter.write(&quot;\n&quot;);</span>
-<span class="nc" id="L60">		      myWriter.write(textArea);</span>
+<span class="fc" id="L54">		      myWriter.write(&quot;instrument &quot; + instrument);</span>
+<span class="fc" id="L55">		      myWriter.write(&quot;\n&quot;);</span>
+<span class="fc" id="L56">		      myWriter.write(&quot;title &quot; + title);</span>
+<span class="fc" id="L57">		      myWriter.write(&quot;\n&quot;);</span>
+<span class="fc" id="L58">		      myWriter.write(&quot;timesig &quot; + timesig);</span>
+<span class="fc" id="L59">		      myWriter.write(&quot;\n&quot;);</span>
+<span class="fc" id="L60">		      myWriter.write(textArea);</span>
 		      
-<span class="nc" id="L62">		      myWriter.close();</span>
+<span class="fc" id="L62">		      myWriter.close();</span>
 <span class="nc" id="L63">		    } catch (IOException e) {</span>
 <span class="nc" id="L64">		      e.printStackTrace();</span>
-<span class="nc" id="L65">		    }</span>
+<span class="pc" id="L65">		    }</span>
 		}
 		else // Canceled
 		{
 <span class="nc" id="L69">			failed = true;</span>
 		}
-<span class="nc" id="L71">	}</span>
+<span class="fc" id="L71">	}</span>
 	
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

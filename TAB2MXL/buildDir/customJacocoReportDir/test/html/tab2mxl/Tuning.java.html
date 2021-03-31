@@ -12,175 +12,197 @@ public class Tuning {
 	//hash map for the relation between the strings and the frets
 	private HashMap&lt;String, List&lt;String&gt;&gt; stringNotes;
 	private HashMap&lt;String, List&lt;Integer&gt;&gt; stringOctaves;
-	private String[] tuning;
 	private int[] tuningOctave;
+	private String[] tuning;
 	//Default tuning for different string amounts.
-<span class="fc" id="L18">	private static final String[] DEFAULT_TUNING5 = {&quot;B&quot;, &quot;G&quot;, &quot;D&quot;, &quot;A&quot;, &quot;E&quot;};</span>
-<span class="fc" id="L19">	private static final String[] DEFAULT_TUNING6 = {&quot;e&quot;, &quot;B&quot;, &quot;G&quot;, &quot;D&quot;, &quot;A&quot;, &quot;E&quot;};</span>
-<span class="fc" id="L20">	private static final String[] DEFAULT_TUNING7 = {&quot;e&quot;, &quot;B&quot;, &quot;G&quot;, &quot;D&quot;, &quot;A&quot;, &quot;E&quot;, &quot;B&quot;};</span>
-<span class="fc" id="L21">	private static final String[] DEFAULT_TUNING8 = {&quot;e&quot;, &quot;B&quot;, &quot;G&quot;, &quot;D&quot;, &quot;A&quot;, &quot;E&quot;, &quot;B&quot;, &quot;F#&quot;};</span>
-<span class="fc" id="L22">	private static final String[] DEFAULT_TUNING9 = {&quot;e&quot;, &quot;B&quot;, &quot;G&quot;, &quot;D&quot;, &quot;A&quot;, &quot;E&quot;, &quot;B&quot;, &quot;F#&quot;, &quot;C#&quot;};</span>
+<span class="fc" id="L18">	private static final String[] DEFAULT_TUNING4 = {&quot;G&quot;, &quot;D&quot;, &quot;A&quot;, &quot;E&quot;};</span>
+<span class="fc" id="L19">	private static final String[] DEFAULT_TUNING5 = {&quot;B&quot;, &quot;G&quot;, &quot;D&quot;, &quot;A&quot;, &quot;E&quot;};</span>
+<span class="fc" id="L20">	private static final String[] DEFAULT_TUNING6 = {&quot;e&quot;, &quot;B&quot;, &quot;G&quot;, &quot;D&quot;, &quot;A&quot;, &quot;E&quot;};</span>
+<span class="fc" id="L21">	private static final String[] DEFAULT_TUNING7 = {&quot;e&quot;, &quot;B&quot;, &quot;G&quot;, &quot;D&quot;, &quot;A&quot;, &quot;E&quot;, &quot;B&quot;};</span>
+<span class="fc" id="L22">	private static final String[] DEFAULT_TUNING8 = {&quot;e&quot;, &quot;B&quot;, &quot;G&quot;, &quot;D&quot;, &quot;A&quot;, &quot;E&quot;, &quot;B&quot;, &quot;F#&quot;};</span>
+<span class="fc" id="L23">	private static final String[] DEFAULT_TUNING9 = {&quot;e&quot;, &quot;B&quot;, &quot;G&quot;, &quot;D&quot;, &quot;A&quot;, &quot;E&quot;, &quot;B&quot;, &quot;F#&quot;, &quot;C#&quot;};</span>
 	//Default tuning octaves
-<span class="fc" id="L24">	private static final int[] DEFAULT_OCTAVE5 = {3,3,3,2,2};</span>
-<span class="fc" id="L25">	private static final int[] DEFAULT_OCTAVE6 = {4,3,3,3,2,2};</span>
-<span class="fc" id="L26">	private static final int[] DEFAULT_OCTAVE7 = {4,3,3,3,2,2,2};</span>
-<span class="fc" id="L27">	private static final int[] DEFAULT_OCTAVE8 = {4,3,3,3,2,2,2,1};</span>
-<span class="fc" id="L28">	private static final int[] DEFAULT_OCTAVE9 = {4,3,3,3,2,2,2,1,1};</span>
+<span class="fc" id="L25">	private static final int[] DEFAULT_OCTAVE4 = {3,3,2,2};</span>
+<span class="fc" id="L26">	private static final int[] DEFAULT_OCTAVE5 = {3,3,3,2,2};</span>
+<span class="fc" id="L27">	private static final int[] DEFAULT_OCTAVE6 = {4,3,3,3,2,2};</span>
+<span class="fc" id="L28">	private static final int[] DEFAULT_OCTAVE7 = {4,3,3,3,2,2,2};</span>
+<span class="fc" id="L29">	private static final int[] DEFAULT_OCTAVE8 = {4,3,3,3,2,2,2,1};</span>
+<span class="fc" id="L30">	private static final int[] DEFAULT_OCTAVE9 = {4,3,3,3,2,2,2,1,1};</span>
 	//the file containing the notes for each string and fret
 	private File tuningFile;
+<span class="fc" id="L33">	private final String FILE_NAME = &quot;GuitarNotes.txt&quot;;</span>
 	
 	public boolean unSupportedTune;
 	public boolean unSupportedOctave;
 	
 	//Constructor for the Tuning class
-<span class="fc" id="L36">	Tuning(String[] tune, int stringAmount, int[] tuneOctave){</span>
+<span class="fc" id="L39">	Tuning(String[] tune, int stringAmount, int[] tuneOctave){</span>
 		//initialize the instance variables
 		//setting the tuning based on whether it should be default or not
-<span class="fc" id="L39">		int octave = 0;</span>
-<span class="fc" id="L40">		tuning = tune;</span>
-<span class="fc" id="L41">		tuningOctave = tuneOctave;</span>
-		/*for(String s : tuning) {
-			System.out.println(s + &quot;-----&quot;);
-		}*/
-		
-<span class="fc" id="L46">		String fileName = &quot;GuitarNotesMod.txt&quot;;</span>
-<span class="fc" id="L47">		stringNotes = new HashMap&lt;String, List&lt;String&gt;&gt;();</span>
-<span class="fc" id="L48">		stringOctaves = new HashMap&lt;String, List&lt;Integer&gt;&gt;();</span>
-<span class="fc" id="L49">		tuningFile = new File(fileName);</span>
+<span class="fc" id="L42">		int octave = 0;</span>
+<span class="fc" id="L43">		tuning = tune;</span>
+<span class="fc" id="L44">		tuningOctave = tuneOctave;</span>
+
+<span class="fc" id="L46">		stringNotes = new HashMap&lt;String, List&lt;String&gt;&gt;();</span>
+<span class="fc" id="L47">		stringOctaves = new HashMap&lt;String, List&lt;Integer&gt;&gt;();</span>
+<span class="fc" id="L48">		tuningFile = new File(FILE_NAME);</span>
 		
 		//name for each string of the guitar, either E, B,...etc
-<span class="fc" id="L52">		String stringName = &quot;&quot;;</span>
+<span class="fc" id="L51">		String stringName = &quot;&quot;;</span>
 		try {			
-<span class="fc" id="L54">			Scanner noteScanner=  new Scanner(tuningFile);</span>
+<span class="fc" id="L53">			Scanner noteScanner=  new Scanner(tuningFile);</span>
 			/*the List of notes for each string and frets arranged as 
 			 * position 0 for fret 1 up to position 21 for fret 22*/
 			List&lt;String&gt; notes;
 			List&lt;Integer&gt; octaves;
-<span class="fc" id="L59">			String line = &quot;&quot;;</span>
+<span class="fc" id="L58">			String line = &quot;&quot;;</span>
 			
-<span class="fc bfc" id="L61" title="All 2 branches covered.">			while(noteScanner.hasNextLine()) {</span>
-<span class="fc" id="L62">				int fret = 0;</span>
-<span class="fc" id="L63">				notes = new ArrayList&lt;String&gt;();</span>
-<span class="fc" id="L64">				octaves = new ArrayList&lt;Integer&gt;();</span>
-<span class="fc" id="L65">				line  = noteScanner.nextLine();</span>
+<span class="fc bfc" id="L60" title="All 2 branches covered.">			while(noteScanner.hasNextLine()) {</span>
+<span class="fc" id="L61">				int fret = 0;</span>
+<span class="fc" id="L62">				line  = noteScanner.nextLine();</span>
 				
 				//getting the name for each string
-<span class="fc" id="L68">				stringName = line.substring(0, 2).trim();</span>
+<span class="fc" id="L65">				stringName = line.substring(0, 2).trim();</span>
 				/*Checking to add the notes only if they are the same as
 				 * the one specified in the tuning array*/
-<span class="fc bfc" id="L71" title="All 2 branches covered.">				for(int string  = 0; string &lt; tuning.length; string++) {</span>
-<span class="pc bpc" id="L72" title="1 of 4 branches missed.">					if(stringName.equals(tuning[string]) &amp;&amp; octaveCheck(tuningOctave[string])) {</span>
-<span class="fc" id="L73">						octave = tuningOctave[string];</span>
+<span class="fc bfc" id="L68" title="All 2 branches covered.">				for(int string  = 0; string &lt; tuning.length; string++) {</span>
+<span class="fc" id="L69">					notes = new ArrayList&lt;String&gt;();</span>
+<span class="fc" id="L70">					octaves = new ArrayList&lt;Integer&gt;();</span>
+<span class="pc bpc" id="L71" title="1 of 4 branches missed.">					if(stringName.equals(tuning[string].toUpperCase()) &amp;&amp; octaveCheck(tuningOctave[string])) {</span>
+<span class="fc" id="L72">						octave = tuningOctave[string];</span>
 						//adding the notes to the notes ArrayList
-<span class="fc bfc" id="L75" title="All 2 branches covered.">						for(int i = 0; i &lt; line.length()-1; i++) {</span>
-<span class="fc bfc" id="L76" title="All 4 branches covered.">							if(line.charAt(i) == '|' &amp;&amp; line.charAt(i+1) != '|') {</span>
-<span class="fc" id="L77">								String note = line.substring(i+1, line.indexOf(&quot;|&quot;, i+1)).trim();</span>
+<span class="fc bfc" id="L74" title="All 2 branches covered.">						for(int i = 0; i &lt; line.length()-1; i++) {</span>
+<span class="fc bfc" id="L75" title="All 4 branches covered.">							if(line.charAt(i) == '|' &amp;&amp; line.charAt(i+1) != '|') {</span>
+<span class="fc" id="L76">								String note = line.substring(i+1, line.indexOf(&quot;|&quot;, i+1)).trim();</span>
 								//System.out.println(fret);
-<span class="fc bfc" id="L79" title="All 2 branches covered.">								if(fret &gt; 0) {</span>
-<span class="fc bfc" id="L80" title="All 2 branches covered.">									if(note.equals(&quot;C&quot;)) {</span>
-<span class="fc" id="L81">										octave++;</span>
+<span class="fc bfc" id="L78" title="All 2 branches covered.">								if(fret &gt; 0) {</span>
+<span class="fc bfc" id="L79" title="All 2 branches covered.">									if(note.equals(&quot;C&quot;)) {</span>
+<span class="fc" id="L80">										octave++;</span>
 									}
 								}
-<span class="pc bpc" id="L84" title="1 of 2 branches missed.">								if(octave &gt; 9) {</span>
-<span class="nc" id="L85">									octave = 0;</span>
+<span class="pc bpc" id="L83" title="1 of 2 branches missed.">								if(octave &gt; 9) {</span>
+<span class="nc" id="L84">									octave = 0;</span>
 								}
-<span class="fc" id="L87">								octaves.add(octave);</span>
-<span class="fc" id="L88">								notes.add(note);</span>
-<span class="fc" id="L89">								fret++;</span>
+<span class="fc" id="L86">								octaves.add(octave);</span>
+<span class="fc" id="L87">								notes.add(note);</span>
+<span class="fc" id="L88">								fret++;</span>
 							}
 						}
-						//adding the stringName as the key and the List of notes as the notes for each fret
-<span class="fc" id="L93">						stringNotes.put(stringName, notes);</span>
-<span class="fc" id="L94">						stringOctaves.put(stringName, octaves);</span>
+						/*adding the stringName and the string number as the key 
+						 * and the List of notes as the notes for each fret
+						 * as well as the list of octaves*/
+<span class="fc" id="L94">						String key = stringName+(string+1);</span>
+<span class="fc" id="L95">						stringNotes.put(key, notes);</span>
+<span class="fc" id="L96">						stringOctaves.put(key, octaves);</span>
 					}
 				}
-<span class="fc" id="L97">			}</span>
-			/*for(String s : stringOctaves.keySet()) {
-				System.out.print(s + &quot;||&quot;);
-				for(int i = 0; i &lt; stringOctaves.get(s).size(); i++) {
-					System.out.print(stringOctaves.get(s).get(i) + &quot;|&quot;);
+<span class="fc" id="L99">			}</span>
+<span class="fc bfc" id="L100" title="All 2 branches covered.">			for(String s : stringOctaves.keySet()) {</span>
+<span class="fc" id="L101">				System.out.print(s + &quot;||&quot;);</span>
+<span class="fc bfc" id="L102" title="All 2 branches covered.">				for(int i = 0; i &lt; stringOctaves.get(s).size(); i++) {</span>
+<span class="fc" id="L103">					System.out.print(stringOctaves.get(s).get(i) + &quot;|&quot;);</span>
 				}
-				System.out.print(&quot;\n&quot;);
-			}*/
+<span class="fc" id="L105">				System.out.print(&quot;\n&quot;);</span>
+<span class="fc" id="L106">			}</span>
+			
+<span class="fc bfc" id="L108" title="All 2 branches covered.">			for(String s : stringNotes.keySet()) {</span>
+<span class="fc" id="L109">				System.out.print(s + &quot;||&quot;);</span>
+<span class="fc bfc" id="L110" title="All 2 branches covered.">				for(int i = 0; i &lt; stringNotes.get(s).size(); i++) {</span>
+<span class="fc" id="L111">					System.out.print(stringNotes.get(s).get(i) + &quot;|&quot;);</span>
+				}
+<span class="fc" id="L113">				System.out.print(&quot;\n&quot;);</span>
+<span class="fc" id="L114">			}</span>
 			
 			//Faruq make this check the notes file please - Zach
 			//Temporary way to check if the tuning is valid. Need to actually check if the Note Tunes file contains the tune 
-<span class="pc bpc" id="L108" title="1 of 2 branches missed.">			if(stringNotes.size() != stringAmount) {</span>
-<span class="nc" id="L109">				unSupportedTune = true;</span>
+<span class="pc bpc" id="L118" title="1 of 2 branches missed.">			if(stringNotes.size() != stringAmount) {</span>
+<span class="nc" id="L119">				unSupportedTune = true;</span>
 			}
-<span class="pc bpc" id="L111" title="1 of 2 branches missed.">			if(stringOctaves.size() != stringAmount) {</span>
-<span class="nc" id="L112">				unSupportedOctave = true;</span>
+<span class="pc bpc" id="L121" title="1 of 2 branches missed.">			if(stringOctaves.size() != stringAmount) {</span>
+<span class="nc" id="L122">				unSupportedOctave = true;</span>
 			}
 				
-<span class="fc" id="L115">			noteScanner.close();</span>
+<span class="fc" id="L125">			noteScanner.close();</span>
 			
-<span class="nc" id="L117">		}catch(FileNotFoundException e) {</span>
-<span class="nc" id="L118">			e.getMessage();</span>
-<span class="fc" id="L119">		}</span>
-<span class="fc" id="L120">	}</span>
+<span class="nc" id="L127">		}catch(FileNotFoundException e) {</span>
+<span class="nc" id="L128">			System.out.println(e.getMessage());</span>
+<span class="fc" id="L129">		}</span>
+<span class="fc" id="L130">	}</span>
 	
 	private boolean octaveCheck(int o) {
-<span class="fc" id="L123">		boolean output = false;</span>
+<span class="fc" id="L133">		boolean output = false;</span>
 		
-<span class="pc bpc" id="L125" title="1 of 2 branches missed.">		if(o != -1) </span>
-<span class="pc bpc" id="L126" title="1 of 2 branches missed.">			output = output || true;</span>
-<span class="pc bpc" id="L127" title="2 of 4 branches missed.">		if(o &gt;= 0 &amp;&amp; o &lt;= 9)</span>
-<span class="pc bpc" id="L128" title="1 of 2 branches missed.">			output = output || true;</span>
+<span class="pc bpc" id="L135" title="1 of 2 branches missed.">		if(o != -1) </span>
+<span class="pc bpc" id="L136" title="1 of 2 branches missed.">			output = output || true;</span>
+<span class="pc bpc" id="L137" title="2 of 4 branches missed.">		if(o &gt;= 0 &amp;&amp; o &lt;= 9)</span>
+<span class="pc bpc" id="L138" title="1 of 2 branches missed.">			output = output || true;</span>
 		
-<span class="fc" id="L130">		return output;</span>
+<span class="fc" id="L140">		return output;</span>
 	}
 	
 	public static String[] getDefaultTuning(int stringAmount) {
-<span class="fc" id="L134">		String[] output = null;</span>
+<span class="fc" id="L144">		String[] output = null;</span>
 		
-<span class="fc bfc" id="L136" title="All 2 branches covered.">		if(stringAmount == 5)</span>
-<span class="fc" id="L137">			output = Tuning.DEFAULT_TUNING5;</span>
-<span class="fc bfc" id="L138" title="All 2 branches covered.">		if(stringAmount == 6)</span>
-<span class="fc" id="L139">			output = Tuning.DEFAULT_TUNING6;</span>
-<span class="fc bfc" id="L140" title="All 2 branches covered.">		if(stringAmount == 7)</span>
-<span class="fc" id="L141">			output = Tuning.DEFAULT_TUNING7;</span>
-<span class="fc bfc" id="L142" title="All 2 branches covered.">		if(stringAmount == 8)</span>
-<span class="fc" id="L143">			output = Tuning.DEFAULT_TUNING8;</span>
-<span class="fc bfc" id="L144" title="All 2 branches covered.">		if(stringAmount == 9)</span>
-<span class="fc" id="L145">			output = Tuning.DEFAULT_TUNING9;</span>
+<span class="pc bpc" id="L146" title="1 of 2 branches missed.">		if(stringAmount == 4)</span>
+<span class="nc" id="L147">			output = Tuning.DEFAULT_TUNING4;</span>
+<span class="fc bfc" id="L148" title="All 2 branches covered.">		if(stringAmount == 5)</span>
+<span class="fc" id="L149">			output = Tuning.DEFAULT_TUNING5;</span>
+<span class="fc bfc" id="L150" title="All 2 branches covered.">		if(stringAmount == 6)</span>
+<span class="fc" id="L151">			output = Tuning.DEFAULT_TUNING6;</span>
+<span class="fc bfc" id="L152" title="All 2 branches covered.">		if(stringAmount == 7)</span>
+<span class="fc" id="L153">			output = Tuning.DEFAULT_TUNING7;</span>
+<span class="fc bfc" id="L154" title="All 2 branches covered.">		if(stringAmount == 8)</span>
+<span class="fc" id="L155">			output = Tuning.DEFAULT_TUNING8;</span>
+<span class="fc bfc" id="L156" title="All 2 branches covered.">		if(stringAmount == 9)</span>
+<span class="fc" id="L157">			output = Tuning.DEFAULT_TUNING9;</span>
 		
-<span class="fc" id="L147">		return output;		</span>
+<span class="fc" id="L159">		return output;		</span>
 	}
 	
-	public static int[] getDefaultTuningOctave(int stringAmount) {
-<span class="nc" id="L151">		int[] output = null;</span>
+	public static int[] getDefaultTuningOctave(int stringAmount, int i) {
+<span class="fc" id="L163">		int[] output = null;</span>
 		
-<span class="nc bnc" id="L153" title="All 2 branches missed.">		if(stringAmount == 5)</span>
-<span class="nc" id="L154">			output = Tuning.DEFAULT_OCTAVE5;</span>
-<span class="nc bnc" id="L155" title="All 2 branches missed.">		if(stringAmount == 6)</span>
-<span class="nc" id="L156">			output = Tuning.DEFAULT_OCTAVE6;</span>
-<span class="nc bnc" id="L157" title="All 2 branches missed.">		if(stringAmount == 7)</span>
-<span class="nc" id="L158">			output = Tuning.DEFAULT_OCTAVE7;</span>
-<span class="nc bnc" id="L159" title="All 2 branches missed.">		if(stringAmount == 8)</span>
-<span class="nc" id="L160">			output = Tuning.DEFAULT_OCTAVE8;</span>
-<span class="nc bnc" id="L161" title="All 2 branches missed.">		if(stringAmount == 9)</span>
-<span class="nc" id="L162">			output = Tuning.DEFAULT_OCTAVE9;</span>
+<span class="pc bpc" id="L165" title="1 of 2 branches missed.">		if(stringAmount == 4)</span>
+<span class="nc" id="L166">			output = Tuning.DEFAULT_OCTAVE4;</span>
+<span class="pc bpc" id="L167" title="1 of 2 branches missed.">		if(stringAmount == 5)</span>
+<span class="nc" id="L168">			output = Tuning.DEFAULT_OCTAVE5;</span>
+<span class="pc bpc" id="L169" title="1 of 2 branches missed.">		if(stringAmount == 6)</span>
+<span class="fc" id="L170">			output = Tuning.DEFAULT_OCTAVE6;</span>
+<span class="pc bpc" id="L171" title="1 of 2 branches missed.">		if(stringAmount == 7)</span>
+<span class="nc" id="L172">			output = Tuning.DEFAULT_OCTAVE7;</span>
+<span class="pc bpc" id="L173" title="1 of 2 branches missed.">		if(stringAmount == 8)</span>
+<span class="nc" id="L174">			output = Tuning.DEFAULT_OCTAVE8;</span>
+<span class="pc bpc" id="L175" title="1 of 2 branches missed.">		if(stringAmount == 9)</span>
+<span class="nc" id="L176">			output = Tuning.DEFAULT_OCTAVE9;</span>
 		
-<span class="nc" id="L164">		return output;</span>
+<span class="pc bpc" id="L178" title="1 of 2 branches missed.">		if(i == 1) {</span>
+<span class="nc bnc" id="L179" title="All 2 branches missed.">			for(int j = 0; j &lt; output.length; j++) {</span>
+<span class="nc" id="L180">				output[j]--;</span>
+			}
+		}
+		
+<span class="fc" id="L184">		return output;</span>
 	}
 	
 	public int[] getTuningOctave() {
-<span class="nc" id="L168">		return tuningOctave;</span>
+<span class="nc" id="L188">		return tuningOctave;</span>
 	}
 	
-	public int getOctave(String string, int fret) {
-<span class="nc" id="L172">		int output = stringOctaves.get(string).get(fret);</span>
-		
-<span class="nc" id="L174">		return output;</span>
+	public int getOctave(String string, int fret, int line) {
+<span class="fc" id="L192">		String key = string.toUpperCase() + line;</span>
+<span class="fc" id="L193">		int i = fret/12;</span>
+<span class="fc" id="L194">		return (stringOctaves.get(key).get(fret%12)+i);</span>
 	}
 	
 	//to get the note for each specified string and fret
-	public String getNote(String string, int fret) {
-<span class="pc bpc" id="L179" title="1 of 2 branches missed.">		if(fret &lt; 0)</span>
-<span class="nc" id="L180">			return string;</span>
-<span class="fc" id="L181">		String output = stringNotes.get(string).get(fret);</span>
+	public String getNote(String string, int fret, int line) {
+<span class="fc" id="L199">		String key = string.toUpperCase() + line;</span>
+<span class="fc" id="L200">		System.out.println(&quot;Key: &quot; + key);</span>
+<span class="pc bpc" id="L201" title="1 of 2 branches missed.">		if(fret &lt; 0)</span>
+<span class="nc" id="L202">			return string;</span>
+<span class="fc" id="L203">		String output = stringNotes.get(key).get(fret%12);</span>
 		
-<span class="fc" id="L183">		return output;</span>
+<span class="fc" id="L205">		return output;</span>
 	}
 	
 }

@@ -470,7 +470,7 @@ public class FileGenerator {
 		}
 	}
 
-	public void addDrumNote(String noteHead, int duration, String displayStep, int displayOctave, String instrumentID, String noteType, int voice){
+	public void addDrumNote(String noteHead, int duration, String displayStep, int displayOctave, String instrumentID, String noteType, int voice, int dot){
 
 		try {
 			myWriter.write(currentIndent + "<note>");
@@ -496,6 +496,10 @@ public class FileGenerator {
 			newLine();
 			myWriter.write(currentIndent + "<type>" + noteType + "</type>");
 			newLine();
+			for(int d  = 0; d < dot; d++) {
+				myWriter.write(currentIndent + "<dot/>");
+				newLine();
+			}
 			if(noteHead.equals("x")){
 				myWriter.write(currentIndent + "<notehead>" + noteHead + "</notehead>");
 				newLine();
@@ -507,8 +511,58 @@ public class FileGenerator {
 		} catch (IOException e){
 			e.printStackTrace();
 		}
-
 	}
+	
+	public void addDrumChord(ArrayList<String>chords, int duration, ArrayList<String>chordNotes, ArrayList<Integer>chordOctaves, ArrayList<String>chordIDs, ArrayList<String>chordSymbols, int chordDot, String chordType, int voice) {
+		try {
+			boolean first = false;
+			for(int i = chords.size()-1; i >= 0; i--) {
+				myWriter.write(currentIndent + "<note>");
+				newLine();
+				currentIndent += "  ";
+				if(first) {
+					myWriter.write(currentIndent + "<chord/>");
+					newLine();	
+				}
+				myWriter.write(currentIndent + "<unpitched>");
+				newLine();
+				currentIndent += "  ";
+
+				myWriter.write(currentIndent + "<display-step>" + chordNotes.get(i) + "</display-step>");
+				newLine();
+				myWriter.write(currentIndent + "<display-octave>" + chordOctaves.get(i) + "</display-octave>");
+				newLine();
+				myWriter.write(currentIndent + "</unpitched>");
+				newLine();
+				tabBack();
+
+				myWriter.write(currentIndent + "<duration>" + duration + "</duration>");
+				newLine();
+				myWriter.write(currentIndent + "<instrument id=\"" + chordIDs.get(i) + "\"/>");
+				newLine();
+				myWriter.write(currentIndent + "<voice>" + voice + "</voice>" );
+				newLine();
+				myWriter.write(currentIndent + "<type>" + chordType + "</type>");
+				newLine();
+				for(int j  = 0; j < chordDot; j++) {
+					myWriter.write(currentIndent + "<dot/>");
+					newLine();
+				}
+				if(chordSymbols.get(i).equals("x")){
+					myWriter.write(currentIndent + "<notehead>" + chordSymbols.get(i) + "</notehead>");
+					newLine();
+				}
+				myWriter.write(currentIndent + "</note>");
+				newLine();
+				tabBack();
+				first = true;
+			}
+			
+		}catch(IOException e) {
+			
+		}
+	}
+	
 	public void Backup(int totalDuration){
 
 		try {
@@ -846,19 +900,29 @@ public class FileGenerator {
 		}		
 	}
 	
-	public void addRest(int duration, String noteType) {
-		write(currentIndent + "<note>");
-		currentIndent += "  ";
-		newLine();
-		write(currentIndent + "<rest/>");
-		newLine();
-		write(currentIndent + "<duration>" + duration + "</duration>");
-		newLine();
-		write(currentIndent + "<type>" + noteType + "</type>");
-		newLine();
-		tabBack();
-		write(currentIndent + "</note>");
-		newLine();
+	public void addRest(int duration, String noteType, int v) {
+		try {
+			if(duration > 0) {
+				myWriter.write(currentIndent + "<note>");
+				currentIndent += "  ";
+				newLine();
+				myWriter.write(currentIndent + "<rest/>");
+				newLine();
+				myWriter.write(currentIndent + "<duration>" + duration + "</duration>");
+				newLine();
+				if(v != -1) {
+					myWriter.write(currentIndent + "<voice>" + v + "</voice>" );
+					newLine();
+				}
+				myWriter.write(currentIndent + "<type>" + noteType + "</type>");
+				newLine();
+				tabBack();
+				myWriter.write(currentIndent + "</note>");
+				newLine();
+			}
+		}catch(IOException e) {
+			
+		}
 	}
 	
 	/**

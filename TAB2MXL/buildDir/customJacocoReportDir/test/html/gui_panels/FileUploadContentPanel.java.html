@@ -1,44 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FileUploadContentPanel.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">TAB2MXL</a> &gt; <a href="index.source.html" class="el_package">gui_panels</a> &gt; <span class="el_source">FileUploadContentPanel.java</span></div><h1>FileUploadContentPanel.java</h1><pre class="source lang-java linenums">package gui_panels;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.Font;
-import java.awt.GridBagLayout;
 import java.awt.GridLayout;
-import java.awt.datatransfer.DataFlavor;
-import java.awt.datatransfer.Transferable;
-import java.awt.dnd.DnDConstants;
-import java.awt.dnd.DropTarget;
-import java.awt.dnd.DropTargetDragEvent;
-import java.awt.dnd.DropTargetDropEvent;
-import java.awt.dnd.DropTargetEvent;
-import java.awt.dnd.DropTargetListener;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
 import java.util.prefs.Preferences;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JSeparator;
-import javax.swing.JTextArea;
-import javax.swing.SwingConstants;
-import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
@@ -50,136 +28,136 @@ public class FileUploadContentPanel extends JPanel implements ActionListener {
 	JButton openButton;
 	JButton backButton;
 
-<span class="nc" id="L53">	public Preferences prefs = Preferences.userRoot().node(getClass().getName());</span>
-<span class="nc" id="L54">	public String LAST_USED_FOLDER = &quot;&quot;;</span>
-<span class="nc" id="L55">	public static String dropFilePath = &quot;&quot;;</span>
+<span class="fc" id="L31">	public Preferences prefs = Preferences.userRoot().node(getClass().getName());</span>
+<span class="fc" id="L32">	public String LAST_USED_FOLDER = &quot;&quot;;</span>
+<span class="fc" id="L33">	public static String dropFilePath = &quot;&quot;;</span>
 
-<span class="nc" id="L57">	FileUploadContentPanel() {</span>
+<span class="fc" id="L35">	FileUploadContentPanel() {</span>
 
-<span class="nc" id="L59">		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS)); // sets layout to be vertical</span>
-<span class="nc" id="L60">		Border padding = BorderFactory.createEmptyBorder(10, 0, 10, 10);</span>
-<span class="nc" id="L61">		this.setBorder(padding); // adds a basic border around the frame</span>
+<span class="fc" id="L37">		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS)); // sets layout to be vertical</span>
+<span class="fc" id="L38">		Border padding = BorderFactory.createEmptyBorder(10, 0, 10, 10);</span>
+<span class="fc" id="L39">		this.setBorder(padding); // adds a basic border around the frame</span>
 
 		// creates panel to place the main body elements
-<span class="nc" id="L64">		JPanel OptionsPanel = new JPanel(new GridLayout(2,1)); // </span>
-<span class="nc" id="L65">		Border OptionsPadding = BorderFactory.createEmptyBorder(100, 00, 50, 0);</span>
-<span class="nc" id="L66">		OptionsPanel.setBorder(OptionsPadding);</span>
-<span class="nc" id="L67">		OptionsPanel.setOpaque(false);</span>
+<span class="fc" id="L42">		JPanel OptionsPanel = new JPanel(new GridLayout(2,1)); // </span>
+<span class="fc" id="L43">		Border OptionsPadding = BorderFactory.createEmptyBorder(100, 00, 50, 0);</span>
+<span class="fc" id="L44">		OptionsPanel.setBorder(OptionsPadding);</span>
+<span class="fc" id="L45">		OptionsPanel.setOpaque(false);</span>
 
 		// creates panel for the upload label and button to go into
-<span class="nc" id="L70">		JPanel UploadPanel = new JPanel();</span>
-<span class="nc" id="L71">		UploadPanel.setLayout(new GridLayout(1,1)); // sets layout of this panel to be vertical</span>
+<span class="fc" id="L48">		JPanel UploadPanel = new JPanel();</span>
+<span class="fc" id="L49">		UploadPanel.setLayout(new GridLayout(1,1)); // sets layout of this panel to be vertical</span>
 
-<span class="nc" id="L73">		UploadPanel.setOpaque(false);</span>
+<span class="fc" id="L51">		UploadPanel.setOpaque(false);</span>
 
-<span class="nc" id="L75">		JPanel ButtonPanel = new JPanel(); // creates panel for button</span>
-<span class="nc" id="L76">		ButtonPanel.setLayout(new FlowLayout(FlowLayout.CENTER));</span>
-<span class="nc" id="L77">		Border ButtonPadding = BorderFactory.createEmptyBorder(10, 0, 0, 0);</span>
-<span class="nc" id="L78">		ButtonPanel.setBorder(ButtonPadding);</span>
-
-
-<span class="nc" id="L81">		ButtonPanel.setOpaque(false);</span>
+<span class="fc" id="L53">		JPanel ButtonPanel = new JPanel(); // creates panel for button</span>
+<span class="fc" id="L54">		ButtonPanel.setLayout(new FlowLayout(FlowLayout.CENTER));</span>
+<span class="fc" id="L55">		Border ButtonPadding = BorderFactory.createEmptyBorder(10, 0, 0, 0);</span>
+<span class="fc" id="L56">		ButtonPanel.setBorder(ButtonPadding);</span>
 
 
-<span class="nc" id="L84">		openButton = new JButton(&quot;Open&quot;); // Select File button</span>
-<span class="nc" id="L85">		openButton.setBackground(new Color(33,150,243));</span>
-<span class="nc" id="L86">		openButton.setForeground(new Color(224,224,224));</span>
-<span class="nc" id="L87">		openButton.setOpaque(true);</span>
-<span class="nc" id="L88">		openButton.setBorderPainted(false);</span>
+<span class="fc" id="L59">		ButtonPanel.setOpaque(false);</span>
 
-<span class="nc" id="L90">		openButton.setFocusable(false);</span>
-<span class="nc" id="L91">		openButton.addActionListener(this); // Button action</span>
+
+<span class="fc" id="L62">		openButton = new JButton(&quot;Open&quot;); // Select File button</span>
+<span class="fc" id="L63">		openButton.setBackground(new Color(33,150,243));</span>
+<span class="fc" id="L64">		openButton.setForeground(new Color(224,224,224));</span>
+<span class="fc" id="L65">		openButton.setOpaque(true);</span>
+<span class="fc" id="L66">		openButton.setBorderPainted(false);</span>
+
+<span class="fc" id="L68">		openButton.setFocusable(false);</span>
+<span class="fc" id="L69">		openButton.addActionListener(this); // Button action</span>
 		//Button hover effects
-<span class="nc" id="L93">        openButton.addMouseListener(new java.awt.event.MouseAdapter() {</span>
+<span class="fc" id="L71">        openButton.addMouseListener(new java.awt.event.MouseAdapter() {</span>
     	    public void mouseEntered(java.awt.event.MouseEvent evt) {
-<span class="nc" id="L95">    	    	openButton.setBackground(new Color(224,224,224));</span>
-<span class="nc" id="L96">    	    	openButton.setForeground(new Color(33,150,243));</span>
-<span class="nc" id="L97">    	    }</span>
+<span class="nc" id="L73">    	    	openButton.setBackground(new Color(224,224,224));</span>
+<span class="nc" id="L74">    	    	openButton.setForeground(new Color(33,150,243));</span>
+<span class="nc" id="L75">    	    }</span>
     	    public void mouseExited(java.awt.event.MouseEvent evt) {
-<span class="nc" id="L99">    	    	openButton.setBackground(new Color(33,150,243));</span>
-<span class="nc" id="L100">    	    	openButton.setForeground(new Color(224,224,224));</span>
-<span class="nc" id="L101">    	    }</span>
+<span class="nc" id="L77">    	    	openButton.setBackground(new Color(33,150,243));</span>
+<span class="nc" id="L78">    	    	openButton.setForeground(new Color(224,224,224));</span>
+<span class="nc" id="L79">    	    }</span>
     	}); 
 		
-<span class="nc" id="L104">		ButtonPanel.add(openButton);</span>
+<span class="fc" id="L82">		ButtonPanel.add(openButton);</span>
 		
-<span class="nc" id="L106">		UploadPanel.add(ButtonPanel); // adds button panel to the upload panel</span>
+<span class="fc" id="L84">		UploadPanel.add(ButtonPanel); // adds button panel to the upload panel</span>
 
-<span class="nc" id="L108">		FileDropPanel DropPanel = new FileDropPanel();</span>
-<span class="nc" id="L109">		Border DropPadding = BorderFactory.createEmptyBorder(20, 0, 0, 0);</span>
-<span class="nc" id="L110">		DropPanel.setBorder(DropPadding);</span>
+<span class="fc" id="L86">		FileDropPanel DropPanel = new FileDropPanel();</span>
+<span class="fc" id="L87">		Border DropPadding = BorderFactory.createEmptyBorder(20, 0, 0, 0);</span>
+<span class="fc" id="L88">		DropPanel.setBorder(DropPadding);</span>
 		
-<span class="nc" id="L112">		OptionsPanel.add(DropPanel);</span>
-<span class="nc" id="L113">		OptionsPanel.add(UploadPanel);</span>
+<span class="fc" id="L90">		OptionsPanel.add(DropPanel);</span>
+<span class="fc" id="L91">		OptionsPanel.add(UploadPanel);</span>
 		
-<span class="nc" id="L115">		this.add(OptionsPanel);</span>
-<span class="nc" id="L116">		this.setOpaque(false);</span>
-<span class="nc" id="L117">		this.setVisible(true);</span>
-<span class="nc" id="L118">	}</span>
+<span class="fc" id="L93">		this.add(OptionsPanel);</span>
+<span class="fc" id="L94">		this.setOpaque(false);</span>
+<span class="fc" id="L95">		this.setVisible(true);</span>
+<span class="fc" id="L96">	}</span>
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
-<span class="nc bnc" id="L123" title="All 4 branches missed.">		if (e.getSource() == openButton &amp;&amp; !Main.isInPopUp) { // Button click</span>
+<span class="nc bnc" id="L101" title="All 4 branches missed.">		if (e.getSource() == openButton &amp;&amp; !Main.isInPopUp) { // Button click</span>
 			
-<span class="nc" id="L125">			FileNameExtensionFilter filter = new FileNameExtensionFilter(&quot;*.txt&quot;, &quot;txt&quot;, &quot;.mxlify&quot;, &quot;mxlify&quot;);				</span>
-<span class="nc" id="L126">			JFileChooser fileChooser = new JFileChooser(prefs.get(LAST_USED_FOLDER, new File(&quot;.&quot;).getAbsolutePath())); // Create file chooser</span>
-<span class="nc" id="L127">			fileChooser.setFileFilter(filter); // Only allow .txt files</span>
+<span class="nc" id="L103">			FileNameExtensionFilter filter = new FileNameExtensionFilter(&quot;*.txt&quot;, &quot;txt&quot;, &quot;.mxlify&quot;, &quot;mxlify&quot;);				</span>
+<span class="nc" id="L104">			JFileChooser fileChooser = new JFileChooser(prefs.get(LAST_USED_FOLDER, new File(&quot;.&quot;).getAbsolutePath())); // Create file chooser</span>
+<span class="nc" id="L105">			fileChooser.setFileFilter(filter); // Only allow .txt files</span>
 			
-<span class="nc" id="L129">			int response = fileChooser.showOpenDialog(null); // Select file to open</span>
+<span class="nc" id="L107">			int response = fileChooser.showOpenDialog(null); // Select file to open</span>
 
-<span class="nc bnc" id="L131" title="All 2 branches missed.">			if (response == JFileChooser.APPROVE_OPTION) { // if File successively chosen</span>
+<span class="nc bnc" id="L109" title="All 2 branches missed.">			if (response == JFileChooser.APPROVE_OPTION) { // if File successively chosen</span>
 
-<span class="nc" id="L133">				File file = new File(fileChooser.getSelectedFile().getAbsolutePath()); // Print out path</span>
-<span class="nc" id="L134">				System.out.println(&quot;File Location: &quot; + file + &quot;\n&quot;);</span>
+<span class="nc" id="L111">				File file = new File(fileChooser.getSelectedFile().getAbsolutePath()); // Print out path</span>
+<span class="nc" id="L112">				System.out.println(&quot;File Location: &quot; + file + &quot;\n&quot;);</span>
 
-<span class="nc" id="L136">				prefs.put(LAST_USED_FOLDER, fileChooser.getSelectedFile().getParent()); // Save file path</span>
+<span class="nc" id="L114">				prefs.put(LAST_USED_FOLDER, fileChooser.getSelectedFile().getParent()); // Save file path</span>
 
 				try {
-<span class="nc" id="L139">					String fileName = file.getName();</span>
-<span class="nc" id="L140">					String extension = &quot;&quot;;</span>
+<span class="nc" id="L117">					String fileName = file.getName();</span>
+<span class="nc" id="L118">					String extension = &quot;&quot;;</span>
 
-<span class="nc" id="L142">					int i = fileName.lastIndexOf('.');</span>
-<span class="nc" id="L143">					int p = Math.max(fileName.lastIndexOf('/'), fileName.lastIndexOf('\\'));</span>
+<span class="nc" id="L120">					int i = fileName.lastIndexOf('.');</span>
+<span class="nc" id="L121">					int p = Math.max(fileName.lastIndexOf('/'), fileName.lastIndexOf('\\'));</span>
 
-<span class="nc bnc" id="L145" title="All 2 branches missed.">					if (i &gt; p)</span>
-<span class="nc" id="L146">					    extension = fileName.substring(i+1);</span>
+<span class="nc bnc" id="L123" title="All 2 branches missed.">					if (i &gt; p)</span>
+<span class="nc" id="L124">					    extension = fileName.substring(i+1);</span>
 										
-<span class="nc bnc" id="L148" title="All 4 branches missed.">					if(extension.equals(&quot;.mxlify&quot;) || extension.equals(&quot;mxlify&quot;))</span>
+<span class="nc bnc" id="L126" title="All 4 branches missed.">					if(extension.equals(&quot;.mxlify&quot;) || extension.equals(&quot;mxlify&quot;))</span>
 					{
-<span class="nc" id="L150">						LoadManager loadManager = new LoadManager(file.getPath());</span>
-<span class="nc" id="L151">						String[] loadedData = loadManager.GetLoadedData();</span>
-<span class="nc bnc" id="L152" title="All 2 branches missed.">						if(!loadManager.failed)</span>
+<span class="nc" id="L128">						LoadManager loadManager = new LoadManager(file.getPath());</span>
+<span class="nc" id="L129">						String[] loadedData = loadManager.GetLoadedData();</span>
+<span class="nc bnc" id="L130" title="All 2 branches missed.">						if(!loadManager.failed)</span>
 						{
-<span class="nc" id="L154">							Main.myFrame.textInputContentPanel.tabList.setSelectedIndex(Integer.parseInt(loadedData[0]));</span>
-<span class="nc" id="L155">							Main.myFrame.textInputContentPanel.songName.setText(loadedData[1]);</span>
-<span class="nc" id="L156">							Main.myFrame.textInputContentPanel.timeSignature.setText(loadedData[2]);</span>
+<span class="nc" id="L132">							Main.myFrame.textInputContentPanel.instrumentList.setSelectedIndex(Integer.parseInt(loadedData[0]));</span>
+<span class="nc" id="L133">							Main.myFrame.textInputContentPanel.songName.setText(loadedData[1]);</span>
+<span class="nc" id="L134">							Main.myFrame.textInputContentPanel.timeSignature.setText(loadedData[2]);</span>
 						}
-<span class="nc" id="L158">						return;</span>
+<span class="nc" id="L136">						return;</span>
 					}
 					
-<span class="nc" id="L161">					BufferedReader reader = new BufferedReader(new FileReader (file));</span>
-<span class="nc" id="L162">				    String         line = null;</span>
-<span class="nc" id="L163">				    StringBuilder  stringBuilder = new StringBuilder();</span>
-<span class="nc" id="L164">				    String         ls = System.getProperty(&quot;line.separator&quot;);</span>
+<span class="nc" id="L139">					BufferedReader reader = new BufferedReader(new FileReader (file));</span>
+<span class="nc" id="L140">				    String         line = null;</span>
+<span class="nc" id="L141">				    StringBuilder  stringBuilder = new StringBuilder();</span>
+<span class="nc" id="L142">				    String         ls = System.getProperty(&quot;line.separator&quot;);</span>
 			    
-<span class="nc bnc" id="L166" title="All 2 branches missed.">			        while((line = reader.readLine()) != null) {</span>
-<span class="nc" id="L167">			            stringBuilder.append(line);</span>
-<span class="nc" id="L168">			            stringBuilder.append(ls);</span>
+<span class="nc bnc" id="L144" title="All 2 branches missed.">			        while((line = reader.readLine()) != null) {</span>
+<span class="nc" id="L145">			            stringBuilder.append(line);</span>
+<span class="nc" id="L146">			            stringBuilder.append(ls);</span>
 			        }
 
-<span class="nc bnc" id="L171" title="All 4 branches missed.">			        if(extension.equals(&quot;.txt&quot;) || extension.equals(&quot;txt&quot;))</span>
+<span class="nc bnc" id="L149" title="All 4 branches missed.">			        if(extension.equals(&quot;.txt&quot;) || extension.equals(&quot;txt&quot;))</span>
 					{
-<span class="nc" id="L173">						Main.FileUploaded(stringBuilder.toString());</span>
+<span class="nc" id="L151">						Main.FileUploaded(stringBuilder.toString());</span>
 					}			        
 			        
-<span class="nc" id="L176">			        reader.close();</span>
-<span class="nc" id="L177">			    } catch (IOException e1) {</span>
-<span class="nc" id="L178">					e1.printStackTrace();</span>
-<span class="nc" id="L179">				}</span>
+<span class="nc" id="L154">			        reader.close();</span>
+<span class="nc" id="L155">			    } catch (IOException e1) {</span>
+<span class="nc" id="L156">					e1.printStackTrace();</span>
+<span class="nc" id="L157">				}</span>
 			}
 		}
-<span class="nc" id="L182">	}</span>
+<span class="nc" id="L160">	}</span>
 	
 }
 

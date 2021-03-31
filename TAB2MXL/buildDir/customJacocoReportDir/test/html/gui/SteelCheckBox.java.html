@@ -7,9 +7,9 @@
 public class SteelCheckBox extends javax.swing.JCheckBox
 {
     // &lt;editor-fold defaultstate=&quot;collapsed&quot; desc=&quot;Variable declaration&quot;&gt;
-<span class="nc" id="L10">    private boolean colored = false;</span>
-<span class="nc" id="L11">    private boolean rised = false;</span>
-<span class="nc" id="L12">    private ColorDef selectedColor = ColorDef.JUG_GREEN;</span>
+<span class="fc" id="L10">    private boolean colored = false;</span>
+<span class="fc" id="L11">    private boolean rised = false;</span>
+<span class="fc" id="L12">    private ColorDef selectedColor = ColorDef.JUG_GREEN;</span>
     protected static final String COLORED_PROPERTY = &quot;colored&quot;;
     protected static final String COLOR_PROPERTY = &quot;color&quot;;
     protected static final String RISED_PROPERTY = &quot;rised&quot;;
@@ -18,10 +18,10 @@ public class SteelCheckBox extends javax.swing.JCheckBox
     // &lt;editor-fold defaultstate=&quot;collapsed&quot; desc=&quot;Constructor&quot;&gt;
     public SteelCheckBox()
     {
-<span class="nc" id="L21">        super();</span>
-<span class="nc" id="L22">        setPreferredSize(new java.awt.Dimension(100, 26));</span>
-<span class="nc" id="L23">        setOpaque(false);</span>
-<span class="nc" id="L24">        }</span>
+<span class="fc" id="L21">        super();</span>
+<span class="fc" id="L22">        setPreferredSize(new java.awt.Dimension(100, 26));</span>
+<span class="fc" id="L23">        setOpaque(false);</span>
+<span class="fc" id="L24">        }</span>
     // &lt;/editor-fold&gt;
 
     // &lt;editor-fold defaultstate=&quot;collapsed&quot; desc=&quot;Getter/Setter&quot;&gt;
@@ -32,11 +32,11 @@ public class SteelCheckBox extends javax.swing.JCheckBox
 
     public void setColored(final boolean COLORED)
     {
-<span class="nc" id="L35">        final boolean OLD_STATE = this.colored;</span>
-<span class="nc" id="L36">        this.colored = COLORED;</span>
-<span class="nc" id="L37">        firePropertyChange(COLORED_PROPERTY, OLD_STATE, COLORED);</span>
-<span class="nc" id="L38">        repaint();</span>
-<span class="nc" id="L39">    }</span>
+<span class="fc" id="L35">        final boolean OLD_STATE = this.colored;</span>
+<span class="fc" id="L36">        this.colored = COLORED;</span>
+<span class="fc" id="L37">        firePropertyChange(COLORED_PROPERTY, OLD_STATE, COLORED);</span>
+<span class="fc" id="L38">        repaint();</span>
+<span class="fc" id="L39">    }</span>
 
     public boolean isRised()
     {
@@ -45,10 +45,10 @@ public class SteelCheckBox extends javax.swing.JCheckBox
 
     public void setRised(final boolean RISED)
     {
-<span class="nc" id="L48">        final boolean OLD_VALUE = this.rised;</span>
-<span class="nc" id="L49">        this.rised = RISED;</span>
-<span class="nc" id="L50">        firePropertyChange(RISED_PROPERTY, OLD_VALUE, RISED);</span>
-<span class="nc" id="L51">    }</span>
+<span class="fc" id="L48">        final boolean OLD_VALUE = this.rised;</span>
+<span class="fc" id="L49">        this.rised = RISED;</span>
+<span class="fc" id="L50">        firePropertyChange(RISED_PROPERTY, OLD_VALUE, RISED);</span>
+<span class="fc" id="L51">    }</span>
 
     public ColorDef getSelectedColor()
     {
@@ -57,17 +57,17 @@ public class SteelCheckBox extends javax.swing.JCheckBox
 
     public void setSelectedColor(final ColorDef SELECTED_COLOR)
     {
-<span class="nc" id="L60">        final ColorDef OLD_COLOR = this.selectedColor;</span>
-<span class="nc" id="L61">        this.selectedColor = SELECTED_COLOR;</span>
-<span class="nc" id="L62">        firePropertyChange(COLOR_PROPERTY, OLD_COLOR, SELECTED_COLOR);</span>
-<span class="nc" id="L63">        repaint();</span>
-<span class="nc" id="L64">    }</span>
+<span class="fc" id="L60">        final ColorDef OLD_COLOR = this.selectedColor;</span>
+<span class="fc" id="L61">        this.selectedColor = SELECTED_COLOR;</span>
+<span class="fc" id="L62">        firePropertyChange(COLOR_PROPERTY, OLD_COLOR, SELECTED_COLOR);</span>
+<span class="fc" id="L63">        repaint();</span>
+<span class="fc" id="L64">    }</span>
 
     @Override
     public void setUI(final javax.swing.plaf.ButtonUI BUI)
     {
-<span class="nc" id="L69">        super.setUI(new SteelCheckBoxUI(this));</span>
-<span class="nc" id="L70">    }</span>
+<span class="fc" id="L69">        super.setUI(new SteelCheckBoxUI(this));</span>
+<span class="fc" id="L70">    }</span>
 
     public void setUi(final javax.swing.plaf.ComponentUI UI)
     {

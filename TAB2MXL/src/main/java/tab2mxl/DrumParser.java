@@ -22,6 +22,7 @@ public class DrumParser {
 	private int[] voices;
 	private String[] instruments;
 	private int totalDash;
+	private double rest;
 
 //	public static void main(String[] args) {
 //
@@ -92,7 +93,13 @@ public class DrumParser {
 		double totalBeatPerMeasure = (1.0 * beat)/beatType;
 		int duration = 0;
 		int totalDuration = 0;
-
+		ArrayList<String> chords = new ArrayList<String>();
+		ArrayList<String> chordNotes = new ArrayList<String>();
+		ArrayList<Integer> chordOctaves = new ArrayList<Integer>();
+		ArrayList<String> chordIDs = new ArrayList<String>();
+		ArrayList<String> chordSymbols = new ArrayList<String>();
+		int dash = 1;
+		int dot = 0;
 		for (int i= 0;i< Measure.size();i++) {                                     //For each measure
 
 			System.out.println("Entered measure: " + i);
@@ -116,13 +123,46 @@ public class DrumParser {
 					 double beatNote = 0;
 
 					 if (chord > 1) {
-						 // fileGen Cord
+						// fileGen Chord
+						 for(int inst = 0; inst < column.length; inst++) {
+							 if(!column[inst].equals("-")) {
+								 chords.add(column[inst]);
+								 chordNotes.add(tuning.getNote(instruments[inst]));
+								 chordOctaves.add(tuning.getOctave(instruments[inst]));
+								 chordIDs.add(tuning.getID(instruments[inst], column[inst]));
+								 chordSymbols.add(column[inst]);
+								 dash = 1;
+								 int increment = 1;
+								 while (true) {
+									 if (((k + increment) < Measure.get(i).size()) && containsOnlyStringV(Measure.get(i).get(k + increment), j + 1, "-")) {
+										 dash++;
+										 increment++;
+									 } else
+										 break;
+								 }
+							 }
+						 }
+						 beatNote = beatNote((dash * totalBeatPerMeasure) / totalDash); // to do is make array for total dash
+						 System.out.println("Dash: " + dash);
+						 dot = dot(beatNote);
+						 duration = getDuration(beatNote, Measure.get(i)) - getDuration(rest,Measure.get(i));
+						 totalDuration += duration;
+						 fileGen.addDrumChord(chords, duration, chordNotes, chordOctaves, chordIDs, chordSymbols,dot, noteType(beatNote), j+1);
+							if(rest > 0) {
+								fileGen.addRest(getDuration(rest,Measure.get(i)), noteType(rest), j+1);
+								rest = 0.0;
+							}
+						 //Clear the ArrayLists after use
+						 chords.clear();
+						 chordNotes.clear();
+						 chordOctaves.clear();
+						 chordIDs.clear();
+						 chordSymbols.clear();
 					 } else {
 						 //filGen note
 						 for (int inst = 0; inst < column.length; inst++) {//For each char in column
-
-							 if (!column[inst].equals("-")) { //Is an x
-								 int dash = 1;
+							 if (!column[inst].equals("-")) { //Is an x or o
+								 dash = 1;
 								 int increment = 1;
 								 while (true) {
 									 if (((k + increment) < Measure.get(i).size()) && containsOnlyStringV(Measure.get(i).get(k + increment), j + 1, "-")) {
@@ -133,9 +173,14 @@ public class DrumParser {
 								 }
 								 beatNote = beatNote((dash * totalBeatPerMeasure) / totalDash); // to do is make array for total dash
 								 System.out.println("Dash: " + dash);
-								 duration = getDuration(beatNote, Measure.get(i));
+								 dot = dot(beatNote);
+								 duration = getDuration(beatNote, Measure.get(i)) - getDuration(rest,Measure.get(i));
 								 totalDuration += duration;
-								 fileGen.addDrumNote(column[inst], duration, tuning.getNote(instruments[inst]), tuning.getOctave(instruments[inst]), tuning.getID(instruments[inst], column[inst]), noteType(beatNote), voices[inst]);
+								 fileGen.addDrumNote(column[inst], duration, tuning.getNote(instruments[inst]), tuning.getOctave(instruments[inst]), tuning.getID(instruments[inst], column[inst]), noteType(beatNote), voices[inst], dot);
+									if(rest > 0) {
+										fileGen.addRest(getDuration(rest,Measure.get(i)), noteType(rest),voices[inst]);
+										rest = 0.0;
+									}
 							 }
 						 }
 					 }
@@ -143,8 +188,8 @@ public class DrumParser {
 				 if (j == 0) {
 					 fileGen.Backup(totalDuration);
 				 }
+				 totalDuration = 0;
 			 }
-			 totalDuration = 0;
 			System.out.println("closing measure");
 			 if(fileGen.measureOpen){
 				 fileGen.closeDrumMeasure();
@@ -302,6 +347,42 @@ public class DrumParser {
 			return (int)Math.round(output);
 	}
 
+	private int dot(double beatNote) {
+		int output = 0;
+		double check = 0.0;
+		double check2 = 0.0;
+		double temp;
+		double div = 2.0;
+		for(double i = 2.0; i > 0.0; i = i/2.0) {
+			if(beatNote >= i) {
+				check = i;
+				break;
+			}
+		}
+		temp = check;
+		check2 = check;
+		
+		while(true) {
+			check = check + temp/div;
+			if(check2 < beatNote && beatNote > check) {
+				output++;
+			}else if(beatNote == check) {
+				output++;
+				break;
+			}else if(beatNote < check) {
+				if(check - beatNote < check - check2) {
+					//add the rest here
+					rest = beatNote(beatNote - check2);
+				}else {
+					break;
+				}
+			}
+			check2 = check2 + temp/div;
+			div *= 2;
+			}
+		return output;
+		}
+	
 	protected static String noteType(double beatNote) {
 		String output = "";
 

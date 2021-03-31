@@ -4,10 +4,25 @@ import java.util.ArrayList;
 
 public class DrumParser {
 	
-<span class="nc" id="L7">	public DrumParser (ArrayList&lt;ArrayList&lt;String&gt;&gt; input) {</span>
+	public static void main(String[] args) {
+		//Testing DrumTuning
+<span class="nc" id="L9">		String[] a = {&quot;BD&quot;, &quot;CC&quot;, &quot;F&quot;};</span>
+<span class="nc" id="L10">		int d = 2;</span>
+<span class="nc" id="L11">		DrumTuning test = new DrumTuning(a, d);</span>
 		
-		
+<span class="nc" id="L13">		System.out.print(test.getNote(&quot;BD&quot;));</span>
+<span class="nc" id="L14">		System.out.println(test.getOctave(&quot;BD&quot;));</span>
+<span class="nc" id="L15">		System.out.print(test.getNote(&quot;CC&quot;));</span>
+<span class="nc" id="L16">		System.out.println(test.getOctave(&quot;CC&quot;));</span>
+<span class="nc" id="L17">		System.out.print(test.getNote(&quot;F&quot;));</span>
+<span class="nc" id="L18">		System.out.println(test.getOctave(&quot;F&quot;));</span>
+<span class="nc" id="L19">		System.out.println(test.unSupportedDrum);</span>
+<span class="nc" id="L20">		System.out.println(test.getID(&quot;CC&quot;, &quot;x&quot;));</span>
+<span class="nc" id="L21">		System.out.println(test.getVoice(&quot;CC&quot;));</span>
+<span class="nc" id="L22">	}</span>
+	
+<span class="nc" id="L24">	public DrumParser (ArrayList&lt;ArrayList&lt;String&gt;&gt; input) {</span>
 				
-<span class="nc" id="L11">	}	</span>
+<span class="nc" id="L26">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>
