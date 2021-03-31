@@ -1,16 +1,20 @@
 BD||F4|o|P1-I36|-Bass-drum-1----
 BA||F4|o|P1-I36|-Bass-drum-1----
-CC||A5|x|P1-I50|-Crash-cymbal-1-
-HH||G5|o|P1-I47|-Hi-hat(o)------
-HH||G5|x|P1-I43|-Hi-hat(x)------
-RC||F5|x|P1-I52|-Ride-cymbal-1--
-Rd||F5|x|P1-I52|-Ride-cymbal-1--
+B ||F4|o|P1-I36|-Bass-drum-1----
+FT||A4|o|P1-I42|-Floor-tom------
+F ||A4|o|P1-I42|-Floor-tom------
 SD||C5|o|P1-I39|-Snare----------
 SN||C5|o|P1-I39|-Snare----------
 S ||C5|o|P1-I39|-Snare----------
+MT||D5|o|P1-I46|-Medium-tom-----
+T2||D5|o|P1-I46|-Medium-tom-----
 HT||E5|o|P1-I48|-High-tom-------
 T ||E5|o|P1-I48|-High-tom-------
 T1||E5|o|P1-I48|-High-tom-------
-MT||D5|o|P1-I46|-Medium-tom-----
-FT||A4|o|P1-I42|-Floor-tom------
-F ||A4|o|P1-I42|-Floor-tom------
+RC||F5|x|P1-I52|-Ride-cymbal-1--
+Rd||F5|x|P1-I52|-Ride-cymbal-1--
+R ||F5|x|P1-I52|-Ride-cymbal-1--
+HH||G5|o|P1-I47|-Hi-hat(o)------
+HH||G5|x|P1-I43|-Hi-hat(x)------
+CC||A5|x|P1-I50|-Crash-cymbal-1-
+C ||A5|x|P1-I50|-Crash-cymbal-1-

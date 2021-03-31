@@ -10,15 +10,3 @@ C#||C#|D |D#|E |F |F#|G |G#|A |A#|B |C |
 G#||G#|A |A#|B |C |C#|D |D#|E |F |F#|G |
 A#||A#|B |C |C#|D |D#|E |F |F#|G |G#|A |
 D#||D#|E |F |F#|G |G#|A |A#|B |C |C#|D |
-e ||E |F |F#|G |G#|A |A#|B |C |C#|D |D#|
-b ||B |C |C#|D |D#|E |F |F#|G |G#|A |A#|
-g ||G |G#|A |A#|B |C |C#|D |D#|E |F |F#|
-d ||D |D#|E |F |F#|G |G#|A |A#|B |C |C#|
-a ||A |A#|B |C |C#|D |D#|E |F |F#|G |G#|
-c ||C#|D |D#|E |F |F#|G |G#|A |A#|B |C |
-f ||F |F#|G |G#|A |A#|B |C |C#|D |D#|E |
-f#||F#|G |G#|A |A#|B |C |C#|D |D#|E |F |
-c#||C#|D |D#|E |F |F#|G |G#|A |A#|B |C |
-g#||G#|A |A#|B |C |C#|D |D#|E |F |F#|G |
-a#||A#|B |C |C#|D |D#|E |F |F#|G |G#|A |
-d#||D#|E |F |F#|G |G#|A |A#|B |C |C#|D |

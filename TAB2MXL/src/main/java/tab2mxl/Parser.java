@@ -59,7 +59,7 @@ public class Parser {
 //		System.out.println("beat: " + beat);
 //		System.out.println("beatType: " + beatType);
 		
-		for(int i = 0; i < input.size(); i++) {			
+		for(int i = 0; i < input.size(); i++) {		
 			if(input.get(i).size() < 2)
 				break;
 			stringAmount++;
@@ -68,8 +68,11 @@ public class Parser {
 		for(int i = 0; i < input.size(); i++) {
 			if(input.get(i).size() < 2 && input.get(i-1).size() > 2 && i != input.size())
 				tabLineAmount++;
+			/*if(input.get(i).size() < 2 && input.get(i-1).size() < 2 && i != input.size())
+				input.remove(i);*/
 		}
-				
+		System.out.println("TabLineAmount: " + tabLineAmount);
+		
 		//Transpose columns to rows (do you mean rows to col?)
 		columns = new ArrayList<char[]>();
 		
@@ -219,9 +222,9 @@ public class Parser {
 				chord = true;
 			}
 			
-			/////////////////////////////////////
-			//Loop through each row of the column
-			/////////////////////////////////////
+			///////////////////////////////////////
+			//Loop through each row of the column//
+			///////////////////////////////////////
 			for(int j = 0; j < col.length; j++)
 			{
 				doubleDigit = false;
@@ -245,7 +248,7 @@ public class Parser {
 						}
 					}
 				}
-				if (count == stringAmount) {
+				if (count == 6) {
 					measure++;
 					count = 0;					
 					
@@ -353,12 +356,10 @@ public class Parser {
 						fret = 0;
 					}
 					if (!chord) {
-						if (tunner.getNote(tune[line-1],fret).substring(tunner.getNote(tune[line-1], fret).length()-1,tunner.getNote(tune[line-1], fret).length()).equals("#")){
+						if (tunner.getNote(tune[line-1], fret, line).substring(tunner.getNote(tune[line-1], fret, line).length()-1,tunner.getNote(tune[line-1], fret, line).length()).equals("#")){
 							sharpnote = true;
 						}
-
-
-						fileGen.addNote(line, fret, tunner.getNote(tune[line-1], fret).charAt(0), noteType(beatNote), getDuration(beatNote), tunner.getOctave(tune[line-1], fret), dot(beatNote),sharpnote, hammerStart,hammerContinue,hammerDone,harmonic,grace);
+						fileGen.addNote(line, fret, tunner.getNote(tune[line-1], fret, line).charAt(0), noteType(beatNote), getDuration(beatNote) - getDuration(rest), tunner.getOctave(tune[line-1], fret, line), dot(beatNote),sharpnote, hammerStart,hammerContinue,hammerDone,harmonic,grace);
 						harmonic = false;
 						grace = false;
 //						System.out.println("");
@@ -366,11 +367,7 @@ public class Parser {
 //						System.out.println("Duration: " + getDuration(beatNote));
 //						System.out.println("");
 						if(rest > 0) {
-							fileGen.addRest(getDuration(rest), noteType(rest));
-//							System.out.println("");
-//							System.out.println("RestDuration : " + getDuration(rest));
-//							System.out.println("RestType : " + noteType(rest));
-//							System.out.println("");
+							fileGen.addRest(getDuration(rest), noteType(rest), -1);
 							rest = 0.0;
 						}
 							
@@ -401,20 +398,20 @@ public class Parser {
     					}
 						linearray[j] = line;
 						fretarray[j] = fret;
-						note = tunner.getNote(tune[line-1], fret).charAt(0);
-						chordOctave = tunner.getOctave(tune[line-1], fret);
+						note = tunner.getNote(tune[line-1], fret, line).charAt(0);
+						chordOctave = tunner.getOctave(tune[line-1], fret, line);
 						chords[j] = note;
 						chordsOctave[j] = chordOctave;
 						chordType = noteType(beatNote);
 						chordDot[j] = dot(beatNote);
-						if (tunner.getNote(tune[line-1], fret).substring(tunner.getNote(tune[line-1], fret).length()-1,tunner.getNote(tune[line-1], fret).length()).equals("#")){
+						if (tunner.getNote(tune[line-1], fret, line).substring(tunner.getNote(tune[line-1], fret, line).length()-1,tunner.getNote(tune[line-1], fret, line).length()).equals("#")){
 							sharp[j] = true;
 						}
 						else 
 							sharp[j] = false;
 					}
 				}
-				if (line == stringAmount) {
+				if (line == 6) {
 					line = 0;
 				}	
 			}
@@ -431,13 +428,9 @@ public class Parser {
 					beatNote = beatNote((dash * totalBeatPerMeasure)/totalDash);/*beatNote((dash * beatTypeNote)/div)*/
 				}
 
-				fileGen.addChord(chords,chordType, getDuration(beatNote), chordsOctave,linearray,fretarray, chordDot,sharp,hammerLocation,hammerStart,hammerContinue,hammerDone,hchord);
+				fileGen.addChord(chords,chordType, getDuration(beatNote) - getDuration(rest), chordsOctave,linearray,fretarray, chordDot,sharp,hammerLocation,hammerStart,hammerContinue,hammerDone,hchord);
 				if(rest > 0) {
-					fileGen.addRest(getDuration(rest), noteType(rest));
-//					System.out.println("");
-//					System.out.println("RestDuration : " + getDuration(rest));
-//					System.out.println("RestType : " + noteType(rest));
-//					System.out.println("");
+					fileGen.addRest(getDuration(rest), noteType(rest), -1);
 					rest = 0.0;
 				}
 				linearray = new int[stringAmount];
@@ -472,8 +465,7 @@ public class Parser {
 			
 			//Skip next 2 columns
 			if(startRepeat)
-			{		
-				System.out.println("startRepeat");
+			{
 				i+= 2;
 				currentColumn += 2;
 				startRepeat = false;
@@ -482,7 +474,6 @@ public class Parser {
 			//Skip 1 column if end of repeat
 			if(endRepeat)
 			{
-				System.out.println("endRepeat");
 				//Skip next column
 				i++;
 				currentColumn++;
@@ -719,6 +710,7 @@ public class Parser {
 		int hyfenNumber = 0;
 		int boundary = 0;
 		int value = 0;
+		int doubleDigit = 0;
 		//System.out.println("");
 		
 		for(int i = 0; i < columns.size(); i++) {
@@ -735,14 +727,18 @@ public class Parser {
 			}
 			if(!containsOnlyChar(columns.get(i), '-')) {
 				value++;
-				//System.out.println("Value: " + value);
+				if(doubleDigit(columns.get(i), columns.get(i+1)))
+					doubleDigit++;
+				System.out.println("Value: " + value);
 			}
 			if(boundary == 1 && value > 1) {				
 				hyfenNumber++;
 				//System.out.println("Hyfen Increase: " + hyfenNumber);
 			}
 		}
-		
+		hyfenNumber -= doubleDigit;
+		System.out.println("HyfenNumber: " + hyfenNumber);
+		System.out.println("DoubleDigit: " + doubleDigit);
 		/*
 		for(int i=0;i< columns.size();i++) {
 			
@@ -790,6 +786,27 @@ public class Parser {
             return (int)Math.round(division);
 	}
 
+	private boolean doubleDigit(char[] b, char[] a) {
+		String nb = "";
+		String na = "";
+		String n = "";
+		boolean output = false;
+		
+		for(int i  = 0; i < b.length; i++) {
+			nb = Character.toString(b[i]);
+			na = Character.toString(a[i]);
+			n = nb + na;
+			try {
+				Integer.parseInt(n);
+				output = output || true;
+			}catch(NumberFormatException e) {
+				output = output || false;
+			}
+		}
+		return output;
+		
+	}
+	
 	static void addInstrument(String instrument){
 		misc.put("Instrument", instrument);
 	}
