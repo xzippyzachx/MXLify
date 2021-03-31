@@ -306,11 +306,9 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 			if (input == null) {
 				return;
 			}
-								
-			//Detect if the text area is empty
-			
+
 			//Detect if the text area is empty	
-			/*int lineLength = 0;
+			int lineLength = 0;
 			for(int i = 0; i < input.size(); i++) {
 				if(input.get(i).size() != 0) {
 					lineLength = input.get(i).size();
@@ -320,9 +318,7 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 					input.remove(i);
 				}
 			}
-			
 			System.out.println("Input size: " + input.size());
-			
 			for (ArrayList<String> line : input) {
 				if(line.size() != lineLength && line.size() != 0)
 				{
@@ -331,25 +327,14 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 					errorText.setText("Wrong Formatting");
 					return;
 				}
-			}*/
-			
-			int lineLength = input.get(0).size();
-			for (ArrayList<String> line : input) {
-				if(line.size() != lineLength && line.size() != 0)
-				{
-					errorText.setText("Wrong Formatting");
-					return;
-				}
 			}
 						
-			/*
-			for (ArrayList<String> line : input) {
+			/*for (ArrayList<String> line : input) {
 				for (String chr : line) {
 					System.out.print(chr);
 				}
 				System.out.println("");
-			}
-			*/
+			}*/
 			
 			setInstrument(instrumentList.getSelectedItem().toString());
 			setTitle(songName.getText());
