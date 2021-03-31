@@ -17,7 +17,7 @@ import javax.swing.undo.UndoManager;
 public class UndoRedoTextArea extends ColumnTextArea implements UndoableEditListener, FocusListener, KeyListener {
 
 	private UndoManager manager; // Manager to track changes
-	//private UndoManager lastManager;   //Bug Fix
+	private UndoManager lastManager; 
 	
 	public UndoRedoTextArea() { // Empty text area
 		this(new String());
@@ -40,14 +40,12 @@ public class UndoRedoTextArea extends ColumnTextArea implements UndoableEditList
 	}
 
 	public void focusGained(FocusEvent fe) { // Create a manager when focus is on text area
-		//if (lastManager == null ) createUndoManager();  // BUG FIX
-		//else manager = lastManager;                      // BUG FIX
-		createUndoManager();
+		if (lastManager == null ) createUndoManager();  
+		else manager = lastManager;                      
 	}
 
 	public void focusLost(FocusEvent fe) { // Remove manager when focus is not on text area
-		// lastManager = manager;      // BUG FIX
-		removeUndoManager();
+		lastManager = manager;      
 	}
 
 	public void undoableEditHappened(UndoableEditEvent e) {
