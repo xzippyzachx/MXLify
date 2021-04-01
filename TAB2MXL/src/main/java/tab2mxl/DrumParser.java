@@ -25,6 +25,7 @@ public class DrumParser{
 	private double rest;
 	private DrumTuning tuning;
 	private FileGenerator fileGen;
+	private Map<Integer,String[]> InstrumentList;
 
 //	public static void main(String[] args) {
 //
@@ -76,6 +77,7 @@ public class DrumParser{
 
 
 		this.input = input;
+
 		ArrayList<ArrayList<String>> transposedInput = transpose(input);
 		Measure = CreateMeasureArray(transposedInput);
 
@@ -85,6 +87,8 @@ public class DrumParser{
 
 		System.out.println("instruments");
 		instruments = getInstruments(transposedInput.get(0));
+
+
 		tuning = new DrumTuning(instruments, instruments.length);
 
 		voices = setVoice(tuning,instruments);
@@ -102,96 +106,106 @@ public class DrumParser{
 		ArrayList<String> chordSymbols = new ArrayList<String>();
 		int dash = 1;
 		int dot = 0;
+
+
+
 		for (int i= 0;i< Measure.size();i++) {                                     //For each measure
 
 			System.out.println("Entered measure: " + i);
-			fileGen.openDrumMeasure(i + 1);
-
-			if(i == 0){                                                            //first measure
-				fileGen.attributesDrum((int) ((divisionsArray.get(0))/1), beat, beatType );    //Add attributes
+			if(Measure.get(i).size() ==2){
+				instruments = getInstruments(Measure.get(i).get(0));
+				tuning = new DrumTuning(instruments, instruments.length);
+				voices = setVoice(tuning,instruments);
 			}
-			 for(int j =0; j<2;j++) {                                          //for each voice in measure
-				 for (int k = 0; k < Measure.get(i).size(); k++) {  //for each column of measure
-					 String[] column = new String[Measure.get(i).get(k).size()];
-					 int chord = 0;
-					 for (int l = 0; l < Measure.get(i).get(k).size(); l++) {
-						 if (voices[l] == j + 1 && !Measure.get(i).get(k).get(l).equals("-")) {
-							 column[l] = Measure.get(i).get(k).get(l);
-							 chord++;
-						 } else {
-							 column[l] = "-";
-						 }
-					 }
-					 double beatNote = 0;
 
-					 if (chord > 1) {
-						// fileGen Chord
-						 for(int inst = 0; inst < column.length; inst++) {
-							 if(!column[inst].equals("-")) {
-								 chords.add(column[inst]);
-								 chordNotes.add(tuning.getNote(instruments[inst]));
-								 chordOctaves.add(tuning.getOctave(instruments[inst]));
-								 chordIDs.add(tuning.getID(instruments[inst], column[inst]));
-								 chordSymbols.add(column[inst]);
-								 dash = 1;
-								 int increment = 1;
-								 while (true) {
-									 if (((k + increment) < Measure.get(i).size()) && containsOnlyStringV(Measure.get(i).get(k + increment), j + 1, "-")) {
-										 dash++;
-										 increment++;
-									 } else
-										 break;
-								 }
-							 }
-						 }
-						 beatNote = beatNote((dash * totalBeatPerMeasure) / totalDash); // to do is make array for total dash
-						 System.out.println("Dash: " + dash);
-						 dot = dot(beatNote);
-						 duration = getDuration(beatNote, Measure.get(i)) - getDuration(rest,Measure.get(i));
-						 totalDuration += duration;
-						 fileGen.addDrumChord(chords, duration, chordNotes, chordOctaves, chordIDs, chordSymbols,dot, noteType(beatNote), j+1);
-							if(rest > 0) {
-								fileGen.addRest(getDuration(rest,Measure.get(i)), noteType(rest), j+1);
+			else{
+				fileGen.openDrumMeasure(i + 1);
+				if (i == 0) {                                                            //first measure
+					fileGen.attributesDrum((int) ((divisionsArray.get(0)) / 1), beat, beatType);    //Add attributes
+				}
+				for (int j = 0; j < 2; j++) {                                          //for each voice in measure
+					for (int k = 0; k < Measure.get(i).size(); k++) {  //for each column of measure
+						String[] column = new String[Measure.get(i).get(k).size()];
+						int chord = 0;
+						for (int l = 0; l < Measure.get(i).get(k).size(); l++) {
+							if (voices[l] == j + 1 && !Measure.get(i).get(k).get(l).equals("-")) {
+								column[l] = Measure.get(i).get(k).get(l);
+								chord++;
+							} else {
+								column[l] = "-";
+							}
+						}
+						double beatNote = 0;
+
+						if (chord > 1) {
+							// fileGen Chord
+							for (int inst = 0; inst < column.length; inst++) {
+								if (!column[inst].equals("-")) {
+									chords.add(column[inst]);
+									chordNotes.add(tuning.getNote(instruments[inst]));
+									chordOctaves.add(tuning.getOctave(instruments[inst]));
+									chordIDs.add(tuning.getID(instruments[inst], column[inst]));
+									chordSymbols.add(column[inst]);
+									dash = 1;
+									int increment = 1;
+									while (true) {
+										if (((k + increment) < Measure.get(i).size()) && containsOnlyStringV(Measure.get(i).get(k + increment), j + 1, "-")) {
+											dash++;
+											increment++;
+										} else
+											break;
+									}
+								}
+							}
+							beatNote = beatNote((dash * totalBeatPerMeasure) / totalDash); // to do is make array for total dash
+							System.out.println("Dash: " + dash);
+							dot = dot(beatNote);
+							duration = getDuration(beatNote, Measure.get(i)) - getDuration(rest, Measure.get(i));
+							totalDuration += duration;
+							fileGen.addDrumChord(chords, duration, chordNotes, chordOctaves, chordIDs, chordSymbols, dot, noteType(beatNote), j + 1);
+							if (rest > 0) {
+								fileGen.addRest(getDuration(rest, Measure.get(i)), noteType(rest), j + 1);
 								rest = 0.0;
 							}
-						 //Clear the ArrayLists after use
-						 chords.clear();
-						 chordNotes.clear();
-						 chordOctaves.clear();
-						 chordIDs.clear();
-						 chordSymbols.clear();
-					 } else {
-						 //filGen note
-						 for (int inst = 0; inst < column.length; inst++) {//For each char in column
-							 if (!column[inst].equals("-")) { //Is an x or o
-								 dash = 1;
-								 int increment = 1;
-								 while (true) {
-									 if (((k + increment) < Measure.get(i).size()) && containsOnlyStringV(Measure.get(i).get(k + increment), j + 1, "-")) {
-										 dash++;
-										 increment++;
-									 } else
-										 break;
-								 }
-								 beatNote = beatNote((dash * totalBeatPerMeasure) / totalDash); // to do is make array for total dash
-								 System.out.println("Dash: " + dash);
-								 dot = dot(beatNote);
-								 duration = getDuration(beatNote, Measure.get(i)) - getDuration(rest,Measure.get(i));
-								 totalDuration += duration;
-								 fileGen.addDrumNote(column[inst], duration, tuning.getNote(instruments[inst]), tuning.getOctave(instruments[inst]), tuning.getID(instruments[inst], column[inst]), noteType(beatNote), voices[inst], dot);
-									if(rest > 0) {
-										fileGen.addRest(getDuration(rest,Measure.get(i)), noteType(rest),voices[inst]);
+							//Clear the ArrayLists after use
+							chords.clear();
+							chordNotes.clear();
+							chordOctaves.clear();
+							chordIDs.clear();
+							chordSymbols.clear();
+						} else {
+							//filGen note
+							for (int inst = 0; inst < column.length; inst++) {//For each char in column
+								if (!column[inst].equals("-")) { //Is an x or o
+									dash = 1;
+									int increment = 1;
+									while (true) {
+										if (((k + increment) < Measure.get(i).size()) && containsOnlyStringV(Measure.get(i).get(k + increment), j + 1, "-")) {
+											dash++;
+											increment++;
+										} else
+											break;
+									}
+									beatNote = beatNote((dash * totalBeatPerMeasure) / totalDash); // to do is make array for total dash
+									System.out.println("Dash: " + dash);
+									dot = dot(beatNote);
+									duration = getDuration(beatNote, Measure.get(i)) - getDuration(rest, Measure.get(i));
+									totalDuration += duration;
+									fileGen.addDrumNote(column[inst], duration, tuning.getNote(instruments[inst]), tuning.getOctave(instruments[inst]), tuning.getID(instruments[inst], column[inst]), noteType(beatNote), voices[inst], dot);
+									if (rest > 0) {
+										fileGen.addRest(getDuration(rest, Measure.get(i)), noteType(rest), voices[inst]);
 										rest = 0.0;
 									}
-							 }
-						 }
-					 }
-				 }
-				 if (j == 0) {
-					 fileGen.Backup(totalDuration);
-				 }
-				 totalDuration = 0;
-			 }
+								}
+							}
+						}
+					}
+					if (j == 0) {
+						fileGen.Backup(totalDuration);
+					}
+					totalDuration = 0;
+				}
+			}
 			System.out.println("closing measure");
 			 if(fileGen.measureOpen){
 				 fileGen.closeDrumMeasure();
@@ -220,6 +234,10 @@ public class DrumParser{
 
 	}
 
+	private ArrayList<String[]> CreateInsturmentList() {
+		return null;
+	}
+
 	private String[] getInstruments(ArrayList<String> col){ // returns null if the tuning does
 		String column = String.join("",col);
 		String regexPattern = "(BD|BA|CC|HH|RC|Rd|SD|SN|S|HT|T|T1|MT|FT|F){1,6}";
@@ -238,16 +256,33 @@ public class DrumParser{
 	}
 
 	private ArrayList<ArrayList<String>> transpose(ArrayList<ArrayList<String>> input){
-		ArrayList<ArrayList<String>> transposed = new ArrayList<>();
-		for(int i = 0; i<input.get(0).size();i++){           //for all cols
-			ArrayList<String> transposedCol = new ArrayList<>();
-			for(int j = 0; j<input.size(); j++){              //for all rows
-				transposedCol.add(input.get(j).get(i));      //Create col
+		ArrayList<ArrayList<ArrayList<String>>> sanitizeInput = new ArrayList<>();
+		for(int rows =0; rows< input.size();rows++){
+			ArrayList<ArrayList<String>> drumBlock = new ArrayList<>();
+			while(rows<input.size()){
+				if(input.get(rows).contains("|") && input.get(rows).contains("-")){
+					drumBlock.add(input.get(rows));
+					rows++;
+				}
+				else{
+					break;
+				}
 			}
-			transposed.add(transposedCol);
+			sanitizeInput.add(drumBlock);
 		}
 
-
+		ArrayList<ArrayList<String>> transposed = new ArrayList<>();
+		for(ArrayList<ArrayList<String>> block:sanitizeInput ) {
+			if(block.size()!=0) {
+				for (int i = 0; i < block.get(0).size(); i++) {           //for all cols
+					ArrayList<String> transposedCol = new ArrayList<>();
+					for (int j = 0; j < block.size(); j++) {              //for all rows
+						transposedCol.add(block.get(j).get(i));      //Create col
+					}
+					transposed.add(transposedCol);
+				}
+			}
+		}
 		return transposed;
 	}
 
