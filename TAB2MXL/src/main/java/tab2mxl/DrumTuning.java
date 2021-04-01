@@ -39,6 +39,8 @@ public class DrumTuning {
 				drumName = line.substring(0, 2).trim();
 				drumIDName += drumName;
 				for(int i = 0; i < drums.length; i++) {
+					if(drums[i].equals("H"))
+						drums[i] = "HH";
 					if(drumName.equals(drums[i])) {
 						String notePlusOctave = line.substring(4, line.indexOf('|', 4));
 						String note = notePlusOctave.substring(0, notePlusOctave.length()-1);
