@@ -9,7 +9,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.ArrayList;
 
-public class DrumParser {
+public class DrumParser{
 	ArrayList<ArrayList<String>> input;
 	ArrayList<ArrayList<String>> TransInput = new ArrayList<>();
 	private boolean	hasTuning;
@@ -23,6 +23,8 @@ public class DrumParser {
 	private String[] instruments;
 	private int totalDash;
 	private double rest;
+	private DrumTuning tuning;
+	private FileGenerator fileGen;
 
 //	public static void main(String[] args) {
 //
@@ -83,11 +85,11 @@ public class DrumParser {
 
 		System.out.println("instruments");
 		instruments = getInstruments(transposedInput.get(0));
-		DrumTuning tuning = new DrumTuning(instruments, instruments.length);
+		tuning = new DrumTuning(instruments, instruments.length);
 
 		voices = setVoice(tuning,instruments);
 
-		FileGenerator fileGen = new FileGenerator("");
+		fileGen = new FileGenerator("");
 		fileGen.addInfoDrums(misc.get("Title"));
 
 		double totalBeatPerMeasure = (1.0 * beat)/beatType;
