@@ -240,7 +240,7 @@ public class DrumParser{
 
 	private String[] getInstruments(ArrayList<String> col){ // returns null if the tuning does
 		String column = String.join("",col);
-		String regexPattern = "(BD|BA|CC|HH|RC|Rd|SD|SN|S|HT|T|T1|MT|FT|F){1,6}";
+		String regexPattern = "(BD|BA|B|T2|R|C|CC|HH|RC|Rd|SD|SN|S|HT|T|T1|MT|FT|F){1,10}";
 		Pattern pattern = Pattern.compile(regexPattern, Pattern.CASE_INSENSITIVE);
 		Matcher matcher = pattern.matcher(column);
 		boolean matchFound = matcher.find();

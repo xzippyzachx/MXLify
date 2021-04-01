@@ -318,15 +318,15 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 				}
 			}
 			System.out.println("Input size: " + input.size());
-			for (ArrayList<String> line : input) {
-				if(line.size() != lineLength && line.size() != 0)
-				{
-					System.out.println("Line size: " + line.size());
-					System.out.println("Line length: " + lineLength);
-					errorText.setText("Wrong Formatting");
-					return;
-				}
-			}
+//			for (ArrayList<String> line : input) {
+//				if(line.size() != lineLength && line.size() != 0)
+//				{
+//					System.out.println("Line size: " + line.size());
+//					System.out.println("Line length: " + lineLength);
+//					errorText.setText("Wrong Formatting");
+//					return;
+//				}
+//			}
 						
 			/*for (ArrayList<String> line : input) {
 				for (String chr : line) {
