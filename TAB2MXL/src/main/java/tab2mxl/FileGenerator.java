@@ -735,13 +735,13 @@ public class FileGenerator {
 		write(currentIndent + "<note>");
 		currentIndent += "  ";
 		newLine();
-		write(currentIndent + "<pitch>");
 		if (grace) {
 			 write(currentIndent + "<grace/>");
 			 newLine();
-			}
-		currentIndent += "  ";
+		}
+		write(currentIndent + "<pitch>");
 		newLine();
+		currentIndent += "  ";
 		write(currentIndent + "<step>" + note + "</step>");
 		newLine();
 		if (alter) {
@@ -753,10 +753,14 @@ public class FileGenerator {
 		tabBack();
 		write(currentIndent + "</pitch>");
 		newLine();
-		write(currentIndent + "<duration>" + duration + "</duration>");
-		newLine();
-		write(currentIndent + "<type>" + noteType +"</type>");
-		newLine();
+		if(!grace) {
+			write(currentIndent + "<duration>" + duration + "</duration>");
+			newLine();
+		}
+		if(!grace) {
+			write(currentIndent + "<type>" + noteType +"</type>");
+			newLine();
+		}
 		for(int i  = 0; i < dot; i++) {
 			write(currentIndent + "<dot/>");
 			newLine();
