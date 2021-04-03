@@ -146,15 +146,7 @@ public class DrumParser{
 									chordOctaves.add(tuning.getOctave(instruments[inst]));
 									chordIDs.add(tuning.getID(instruments[inst], column[inst]));
 									chordSymbols.add(column[inst]);
-									dash = 1;
-									int increment = 1;
-									while (true) {
-										if (((k + increment) < Measure.get(i).size()) && containsOnlyStringV(Measure.get(i).get(k + increment), j + 1, "-")) {
-											dash++;
-											increment++;
-										} else
-											break;
-									}
+									dash = dash(i,j,k);
 								}
 							}
 							beatNote = beatNote((dash * totalBeatPerMeasure) / totalDash); // to do is make array for total dash
@@ -177,15 +169,7 @@ public class DrumParser{
 							//filGen note
 							for (int inst = 0; inst < column.length; inst++) {//For each char in column
 								if (!column[inst].equals("-")) { //Is an x or o
-									dash = 1;
-									int increment = 1;
-									while (true) {
-										if (((k + increment) < Measure.get(i).size()) && containsOnlyStringV(Measure.get(i).get(k + increment), j + 1, "-")) {
-											dash++;
-											increment++;
-										} else
-											break;
-									}
+									dash = dash(i,j,k);
 									beatNote = beatNote((dash * totalBeatPerMeasure) / totalDash); // to do is make array for total dash
 									System.out.println("Dash: " + dash);
 									dot = dot(beatNote);
@@ -295,9 +279,6 @@ public class DrumParser{
 		ArrayList<String> row		;
 		ArrayList<ArrayList<String>> currentMeasure = null;
 
-
-
-
 		for(startLocation = 0; startLocation < transposedinput.size(); startLocation++){ //For all rows
 			measureStart = false;
 			row = transposedinput.get(startLocation);
@@ -328,6 +309,21 @@ public class DrumParser{
 
 	}
 
+ 	private int dash(int i , int j, int k) {
+ 		int dash = 1;
+ 		int increment = 1;
+ 		
+		while (true) {
+			if (((k + increment) < Measure.get(i).size()) && containsOnlyStringV(Measure.get(i).get(k + increment), j + 1, "-")) {
+				dash++;
+				increment++;
+			} else
+				break;
+		}
+ 		
+ 		return dash;
+ 	}
+ 	
 	private double getDivision(ArrayList<ArrayList<String>> measure) {
 		double division = 0;
 		int runningcount;

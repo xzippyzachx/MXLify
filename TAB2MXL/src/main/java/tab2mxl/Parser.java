@@ -366,9 +366,7 @@ public class Parser {
 								break;
 						}else
 							break;
-					}
-					
-					//System.out.println("Offset: " + offset);					
+					}				
 				}			
 
 				
@@ -399,10 +397,6 @@ public class Parser {
 						fileGen.addNote(line, fret, tunner.getNote(tune[line-1], fret, line).charAt(0), noteType(beatNote), getDuration(beatNote) - getDuration(rest), tunner.getOctave(tune[line-1], fret, line), dot(beatNote),sharpnote, hammerStart,hammerContinue,hammerDone,harmonic,grace);
 						harmonic = false;
 						grace = false;
-//						System.out.println("");
-//						System.out.println("Dash: " + dash);
-//						System.out.println("Duration: " + getDuration(beatNote));
-//						System.out.println("");
 						if(rest > 0) {
 							fileGen.addRest(getDuration(rest), noteType(rest), -1);
 							rest = 0.0;
@@ -452,8 +446,7 @@ public class Parser {
 					line = 0;
 				}	
 			}
-			
-			
+
 			//Chord
 			if (chord && !grace) { 
 				double beatNote;
@@ -533,6 +526,27 @@ public class Parser {
 		new SuccessPopUp(Main.myFrame, FileGenerator.filepath);
 	}
 	
+	/*private int dash(int i, int j) {
+		char[] col = columns.get(i);
+		int output = 0;
+		boolean breakout = false;
+		for(int g = i; columns.get(g)[j] != '|'; g++)
+        {
+              for (int b = 0; b<col.length;b++) {
+            	  	if(columns.get(g)[b] != '-' && b != j) {  
+            	  		breakout = true;
+            	  		break;
+            	  	}
+              }
+              if(breakout) {
+            	  break;
+              }
+              output++;
+        }
+		
+		return output;
+	}*/
+	
 	private boolean containsOnlyChar(char[] cs, char o) {
 		boolean output = true;
 		
@@ -586,8 +600,6 @@ public class Parser {
 	}
 	
 	private int dot(double beatNote) {
-//		System.out.println("");
-//		System.out.println("DotBeatNote: " + beatNote);
 		int output = 0;
 		double check = 0.0;
 		double check2 = 0.0;
@@ -600,24 +612,20 @@ public class Parser {
 			}
 		}
 		
-//		System.out.println("DotCheck: " + check);
 		temp = check;
 		check2 = check;
 		
 		while(true) {
 			check = check + temp/div;
 			if(check2 < beatNote && beatNote > check) {
-//				System.out.println(check2 + " < " + beatNote + " > " + check);
 				output++;
 			}else if(beatNote == check) {
-//				System.out.println(beatNote + " == " + check);
 				output++;
 				break;
 			}else if(beatNote < check) {
 				if(check - beatNote < check - check2) {
 					//add the rest here
 					rest = beatNote(beatNote - check2);
-//					System.out.println("DotRest: " + rest);
 				}else {
 					break;
 				}
@@ -625,7 +633,6 @@ public class Parser {
 			check2 = check2 + temp/div;
 			div *= 2;
 			}
-//		System.out.println("");
 		return output;
 		}
 
@@ -633,7 +640,6 @@ public class Parser {
 	private double beatNote(double b) {
 		double output = 0.0;
 		
-//		System.out.println("BeatNote: " + b);
 		if(b >= 1.0/256) {
 			if(b >= 2.0) {
 				output = 2.0;
@@ -663,19 +669,15 @@ public class Parser {
 						}
 					}
 				}
-//				System.out.println("Power: " + power);
 				while(div != 1) {
 					div = div/2;
 					maxIndex++;
 				}
 				int temp = (int)(Math.pow(2, maxIndex) * 8);
 				output = 1.0/temp;
-//				System.out.println("Temp: " + temp);
 				output += beatNote(b - output);
 			}
 		}
-		
-//		System.out.println("BeatNoteOut: " + output);
 		
 		return output;
 		}
@@ -731,7 +733,6 @@ public class Parser {
 		double div = getDivisions(beat);
 		double beatTypeNote = 1.0/beatType;
 		output = (noteType * div)/beatTypeNote;
-//		System.out.println("DurationOutput: " + output);
 		if(output%0.5 == 0)
 			return (int)output;
 		else
@@ -751,36 +752,27 @@ public class Parser {
 		int boundary = 0;
 		int value = 0;
 		int doubleDigit = 0;
-		//System.out.println("");
 		
 		for(int i = 0; i < columns.size(); i++) {
 			if(containsOnlyChar(columns.get(i), '-')) {
-				//System.out.println("Dash");
 			}
 			if(containsOnlyChar(columns.get(i), '|')) {
 				boundary++;
-				//System.out.println("Boundary");
 			}
 			if(boundary == 2) {
-				//System.out.println("Break");
 				break;
 			}
 			if(!containsOnlyChar(columns.get(i), '-')) {
 				value++;
 				if(doubleDigit(columns.get(i), columns.get(i+1)))
 					doubleDigit++;
-				//System.out.println("Value: " + value);
 			}
 			if(boundary == 1 && value > 1) {				
 				hyfenNumber++;
-				//System.out.println("Hyfen Increase: " + hyfenNumber);
 			}
 		}
 		hyfenNumber -= doubleDigit;
-		///System.out.println("HyfenNumber: " + hyfenNumber);
-		//System.out.println("DoubleDigit: " + doubleDigit);
-		/*
-		for(int i=0;i< columns.size();i++) {
+		/*for(int i=0;i< columns.size();i++) {
 			
 			if(columns.get(i)[0] == '|'){
 				boundary++;
@@ -810,15 +802,11 @@ public class Parser {
 				}
 		}
 			}*/
-		//System.out.println("");
 		totalDash = hyfenNumber;
 		double beatNote = 1.0/beatType;
 		double bSig  = 1.0 * beatSig;
 		double totalBeatPerMeasure = bSig/beatType;
 		double division = (hyfenNumber * beatNote)/totalBeatPerMeasure;
-		//System.out.println("TBM: " + totalBeatPerMeasure);
-		//System.out.println("hyfen number is "+hyfenNumber);
-		//System.out.println("Division: " + division);
 
 		if(division%0.5 == 0)
             return (int)division;
