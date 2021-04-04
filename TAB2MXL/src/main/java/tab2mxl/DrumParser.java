@@ -110,29 +110,30 @@ public class DrumParser{
 		int currentSpan = 0;
 		int runningSpanCount = 0;
 		boolean repeatOpen = false;
+		int measurecount =0;
 
 
 		for (int i= 0;i< Measure.size();i++) {//For each measure
 			
-			if(currentSpan == 0) {
-				currentSpan = repeats.get(i)[1];
-			}
-			
-			System.out.println("Entered measure: " + i);
+			currentSpan = repeats.get(i)[1];
+
+
 			if(Measure.get(i).size() ==2){
 				instruments = getInstruments(Measure.get(i).get(0));
 				tuning = new DrumTuning(instruments, instruments.length);
 				voices = setVoice(tuning,instruments);
 			}else{
+				measurecount++;
+				System.out.println("Entered measure: " + measurecount);
 				if(repeats.get(i)[0] == 0) {
-					fileGen.openDrumMeasure(i + 1, 0);
+					fileGen.openDrumMeasure(measurecount, 0);
 				}else {
 					if(!repeatOpen) {
-						fileGen.openDrumMeasure(i + 1, repeats.get(i)[0]);
+						fileGen.openDrumMeasure(measurecount, repeats.get(i)[0]);
 						runningSpanCount++;
 						repeatOpen = true;
 					}else {
-						fileGen.openDrumMeasure(i + 1, 0);
+						fileGen.openDrumMeasure(measurecount, 0);
 						runningSpanCount++;
 					}
 				}
@@ -313,7 +314,7 @@ public class DrumParser{
 				input.remove(rows);
 			}
 			if(row.strip().length() == 0 || rows == input.size()-1) {
-				col += input.get(rows-1).size()-1;
+				col += input.get(rows-1).size(); // throws error if first line is blank
 			}
 		}
 		
@@ -370,7 +371,7 @@ public class DrumParser{
 				while (measureStart && startLocation < transposedinput.size() - 1) {
 					if(!hasRepeat) {
 						for(int k : rep.keySet()) {
-							if(startLocation > k && startLocation < rep.get(k)[0]) {
+							if(startLocation > k && startLocation< rep.get(k)[0]) {
 								hasRepeat = true;
 								start = k;
 								end = rep.get(k)[0];
@@ -386,6 +387,7 @@ public class DrumParser{
 					}
 					currentMeasure.add(row);
 				}
+				System.out.println(currentMeasure.size());
 				double span = (end - start)*(1.0)/currentMeasure.size();
 				span = Math.round(span);
 				repeats.add(new Integer[]{repeatValue, (int)span});
