@@ -413,11 +413,40 @@ public class FileGenerator {
 		}
 	}
 
-	public void openDrumMeasure(int measureNumber){
+	public void openDrumMeasure(int measureNumber, int repeat){
 		try {
 			myWriter.write(currentIndent + "<measure number=\"" + measureNumber + "\">");
 			currentIndent += "  ";
 			newLine();
+			
+			if(repeat>0)
+			{
+				myWriter.write(currentIndent + "<barline location=\"left\">");
+				currentIndent += "  ";
+				newLine();
+				myWriter.write(currentIndent + "<bar-style>heavy-light</bar-style>");
+				newLine();
+				myWriter.write(currentIndent + "<repeat direction=\"forward\" times=\"" + repeat + "\"/>");
+				tabBack();
+				newLine();
+				myWriter.write(currentIndent + "</barline>");
+				newLine();
+				myWriter.write(currentIndent + "<direction placement=\"above\">");
+				currentIndent += "  ";
+				newLine();
+				myWriter.write(currentIndent + "<direction-type>");
+				currentIndent += "  ";
+				newLine();
+				myWriter.write(currentIndent + "<words default-x=\"15\" default-y=\"15\" font-size=\"9\" font-style=\"italic\">Repeat " + repeat + "x</words>");
+				tabBack();
+				newLine();
+				myWriter.write(currentIndent + "</direction-type>");
+				tabBack();
+				newLine();
+				myWriter.write(currentIndent + "</direction>");
+		        newLine();
+			}
+			
 			measureOpen = true;
 		}
 		catch(IOException e){
@@ -609,8 +638,23 @@ public class FileGenerator {
 		}
 	}
 
-	public void closeDrumMeasure(){
+	public void closeDrumMeasure(int repeat){
 		try {
+			
+			if(repeat>0)
+			{
+				myWriter.write(currentIndent + "<barline location=\"right\">");
+				currentIndent += "  ";
+				newLine();
+				myWriter.write(currentIndent + "<bar-style>light-heavy</bar-style>");
+				newLine();
+				myWriter.write(currentIndent + "<repeat direction=\"backward\" times=\"" + repeat + "\"/>");
+				tabBack();
+				newLine();
+				myWriter.write(currentIndent + "</barline>");
+				newLine();
+			}
+			
 			tabBack();
 			myWriter.write(currentIndent + "</measure>");
 			newLine();
