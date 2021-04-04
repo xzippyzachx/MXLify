@@ -176,6 +176,7 @@ public class FileGenerator {
 			currentIndent += "  ";
 			newLine();
 			myWriter.write(currentIndent + "<score-part id=\"P1\">");
+			currentIndent += "  ";
 			newLine();
 
 			//Add
@@ -187,8 +188,8 @@ public class FileGenerator {
 			newLine();
 			myWriter.write(currentIndent +  "<instrument-name>Bass Drum 1</instrument-name>");
 			newLine();
-			myWriter.write(currentIndent +  "</score-instrument>");
 			tabBack();
+			myWriter.write(currentIndent +  "</score-instrument>");			
 			newLine();
 
 			myWriter.write(currentIndent +  "<score-instrument id=\"P1-I37\">");
@@ -196,8 +197,8 @@ public class FileGenerator {
 			newLine();
 			myWriter.write(currentIndent +  "<instrument-name>Bass Drum 2</instrument-name>");
 			newLine();
-			myWriter.write(currentIndent +  "</score-instrument>");
 			tabBack();
+			myWriter.write(currentIndent +  "</score-instrument>");			
 			newLine();
 
 			myWriter.write(currentIndent +  "<score-instrument id=\"P1-I38\">");
@@ -205,8 +206,8 @@ public class FileGenerator {
 			newLine();
 			myWriter.write(currentIndent +  "<instrument-name>Side Stick</instrument-name>");
 			newLine();
-			myWriter.write(currentIndent +  "</score-instrument>");
 			tabBack();
+			myWriter.write(currentIndent +  "</score-instrument>");			
 			newLine();
 
 			myWriter.write(currentIndent +  "<score-instrument id=\"P1-I39\">");
@@ -214,8 +215,8 @@ public class FileGenerator {
 			newLine();
 			myWriter.write(currentIndent +  "<instrument-name>Snare</instrument-name>");
 			newLine();
-			myWriter.write(currentIndent +  "</score-instrument>");
 			tabBack();
+			myWriter.write(currentIndent +  "</score-instrument>");			
 			newLine();
 
 			myWriter.write(currentIndent +  "<score-instrument id=\"P1-I42\">");
@@ -223,8 +224,8 @@ public class FileGenerator {
 			newLine();
 			myWriter.write(currentIndent +  "<instrument-name>Low Floor Tom</instrument-name>");
 			newLine();
-			myWriter.write(currentIndent +  "</score-instrument>");
 			tabBack();
+			myWriter.write(currentIndent +  "</score-instrument>");			
 			newLine();
 
 			myWriter.write(currentIndent +  "<score-instrument id=\"P1-I43\">");
@@ -232,8 +233,8 @@ public class FileGenerator {
 			newLine();
 			myWriter.write(currentIndent +  "<instrument-name>Closed Hi-Hat</instrument-name>");
 			newLine();
-			myWriter.write(currentIndent +  "</score-instrument>");
 			tabBack();
+			myWriter.write(currentIndent +  "</score-instrument>");			
 			newLine();
 
 			myWriter.write(currentIndent +  "<score-instrument id=\"P1-I44\">");
@@ -241,8 +242,8 @@ public class FileGenerator {
 			newLine();
 			myWriter.write(currentIndent +  "<instrument-name>High Floor Tom</instrument-name>");
 			newLine();
-			myWriter.write(currentIndent +  "</score-instrument>");
 			tabBack();
+			myWriter.write(currentIndent +  "</score-instrument>");			
 			newLine();
 
 			myWriter.write(currentIndent +  "<score-instrument id=\"P1-I45\">");
@@ -250,8 +251,8 @@ public class FileGenerator {
 			newLine();
 			myWriter.write(currentIndent +  "<instrument-name>Pedal Hi-Hat</instrument-name>");
 			newLine();
-			myWriter.write(currentIndent +  "</score-instrument>");
 			tabBack();
+			myWriter.write(currentIndent +  "</score-instrument>");			
 			newLine();
 
 			myWriter.write(currentIndent +  "<score-instrument id=\"P1-I46\">");
@@ -259,8 +260,8 @@ public class FileGenerator {
 			newLine();
 			myWriter.write(currentIndent +  "<instrument-name>Low Tom</instrument-name>");
 			newLine();
-			myWriter.write(currentIndent +  "</score-instrument>");
 			tabBack();
+			myWriter.write(currentIndent +  "</score-instrument>");			
 			newLine();
 
 			myWriter.write(currentIndent +  "<score-instrument id=\"P1-I47\">");
@@ -268,8 +269,8 @@ public class FileGenerator {
 			newLine();
 			myWriter.write(currentIndent +  "<instrument-name>Open Hi-Hat</instrument-name>");
 			newLine();
-			myWriter.write(currentIndent +  "</score-instrument>");
 			tabBack();
+			myWriter.write(currentIndent +  "</score-instrument>");			
 			newLine();
 
 			myWriter.write(currentIndent +  "<score-instrument id=\"P1-I48\">");
@@ -277,8 +278,8 @@ public class FileGenerator {
 			newLine();
 			myWriter.write(currentIndent +  "<instrument-name>Low-Mid Tom</instrument-name>");
 			newLine();
-			myWriter.write(currentIndent +  "</score-instrument>");
 			tabBack();
+			myWriter.write(currentIndent +  "</score-instrument>");			
 			newLine();
 
 			myWriter.write(currentIndent +  "<score-instrument id=\"P1-I49\">");
@@ -286,8 +287,8 @@ public class FileGenerator {
 			newLine();
 			myWriter.write(currentIndent +  "<instrument-name>Hi-Mid Tom</instrument-name>");
 			newLine();
-			myWriter.write(currentIndent +  "</score-instrument>");
 			tabBack();
+			myWriter.write(currentIndent +  "</score-instrument>");			
 			newLine();
 
 			myWriter.write(currentIndent +  "<score-instrument id=\"P1-I50\">");
@@ -295,8 +296,8 @@ public class FileGenerator {
 			newLine();
 			myWriter.write(currentIndent +  "<instrument-name>Crash Cymbal 1</instrument-name>");
 			newLine();
-			myWriter.write(currentIndent +  "</score-instrument>");
 			tabBack();
+			myWriter.write(currentIndent +  "</score-instrument>");			
 			newLine();
 
 			myWriter.write(currentIndent +  "<score-instrument id=\"P1-I51\">");
@@ -304,8 +305,8 @@ public class FileGenerator {
 			newLine();
 			myWriter.write(currentIndent +  "<instrument-name>High Tom</instrument-name>");
 			newLine();
-			myWriter.write(currentIndent +  "</score-instrument>");
 			tabBack();
+			myWriter.write(currentIndent +  "</score-instrument>");			
 			newLine();
 
 			myWriter.write(currentIndent +  "<score-instrument id=\"P1-I52\">");
@@ -313,8 +314,8 @@ public class FileGenerator {
 			newLine();
 			myWriter.write(currentIndent +  "<instrument-name>Ride Cymbal 1</instrument-name>");
 			newLine();
-			myWriter.write(currentIndent +  "</score-instrument>");
 			tabBack();
+			myWriter.write(currentIndent +  "</score-instrument>");			
 			newLine();
 
 			myWriter.write(currentIndent +  "<score-instrument id=\"P1-I53\">");
@@ -322,8 +323,8 @@ public class FileGenerator {
 			newLine();
 			myWriter.write(currentIndent +  "<instrument-name>Chinese Cymbal</instrument-name>");
 			newLine();
-			myWriter.write(currentIndent +  "</score-instrument>");
 			tabBack();
+			myWriter.write(currentIndent +  "</score-instrument>");			
 			newLine();
 
 			myWriter.write(currentIndent +  "<score-instrument id=\"P1-I54\">");
@@ -331,8 +332,8 @@ public class FileGenerator {
 			newLine();
 			myWriter.write(currentIndent +  "<instrument-name>Ride Bell</instrument-name>");
 			newLine();
-			myWriter.write(currentIndent +  "</score-instrument>");
 			tabBack();
+			myWriter.write(currentIndent +  "</score-instrument>");			
 			newLine();
 
 			myWriter.write(currentIndent +  "<score-instrument id=\"P1-I55\">");
@@ -340,8 +341,8 @@ public class FileGenerator {
 			newLine();
 			myWriter.write(currentIndent +  "<instrument-name>Tambourine</instrument-name>");
 			newLine();
-			myWriter.write(currentIndent +  "</score-instrument>");
 			tabBack();
+			myWriter.write(currentIndent +  "</score-instrument>");			
 			newLine();
 
 			myWriter.write(currentIndent +  "<score-instrument id=\"P1-I56\">");
@@ -349,8 +350,8 @@ public class FileGenerator {
 			newLine();
 			myWriter.write(currentIndent +  "<instrument-name>Splash Cymbal</instrument-name>");
 			newLine();
-			myWriter.write(currentIndent +  "</score-instrument>");
 			tabBack();
+			myWriter.write(currentIndent +  "</score-instrument>");			
 			newLine();
 
 			myWriter.write(currentIndent +  "<score-instrument id=\"P1-I57\">");
@@ -358,8 +359,8 @@ public class FileGenerator {
 			newLine();
 			myWriter.write(currentIndent +  "<instrument-name>Cowbell</instrument-name>");
 			newLine();
-			myWriter.write(currentIndent +  "</score-instrument>");
 			tabBack();
+			myWriter.write(currentIndent +  "</score-instrument>");			
 			newLine();
 
 			myWriter.write(currentIndent +  "<score-instrument id=\"P1-I58\">");
@@ -367,8 +368,8 @@ public class FileGenerator {
 			newLine();
 			myWriter.write(currentIndent +  "<instrument-name>Crash Cymbal 2</instrument-name>");
 			newLine();
-			myWriter.write(currentIndent +  "</score-instrument>");
 			tabBack();
+			myWriter.write(currentIndent +  "</score-instrument>");			
 			newLine();
 
 			myWriter.write(currentIndent +  "<score-instrument id=\"P1-I60\">");
@@ -376,8 +377,8 @@ public class FileGenerator {
 			newLine();
 			myWriter.write(currentIndent +  "<instrument-name>Ride Cymbal 2</instrument-name>");
 			newLine();
-			myWriter.write(currentIndent +  "</score-instrument>");
 			tabBack();
+			myWriter.write(currentIndent +  "</score-instrument>");			
 			newLine();
 
 			myWriter.write(currentIndent +  "<score-instrument id=\"P1-I64\">");
@@ -385,8 +386,8 @@ public class FileGenerator {
 			newLine();
 			myWriter.write(currentIndent +  "<instrument-name>Open Hi Conga</instrument-name>");
 			newLine();
-			myWriter.write(currentIndent +  "</score-instrument>");
 			tabBack();
+			myWriter.write(currentIndent +  "</score-instrument>");			
 			newLine();
 
 			myWriter.write(currentIndent +  "<score-instrument id=\"P1-I65\">");
@@ -394,19 +395,21 @@ public class FileGenerator {
 			newLine();
 			myWriter.write(currentIndent +  "<instrument-name>Low Conga</instrument-name>");
 			newLine();
-			myWriter.write(currentIndent +  "</score-instrument>");
 			tabBack();
+			myWriter.write(currentIndent +  "</score-instrument>");			
 			newLine();
 
-			myWriter.write(currentIndent +  "</score-part>");
 			tabBack();
+			myWriter.write(currentIndent +  "</score-part>");			
 			newLine();
+			
+			tabBack();
 			myWriter.write(currentIndent +  "</part-list>");
 			newLine();
-			tabBack();
+			
 			myWriter.write(currentIndent +  "<part id=\"P1\">");
 			newLine();
-			tabBack();
+			currentIndent += "  ";
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -451,7 +454,6 @@ public class FileGenerator {
 			tabBack();
 			myWriter.write(currentIndent + "</time>");
 			newLine();
-			tabBack();
 			myWriter.write(currentIndent + "<clef>");
 			currentIndent += "  ";
 			newLine();
@@ -459,6 +461,7 @@ public class FileGenerator {
 			newLine();
 			myWriter.write(currentIndent + "<line>" + 2 + "</line>");
 			newLine();
+			tabBack();
 			myWriter.write(currentIndent + "</clef>");
 			newLine();
 			tabBack();
@@ -504,9 +507,10 @@ public class FileGenerator {
 				myWriter.write(currentIndent + "<notehead>" + noteHead + "</notehead>");
 				newLine();
 			}
+			tabBack();
 			myWriter.write(currentIndent + "</note>");
 			newLine();
-			tabBack();
+			
 
 		} catch (IOException e){
 			e.printStackTrace();
@@ -552,9 +556,10 @@ public class FileGenerator {
 					myWriter.write(currentIndent + "<notehead>" + chordSymbols.get(i) + "</notehead>");
 					newLine();
 				}
+				tabBack();
 				myWriter.write(currentIndent + "</note>");
 				newLine();
-				tabBack();
+				
 				first = true;
 			}
 			
@@ -572,9 +577,10 @@ public class FileGenerator {
 
 			myWriter.write(currentIndent + "<duration>" + totalDuration + "</duration>");
 			newLine();
+			tabBack();
 			myWriter.write(currentIndent + "</backup>");
 			newLine();
-			tabBack();
+			
 
 		} catch (IOException e){
 			e.printStackTrace();
