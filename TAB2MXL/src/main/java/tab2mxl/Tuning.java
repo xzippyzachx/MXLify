@@ -103,8 +103,10 @@ public class Tuning {
 					}
 				}
 			}
+			
+			/* For printing out tunes
 			for(String s : stringOctaves.keySet()) {
-				System.out.print(s + "||");
+				//System.out.print(s + "||");
 				for(int i = 0; i < stringOctaves.get(s).size(); i++) {
 					System.out.print(stringOctaves.get(s).get(i) + "|");
 				}
@@ -118,8 +120,8 @@ public class Tuning {
 				}
 				System.out.print("\n");
 			}
+			*/
 			
-			//Faruq make this check the notes file please - Zach
 			//Temporary way to check if the tuning is valid. Need to actually check if the Note Tunes file contains the tune 
 			if(stringNotes.size() != stringAmount) {
 				unSupportedTune = true;
@@ -243,7 +245,7 @@ public class Tuning {
 	//to get the note for each specified string and fret
 	public String getNote(String string, int fret, int line) {
 		String key = string.toUpperCase() + line;
-		System.out.println("Key: " + key);
+		//System.out.println("Key: " + key);
 		if(fret < 0)
 			return string;
 		String output = stringNotes.get(key).get(fret%12);

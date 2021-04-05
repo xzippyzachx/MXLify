@@ -18,15 +18,15 @@ public class StringParser {
 	public static  Map<String,String> misc;
 	private Tuning tunner;
 	private FileGenerator fileGen;
-	private double rest;
+	private double rest = 0.0;
 	private int totalDash;
 	
 	//@SuppressWarnings("unused")
-	StringParser(ArrayList<ArrayList<String>> input, int in ,String path) {
+	StringParser(ArrayList<ArrayList<String>> input, int instrument, String path) {
 		stringAmount = 0;
 		tabLineAmount = 1;
-		misc = new HashMap<String, String>();
-		instrument = in;
+		this.instrument = instrument;
+		misc = new HashMap<String, String>();		
 		
 		addInstrument(TextInputContentPanel.getInstrument());
 		addTitle(TextInputContentPanel.getTitle());		
@@ -36,17 +36,21 @@ public class StringParser {
 		if(misc.get("TimeSig") == "") {
 			beat = 4;
 			beatType = 4;
-		}else if(misc.get("TimeSig").indexOf('/') == -1) {
+		}
+		else if(misc.get("TimeSig").indexOf('/') == -1) {
 			beat = 4;
 			beatType = 4;
-		}else if(misc.get("TimeSig").charAt(0) == '/') {
+		}
+		else if(misc.get("TimeSig").charAt(0) == '/') {
 			beat = 4;
 			beatType = 4;
-		}else if(misc.get("TimeSig").charAt(misc.get("TimeSig").length()-1) == '/') {
+		}
+		else if(misc.get("TimeSig").charAt(misc.get("TimeSig").length()-1) == '/') {
 			beat  = 4;
 			beatType = 4;
-			//set the time signature to default if the inputed time signature isn't in the right format
-		}else {
+			
+		} //set the time signature to default if the inputed time signature isn't in the right format
+		else {
 			//get the beat and beat-type from the information given in the time signature
 			try{
 				beat = Integer.parseInt(misc.get("TimeSig").substring(0, misc.get("TimeSig").indexOf('/')));
@@ -56,6 +60,7 @@ public class StringParser {
 				beatType = 4;
 			}
 		}
+		
 //		System.out.println("beat: " + beat);
 //		System.out.println("beatType: " + beatType);
 		
@@ -84,38 +89,40 @@ public class StringParser {
 				}
 			}		
 		}
-
 		
-		//Other		
+		/////////////////////
+		//Parsing Variables//
+		/////////////////////
+		
+		//Common
 		int currentColumn = 0;
 		int fret = 0;
 		int count = 0;
 		int measure = 0;
 		int line = 0;
-		int gate = 0;
 		double totalBeatPerMeasure = (1.0 * beat)/beatType;
-		double beatTypeNote = 1.0/beatType;
 		int div = getDivisions(beat);
-		double dash = 0; 
-		char[] col;
-		int[] fretarray = new int[stringAmount];
-		int[] linearray = new int[stringAmount];
-		char character = ' ';
-		int notesInColumn = 0;
+		double dash = 0; 			
+		char character = ' ';		
 		char note = ' ';
-		rest = 0.0;
-		double totalNote = 0.0;		
+		char[] col;	
+		
 		//Double digit
 		boolean doubleDigit;
 		boolean doubleDigitColumn;
 		boolean  chordDoubleDigitFlag;
+		
 		//Chords
 		String chordType= "";
+		int notesInColumn = 0;
 		boolean chord;
 		char[] chords = new char[stringAmount];
 		int[] chordDot = new int[stringAmount];
-		int chordOctave = 0;
 		int[] chordsOctave = new int[stringAmount];
+		int chordOctave = 0;		
+		int[] fretarray = new int[stringAmount];
+		int[] linearray = new int[stringAmount];
+		
 		//HammerOn
 		boolean hammerOn = false;
 		boolean hammerStart =false;
@@ -123,27 +130,32 @@ public class StringParser {
 		boolean hammerDone = false;
 		int hammerLength = 0;
 		int hammerDuration = 0;
-		int hammerLocation = -1;		
+		int hammerLocation = -1;
+		double beatNote = 0.0;
+		
 		//Repeat
 		boolean wasRepeat = false;
 		boolean isRepeat = false;
 		boolean startRepeat = false;
 		boolean endRepeat = false;
-		int repeatAmount = 0;		
+		int repeatAmount = 0;
+		
 		//Tunning
 		String[] tune = new String[stringAmount];
 		int[] tuningOctave = new int[stringAmount];
 		boolean defaultTune = false;
-		boolean defaultOctave = false;		
+		boolean defaultOctave = false;
+
 		//Sharps
         boolean[] sharp = new boolean[stringAmount];
         boolean sharpnote = false;
+        
         //Harmonic
         boolean harmonic = false;
 		boolean[] hchord = new boolean[stringAmount];
+		
 		//Grace
 		boolean grace = false;
-		int gdash = 0;
 		
 		/*adds the tuning of the strings to the tune array if the tuning is
 		 * specified in the TAB, or the default if it isn't*/
@@ -151,13 +163,13 @@ public class StringParser {
 			if(input.get(i).get(0) != "-" && input.get(i).get(0) != "|") {
 				tune[i] = input.get(i).get(0);
 			}
-		}
-		
+		}		
 		if(containsOnlyString(tune, "")) {
 			tune = Tuning.getDefaultTuning(stringAmount);
 			defaultTune = true;
 		}
 		
+		//Get the octaves
 		for(int i = 0; i < stringAmount; i++) {
 			if(input.get(i).get(1) != "-" && input.get(i).get(1) != "|") {
 				if(input.get(i).get(1) == "") {
@@ -167,14 +179,15 @@ public class StringParser {
 				}
 
 			}
-		}
-		
+		}		
 		if(containsOnlyInt(tuningOctave, -1)) {
 			tuningOctave = Tuning.getDefaultTuningOctave(stringAmount, instrument);
 			defaultOctave = true;
 		}
+		
 		tunner = new Tuning(tune, stringAmount, tuningOctave);
 
+		//Display tuning errors
 		if(tunner.unSupportedOctave == true && !defaultOctave)
 		{
 			Main.myFrame.textInputContentPanel.errorText.setText("Octave Not Recognized");
@@ -200,9 +213,9 @@ public class StringParser {
 		//Open part
 		fileGen.openPart(1);
 		
-		//////////////////////////////////
-		//Loop through the inputed columns
-		//////////////////////////////////
+		////////////////////////////////////
+		//Loop through the inputed columns//
+		////////////////////////////////////
 		for(int i = 0; i < columns.size(); i++)
 		{
 			col = columns.get(i);
@@ -210,6 +223,7 @@ public class StringParser {
 			chord = false;
 			doubleDigitColumn = false;
 
+			//Check for chords
 			if(i > 0) {
 				notesInColumn = 0;
 				for (int s = 0; s < col.length;s++) {
@@ -234,7 +248,7 @@ public class StringParser {
 				//Finds if there is a new measure				
 				if (character == '|' && (i == 0 || columns.get(i-1)[j] != '|'))
 				{
-					count++;					
+					count++;
 					//Check for repeat start
 					if(columns.size() > i+2 && character == '|' && columns.get(i+1)[j] == '|' && columns.get(i+2)[j] == '*')
 					{
@@ -250,6 +264,7 @@ public class StringParser {
 						}
 					}
 				}
+				//Open measure and sent attributes
 				if (count == stringAmount) {
 					measure++;
 					count = 0;					
@@ -275,13 +290,16 @@ public class StringParser {
 					doubleDigit = true;
 					doubleDigitColumn = true;
 				}
-				double beatNote;
+				
+				//////////////
 				//Grace note
                 if (i<columns.size() && columns.get(i)[j] == 'g'){
+                	beatNote = 0.0;
+                	dash = 0;
                     grace = true;
                     char gcharacter = 'g';
-                    boolean breakout = false;
-                    dash = 0;
+                    boolean breakout = false;                    
+                    
                     //gets dash amount
                     for(int g = i; columns.get(g)[j] != '|'; g++)
                     {
@@ -296,6 +314,8 @@ public class StringParser {
 	                      }
 	                      dash++;
                     }
+                    
+                    //Look forward until end of the measure
                     for(int z = i; gcharacter != '-' && gcharacter != '|'; z++)
                     {
                     	if(Character.isDigit(gcharacter) && !hammerOn) 
@@ -330,6 +350,8 @@ public class StringParser {
                 	    sharpnote = false;
                     }
                 }
+                
+                //////////////
 				//Hammer on
 				if(i+1 < columns.size() && j<col.length && (columns.get(i+1)[j] == 'h' || (doubleDigit &&columns.get(i+2)[j]== 'h')) && !hammerOn && !grace){ // if same row, next col is an h then then begin hammer on
 																 // (i+1) only works for single digit frets
@@ -366,21 +388,18 @@ public class StringParser {
 								break;
 						}else
 							break;
-					}
-					
+					}					
 					//System.out.println("Offset: " + offset);					
-				}			
-
+				}
 				
 				if(hammerOn){
 					beatNote = beatNote((hammerDuration * totalBeatPerMeasure)/totalDash);/*beatNote((hammerDuration * beatTypeNote)/div);*/
 				}
 				else {beatNote = beatNote((dash * totalBeatPerMeasure)/totalDash);/*beatNote((dash * beatTypeNote)/div)*/}
 
-				//Finds the string and fret of a note
-				gate++;
-				
-				if (Character.isDigit(character) && gate>=7 && !grace) {
+				////////////////
+				//Regular notes				
+				if (Character.isDigit(character) && !grace) {
 					fret = Character.getNumericValue(character);
 					if (i-1>0 && columns.get(i-1)[j] == '[') {
 						harmonic = true;
@@ -453,13 +472,12 @@ public class StringParser {
 				}	
 			}
 			
-			
+			////////////
 			//Chord
 			if (chord && !grace) { 
-				double beatNote;
+				beatNote = 0.0;
 				if(hammerOn){
 					beatNote = beatNote((hammerDuration * totalBeatPerMeasure)/totalDash);/*beatNote((hammerDuration * beatTypeNote)/div);*/
-					totalNote += beatNote;
 				}
 				else {
 					beatNote = beatNote((dash * totalBeatPerMeasure)/totalDash);/*beatNote((dash * beatTypeNote)/div)*/
@@ -520,6 +538,7 @@ public class StringParser {
 				grace = false;
 				
 			}
+			
 			currentColumn++;
 		}
 		
@@ -530,8 +549,13 @@ public class StringParser {
 			fileGen.closePart();
 		fileGen.end();
 		
+		//Show success popup
 		new SuccessPopUp(Main.myFrame, FileGenerator.filepath);
 	}
+	
+	//////////////////
+	//Helper Methods//
+	//////////////////
 	
 	private boolean containsOnlyChar(char[] cs, char o) {
 		boolean output = true;
@@ -627,7 +651,7 @@ public class StringParser {
 			}
 //		System.out.println("");
 		return output;
-		}
+	}
 
 	
 	private double beatNote(double b) {
@@ -673,12 +697,10 @@ public class StringParser {
 //				System.out.println("Temp: " + temp);
 				output += beatNote(b - output);
 			}
-		}
-		
-//		System.out.println("BeatNoteOut: " + output);
-		
+		}		
+//		System.out.println("BeatNoteOut: " + output);		
 		return output;
-		}
+	}
 	
 	protected static String noteType(double beatNote) {
 		String output = "";
@@ -847,6 +869,9 @@ public class StringParser {
 		
 	}
 	
+	////////////////////////
+	//Misc HashMap Setters//
+	////////////////////////
 	static void addInstrument(String instrument){
 		misc.put("Instrument", instrument);
 	}

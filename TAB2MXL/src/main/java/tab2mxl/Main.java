@@ -26,7 +26,7 @@ public class Main {
 	
 	public static void Convert(ArrayList<ArrayList<String>> input, int instrument)
 	{
-		System.out.println("I: " + instrument);
+		//System.out.println("I: " + instrument);
 		switch(instrument) {
 			case 1: //Bass
 				new StringParser(input, instrument, "");//added instrument to Parser to use in Tuning class

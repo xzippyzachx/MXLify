@@ -315,11 +315,11 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 					lineLength = input.get(i).size();
 					break;
 				}else {
-					System.out.println("Remove");
+					//System.out.println("Remove");
 					input.remove(i);
 				}
 			}
-			System.out.println("Input size: " + input.size());
+			//System.out.println("Input size: " + input.size());
 //			for (ArrayList<String> line : input) {
 //				if(line.size() != lineLength && line.size() != 0)
 //				{
