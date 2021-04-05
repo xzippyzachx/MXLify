@@ -375,14 +375,10 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 			{
 				//line = cleanTextContent(line); //Removes redundant spaces
 				if (!line.contains("|")) {
-					return null;
+					break;
 				}
 				if (!line.contains("-")) {
-					return null;
-				}
-				if (line.contains("|") && line.contains(" ") ) {
-					if (convert)
-						warningText.setText("Warning: Space in the Tab");
+					break;
 				}
 				
 				Matcher matcher = pattern.matcher(line);
