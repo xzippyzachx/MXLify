@@ -50,8 +50,8 @@ public class DrumTuning {
 						drumIDName += symbol;
 						drumNotes.put(drumName, note);
 						drumOctaves.put(drumName, octave);
-//						System.out.println("NAME+SYMBOL: " + drumIDName);
-//						System.out.println("ID: "+ Id);
+						System.out.println("NAME+SYMBOL: " + drumIDName);
+						System.out.println("ID: "+ Id);
 						drumID.put(drumIDName, Id);
 					}
 				}
@@ -70,10 +70,12 @@ public class DrumTuning {
 	}
 	
 	public String getNote(String drum) {
+		System.out.println("DrumName: " + drum);
 		return drumNotes.get(drum);
 	}
 	
 	public int getOctave(String drum) {
+		System.out.println("DrumName: " + drum);
 		try {
 			return drumOctaves.get(drum);
 		}catch(NullPointerException e) {
@@ -82,6 +84,7 @@ public class DrumTuning {
 	}
 	
 	public String getID(String drum, String symbol) {
+		System.out.println("DrumName: " + drum);
 		return drumID.get(drum+symbol);
 	}
 	
