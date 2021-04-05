@@ -102,7 +102,6 @@ public class FileGenerator {
 		}
 	}
 
-
 	private void appendString(String line)
 	{		
 		if(line.equals("  <part id=\"P1\">"))
@@ -532,20 +531,6 @@ public class FileGenerator {
 		newLine();
 	}
 	
-	public void backup(int totalDuration){
-
-		write(currentIndent + "<backup>");
-		newLine();
-		currentIndent += "  ";
-
-		write(currentIndent + "<duration>" + totalDuration + "</duration>");
-		newLine();
-		tabBack();
-		write(currentIndent + "</backup>");
-		newLine();
-
-	}
-
 	/**
 	 * Adds a new part opening to the MusicXML
 	 * @param partNumber
@@ -635,9 +620,7 @@ public class FileGenerator {
 		
 		measureOpen = false;
 	}
-	
-	
-	
+		
 	/**
 	 * Adds a note to the MusicXML
 	 * @param string
@@ -821,8 +804,7 @@ public class FileGenerator {
 			}
 		}		
 	}
-	
-	
+		
 	public void addDrumNote(String noteHead, int duration, String displayStep, int displayOctave, String instrumentID, String noteType, int voice, int dot){
 
 		write(currentIndent + "<note>");
@@ -908,8 +890,7 @@ public class FileGenerator {
 			first = true;
 		}
 	}
-	
-	
+		
 	public void addRest(int duration, String noteType, int v) {
 		
 		if(duration > 0) {
@@ -932,6 +913,19 @@ public class FileGenerator {
 		}
 	}
 		
+	public void backup(int totalDuration){
+
+		write(currentIndent + "<backup>");
+		newLine();
+		currentIndent += "  ";
+
+		write(currentIndent + "<duration>" + totalDuration + "</duration>");
+		newLine();
+		tabBack();
+		write(currentIndent + "</backup>");
+		newLine();
+
+	}
 	/**
 	 * Adds the closing lines to the MusicXML
 	 */
