@@ -282,8 +282,6 @@ class FileGeneratorTest {
 				+ "      <fret>2</fret>\n"
 				+ "    </technical>\n"
 				+ "  </notations>\n"
-				+ "  <stem>down</stem>\n"
-				+ "  <staff>1</staff>\n"
 				+ "</note>\n"
 				+ "<note>\n"
 				+ "  <chord/>\n"
@@ -300,8 +298,6 @@ class FileGeneratorTest {
 				+ "      <fret>1</fret>\n"
 				+ "    </technical>\n"
 				+ "  </notations>\n"
-				+ "  <stem>down</stem>\n"
-				+ "  <staff>1</staff>\n"
 				+ "</note>\n"
 				+ "</score-partwise>";
 				

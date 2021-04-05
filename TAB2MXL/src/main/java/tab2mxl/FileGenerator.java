@@ -794,10 +794,6 @@ public class FileGenerator {
 				tabBack();
 				write(currentIndent + "</notations>");
 				newLine();
-				write(currentIndent + "<stem>down</stem>");
-				newLine();
-				write(currentIndent + "<staff>1</staff>");
-				newLine();
 				tabBack();
 				write(currentIndent + "</note>");
 				newLine();
