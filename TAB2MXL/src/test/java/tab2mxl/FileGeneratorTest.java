@@ -19,7 +19,7 @@ class FileGeneratorTest {
 	
 	@BeforeAll
 	static void setUp() {
-		fileGen = new FileGenerator("Outputs/tester.musicxml");
+		fileGen = new FileGenerator("Outputs/tester.musicxml", false);
 	}
 	
 	@Test
@@ -32,9 +32,9 @@ class FileGeneratorTest {
 	}
 
 	@Test
-	void testAddInfo1() {
+	void testAddStringInfo1() {
 		openWriter();
-		fileGen.addInfo("Example Title", "Guitar");
+		fileGen.addStringInfo("Example Title", "Guitar");
 		fileGen.end();
 		
 		fileContent = this.readFile();
@@ -47,6 +47,9 @@ class FileGeneratorTest {
 				+ "    <score-part id=\"P1\">\n"
 				+ "      <part-name>Guitar</part-name>\n"
 				+ "    </score-part>\n"
+				+ "    <score-part id=\"P2\">\n"
+				+ "      <part-name>Guitar</part-name>\n"
+				+ "    </score-part>\n"
 				+ "  </part-list>\n"
 				+ "</score-partwise>";
 		
@@ -55,9 +58,9 @@ class FileGeneratorTest {
 	
 
 	@Test
-	void testAddInfo2() {
+	void testAddStringInfo2() {
 		openWriter();
-		fileGen.addInfo("", "Guitar");
+		fileGen.addStringInfo("", "Guitar");
 		fileGen.end();
 		
 		fileContent = this.readFile();
@@ -70,6 +73,9 @@ class FileGeneratorTest {
 				+ "    <score-part id=\"P1\">\n"
 				+ "      <part-name>Guitar</part-name>\n"
 				+ "    </score-part>\n"
+				+ "    <score-part id=\"P2\">\n"
+				+ "      <part-name>Guitar</part-name>\n"
+				+ "    </score-part>\n"
 				+ "  </part-list>\n"
 				+ "</score-partwise>";
 		
@@ -79,7 +85,7 @@ class FileGeneratorTest {
 	@Test
 	void testAddInfo3() {
 		openWriter();
-		fileGen.addInfo(" ", "Guitar");
+		fileGen.addStringInfo(" ", "Guitar");
 		fileGen.end();
 		
 		fileContent = this.readFile();
@@ -90,6 +96,9 @@ class FileGeneratorTest {
 				+ "  </work>\n"
 				+ "  <part-list>\n"
 				+ "    <score-part id=\"P1\">\n"
+				+ "      <part-name>Guitar</part-name>\n"
+				+ "    </score-part>\n"
+				+ "    <score-part id=\"P2\">\n"
 				+ "      <part-name>Guitar</part-name>\n"
 				+ "    </score-part>\n"
 				+ "  </part-list>\n"
@@ -138,14 +147,13 @@ class FileGeneratorTest {
 	}
 
 	@Test
-	void testAttributes() {
+	void testStringAttributes() {
 		openWriter();	
 		String[] tune = new String[]{"E", "B", "G", "D", "A", "E"};	
 		int[] oct = new int[] {1, 2, 3, 4, 5, 6};
-		fileGen.attributes(2,4,4,4, "G", tune, oct);
+		fileGen.stringAttributes(2,4,4,4, "G", tune, oct);
 		fileGen.end();
 		String fileContent = this.readFile();
-		System.out.println(fileContent);
 		String expected = "<attributes>\n"
 				+ "  <divisions>2</divisions>\n"
 				+ "  <key>\n"
@@ -195,9 +203,9 @@ class FileGeneratorTest {
 	}
 
 	@Test
-	void testAddNote() {
+	void testAddStringNote() {
 		setUp();
-		fileGen.addNote(1,1,'E', "half", 1, 3, 0,false,false,false,false,false);
+		fileGen.addStringNote(1,1,'E', "half", 1, 3, 0,false,false,false,false,false,false);
 
 		fileGen.end();
 		String fileContent = this.readFile();
@@ -214,17 +222,15 @@ class FileGeneratorTest {
 				+ "      <fret>1</fret>\n"
 				+ "    </technical>\n"
 				+ "  </notations>\n"
-				+ "  <stem>down</stem>\n"
-				+ "  <staff>1</staff>\n"
 				+ "</note>\n"
 				+ "</score-partwise>";
 		assertEquals(expected, fileContent); 
 	}
 	
 	@Test
-	void testAddNote2() {
+	void testAddStringNote2() {
 		openWriter();
-		fileGen.addNote(2,3,'G', "quarter", 1, 2, 0,false,false,false,false,false);
+		fileGen.addStringNote(2,3,'G', "quarter", 1, 2, 0,false,false,false,false,false,false);
 		fileGen.end();
 		String fileContent = this.readFile();
 		String expected = "<note>\n"
@@ -240,8 +246,6 @@ class FileGeneratorTest {
 				+ "      <fret>3</fret>\n"
 				+ "    </technical>\n"
 				+ "  </notations>\n"
-				+ "  <stem>down</stem>\n"
-				+ "  <staff>1</staff>\n"
 				+ "</note>\n"
 				+ "</score-partwise>";
 		assertEquals(expected, fileContent); 
@@ -249,7 +253,7 @@ class FileGeneratorTest {
 
 	@Test
 
-	void testAddChord() {
+	void testAddStringChord() {
 		openWriter();
 		char[] notes = new char[] {'E','B'};		
 		int[] frets = new int[] {1,2};
@@ -258,7 +262,7 @@ class FileGeneratorTest {
 		int[] dot = new int[] {1,2,3};
 		boolean[] alter = new boolean[] {false,false};
 		boolean[] harmonic = new boolean[] {false,false};
-		fileGen.addChord(notes, "half", 1,oct,frets,lines, dot,alter,-1,false,false,false,harmonic);
+		fileGen.addStringChord(notes, "half", 1,oct,frets,lines, dot,alter,-1,false,false,false,harmonic);
 		fileGen.end();
 		
 		String fileContent = this.readFile();
@@ -360,7 +364,7 @@ class FileGeneratorTest {
 	@Test
 	void testCurrentIndent() {
 		openWriter();
-		fileGen.addInfo("Title Example", "Guitar");
+		fileGen.addStringInfo("Title Example", "Guitar");
 		fileGen.openMeasure(1, false, 0);
 		fileGen.closeMeasure(false, 0);
 		fileGen.end();
@@ -373,6 +377,9 @@ class FileGeneratorTest {
 				+ "  </work>\n"
 				+ "  <part-list>\n"
 				+ "    <score-part id=\"P1\">\n"
+				+ "      <part-name>Guitar</part-name>\n"
+				+ "    </score-part>\n"
+				+ "    <score-part id=\"P2\">\n"
 				+ "      <part-name>Guitar</part-name>\n"
 				+ "    </score-part>\n"
 				+ "  </part-list>\n"

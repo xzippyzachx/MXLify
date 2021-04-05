@@ -85,7 +85,8 @@ public class FileGenerator {
 	private void tabBack()
 	{
 		try {
-			currentIndent = currentIndent.substring(0,currentIndent.length() - 2);
+			if(currentIndent.length() > 1)
+				currentIndent = currentIndent.substring(0,currentIndent.length() - 2);
 		} catch (StringIndexOutOfBoundsException e) {
 			e.printStackTrace();
 		}
