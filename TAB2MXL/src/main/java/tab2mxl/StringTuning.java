@@ -36,7 +36,7 @@ public class StringTuning {
 	private static final int[] DEFAULT_OCTAVE9 = {4,3,3,3,2,2,2,1,1};
 	//the file containing the notes for each string and fret
 	private File tuningFile;
-	private final String FILE_NAME = "GuitarNotes.txt";
+	private static final String FILE_NAME = "GuitarNotes.txt";
 	
 	public boolean unSupportedTune;
 	public boolean unSupportedOctave;
@@ -135,6 +135,30 @@ public class StringTuning {
 		}catch(FileNotFoundException e) {
 			System.out.println(e.getMessage());
 		}
+	}
+	
+	public static boolean tuningSupportCheck(String tune) {
+		boolean output = false;
+		
+		File file = new File(FILE_NAME);
+		try {
+			Scanner fileScanner = new Scanner(file);
+			String stringName = "";
+			
+			while(fileScanner.hasNextLine()) {
+				stringName = fileScanner.nextLine().substring(0, 2).trim();
+				if(tune.trim().equals(stringName)) {
+					output = true;
+					break;
+				}
+			}
+			
+			fileScanner.close();
+		}catch(Exception e) {
+			System.out.println("drumSupportCheck: " + e.getMessage());
+		}
+		
+		return output;
 	}
 	
 	private boolean octaveCheck(int o) {

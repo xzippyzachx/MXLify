@@ -13,8 +13,8 @@ public class DrumTuning {
 	
 	private String[] drums;
 	private int drumAmount;
-	private final String FILE_NAME = "DrumNotes.txt";
-	private File tuningFile;
+	private final static String FILE_NAME = "DrumNotes.txt";
+	private File drumFile;
 	
 	public boolean unSupportedDrum;
 	
@@ -25,13 +25,13 @@ public class DrumTuning {
 		drums = drum;
 		drumAmount = d;
 		unSupportedDrum = false;
-		tuningFile = new File(FILE_NAME);
+		drumFile = new File(FILE_NAME);
 		
 		String drumName = "";
 		String drumIDName = "";
 		
 		try {
-			Scanner fileScanner = new Scanner(tuningFile);
+			Scanner fileScanner = new Scanner(drumFile);
 			String line = "";
 			
 			while(fileScanner.hasNextLine()) {
@@ -67,6 +67,29 @@ public class DrumTuning {
 			this.unSupportedDrum = true;
 		if(drumOctaves.size() != drumAmount)
 			this.unSupportedDrum = true;
+	}
+	
+	public static boolean drumSupportCheck(String drum) {
+		File file = new File(FILE_NAME);
+		boolean output = false;
+		try {
+			Scanner fileScanner = new Scanner(file);
+			String drumName = "";
+			
+			while(fileScanner.hasNextLine()) {
+				drumName = fileScanner.nextLine().substring(0, 2).trim();
+				if(drum.trim().equals(drumName)) {
+					output = true;
+					break;
+				}
+			}
+			
+			fileScanner.close();
+		}catch(Exception e) {
+			System.out.println("drumSupportCheck: " + e.getMessage());
+		}
+
+		return output;
 	}
 	
 	public String getNote(String drum) {
