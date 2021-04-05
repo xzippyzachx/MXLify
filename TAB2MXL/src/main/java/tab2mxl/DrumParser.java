@@ -95,6 +95,10 @@ public class DrumParser{
 		voices = setVoice(tuning,instruments);
 
 		fileGen = new FileGenerator("", false);
+		
+		if(fileGen.failed) //Check if failed to save file to location
+			return;
+		
 		fileGen.addDrumInfo(misc.get("Title"));
 		
 		fileGen.openPart(1);
