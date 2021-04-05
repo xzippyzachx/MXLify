@@ -28,7 +28,13 @@ public class DrumParser{
 	private FileGenerator fileGen;
 	private ArrayList<Integer[]> repeats = new ArrayList<>();
 	private Map<Integer, Integer[]> rep;
+	protected static String path = "";
+	
 
+	
+//	
+//	
+//	
 //	public static void main(String[] args) {
 //
 //		//Testing DrumTuning
@@ -101,7 +107,7 @@ public class DrumParser{
 
 		voices = setVoice(tuning,instruments);
 
-		fileGen = new FileGenerator("", false);
+		fileGen = new FileGenerator(path, false);
 		
 		if(fileGen.failed) //Check if failed to save file to location
 			return;
