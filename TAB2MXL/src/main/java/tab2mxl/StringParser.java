@@ -72,14 +72,18 @@ public class StringParser {
 		
 		for(int i = 0; i < input.size(); i++) {
 			if(input.get(i).size() < 2 && input.get(i-1).size() > 2 && i != input.size())
-				tabLineAmount++;
-			/*if(input.get(i).size() < 2 && input.get(i-1).size() < 2 && i != input.size())
-				input.remove(i);*/
+			{
+				for(int j = i; j < input.size(); j++)
+					if(input.get(j).size() > 2)
+						tabLineAmount++;
+			}
 		}
 		//System.out.println("TabLineAmount: " + tabLineAmount);
 		
 		//Transpose columns to rows (do you mean rows to col?)
 		columns = new ArrayList<char[]>();
+		
+		System.out.println("tabLineAmount " + tabLineAmount);
 		
 		for(int layer = 0; layer < tabLineAmount; layer++) {
 			for(int i = 2; i < input.get((layer * stringAmount) + layer).size(); i++) {

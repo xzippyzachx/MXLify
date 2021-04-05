@@ -24,6 +24,7 @@ import gui.TextPrompt.Show;
 import gui.UndoRedoTextArea;
 import gui_popups.ClearPopUp;
 import tab2mxl.CreateScore;
+import tab2mxl.FormatChecker;
 import tab2mxl.InstrumentDetection;
 import tab2mxl.Main;
 import tab2mxl.SaveManager;
@@ -291,17 +292,15 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		
 		if(e.getSource() == convertButton && !Main.isInPopUp)
-		{	
-			//Detect if the text area is empty
-			if(textField.getText().isEmpty())
-			{
-				errorText.setText("Text Area Empty");
+		{			
+			FormatChecker formatChecker = new FormatChecker(textField.getText());
+						
+			if(formatChecker.GetErrorType() == 2)
 				return;
-			}
-			String[] inputText = textField.getText().split("\n");
 			
-			ArrayList<ArrayList<String>> input = new ArrayList<ArrayList<String>>();
+			String[] inputText = formatChecker.GetOuput();
 			
+			ArrayList<ArrayList<String>> input = new ArrayList<ArrayList<String>>();			
 			input = GetInput(inputText,true); // Convert to double String ArrayList
 	       
 			if (input == null) {
@@ -361,7 +360,6 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 		errorText.setText("");
 		warningText.setText("");
 		if(textField.getText().isEmpty())
-
 		{
 			return null;
 		}
@@ -377,21 +375,14 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 			{
 				//line = cleanTextContent(line); //Removes redundant spaces
 				if (!line.contains("|")) {
-					if (convert)
-						errorText.setText("Wrong Formatting");
-
 					return null;
 				}
 				if (!line.contains("-")) {
-					if (convert)
-						errorText.setText("Wrong Formatting");
-
 					return null;
 				}
 				if (line.contains("|") && line.contains(" ") ) {
 					if (convert)
 						warningText.setText("Warning: Space in the Tab");
-
 				}
 				
 				Matcher matcher = pattern.matcher(line);
