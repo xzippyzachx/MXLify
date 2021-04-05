@@ -16,7 +16,7 @@ public class StringParser {
 	private int beatType;
 	private ArrayList<char[]> columns;
 	public static  Map<String,String> misc;
-	private Tuning tunner;
+	private StringTuning tunner;
 	private FileGenerator fileGen;
 	private double rest = 0.0;
 	private int totalDash;
@@ -83,7 +83,7 @@ public class StringParser {
 		//Transpose columns to rows (do you mean rows to col?)
 		columns = new ArrayList<char[]>();
 		
-		System.out.println("tabLineAmount " + tabLineAmount);
+		//System.out.println("tabLineAmount " + tabLineAmount);
 		
 		for(int layer = 0; layer < tabLineAmount; layer++) {
 			for(int i = 2; i < input.get((layer * stringAmount) + layer).size(); i++) {
@@ -169,7 +169,7 @@ public class StringParser {
 			}
 		}		
 		if(containsOnlyString(tune, "")) {
-			tune = Tuning.getDefaultTuning(stringAmount);
+			tune = StringTuning.getDefaultTuning(stringAmount);
 			defaultTune = true;
 		}
 		
@@ -185,11 +185,11 @@ public class StringParser {
 			}
 		}		
 		if(containsOnlyInt(tuningOctave, -1)) {
-			tuningOctave = Tuning.getDefaultTuningOctave(stringAmount, instrument);
+			tuningOctave = StringTuning.getDefaultTuningOctave(stringAmount, instrument);
 			defaultOctave = true;
 		}
 		
-		tunner = new Tuning(tune, stringAmount, tuningOctave);
+		tunner = new StringTuning(tune, stringAmount, tuningOctave);
 
 		//Display tuning errors
 		if(tunner.unSupportedOctave == true && !defaultOctave)

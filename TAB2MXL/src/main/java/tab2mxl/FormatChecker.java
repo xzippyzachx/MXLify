@@ -23,9 +23,10 @@ public class FormatChecker {
 	JLabel warningText;
 	JTextArea textField;
 		
-	public FormatChecker(String inputTextFeild)
+	public FormatChecker(String inputTextFeild, int instrument)
 	{
-		System.out.println(inputTextFeild);
+		//System.out.println("I: " + instrument);
+		//System.out.println(inputTextFeild);
 		
 		Collections.addAll(inputFeild, inputTextFeild.split("\n"));
 		errorText = Main.myFrame.textInputContentPanel.errorText;
@@ -90,11 +91,11 @@ public class FormatChecker {
 		String[] output = new String[outputFeild.size()];
 		output = outputFeild.toArray(output);
 		
-		for (String line: output)
-			System.out.println(line);
+		//for (String line: output)
+			//System.out.println(line);
 		
-		System.out.println("");
-		System.out.println("Size: " + outputFeild.size());
+		//System.out.println("");
+		//System.out.println("Size: " + outputFeild.size());
 		
 		return output;
 	}

@@ -293,7 +293,7 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 		
 		if(e.getSource() == convertButton && !Main.isInPopUp)
 		{			
-			FormatChecker formatChecker = new FormatChecker(textField.getText());
+			FormatChecker formatChecker = new FormatChecker(textField.getText(), instrumentList.getSelectedIndex());
 						
 			if(formatChecker.GetErrorType() == 2)
 				return;
