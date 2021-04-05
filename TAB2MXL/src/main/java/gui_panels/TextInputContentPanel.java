@@ -9,6 +9,8 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -366,10 +368,14 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 		
 		ArrayList<ArrayList<String>> input = new ArrayList<ArrayList<String>>();
 		
+		String regexPattern = "repeat";
+		Pattern pattern = Pattern.compile(regexPattern, Pattern.CASE_INSENSITIVE);
+		String[] lineInput = null;
+		
 		for (String line : textInput) {
 			if(line.length() > 1)
 			{
-				line = cleanTextContent(line); //Removes redundant spaces
+				//line = cleanTextContent(line); //Removes redundant spaces
 				if (!line.contains("|")) {
 					if (convert)
 						errorText.setText("Wrong Formatting");
@@ -387,9 +393,15 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 						warningText.setText("Warning: Space in the Tab");
 
 				}
-
 				
-				String[] lineInput = line.substring(line.indexOf('|')).split("");
+				Matcher matcher = pattern.matcher(line);
+				boolean matchFound = matcher.find();
+				
+				if(matchFound)
+					lineInput= line.split("");
+				else
+					lineInput = line.substring(line.indexOf('|')).split("");
+
 				ArrayList<String> lineInputList = new ArrayList<String>();
 				String tunePlusOctave = line.substring(0, line.indexOf('|')).trim();
 				String tune = "";

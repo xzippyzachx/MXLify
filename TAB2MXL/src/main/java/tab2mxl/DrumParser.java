@@ -25,7 +25,8 @@ public class DrumParser{
 	private double rest;
 	private DrumTuning tuning;
 	private FileGenerator fileGen;
-	private Map<Integer,String[]> InstrumentList;
+	private ArrayList<Integer[]> repeats = new ArrayList<>();
+	private Map<Integer, Integer[]> rep;
 
 //	public static void main(String[] args) {
 //
@@ -108,20 +109,37 @@ public class DrumParser{
 		ArrayList<String> chordSymbols = new ArrayList<String>();
 		int dash = 1;
 		int dot = 0;
+		int currentSpan = 0;
+		int runningSpanCount = 0;
+		boolean repeatOpen = false;
+		int measurecount =0;
 
 
+		for (int i= 0;i< Measure.size();i++) {//For each measure
+			
+			currentSpan = repeats.get(i)[1];
 
-		for (int i= 0;i< Measure.size();i++) {                                     //For each measure
 
-			System.out.println("Entered measure: " + i);
 			if(Measure.get(i).size() ==2){
 				instruments = getInstruments(Measure.get(i).get(0));
 				tuning = new DrumTuning(instruments, instruments.length);
 				voices = setVoice(tuning,instruments);
-			}
 
-			else{
-				fileGen.openMeasure(i + 1, false, 0);
+			}else{
+				measurecount++;
+				System.out.println("Entered measure: " + measurecount);
+				if(repeats.get(i)[0] == 0) {
+					fileGen.openMeasure(measurecount, false, 0);
+				}else {
+					if(!repeatOpen) {
+						fileGen.openMeasure(measurecount, true, repeats.get(i)[0]);
+						runningSpanCount++;
+						repeatOpen = true;
+					}else {
+						fileGen.openMeasure(measurecount, false, 0);
+						runningSpanCount++;
+					}
+				}
 				if (i == 0) {                                                            //first measure
 					fileGen.drumAttributes((int) ((divisionsArray.get(0)) / 1), beat, beatType);    //Add attributes
 				}
@@ -148,15 +166,7 @@ public class DrumParser{
 									chordOctaves.add(tuning.getOctave(instruments[inst]));
 									chordIDs.add(tuning.getID(instruments[inst], column[inst]));
 									chordSymbols.add(column[inst]);
-									dash = 1;
-									int increment = 1;
-									while (true) {
-										if (((k + increment) < Measure.get(i).size()) && containsOnlyStringV(Measure.get(i).get(k + increment), j + 1, "-")) {
-											dash++;
-											increment++;
-										} else
-											break;
-									}
+									dash = dash(i,j,k);
 								}
 							}
 							beatNote = beatNote((dash * totalBeatPerMeasure) / totalDash); // to do is make array for total dash
@@ -179,15 +189,7 @@ public class DrumParser{
 							//filGen note
 							for (int inst = 0; inst < column.length; inst++) {//For each char in column
 								if (!column[inst].equals("-")) { //Is an x or o
-									dash = 1;
-									int increment = 1;
-									while (true) {
-										if (((k + increment) < Measure.get(i).size()) && containsOnlyStringV(Measure.get(i).get(k + increment), j + 1, "-")) {
-											dash++;
-											increment++;
-										} else
-											break;
-									}
+									dash = dash(i,j,k);
 									beatNote = beatNote((dash * totalBeatPerMeasure) / totalDash); // to do is make array for total dash
 									System.out.println("Dash: " + dash);
 									dot = dot(beatNote);
@@ -210,7 +212,13 @@ public class DrumParser{
 			}
 			System.out.println("closing measure");
 			 if(fileGen.measureOpen){
-				 fileGen.closeMeasure(false, 0);
+				 if(repeats.get(i)[1]-runningSpanCount == 0) {
+				 fileGen.closeMeasure(true, repeats.get(i)[0]);
+				 runningSpanCount = 0;
+				 repeatOpen = false;
+				 }else {
+					 fileGen.closeMeasure(false, 0); 
+				 }
 			 }
 
 		}
@@ -222,7 +230,7 @@ public class DrumParser{
 		// Printing for testing
 		int i = 0;
 		for (ArrayList<ArrayList<String>> measure : Measure){
-			System.out.println(divisionsArray.get(i));
+			System.out.println(repeats.get(i)[0] + "," + repeats.get(i)[1]);
 			i++;
 			for(ArrayList<String> row : measure){
 				for(String c:row){
@@ -259,6 +267,59 @@ public class DrumParser{
 
 	private ArrayList<ArrayList<String>> transpose(ArrayList<ArrayList<String>> input){
 		ArrayList<ArrayList<ArrayList<String>>> sanitizeInput = new ArrayList<>();
+		rep = new HashMap<Integer, Integer[]>();
+		///////////////////
+		//finding repeats//
+		///////////////////
+		String regexPattern = "repeat";
+		Pattern pattern = Pattern.compile(regexPattern, Pattern.CASE_INSENSITIVE);
+		Matcher matcher = null;
+		boolean matchFound = false;
+		int col = 0;
+		int start = 0;
+		int end = 0;
+		int repeat = 0;
+		String r = "";
+		Integer[] store = null;
+		String[] split = null;
+		
+		for(int rows = 0; rows < input.size(); rows++) {
+			String row = "";
+			for(String s : input.get(rows)) {
+				row += s;
+			}
+			matcher = pattern.matcher(row);
+			matchFound = matcher.find();
+			if(matchFound) {
+				split = row.split("\\|");
+				start = col-1;
+				end = 0;
+				for(String s : split) {
+					matcher = pattern.matcher(s);
+					matchFound = matcher.find();
+					if(matchFound) {
+						store = new Integer[2];
+						end = start + s.length()+1;
+						for(int c = 0; c < s.length(); c++) {
+							if(Character.isDigit(s.charAt(c))) {
+								repeat = s.charAt(c)-'0';
+							}
+						}
+						store[0] = end;
+						store[1] = repeat;
+						rep.put(start, store);
+						start += s.length()+1;
+					}else {
+						start += s.length()+1;
+					}
+				}
+				input.remove(rows);
+			}
+			if(row.strip().length() == 0 || rows == input.size()-1) {
+				col += input.get(rows-1).size(); // throws error if first line is blank
+			}
+		}
+		
 		for(int rows =0; rows< input.size();rows++){
 			ArrayList<ArrayList<String>> drumBlock = new ArrayList<>();
 			while(rows<input.size()){
@@ -272,7 +333,7 @@ public class DrumParser{
 			}
 			sanitizeInput.add(drumBlock);
 		}
-
+		
 		ArrayList<ArrayList<String>> transposed = new ArrayList<>();
 		for(ArrayList<ArrayList<String>> block:sanitizeInput ) {
 			if(block.size()!=0) {
@@ -296,19 +357,30 @@ public class DrumParser{
 		boolean measureStart;
 		ArrayList<String> row		;
 		ArrayList<ArrayList<String>> currentMeasure = null;
-
-
-
-
-		for(startLocation = 0; startLocation < transposedinput.size(); startLocation++){ //For all rows
+		
+		for(startLocation = 0; startLocation < transposedinput.size(); startLocation++){//For all rows
 			measureStart = false;
 			row = transposedinput.get(startLocation);
 			measureStart = String.join("",row).equals("|".repeat(row.size()));
 
 			if(measureStart) {
 				currentMeasure = new ArrayList<>();//Create new measure
-
+				boolean hasRepeat = false;
+				int repeatValue = 0;
+				int start = 0;
+				int end = 0;
+				
 				while (measureStart && startLocation < transposedinput.size() - 1) {
+					if(!hasRepeat) {
+						for(int k : rep.keySet()) {
+							if(startLocation > k && startLocation< rep.get(k)[0]) {
+								hasRepeat = true;
+								start = k;
+								end = rep.get(k)[0];
+								repeatValue = rep.get(k)[1];
+							}
+						}
+					}
 					startLocation++;
 					row = transposedinput.get(startLocation);
 					if (String.join("", row).equals("|".repeat(row.size()))) {
@@ -316,8 +388,11 @@ public class DrumParser{
 						break;
 					}
 					currentMeasure.add(row);
-
 				}
+				System.out.println(currentMeasure.size());
+				double span = (end - start)*(1.0)/currentMeasure.size();
+				span = Math.round(span);
+				repeats.add(new Integer[]{repeatValue, (int)span});
 				Measure.add(currentMeasure);
 			}
 		}
@@ -330,6 +405,21 @@ public class DrumParser{
 
 	}
 
+ 	private int dash(int i , int j, int k) {
+ 		int dash = 1;
+ 		int increment = 1;
+ 		
+		while (true) {
+			if (((k + increment) < Measure.get(i).size()) && containsOnlyStringV(Measure.get(i).get(k + increment), j + 1, "-")) {
+				dash++;
+				increment++;
+			} else
+				break;
+		}
+ 		
+ 		return dash;
+ 	}
+ 	
 	private double getDivision(ArrayList<ArrayList<String>> measure) {
 		double division = 0;
 		int runningcount;
