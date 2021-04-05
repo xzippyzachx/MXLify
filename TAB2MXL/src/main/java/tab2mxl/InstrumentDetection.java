@@ -12,6 +12,7 @@ public class InstrumentDetection {
 		
 		boolean hasX = false;
 		boolean hasO = false;
+		boolean hasF = false;
 		
 		for(ArrayList<String> line : input) {
 			for(String character : line)
@@ -20,7 +21,9 @@ public class InstrumentDetection {
 					hasX = true;
 				if(character.toLowerCase().equals("o"))
 					hasO = true;
-				if(hasX && hasO)
+				if(character.toLowerCase().equals("f"))
+					hasF = true;
+				if(hasX || hasO || hasF)
 					return 2;
 			}
 		}

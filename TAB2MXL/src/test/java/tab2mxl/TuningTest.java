@@ -9,14 +9,14 @@ import org.junit.jupiter.api.Test;
 
 class TuningTest {
 
-	static Tuning tunning;
+	static StringTuning tunning;
 	static String[] tune = {"e", "B", "G", "D", "A", "E"};; 
 	
 	@BeforeAll
     static void setUp() {
 		//String[] tune = {"e", "B", "G", "D", "A", "E"};
 		int[] oct = new int[]{1, 2, 3, 4, 5, 6};
-	     tunning = new Tuning(tune, 6, oct);
+	     tunning = new StringTuning(tune, 6, oct);
 	}
 	
 	@Test
@@ -28,11 +28,11 @@ class TuningTest {
 		String[] tuneD = {"e", "B", "G", "D", "A", "E", "B", "F#"};
 		String[] tuneE = {"e", "B", "G", "D", "A", "E", "B", "F#", "C#"};
 		
-		assertArrayEquals(Tuning.getDefaultTuning(5), tuneA);
-		assertArrayEquals(Tuning.getDefaultTuning(6), tuneB);
-		assertArrayEquals(Tuning.getDefaultTuning(7), tuneC);
-		assertArrayEquals(Tuning.getDefaultTuning(8), tuneD);
-		assertArrayEquals(Tuning.getDefaultTuning(9), tuneE);
+		assertArrayEquals(StringTuning.getDefaultTuning(5), tuneA);
+		assertArrayEquals(StringTuning.getDefaultTuning(6), tuneB);
+		assertArrayEquals(StringTuning.getDefaultTuning(7), tuneC);
+		assertArrayEquals(StringTuning.getDefaultTuning(8), tuneD);
+		assertArrayEquals(StringTuning.getDefaultTuning(9), tuneE);
 	}
 	
 	void testStringNotesHashMap() {

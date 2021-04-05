@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 
-public class Tuning {
+public class StringTuning {
 
 	//hash map for the relation between the strings and the frets
 	private HashMap<String, List<String>> stringNotes;
@@ -42,7 +42,7 @@ public class Tuning {
 	public boolean unSupportedOctave;
 	
 	//Constructor for the Tuning class
-	Tuning(String[] tune, int stringAmount, int[] tuneOctave){
+	StringTuning(String[] tune, int stringAmount, int[] tuneOctave){
 		//initialize the instance variables
 		//setting the tuning based on whether it should be default or not
 		int octave = 0;
@@ -154,31 +154,31 @@ public class Tuning {
 		switch (stringAmount)
 		{
 			case 1:
-				output = Tuning.DEFAULT_TUNING1;
+				output = StringTuning.DEFAULT_TUNING1;
 				break;
 			case 2:
-				output = Tuning.DEFAULT_TUNING2;
+				output = StringTuning.DEFAULT_TUNING2;
 				break;
 			case 3:
-				output = Tuning.DEFAULT_TUNING3;
+				output = StringTuning.DEFAULT_TUNING3;
 				break;
 			case 4:
-				output = Tuning.DEFAULT_TUNING4;
+				output = StringTuning.DEFAULT_TUNING4;
 				break;
 			case 5:
-				output = Tuning.DEFAULT_TUNING5;
+				output = StringTuning.DEFAULT_TUNING5;
 				break;
 			case 6:
-				output = Tuning.DEFAULT_TUNING6;
+				output = StringTuning.DEFAULT_TUNING6;
 				break;
 			case 7:
-				output = Tuning.DEFAULT_TUNING7;
+				output = StringTuning.DEFAULT_TUNING7;
 				break;
 			case 8:
-				output = Tuning.DEFAULT_TUNING8;
+				output = StringTuning.DEFAULT_TUNING8;
 				break;
 			case 9:
-				output = Tuning.DEFAULT_TUNING9;
+				output = StringTuning.DEFAULT_TUNING9;
 				break;				
 			default:
 				break;
@@ -193,31 +193,31 @@ public class Tuning {
 		switch (stringAmount)
 		{
 			case 1:
-				output = Tuning.DEFAULT_OCTAVE1;
+				output = StringTuning.DEFAULT_OCTAVE1;
 				break;
 			case 2:
-				output = Tuning.DEFAULT_OCTAVE2;
+				output = StringTuning.DEFAULT_OCTAVE2;
 				break;
 			case 3:
-				output = Tuning.DEFAULT_OCTAVE3;
+				output = StringTuning.DEFAULT_OCTAVE3;
 				break;
 			case 4:
-				output = Tuning.DEFAULT_OCTAVE4;
+				output = StringTuning.DEFAULT_OCTAVE4;
 				break;
 			case 5:
-				output = Tuning.DEFAULT_OCTAVE5;
+				output = StringTuning.DEFAULT_OCTAVE5;
 				break;
 			case 6:
-				output = Tuning.DEFAULT_OCTAVE6;
+				output = StringTuning.DEFAULT_OCTAVE6;
 				break;
 			case 7:
-				output = Tuning.DEFAULT_OCTAVE7;
+				output = StringTuning.DEFAULT_OCTAVE7;
 				break;
 			case 8:
-				output = Tuning.DEFAULT_OCTAVE8;
+				output = StringTuning.DEFAULT_OCTAVE8;
 				break;
 			case 9:
-				output = Tuning.DEFAULT_OCTAVE9;
+				output = StringTuning.DEFAULT_OCTAVE9;
 				break;				
 			default:
 				break;
