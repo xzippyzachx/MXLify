@@ -807,6 +807,12 @@ public class FileGenerator {
 		write(currentIndent + "<note>");
 		newLine();
 		currentIndent += "  ";
+		
+		if (noteHead.equals("f")){
+			write(currentIndent + "<grace/>");
+			newLine();
+		}
+		
 		write(currentIndent + "<unpitched>");
 		newLine();
 		currentIndent += "  ";
@@ -852,6 +858,12 @@ public class FileGenerator {
 				write(currentIndent + "<chord/>");
 				newLine();	
 			}
+			
+			if (chordSymbols.get(i).equals("f")){
+				write(currentIndent + "<grace/>");
+				newLine();
+			}
+			
 			write(currentIndent + "<unpitched>");
 			newLine();
 			currentIndent += "  ";

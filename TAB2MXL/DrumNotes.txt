@@ -11,6 +11,19 @@ T2||D5|o|P1-I46|-Medium-tom-----
 HT||E5|o|P1-I48|-High-tom-------
 T ||E5|o|P1-I48|-High-tom-------
 T1||E5|o|P1-I48|-High-tom-------
+BD||F4|f|P1-I36|-Bass-drum-1----
+BA||F4|f|P1-I36|-Bass-drum-1----
+B ||F4|f|P1-I36|-Bass-drum-1----
+FT||A4|f|P1-I42|-Floor-tom------
+F ||A4|f|P1-I42|-Floor-tom------
+SD||C5|f|P1-I39|-Snare----------
+SN||C5|f|P1-I39|-Snare----------
+S ||C5|f|P1-I39|-Snare----------
+MT||D5|f|P1-I46|-Medium-tom-----
+T2||D5|f|P1-I46|-Medium-tom-----
+HT||E5|f|P1-I48|-High-tom-------
+T ||E5|f|P1-I48|-High-tom-------
+T1||E5|f|P1-I48|-High-tom-------
 RC||F5|x|P1-I52|-Ride-cymbal-1--
 Rd||F5|x|P1-I52|-Ride-cymbal-1--
 R ||F5|x|P1-I52|-Ride-cymbal-1--
