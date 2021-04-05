@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class DrumParser{
 	ArrayList<ArrayList<String>> input;
@@ -87,10 +88,16 @@ public class DrumParser{
 
 
 		System.out.println("instruments");
-		instruments = getInstruments(transposedInput.get(0));
-
+		ArrayList<String> instrmnt = new ArrayList<>();
+		for(int inst = 0; inst < transposedInput.get(0).size(); inst++) {
+			instrmnt.add(transposedInput.get(0).get(inst)+transposedInput.get(1).get(inst));
+		}
+		instruments = getInstruments(instrmnt);
+		instrmnt.clear();
 
 		tuning = new DrumTuning(instruments, instruments.length);
+		for(int g  = 0; g < instruments.length; g++)
+			System.out.println("Instrument: " + instruments[g]);
 
 		voices = setVoice(tuning,instruments);
 
@@ -121,10 +128,13 @@ public class DrumParser{
 
 
 			if(Measure.get(i).size() ==2){
-				instruments = getInstruments(Measure.get(i).get(0));
+				for(int inst = 0; inst < Measure.get(i).get(0).size(); inst++) {
+					instrmnt.add(Measure.get(i).get(0).get(inst)+Measure.get(i).get(1).get(inst));
+				}
+				instruments = getInstruments(instrmnt);
 				tuning = new DrumTuning(instruments, instruments.length);
 				voices = setVoice(tuning,instruments);
-
+				instrmnt.clear();
 			}else{
 				measurecount++;
 				System.out.println("Entered measure: " + measurecount);

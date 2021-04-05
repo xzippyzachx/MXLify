@@ -85,7 +85,8 @@ public class FileGenerator {
 	private void tabBack()
 	{
 		try {
-			currentIndent = currentIndent.substring(0,currentIndent.length() - 2);
+			if(currentIndent.length() > 1)
+				currentIndent = currentIndent.substring(0,currentIndent.length() - 2);
 		} catch (StringIndexOutOfBoundsException e) {
 			e.printStackTrace();
 		}
@@ -793,10 +794,6 @@ public class FileGenerator {
 				tabBack();
 				write(currentIndent + "</notations>");
 				newLine();
-				write(currentIndent + "<stem>down</stem>");
-				newLine();
-				write(currentIndent + "<staff>1</staff>");
-				newLine();
 				tabBack();
 				write(currentIndent + "</note>");
 				newLine();
@@ -810,6 +807,12 @@ public class FileGenerator {
 		write(currentIndent + "<note>");
 		newLine();
 		currentIndent += "  ";
+		
+		if (noteHead.equals("f")){
+			write(currentIndent + "<grace/>");
+			newLine();
+		}
+		
 		write(currentIndent + "<unpitched>");
 		newLine();
 		currentIndent += "  ";
@@ -855,6 +858,12 @@ public class FileGenerator {
 				write(currentIndent + "<chord/>");
 				newLine();	
 			}
+			
+			if (chordSymbols.get(i).equals("f")){
+				write(currentIndent + "<grace/>");
+				newLine();
+			}
+			
 			write(currentIndent + "<unpitched>");
 			newLine();
 			currentIndent += "  ";
