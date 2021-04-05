@@ -34,7 +34,7 @@ class ParserTest {
 		
 		String[] inputText = textField.split("\n");
 		ArrayList<ArrayList<String>> input = GetInput(inputText);		
-		new Parser(input, 0, path);
+		new StringParser(input, 0, path);
 		
 		fileContent = this.readFile(path);
 		expected ="<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n"
@@ -350,7 +350,7 @@ class ParserTest {
 		
 		String[] inputText = textField.split("\n");
 		ArrayList<ArrayList<String>> input = GetInput(inputText);
-		new Parser(input, 0, path);
+		new StringParser(input, 0, path);
 		
 		fileContent = this.readFile(path);
 		expected ="<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n"
@@ -683,7 +683,7 @@ class ParserTest {
 		
 		String[] inputText = textField.split("\n");
 		ArrayList<ArrayList<String>> input = GetInput(inputText);
-		new Parser(input, 0, path);
+		new StringParser(input, 0, path);
 		
 		fileContent = this.readFile(path);
 		expected ="<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n"
@@ -1150,42 +1150,42 @@ class ParserTest {
 	
 	@Test
 	void testNoteType() {
-		assertEquals("whole", Parser.noteType(1.0));
-		assertEquals("half", Parser.noteType(1.0/2.0));
+		assertEquals("whole", StringParser.noteType(1.0));
+		assertEquals("half", StringParser.noteType(1.0/2.0));
 		
-		assertEquals("quarter", Parser.noteType(1.0/4.0));
-		assertEquals("eighth", Parser.noteType(1.0/8.0));
-		assertEquals("16th", Parser.noteType(1.0/16.0));
-		assertEquals("32nd", Parser.noteType(1.0/32.0));
-		assertEquals("64th", Parser.noteType(1.0/64.0));
-		assertEquals("128th", Parser.noteType(1.0/128));
-		assertEquals("256th", Parser.noteType(1.0/256));
-		assertEquals("512th", Parser.noteType(1.0/512));
-		assertEquals("1024th", Parser.noteType(1.0/1024));
+		assertEquals("quarter", StringParser.noteType(1.0/4.0));
+		assertEquals("eighth", StringParser.noteType(1.0/8.0));
+		assertEquals("16th", StringParser.noteType(1.0/16.0));
+		assertEquals("32nd", StringParser.noteType(1.0/32.0));
+		assertEquals("64th", StringParser.noteType(1.0/64.0));
+		assertEquals("128th", StringParser.noteType(1.0/128));
+		assertEquals("256th", StringParser.noteType(1.0/256));
+		assertEquals("512th", StringParser.noteType(1.0/512));
+		assertEquals("1024th", StringParser.noteType(1.0/1024));
 	}
 	
 	@Test
 	void testAddTitle() {
-		Parser.misc = new HashMap<String, String>();
-		Parser.addTitle("Test Title");
+		StringParser.misc = new HashMap<String, String>();
+		StringParser.addTitle("Test Title");
 		
-		assertEquals(Parser.misc.get("Title"), "Test Title");
+		assertEquals(StringParser.misc.get("Title"), "Test Title");
 	}
 
 	@Test
 	void testAddTabType() {
-		Parser.misc = new HashMap<String, String>();
-		Parser.addInstrument("Guitar");
+		StringParser.misc = new HashMap<String, String>();
+		StringParser.addInstrument("Guitar");
 		
-		assertEquals(Parser.misc.get("Instrument"), "Guitar");
+		assertEquals(StringParser.misc.get("Instrument"), "Guitar");
 	}
 
 	@Test
 	void testAddTime() {
-		Parser.misc = new HashMap<String, String>();
-		Parser.addTime("4");
+		StringParser.misc = new HashMap<String, String>();
+		StringParser.addTime("4");
 		
-		assertEquals(Parser.misc.get("TimeSig"), "4");
+		assertEquals(StringParser.misc.get("TimeSig"), "4");
 	}
 	
 	private ArrayList<ArrayList<String>> GetInput (String[] textInput)

@@ -29,13 +29,13 @@ public class Main {
 		System.out.println("I: " + instrument);
 		switch(instrument) {
 			case 1: //Bass
-				new Parser(input, instrument, "");//added instrument to Parser to use in Tuning class
+				new StringParser(input, instrument, "");//added instrument to Parser to use in Tuning class
 				break;
 			case 2: //Drum
 				new DrumParser(input);
 				break;
 			default: //Guitar
-				new Parser(input, instrument, "");
+				new StringParser(input, instrument, "");
 		}
 
 		new CreateScore(FileGenerator.filepath);

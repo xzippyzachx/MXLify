@@ -25,10 +25,12 @@ public class FileGenerator {
 	boolean partOpen = false;
 	
 	StringBuilder stringBuilder;
+	boolean doublePart;
 	
-	FileGenerator (String path) {		
+	FileGenerator (String path, boolean doublePart) {		
 		stringBuilder = new StringBuilder();
 		failed = false;
+		this.doublePart = doublePart;
 		
 		JFileChooser fileChooser = null;
 		int response = 0;
@@ -73,7 +75,8 @@ public class FileGenerator {
 	{
 		try {
 			myWriter.write("\n");
-			stringBuilder.append("\n");
+			if(doublePart)
+				stringBuilder.append("\n");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -84,7 +87,7 @@ public class FileGenerator {
 		try {
 			currentIndent = currentIndent.substring(0,currentIndent.length() - 2);
 		} catch (StringIndexOutOfBoundsException e) {
-			//e.printStackTrace();
+			e.printStackTrace();
 		}
 	}
 	
@@ -92,7 +95,8 @@ public class FileGenerator {
 	{
 		try {
 			myWriter.write(line);
-			appendString(line);
+			if(doublePart)
+				appendString(line);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -113,7 +117,7 @@ public class FileGenerator {
 	 * Adds the initial info to the beginning of the MusicXML
 	 * @param title
 	 */
-	public void addInfo(String title, String instrument)
+	public void addStringInfo(String title, String instrument)
 	{
 		try {
 			myWriter.write(currentIndent + "<?xml version=\"1.0\" encoding=\"UTF-8\"?>");		
@@ -152,12 +156,11 @@ public class FileGenerator {
 			myWriter.write(currentIndent + "</part-list>");			
 			newLine();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}			
 	}
 
-	public void addInfoDrums(String title)  {
+	public void addDrumInfo(String title)  {
 		try {
 			myWriter.write(currentIndent + "<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
 			newLine();
@@ -175,11 +178,12 @@ public class FileGenerator {
 			myWriter.write(currentIndent + "<part-list>");
 			currentIndent += "  ";
 			newLine();
+			
 			myWriter.write(currentIndent + "<score-part id=\"P1\">");
 			currentIndent += "  ";
 			newLine();
 
-			//Add
+			//Add			
 			myWriter.write(currentIndent + "<part-name>Drumset</part-name>");
 			newLine();
 
@@ -406,253 +410,12 @@ public class FileGenerator {
 			tabBack();
 			myWriter.write(currentIndent +  "</part-list>");
 			newLine();
-			
-			myWriter.write(currentIndent +  "<part id=\"P1\">");
-			newLine();
-			currentIndent += "  ";
 
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
-	public void openDrumMeasure(int measureNumber){
-		try {
-			myWriter.write(currentIndent + "<measure number=\"" + measureNumber + "\">");
-			currentIndent += "  ";
-			newLine();
-			measureOpen = true;
-		}
-		catch(IOException e){
-
-		}
-
-	}
-
-	public void attributesDrum(int division, int beat, int beatType) {
-		try {
-			myWriter.write(currentIndent + "<attributes>");
-			currentIndent += "  ";
-			newLine();
-			myWriter.write(currentIndent + "<divisions>" + division + "</divisions>");
-			newLine();
-			myWriter.write(currentIndent + "<key>");
-			currentIndent += "  ";
-			newLine();
-			myWriter.write(currentIndent + "<fifths>" + 0 + "</fifths>");
-			newLine();
-			tabBack();
-			myWriter.write(currentIndent + "</key>");
-			newLine();
-			myWriter.write(currentIndent + "<time>");
-			currentIndent += "  ";
-			newLine();
-			myWriter.write(currentIndent + "<beats>" + beat + "</beats>");
-			newLine();
-			myWriter.write(currentIndent + "<beat-type>" + beatType + "</beat-type>");
-			newLine();
-			tabBack();
-			myWriter.write(currentIndent + "</time>");
-			newLine();
-			myWriter.write(currentIndent + "<clef>");
-			currentIndent += "  ";
-			newLine();
-			myWriter.write(currentIndent + "<sign>percussion</sign>");
-			newLine();
-			myWriter.write(currentIndent + "<line>" + 2 + "</line>");
-			newLine();
-			tabBack();
-			myWriter.write(currentIndent + "</clef>");
-			newLine();
-			tabBack();
-			myWriter.write(currentIndent + "</attributes>");
-			newLine();
-		}
-		catch(IOException e){
-
-		}
-	}
-
-	public void addDrumNote(String noteHead, int duration, String displayStep, int displayOctave, String instrumentID, String noteType, int voice, int dot){
-
-		try {
-			myWriter.write(currentIndent + "<note>");
-			newLine();
-			currentIndent += "  ";
-			myWriter.write(currentIndent + "<unpitched>");
-			newLine();
-			currentIndent += "  ";
-
-			myWriter.write(currentIndent + "<display-step>" + displayStep + "</display-step>");
-			newLine();
-			myWriter.write(currentIndent + "<display-octave>" + displayOctave + "</display-octave>");
-			newLine();
-			myWriter.write(currentIndent + "</unpitched>");
-			newLine();
-			tabBack();
-
-			myWriter.write(currentIndent + "<duration>" + duration + "</duration>");
-			newLine();
-			myWriter.write(currentIndent + "<instrument id=\"" + instrumentID + "\"/>");
-			newLine();
-			myWriter.write(currentIndent + "<voice>" + voice + "</voice>" );
-			newLine();
-			myWriter.write(currentIndent + "<type>" + noteType + "</type>");
-			newLine();
-			for(int d  = 0; d < dot; d++) {
-				myWriter.write(currentIndent + "<dot/>");
-				newLine();
-			}
-			if(noteHead.equals("x")){
-				myWriter.write(currentIndent + "<notehead>" + noteHead + "</notehead>");
-				newLine();
-			}
-			tabBack();
-			myWriter.write(currentIndent + "</note>");
-			newLine();
-			
-
-		} catch (IOException e){
-			e.printStackTrace();
-		}
-	}
-	
-	public void addDrumChord(ArrayList<String>chords, int duration, ArrayList<String>chordNotes, ArrayList<Integer>chordOctaves, ArrayList<String>chordIDs, ArrayList<String>chordSymbols, int chordDot, String chordType, int voice) {
-		try {
-			boolean first = false;
-			for(int i = chords.size()-1; i >= 0; i--) {
-				myWriter.write(currentIndent + "<note>");
-				newLine();
-				currentIndent += "  ";
-				if(first) {
-					myWriter.write(currentIndent + "<chord/>");
-					newLine();	
-				}
-				myWriter.write(currentIndent + "<unpitched>");
-				newLine();
-				currentIndent += "  ";
-
-				myWriter.write(currentIndent + "<display-step>" + chordNotes.get(i) + "</display-step>");
-				newLine();
-				myWriter.write(currentIndent + "<display-octave>" + chordOctaves.get(i) + "</display-octave>");
-				newLine();
-				myWriter.write(currentIndent + "</unpitched>");
-				newLine();
-				tabBack();
-
-				myWriter.write(currentIndent + "<duration>" + duration + "</duration>");
-				newLine();
-				myWriter.write(currentIndent + "<instrument id=\"" + chordIDs.get(i) + "\"/>");
-				newLine();
-				myWriter.write(currentIndent + "<voice>" + voice + "</voice>" );
-				newLine();
-				myWriter.write(currentIndent + "<type>" + chordType + "</type>");
-				newLine();
-				for(int j  = 0; j < chordDot; j++) {
-					myWriter.write(currentIndent + "<dot/>");
-					newLine();
-				}
-				if(chordSymbols.get(i).equals("x")){
-					myWriter.write(currentIndent + "<notehead>" + chordSymbols.get(i) + "</notehead>");
-					newLine();
-				}
-				tabBack();
-				myWriter.write(currentIndent + "</note>");
-				newLine();
-				
-				first = true;
-			}
-			
-		}catch(IOException e) {
-			
-		}
-	}
-	
-	public void Backup(int totalDuration){
-
-		try {
-			myWriter.write(currentIndent + "<backup>");
-			newLine();
-			currentIndent += "  ";
-
-			myWriter.write(currentIndent + "<duration>" + totalDuration + "</duration>");
-			newLine();
-			tabBack();
-			myWriter.write(currentIndent + "</backup>");
-			newLine();
-			
-
-		} catch (IOException e){
-			e.printStackTrace();
-		}
-
-
-	}
-
-	public void openDrumPart(int partNumber)
-	{
-		try {
-		myWriter.write(currentIndent + "<part id=\"P" + partNumber + "\">");
-		currentIndent += "  ";
-		newLine();
-		partOpen = true;
-		}
-		catch(IOException e){
-
-		}
-	}
-
-	public void closeDrumPart()
-	{
-		try {
-		tabBack();
-		myWriter.write(currentIndent + "</part>");
-		newLine();
-		partOpen = false;
-		}
-		catch(IOException e){
-
-		}
-	}
-
-	public void closeDrumMeasure(){
-		try {
-			tabBack();
-			myWriter.write(currentIndent + "</measure>");
-			newLine();
-			measureOpen = false;
-		}
-		catch(IOException e){
-
-		}
-	}
-
-
-
-
-	/**
-	 * Adds a new part opening to the MusicXML
-	 * @param partNumber
-	 */
-	public void openPart(int partNumber)
-	{
-		write(currentIndent + "<part id=\"P" + partNumber + "\">");
-		currentIndent += "  ";
-		newLine();
-		partOpen = true;
-	}
-	
-	/**
-	 * Adds a part closing to the MusicXML
-	 */
-	public void closePart()
-	{
-		tabBack();
-		write(currentIndent + "</part>");
-		newLine();
-		partOpen = false;
-	}
-	
 	/**
 	 * Adds attributes to the MusicXML
 	 * @param division
@@ -662,7 +425,7 @@ public class FileGenerator {
 	 * @param clef
 	 * @param tune
 	 */
-	public void attributes(int division, int keySignature, int beat, int beatType, String clef, String[] tune, int[] tuneOctave) {
+	public void stringAttributes(int division, int keySignature, int beat, int beatType, String clef, String[] tune, int[] tuneOctave) {
 		write(currentIndent + "<attributes>");
 		currentIndent += "  ";
 		newLine();
@@ -730,13 +493,158 @@ public class FileGenerator {
 		newLine();		
 	}
 	
+	public void drumAttributes(int division, int beat, int beatType) {
+		write(currentIndent + "<attributes>");
+		currentIndent += "  ";
+		newLine();
+		write(currentIndent + "<divisions>" + division + "</divisions>");
+		newLine();
+		write(currentIndent + "<key>");
+		currentIndent += "  ";
+		newLine();
+		write(currentIndent + "<fifths>" + 0 + "</fifths>");
+		newLine();
+		tabBack();
+		write(currentIndent + "</key>");
+		newLine();
+		write(currentIndent + "<time>");
+		currentIndent += "  ";
+		newLine();
+		write(currentIndent + "<beats>" + beat + "</beats>");
+		newLine();
+		write(currentIndent + "<beat-type>" + beatType + "</beat-type>");
+		newLine();
+		tabBack();
+		write(currentIndent + "</time>");
+		newLine();
+		write(currentIndent + "<clef>");
+		currentIndent += "  ";
+		newLine();
+		write(currentIndent + "<sign>percussion</sign>");
+		newLine();
+		write(currentIndent + "<line>" + 2 + "</line>");
+		newLine();
+		tabBack();
+		write(currentIndent + "</clef>");
+		newLine();
+		tabBack();
+		write(currentIndent + "</attributes>");
+		newLine();
+	}
+	
+	public void backup(int totalDuration){
+
+		write(currentIndent + "<backup>");
+		newLine();
+		currentIndent += "  ";
+
+		write(currentIndent + "<duration>" + totalDuration + "</duration>");
+		newLine();
+		tabBack();
+		write(currentIndent + "</backup>");
+		newLine();
+
+	}
+
+	/**
+	 * Adds a new part opening to the MusicXML
+	 * @param partNumber
+	 */
+	public void openPart(int partNumber)
+	{
+		write(currentIndent + "<part id=\"P" + partNumber + "\">");
+		currentIndent += "  ";
+		newLine();
+		partOpen = true;
+	}
+	
+	/**
+	 * Adds a part closing to the MusicXML
+	 */
+	public void closePart()
+	{
+		tabBack();
+		write(currentIndent + "</part>");
+		newLine();
+		partOpen = false;
+	}
+	
+	/**
+	 * Adds a new measure opening to the MusicXML
+	 * @param measureNumber
+	 */
+	public void openMeasure(int measureNumber, boolean isRepeat, int repeatAmount)
+	{
+		write(currentIndent + "<measure number=\"" + measureNumber + "\">");
+		currentIndent += "  ";
+		newLine();
+		
+		if(isRepeat)
+		{
+			write(currentIndent + "<barline location=\"left\">");
+			currentIndent += "  ";
+			newLine();
+			write(currentIndent + "<bar-style>heavy-light</bar-style>");
+			newLine();
+			write(currentIndent + "<repeat direction=\"forward\" times=\"" + repeatAmount + "\"/>");
+			tabBack();
+			newLine();
+			write(currentIndent + "</barline>");
+			newLine();
+			write(currentIndent + "<direction placement=\"above\">");
+			currentIndent += "  ";
+			newLine();
+			write(currentIndent + "<direction-type>");
+			currentIndent += "  ";
+			newLine();
+			write(currentIndent + "<words default-x=\"15\" default-y=\"15\" font-size=\"9\" font-style=\"italic\">Repeat " + repeatAmount + "x</words>");
+			tabBack();
+			newLine();
+			write(currentIndent + "</direction-type>");
+			tabBack();
+			newLine();
+	        write(currentIndent + "</direction>");
+	        newLine();
+		}
+        
+		measureOpen = true;
+	}
+	
+	/**
+	 * Adds a measure closing to the MusicXML
+	 */
+	public void closeMeasure(boolean isRepeat, int repeatAmount)
+	{
+		if(isRepeat)
+		{
+			write(currentIndent + "<barline location=\"right\">");
+			currentIndent += "  ";
+			newLine();
+			write(currentIndent + "<bar-style>light-heavy</bar-style>");
+			newLine();
+			write(currentIndent + "<repeat direction=\"backward\" times=\"" + repeatAmount + "\"/>");
+			tabBack();
+			newLine();
+			write(currentIndent + "</barline>");
+			newLine();
+		}
+		
+		tabBack();
+		write(currentIndent + "</measure>");
+		newLine();
+		
+		measureOpen = false;
+	}
+	
+	
+	
 	/**
 	 * Adds a note to the MusicXML
 	 * @param string
 	 * @param fret
 	 * @param note
 	 */
-	public void addNote(int string, int fret, char note, String noteType, int duration, int octave, int dot,boolean alter,boolean hammerStart, boolean hammerContinue, boolean hammerDone,boolean harmonic,boolean grace)
+	public void addStringNote(int string, int fret, char note, String noteType, int duration, int octave, int dot,boolean alter,boolean hammerStart, boolean hammerContinue, boolean hammerDone,boolean harmonic,boolean grace)
 	{
 		write(currentIndent + "<note>");
 		currentIndent += "  ";
@@ -831,7 +739,7 @@ public class FileGenerator {
 	 * @param chord
 	 * @param noteType
 	 */
-	public void addChord(char[] chord, String noteType, int duration, int[] octaves,int[] string, int[] fret, int[] dot,boolean[] alter, int HamLocation, boolean hammerStart, boolean hammerContinue, boolean hammerDone,boolean[] harmonic) {
+	public void addStringChord(char[] chord, String noteType, int duration, int[] octaves,int[] string, int[] fret, int[] dot,boolean[] alter, int HamLocation, boolean hammerStart, boolean hammerContinue, boolean hammerDone,boolean[] harmonic) {
 		boolean firstDone = false;
 		for (int i = chord.length-1; i>=0;i--) {
 			if(string[i] != 0) {
@@ -914,106 +822,125 @@ public class FileGenerator {
 		}		
 	}
 	
-	public void addRest(int duration, String noteType, int v) {
-		try {
-			if(duration > 0) {
-				myWriter.write(currentIndent + "<note>");
-				currentIndent += "  ";
-				newLine();
-				myWriter.write(currentIndent + "<rest/>");
-				newLine();
-				myWriter.write(currentIndent + "<duration>" + duration + "</duration>");
-				newLine();
-				if(v != -1) {
-					myWriter.write(currentIndent + "<voice>" + v + "</voice>" );
-					newLine();
-				}
-				myWriter.write(currentIndent + "<type>" + noteType + "</type>");
-				newLine();
-				tabBack();
-				myWriter.write(currentIndent + "</note>");
+	
+	public void addDrumNote(String noteHead, int duration, String displayStep, int displayOctave, String instrumentID, String noteType, int voice, int dot){
+
+		write(currentIndent + "<note>");
+		newLine();
+		currentIndent += "  ";
+		write(currentIndent + "<unpitched>");
+		newLine();
+		currentIndent += "  ";
+
+		write(currentIndent + "<display-step>" + displayStep + "</display-step>");
+		newLine();
+		write(currentIndent + "<display-octave>" + displayOctave + "</display-octave>");
+		newLine();
+		write(currentIndent + "</unpitched>");
+		newLine();
+		tabBack();
+
+		write(currentIndent + "<duration>" + duration + "</duration>");
+		newLine();
+		write(currentIndent + "<instrument id=\"" + instrumentID + "\"/>");
+		newLine();
+		write(currentIndent + "<voice>" + voice + "</voice>" );
+		newLine();
+		write(currentIndent + "<type>" + noteType + "</type>");
+		newLine();
+		for(int d  = 0; d < dot; d++) {
+			write(currentIndent + "<dot/>");
+			newLine();
+		}
+		if(noteHead.equals("x")){
+			write(currentIndent + "<notehead>" + noteHead + "</notehead>");
+			newLine();
+		}
+		tabBack();
+		write(currentIndent + "</note>");
+		newLine();
+			
+	}
+	
+	public void addDrumChord(ArrayList<String>chords, int duration, ArrayList<String>chordNotes, ArrayList<Integer>chordOctaves, ArrayList<String>chordIDs, ArrayList<String>chordSymbols, int chordDot, String chordType, int voice) {
+
+		boolean first = false;
+		for(int i = chords.size()-1; i >= 0; i--) {
+			write(currentIndent + "<note>");
+			newLine();
+			currentIndent += "  ";
+			if(first) {
+				write(currentIndent + "<chord/>");
+				newLine();	
+			}
+			write(currentIndent + "<unpitched>");
+			newLine();
+			currentIndent += "  ";
+
+			write(currentIndent + "<display-step>" + chordNotes.get(i) + "</display-step>");
+			newLine();
+			write(currentIndent + "<display-octave>" + chordOctaves.get(i) + "</display-octave>");
+			newLine();
+			write(currentIndent + "</unpitched>");
+			newLine();
+			tabBack();
+
+			write(currentIndent + "<duration>" + duration + "</duration>");
+			newLine();
+			write(currentIndent + "<instrument id=\"" + chordIDs.get(i) + "\"/>");
+			newLine();
+			write(currentIndent + "<voice>" + voice + "</voice>" );
+			newLine();
+			write(currentIndent + "<type>" + chordType + "</type>");
+			newLine();
+			for(int j  = 0; j < chordDot; j++) {
+				write(currentIndent + "<dot/>");
 				newLine();
 			}
-		}catch(IOException e) {
+			if(chordSymbols.get(i).equals("x")){
+				write(currentIndent + "<notehead>" + chordSymbols.get(i) + "</notehead>");
+				newLine();
+			}
+			tabBack();
+			write(currentIndent + "</note>");
+			newLine();
 			
+			first = true;
 		}
 	}
 	
-	/**
-	 * Adds a new measure opening to the MusicXML
-	 * @param measureNumber
-	 */
-	public void openMeasure(int measureNumber, boolean isRepeat, int repeatAmount)
-	{
-		System.out.println("OPEN MEASURE METHOD");
-		write(currentIndent + "<measure number=\"" + measureNumber + "\">");
-		currentIndent += "  ";
-		newLine();
-		
-		if(isRepeat)
-		{
-			write(currentIndent + "<barline location=\"left\">");
-			currentIndent += "  ";
-			newLine();
-			write(currentIndent + "<bar-style>heavy-light</bar-style>");
-			newLine();
-			write(currentIndent + "<repeat direction=\"forward\" times=\"" + repeatAmount + "\"/>");
-			tabBack();
-			newLine();
-			write(currentIndent + "</barline>");
-			newLine();
-			write(currentIndent + "<direction placement=\"above\">");
-			currentIndent += "  ";
-			newLine();
-			write(currentIndent + "<direction-type>");
-			currentIndent += "  ";
-			newLine();
-			write(currentIndent + "<words default-x=\"15\" default-y=\"15\" font-size=\"9\" font-style=\"italic\">Repeat " + repeatAmount + "x</words>");
-			tabBack();
-			newLine();
-			write(currentIndent + "</direction-type>");
-			tabBack();
-			newLine();
-	        write(currentIndent + "</direction>");
-	        newLine();
-		}
-        
-		measureOpen = true;
-	}
 	
-	/**
-	 * Adds a measure closing to the MusicXML
-	 */
-	public void closeMeasure(boolean isRepeat, int repeatAmount)
-	{
-		if(isRepeat)
-		{
-			write(currentIndent + "<barline location=\"right\">");
+	public void addRest(int duration, String noteType, int v) {
+		
+		if(duration > 0) {
+			write(currentIndent + "<note>");
 			currentIndent += "  ";
 			newLine();
-			write(currentIndent + "<bar-style>light-heavy</bar-style>");
+			write(currentIndent + "<rest/>");
 			newLine();
-			write(currentIndent + "<repeat direction=\"backward\" times=\"" + repeatAmount + "\"/>");
+			write(currentIndent + "<duration>" + duration + "</duration>");
+			newLine();
+			if(v != -1) {
+				write(currentIndent + "<voice>" + v + "</voice>" );
+				newLine();
+			}
+			write(currentIndent + "<type>" + noteType + "</type>");
+			newLine();
 			tabBack();
-			newLine();
-			write(currentIndent + "</barline>");
+			write(currentIndent + "</note>");
 			newLine();
 		}
-		
-		tabBack();
-		write(currentIndent + "</measure>");
-		newLine();
-		
-		measureOpen = false;
 	}
-	
+		
 	/**
 	 * Adds the closing lines to the MusicXML
 	 */
 	public void end()
 	{
 		try {
-			myWriter.write(stringBuilder.toString().replaceAll("(?m)^[ \t]*\r?\n", ""));
+			if(doublePart)
+				myWriter.write(stringBuilder.toString().replaceAll("(?m)^[ \t]*\r?\n", ""));
+			
 			myWriter.write("</score-partwise>");
 			myWriter.close();
 		} catch (IOException e) {

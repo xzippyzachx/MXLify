@@ -93,8 +93,10 @@ public class DrumParser{
 
 		voices = setVoice(tuning,instruments);
 
-		fileGen = new FileGenerator("");
-		fileGen.addInfoDrums(misc.get("Title"));
+		fileGen = new FileGenerator("", false);
+		fileGen.addDrumInfo(misc.get("Title"));
+		
+		fileGen.openPart(1);
 
 		double totalBeatPerMeasure = (1.0 * beat)/beatType;
 		int duration = 0;
@@ -119,9 +121,9 @@ public class DrumParser{
 			}
 
 			else{
-				fileGen.openDrumMeasure(i + 1);
+				fileGen.openMeasure(i + 1, false, 0);
 				if (i == 0) {                                                            //first measure
-					fileGen.attributesDrum((int) ((divisionsArray.get(0)) / 1), beat, beatType);    //Add attributes
+					fileGen.drumAttributes((int) ((divisionsArray.get(0)) / 1), beat, beatType);    //Add attributes
 				}
 				for (int j = 0; j < 2; j++) {                                          //for each voice in measure
 					for (int k = 0; k < Measure.get(i).size(); k++) {  //for each column of measure
@@ -201,18 +203,18 @@ public class DrumParser{
 						}
 					}
 					if (j == 0) {
-						fileGen.Backup(totalDuration);
+						fileGen.backup(totalDuration);
 					}
 					totalDuration = 0;
 				}
 			}
 			System.out.println("closing measure");
 			 if(fileGen.measureOpen){
-				 fileGen.closeDrumMeasure();
+				 fileGen.closeMeasure(false, 0);
 			 }
 
 		}
-		fileGen.closeDrumPart();
+		fileGen.closePart();
 		fileGen.end();
 		
 		new SuccessPopUp(Main.myFrame, FileGenerator.filepath);
@@ -240,7 +242,7 @@ public class DrumParser{
 
 	private String[] getInstruments(ArrayList<String> col){ // returns null if the tuning does
 		String column = String.join("",col);
-		String regexPattern = "(BD|BA|B|T2|R|C|CC|HH|RC|Rd|SD|SN|S|HT|T|T1|MT|FT|F){1,10}";
+		String regexPattern = "(BD|BA|B|T2|R|C|CC|HH|H|RC|Rd|SD|SN|S|HT|T|T1|MT|FT|F){1,10}";
 		Pattern pattern = Pattern.compile(regexPattern, Pattern.CASE_INSENSITIVE);
 		Matcher matcher = pattern.matcher(column);
 		boolean matchFound = matcher.find();

@@ -7,7 +7,7 @@ import java.util.Map;
 import gui_panels.TextInputContentPanel;
 import gui_popups.SuccessPopUp;
 
-public class Parser {
+public class StringParser {
 
 	int instrument;
 	int stringAmount;
@@ -22,7 +22,7 @@ public class Parser {
 	private int totalDash;
 	
 	//@SuppressWarnings("unused")
-	Parser(ArrayList<ArrayList<String>> input, int in ,String path) {
+	StringParser(ArrayList<ArrayList<String>> input, int in ,String path) {
 		stringAmount = 0;
 		tabLineAmount = 1;
 		misc = new HashMap<String, String>();
@@ -187,7 +187,7 @@ public class Parser {
 		}
 
 		//Create the file generator to generate the MusicXML file
-		fileGen = new FileGenerator(path);
+		fileGen = new FileGenerator(path, true);
 		
 		if(fileGen.failed) //Check if failed to save file to location
 			return;
@@ -195,7 +195,7 @@ public class Parser {
 		//Calling the methods in the FileGenerator to build the MusicXML
 		
 		//Start the musicxml file
-		fileGen.addInfo(misc.get("Title"), misc.get("Instrument"));
+		fileGen.addStringInfo(misc.get("Title"), misc.get("Instrument"));
 		
 		//Open part
 		fileGen.openPart(1);
@@ -259,7 +259,7 @@ public class Parser {
 					if(columns.size() > currentColumn + 1) {
 						fileGen.openMeasure(measure, isRepeat, repeatAmount);						
 						if(measure == 1) {
-							fileGen.attributes(div, 0, beat, beatType, "G", tune, tuningOctave);
+							fileGen.stringAttributes(div, 0, beat, beatType, "G", tune, tuningOctave);
 						}
 					}					
 					wasRepeat = isRepeat;
@@ -310,7 +310,7 @@ public class Parser {
     							sharpnote = true;
     						}
                     	    beatNote = beatNote((dash * totalBeatPerMeasure)/totalDash);
-                    	    fileGen.addNote(line, fret, tunner.getNote(tune[line-1], fret, line).charAt(0), noteType(beatNote), getDuration(beatNote) - getDuration(rest), tunner.getOctave(tune[line-1], fret, line), dot(beatNote),sharpnote, hammerStart,hammerContinue,hammerDone,harmonic,grace);
+                    	    fileGen.addStringNote(line, fret, tunner.getNote(tune[line-1], fret, line).charAt(0), noteType(beatNote), getDuration(beatNote) - getDuration(rest), tunner.getOctave(tune[line-1], fret, line), dot(beatNote),sharpnote, hammerStart,hammerContinue,hammerDone,harmonic,grace);
                 		}
                     	else if(Character.isDigit(gcharacter)) {
                     		fret = Character.getNumericValue(gcharacter);
@@ -322,7 +322,7 @@ public class Parser {
                     		if (tunner.getNote(tune[line-1], fret, line).substring(tunner.getNote(tune[line-1], fret, line).length()-1,tunner.getNote(tune[line-1], fret, line).length()).equals("#")){
     							sharpnote = true;
     						}
-                    		fileGen.addNote(line, fret, tunner.getNote(tune[line-1], fret, line).charAt(0), noteType(beatNote), getDuration(beatNote) - getDuration(rest), tunner.getOctave(tune[line-1], fret, line), dot(beatNote),sharpnote, hammerStart,hammerContinue,hammerDone,harmonic,grace);
+                    		fileGen.addStringNote(line, fret, tunner.getNote(tune[line-1], fret, line).charAt(0), noteType(beatNote), getDuration(beatNote) - getDuration(rest), tunner.getOctave(tune[line-1], fret, line), dot(beatNote),sharpnote, hammerStart,hammerContinue,hammerDone,harmonic,grace);
                     	    hammerDone = false;
                     	}
                     	columns.get(z)[j] = '-';
@@ -396,7 +396,7 @@ public class Parser {
 						if (tunner.getNote(tune[line-1], fret, line).substring(tunner.getNote(tune[line-1], fret, line).length()-1,tunner.getNote(tune[line-1], fret, line).length()).equals("#")){
 							sharpnote = true;
 						}
-						fileGen.addNote(line, fret, tunner.getNote(tune[line-1], fret, line).charAt(0), noteType(beatNote), getDuration(beatNote) - getDuration(rest), tunner.getOctave(tune[line-1], fret, line), dot(beatNote),sharpnote, hammerStart,hammerContinue,hammerDone,harmonic,grace);
+						fileGen.addStringNote(line, fret, tunner.getNote(tune[line-1], fret, line).charAt(0), noteType(beatNote), getDuration(beatNote) - getDuration(rest), tunner.getOctave(tune[line-1], fret, line), dot(beatNote),sharpnote, hammerStart,hammerContinue,hammerDone,harmonic,grace);
 						harmonic = false;
 						grace = false;
 //						System.out.println("");
@@ -465,7 +465,7 @@ public class Parser {
 					beatNote = beatNote((dash * totalBeatPerMeasure)/totalDash);/*beatNote((dash * beatTypeNote)/div)*/
 				}
 
-				fileGen.addChord(chords,chordType, getDuration(beatNote) - getDuration(rest), chordsOctave,linearray,fretarray, chordDot,sharp,hammerLocation,hammerStart,hammerContinue,hammerDone,hchord);
+				fileGen.addStringChord(chords,chordType, getDuration(beatNote) - getDuration(rest), chordsOctave,linearray,fretarray, chordDot,sharp,hammerLocation,hammerStart,hammerContinue,hammerDone,hchord);
 				if(rest > 0) {
 					fileGen.addRest(getDuration(rest), noteType(rest), -1);
 					rest = 0.0;

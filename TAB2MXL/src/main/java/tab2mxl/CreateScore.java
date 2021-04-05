@@ -34,11 +34,11 @@ public class CreateScore {
 //				Runtime.getRuntime().exec("ScoreMaker/dist/xml2score/xml2score.exe "+xmlPath);
 //				TimeUnit.SECONDS.sleep(1); // Score.svg is generated in parallel so we need to wait for it to finish first
 					File score = new File("ScoreMaker/Score.svg");
-					boolean check = new File(new File(xmlPath).getParentFile(),  Parser.misc.get("Title") + "_Score.svg").exists();
+					boolean check = new File(new File(xmlPath).getParentFile(),  StringParser.misc.get("Title") + "_Score.svg").exists();
 					if(check){
-						new File(new File(xmlPath).getParentFile(), Parser.misc.get("Title") + "_Score.svg").delete();
+						new File(new File(xmlPath).getParentFile(), StringParser.misc.get("Title") + "_Score.svg").delete();
 					}
-					score.renameTo(new File(new File(xmlPath).getParentFile() + "/" + Parser.misc.get("Title") + "_Score.svg"));
+					score.renameTo(new File(new File(xmlPath).getParentFile() + "/" + StringParser.misc.get("Title") + "_Score.svg"));
 					score.delete();
 				} catch (IOException | InterruptedException e) {
 					e.printStackTrace();
@@ -60,11 +60,11 @@ public class CreateScore {
 					int exitCode = process.waitFor();
 					System.out.println(" exeted with error " + exitCode);
 					File score = new File("MakeScoreMac/dist/makeScore/Score.svg");
-					boolean check = new File(new File(xmlPath).getParentFile(),  Parser.misc.get("Title") + "_Score.svg").exists();
+					boolean check = new File(new File(xmlPath).getParentFile(),  StringParser.misc.get("Title") + "_Score.svg").exists();
 					if(check){
-						new File(new File(xmlPath).getParentFile(), Parser.misc.get("Title") + "_Score.svg").delete();
+						new File(new File(xmlPath).getParentFile(), StringParser.misc.get("Title") + "_Score.svg").delete();
 					}
-					score.renameTo(new File(new File(xmlPath).getParentFile() + "/" + Parser.misc.get("Title") + "_Score.svg"));
+					score.renameTo(new File(new File(xmlPath).getParentFile() + "/" + StringParser.misc.get("Title") + "_Score.svg"));
 					score.delete();
 				} catch (IOException | InterruptedException e) {
 					// TODO Auto-generated catch block

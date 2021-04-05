@@ -16,5 +16,7 @@ Rd||F5|x|P1-I52|-Ride-cymbal-1--
 R ||F5|x|P1-I52|-Ride-cymbal-1--
 HH||G5|o|P1-I47|-Hi-hat(o)------
 HH||G5|x|P1-I43|-Hi-hat(x)------
+H ||G5|o|P1-I47|-Hi-hat(o)------
+H ||G5|x|P1-I43|-Hi-hat(x)------
 CC||A5|x|P1-I50|-Crash-cymbal-1-
 C ||A5|x|P1-I50|-Crash-cymbal-1-
