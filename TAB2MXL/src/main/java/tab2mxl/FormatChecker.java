@@ -51,12 +51,14 @@ public class FormatChecker {
 		///////////////////////////////////////////
 		//Loop through each line of the inputFeild
 		for (int i = 0; i < inputFeild.size(); i++) {
-			String line = inputFeild.get(i).replace("\n", "  ").replace("\r", "  ");;
-						
-			if(line.trim().isEmpty() || line == null)
+			String line = inputFeild.get(i);
+			int lineLength = line.length() + 1;
+			line = line.trim();
+			
+			if(line.isEmpty() || line == null)
 			{
 				outputFeild.add("");
-				frontOfLine += 2;
+				frontOfLine += lineLength;
 				continue;
 			}
 			
@@ -65,12 +67,60 @@ public class FormatChecker {
 			if(!matchFound)
 			{
 				highlight(frontOfLine, frontOfLine + line.length(), new Color(209, 209, 209));
-				frontOfLine += line.length();
+				frontOfLine += lineLength;
 				continue;
 			}
-				
+			
+			//Check tuning format
+			if(instrument == 0 || instrument == 1)
+			{
+				String[] check = line.split("\\|");
+				check[0] = check[0].replaceAll("\\d", "");
+				if(check[0].strip() != "")
+				{
+					if(!StringTuning.tuningSupportCheck(check[0].toUpperCase()))
+					{
+						highlight(frontOfLine, frontOfLine + check[0].length(), new Color(255, 89, 89));
+						errorText.setText("Tune Not Recognized");
+						errorType = 2;
+					}
+				}
+			}
+			else if (instrument == 2)
+			{
+				String[] check = line.split("\\|");
+				check[0] = check[0].replaceAll("\\d", "");
+				if(check[0].strip() != "")
+				{
+					if(!DrumTuning.drumSupportCheck(check[0].toUpperCase()))
+					{
+						highlight(frontOfLine, frontOfLine + check[0].length(), new Color(255, 89, 89));
+						errorText.setText("Tune Not Recognized");
+						errorType = 2;
+					}
+				}
+			}
+			
+			//Check octave format
+			if(instrument == 0 || instrument == 1)
+			{
+				String[] check = line.split("\\|");
+				int tuneLength = check[0].length();
+				check[0] = check[0].replaceAll("[^\\d.]", "");
+				if(isNumeric(check[0]))
+				{
+					int octave = Integer.parseInt(check[0]);
+					if(!(octave >= 0 && octave <= 9))
+					{
+						highlight(frontOfLine + tuneLength - check[0].length(), frontOfLine + tuneLength, new Color(255, 89, 89));
+						errorText.setText("Octave Not Recognized");
+						errorType = 2;
+					}
+				}
+			}
+
 			outputFeild.add(line.strip());
-			frontOfLine += line.length();
+			frontOfLine += lineLength;
 		}
 		
 		if(outputFeild.size() == 0)
@@ -112,5 +162,14 @@ public class FormatChecker {
                 e1.printStackTrace();
             }
     }
+	
+	private boolean isNumeric(String str) { 
+		  try {  
+		    Double.parseDouble(str);  
+		    return true;
+		  } catch(NumberFormatException e){  
+		    return false;  
+		  }  
+		}
 	
 }

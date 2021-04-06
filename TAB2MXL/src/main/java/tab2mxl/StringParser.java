@@ -75,7 +75,10 @@ public class StringParser {
 			{
 				for(int j = i; j < input.size(); j++)
 					if(input.get(j).size() > 2)
+					{
 						tabLineAmount++;
+						break;
+					}
 			}
 		}
 		//System.out.println("TabLineAmount: " + tabLineAmount);

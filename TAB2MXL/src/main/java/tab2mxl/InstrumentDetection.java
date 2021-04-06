@@ -1,6 +1,8 @@
 package tab2mxl;
 
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class InstrumentDetection {
 
@@ -10,20 +12,18 @@ public class InstrumentDetection {
 		if(input == null)
 			return 0;
 		
-		boolean hasX = false;
-		boolean hasO = false;
-		boolean hasF = false;
+		
+		String regexPattern = "x|o|f";
+		Pattern pattern = Pattern.compile(regexPattern, Pattern.CASE_INSENSITIVE);
+		Matcher matcher = null;
+		boolean matchFound = false;
 		
 		for(ArrayList<String> line : input) {
-			for(String character : line)
+			for(int i = 3; i < line.size(); i++)
 			{
-				if(character.toLowerCase().equals("x"))
-					hasX = true;
-				if(character.toLowerCase().equals("o"))
-					hasO = true;
-				if(character.toLowerCase().equals("f"))
-					hasF = true;
-				if(hasX || hasO || hasF)
+				matcher = pattern.matcher(line.get(i));
+				matchFound = matcher.find();
+				if(matchFound)
 					return 2;
 			}
 		}
