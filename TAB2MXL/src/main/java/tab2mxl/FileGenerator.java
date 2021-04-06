@@ -847,7 +847,8 @@ public class FileGenerator {
 			
 	}
 	
-	public void addDrumChord(ArrayList<String>chords, int duration, ArrayList<String>chordNotes, ArrayList<Integer>chordOctaves, ArrayList<String>chordIDs, ArrayList<String>chordSymbols, int chordDot, String chordType, int voice) {
+	public void addDrumChord(ArrayList<String>chords, int duration, ArrayList<String>chordNotes, ArrayList<Integer>chordOctaves, ArrayList<String>chordIDs, ArrayList<String>chordSymbols, 
+			int chordDot, String chordType, int voice, int[] beamNum, String[] beamState) {
 
 		boolean first = false;
 		for(int i = chords.size()-1; i >= 0; i--) {
@@ -892,6 +893,14 @@ public class FileGenerator {
 				write(currentIndent + "<notehead>" + chordSymbols.get(i) + "</notehead>");
 				newLine();
 			}
+			
+			if(beamNum != null) { //Note is Part of beam
+				for (int k = 0; k < beamNum.length; k++) { //For all beam numbers (Single/Double)
+					write(currentIndent + "<beam number=\"" + beamNum[k] + "\" + >" + beamState[k] + "</beam>");
+					newLine();
+				}
+			}
+			
 			tabBack();
 			write(currentIndent + "</note>");
 			newLine();
