@@ -2,6 +2,7 @@ package tab2mxl;
 
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -30,7 +31,9 @@ public class FormatChecker {
 		
 		Collections.addAll(inputFeild, inputTextFeild.split("\n"));
 		errorText = Main.myFrame.textInputContentPanel.errorText;
+		errorText.setText("");
 		warningText = Main.myFrame.textInputContentPanel.warningText;
+		warningText.setText("");
 		textField = Main.myFrame.textInputContentPanel.textField;
 		
 		//Detect if the text area is empty
@@ -41,34 +44,107 @@ public class FormatChecker {
 			return;
 		}
 		
+		boolean tabStarted = false;
+		boolean newTab = true;
+		int[] measureLengths = new int[0];
 		int frontOfLine = 0;
+		String lastLine = "";
 		
-		String regexPattern = "(-)(\\|)";
-		Pattern pattern = Pattern.compile(regexPattern, Pattern.CASE_INSENSITIVE);
-		Matcher matcher = null;
-		boolean matchFound = false;
+		Pattern dashPattern = Pattern.compile("-+", Pattern.CASE_INSENSITIVE);
+		Matcher dashMatcher = null;
+		Pattern pipePattern = Pattern.compile("\\|+", Pattern.CASE_INSENSITIVE);
+		Matcher pipeMatcher = null;
 		
 		///////////////////////////////////////////
 		//Loop through each line of the inputFeild
 		for (int i = 0; i < inputFeild.size(); i++) {
 			String line = inputFeild.get(i);
 			int lineLength = line.length() + 1;
-			line = line.trim();
+			line = line.replaceFirst("\\s++$", "");
 			
+			//Check for empty lines
 			if(line.isEmpty() || line == null)
 			{
-				outputFeild.add("");
+				if(tabStarted)
+				{
+					lastLine = line.replaceFirst("\\s++$", "");
+					outputFeild.add(lastLine);
+				}
+				frontOfLine += lineLength;
+				newTab = true;
+				continue;
+			}
+			
+			tabStarted = true;
+			
+			//Check for non tablature lines
+			dashMatcher = dashPattern.matcher(line);
+			pipeMatcher = pipePattern.matcher(line);
+			if(!dashMatcher.find() || !pipeMatcher.find() )
+			{
+				System.out.println(line);
+				highlight(frontOfLine, frontOfLine + line.length(), new Color(209, 209, 209));
 				frontOfLine += lineLength;
 				continue;
 			}
 			
-			matcher = pattern.matcher(line);
-			matchFound = matcher.find();
-			if(!matchFound)
+			//Check measure amount/length
+			if(newTab && !line.contains("repeat"))
 			{
-				highlight(frontOfLine, frontOfLine + line.length(), new Color(209, 209, 209));
-				frontOfLine += lineLength;
-				continue;
+				newTab = false;
+				String[] check = line.split("\\|+");
+				measureLengths = new int[check.length];
+				for (int j = 1; j < measureLengths.length; j++)
+				{
+					if(Character.isDigit(check[j].charAt(check[j].length()-1)))
+						measureLengths[j] = check[j].length() - 1;
+					else						
+						measureLengths[j] = check[j].length();
+				}
+			}
+			else if(!line.contains("repeat"))
+			{
+				Pattern measurePattern = Pattern.compile("\\|+");
+				Matcher measureMatcher = measurePattern.matcher(line);
+				int count = 0;
+				while (measureMatcher.find()) {
+				    count++;
+				}
+				
+				if(count != measureLengths.length)
+				{
+					highlight(frontOfLine, frontOfLine + line.length(), new Color(245, 234, 88));
+					warningText.setText("Measure Amount Incorrect");
+					errorType = 1;
+					
+					if(lastLine.length() > line.length())
+						line = line.substring(0, line.length()) + lastLine.substring(line.length()).replaceAll("\\d|\\w", "-");	
+					else
+						line = line.substring(0, lastLine.length());
+				}
+				else
+				{
+					String[] check = line.split("\\|+");
+					int highlightStart = check[0].length() + 1;
+					for (int j = 1; j < measureLengths.length; j++)
+					{					
+						if(measureLengths[j] != check[j].length())
+						{
+							highlight(frontOfLine + highlightStart, frontOfLine + highlightStart + check[j].length(), new Color(245, 234, 88));
+							warningText.setText("Measure Length Incorrect");
+							errorType = 1;
+							
+							int diff = measureLengths[j] - check[j].length();
+							if(diff > 0)
+								for(int d = 0; d < diff; d++)
+									line = line.substring(0, highlightStart + check[j].length()) + "-" + line.substring(highlightStart + check[j].length());
+							else
+								for(int d = -1; d >= diff; d--)
+									line = line.substring(0, highlightStart + check[j].length() + d) + line.substring(highlightStart + check[j].length() + d + 1);
+						}
+						highlightStart += check[j].length() + 1;
+					}	
+				}
 			}
 			
 			//Check tuning format
@@ -119,10 +195,12 @@ public class FormatChecker {
 				}
 			}
 
-			outputFeild.add(line.strip());
+			lastLine = line.replaceFirst("\\s++$", "");
+			outputFeild.add(lastLine);
 			frontOfLine += lineLength;
 		}
 		
+		//Check for no valid tablature
 		if(outputFeild.size() == 0)
 		{
 			errorText.setText("No Valid Tablature");
@@ -141,8 +219,8 @@ public class FormatChecker {
 		String[] output = new String[outputFeild.size()];
 		output = outputFeild.toArray(output);
 		
-		//for (String line: output)
-			//System.out.println(line);
+//		for (String line: output)
+//			System.out.println(line);
 		
 		//System.out.println("");
 		//System.out.println("Size: " + outputFeild.size());

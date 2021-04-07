@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -294,9 +295,12 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 		if(e.getSource() == convertButton && !Main.isInPopUp)
 		{			
 			FormatChecker formatChecker = new FormatChecker(textField.getText(), instrumentList.getSelectedIndex());
-						
+
 			if(formatChecker.GetErrorType() == 2)
+			{
+				Toolkit.getDefaultToolkit().beep();
 				return;
+			}
 			
 			String[] inputText = formatChecker.GetOuput();
 			
@@ -327,9 +331,7 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 	}
 	
 	private ArrayList<ArrayList<String>> GetInput (String[] textInput, boolean convert)
-	{
-		errorText.setText("");
-		warningText.setText("");
+	{		
 		if(textField.getText().isEmpty())
 		{
 			return null;
