@@ -80,16 +80,15 @@ public class FormatChecker {
 			//Check for non tablature lines
 			dashMatcher = dashPattern.matcher(line);
 			pipeMatcher = pipePattern.matcher(line);
-			if(!dashMatcher.find() || !pipeMatcher.find() )
+			if(!dashMatcher.find() || !pipeMatcher.find())
 			{
-				System.out.println(line);
 				highlight(frontOfLine, frontOfLine + line.length(), new Color(209, 209, 209));
 				frontOfLine += lineLength;
 				continue;
 			}
 			
 			//Check measure amount/length
-			if(newTab && !line.contains("repeat"))
+			if(newTab && !line.toLowerCase().contains("repeat"))
 			{
 				newTab = false;
 				String[] check = line.split("\\|+");
@@ -102,7 +101,7 @@ public class FormatChecker {
 						measureLengths[j] = check[j].length();
 				}
 			}
-			else if(!line.contains("repeat"))
+			else if(!line.toLowerCase().contains("repeat"))
 			{
 				Pattern measurePattern = Pattern.compile("\\|+");
 				Matcher measureMatcher = measurePattern.matcher(line);

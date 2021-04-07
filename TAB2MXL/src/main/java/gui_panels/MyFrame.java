@@ -28,6 +28,9 @@ public class MyFrame extends JFrame{
 		//Main Screen
 		///////////////////////
 		
+		ImageIcon frameIcon = new ImageIcon("Images/Icon.png");
+		this.setIconImage(frameIcon.getImage());
+		
 		mainContentPanel = new JPanel();
 		GridBagConstraints c = new GridBagConstraints();
 		mainContentPanel.setLayout(new GridBagLayout ());

@@ -35,6 +35,7 @@ public class FileDropPanel extends JPanel {
 		dropLabel.setAlignmentX(JLabel.CENTER_ALIGNMENT);
 		Border padding = BorderFactory.createEmptyBorder(5, 0, 5, 0);
 		dropLabel.setBorder(padding);
+		dropLabel.setForeground(new Color(224,224,224));
 		dropLabel.setBackground(new Color(33,150,243));
 		dropLabel.setOpaque(true);
 					
@@ -43,7 +44,7 @@ public class FileDropPanel extends JPanel {
 	    //Drop Image Label ------------------------------------------------------
 		dropLoc = new JLabel();
 		
-		ImageIcon imageIcon = new ImageIcon("Images/DropImage.png"); // load the image to a imageIcon
+		ImageIcon imageIcon = new ImageIcon("Images/DropFile.png"); // load the image to a imageIcon
 		Image image = imageIcon.getImage(); // transform it 
 		Image newImage = image.getScaledInstance(140, 120,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
 		imageIcon = new ImageIcon(newImage);  // transform it back
@@ -57,7 +58,7 @@ public class FileDropPanel extends JPanel {
 		dropLoc.setHorizontalTextPosition(JLabel.CENTER);
 		dropLoc.setAlignmentX(JLabel.CENTER_ALIGNMENT);
 		
-		dropLoc.setBackground(Color.LIGHT_GRAY);
+		dropLoc.setBackground(new Color(224,224,224));
 		
 		//dropLoc hover effects
 		dropLoc.addMouseListener(new MouseAdapter() {
@@ -67,7 +68,7 @@ public class FileDropPanel extends JPanel {
     	    
 
     	    public void mouseExited(MouseEvent evt) {
-    	    	dropLoc.setBackground(Color.LIGHT_GRAY);
+    	    	dropLoc.setBackground(new Color(224,224,224));
     	    }
 		});
 		
