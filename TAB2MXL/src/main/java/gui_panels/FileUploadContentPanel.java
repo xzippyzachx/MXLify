@@ -1,7 +1,9 @@
 package gui_panels;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.GridLayout;
 
 import java.awt.event.ActionEvent;
@@ -16,10 +18,14 @@ import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.border.Border;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import gui.UndoRedoTextArea;
 import tab2mxl.LoadManager;
 import tab2mxl.Main;
 
@@ -27,6 +33,9 @@ public class FileUploadContentPanel extends JPanel implements ActionListener {
 
 	JButton openButton;
 	JButton backButton;
+	
+	JPanel OptionsPanel;
+	JPanel MeasurePanel;
 
 	public Preferences prefs = Preferences.userRoot().node(getClass().getName());
 	public String LAST_USED_FOLDER = "";
@@ -39,8 +48,9 @@ public class FileUploadContentPanel extends JPanel implements ActionListener {
 		this.setBorder(padding); // adds a basic border around the frame
 
 		// creates panel to place the main body elements
-		JPanel OptionsPanel = new JPanel(new GridLayout(2,1)); // 
-		Border OptionsPadding = BorderFactory.createEmptyBorder(100, 00, 50, 0);
+		OptionsPanel = new JPanel(); // 
+		OptionsPanel.setLayout(new BoxLayout(OptionsPanel, BoxLayout.Y_AXIS));
+		Border OptionsPadding = BorderFactory.createEmptyBorder(0, 0, 100, 0);
 		OptionsPanel.setBorder(OptionsPadding);
 		OptionsPanel.setOpaque(false);
 
@@ -55,9 +65,7 @@ public class FileUploadContentPanel extends JPanel implements ActionListener {
 		Border ButtonPadding = BorderFactory.createEmptyBorder(10, 0, 0, 0);
 		ButtonPanel.setBorder(ButtonPadding);
 
-
 		ButtonPanel.setOpaque(false);
-
 
 		openButton = new JButton("Open"); // Select File button
 		openButton.setBackground(new Color(33,150,243));
@@ -84,11 +92,43 @@ public class FileUploadContentPanel extends JPanel implements ActionListener {
 		UploadPanel.add(ButtonPanel); // adds button panel to the upload panel
 
 		FileDropPanel DropPanel = new FileDropPanel();
-		Border DropPadding = BorderFactory.createEmptyBorder(20, 0, 0, 0);
+		Border DropPadding = BorderFactory.createEmptyBorder(0, 0, 0, 0);
 		DropPanel.setBorder(DropPadding);
 		
+		// creates panel for the upload label and button to go into
+		MeasurePanel = new JPanel();
+		Border measurePanelPadding = BorderFactory.createEmptyBorder(10, 0, 125, 0);
+		MeasurePanel.setLayout(new BoxLayout(MeasurePanel, BoxLayout.Y_AXIS));// sets layout to vertical
+		MeasurePanel.setBorder(measurePanelPadding);
+		MeasurePanel.setOpaque(false);
+		
+		JLabel measureLabel = new JLabel("<html><body style='text-align: center'>Edit Measure Time Signatures");				
+		
+		measureLabel.setHorizontalAlignment(JLabel.CENTER);
+		
+		measureLabel.setHorizontalTextPosition(JLabel.CENTER);
+		measureLabel.setAlignmentX(JLabel.CENTER_ALIGNMENT);
+		Border measureLabelPadding = BorderFactory.createEmptyBorder(5, 0, 5, 0);
+		measureLabel.setBorder(measureLabelPadding);
+		measureLabel.setForeground(new Color(224,224,224));
+		measureLabel.setBackground(new Color(33,150,243));
+		measureLabel.setOpaque(true);
+					
+		MeasurePanel.add(measureLabel);
+		
+		JTextArea textField = new UndoRedoTextArea(); //Create empty text area (Undo-able Text Area)
+        textField.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
+		
+        MeasurePanel.add(textField);
+        
+        JScrollPane scroll = new JScrollPane (textField);
+        scroll.setPreferredSize(new Dimension(300, 265));
+        scroll.setSize(getPreferredSize());;
+        MeasurePanel.add(scroll);
+        
 		OptionsPanel.add(DropPanel);
 		OptionsPanel.add(UploadPanel);
+		//OptionsPanel.add(MeasurePanel);
 		
 		this.add(OptionsPanel);
 		this.setOpaque(false);

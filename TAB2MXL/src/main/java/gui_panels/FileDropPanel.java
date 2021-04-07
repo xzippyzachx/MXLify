@@ -23,7 +23,7 @@ public class FileDropPanel extends JPanel {
 		// Main Panel for Drop Elements
 		dropPanel = new JPanel();
 		dropPanel.setLayout(new BoxLayout(dropPanel, BoxLayout.Y_AXIS));// sets layout to vertical
-		Border DropPadding = BorderFactory.createEmptyBorder(0, 0, 0, 10);
+		Border DropPadding = BorderFactory.createEmptyBorder(0, 0, 0, 0);
 		dropPanel.setBorder(DropPadding);
 		
 		//Title Label -----------------------------------------------------------
@@ -58,7 +58,7 @@ public class FileDropPanel extends JPanel {
 		dropLoc.setHorizontalTextPosition(JLabel.CENTER);
 		dropLoc.setAlignmentX(JLabel.CENTER_ALIGNMENT);
 		
-		dropLoc.setBackground(new Color(224,224,224));
+		dropLoc.setBackground(Color.WHITE);
 		
 		//dropLoc hover effects
 		dropLoc.addMouseListener(new MouseAdapter() {
@@ -68,7 +68,7 @@ public class FileDropPanel extends JPanel {
     	    
 
     	    public void mouseExited(MouseEvent evt) {
-    	    	dropLoc.setBackground(new Color(224,224,224));
+    	    	dropLoc.setBackground(Color.WHITE);
     	    }
 		});
 		
