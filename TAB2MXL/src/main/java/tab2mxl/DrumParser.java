@@ -194,7 +194,10 @@ public class DrumParser{
 							dot = dot(beatNote);
 							duration = getDuration(beatNote, Measure.get(i)) - getDuration(rest, Measure.get(i));
 							totalDuration += duration;
-							fileGen.addDrumChord(chords, duration, chordNotes, chordOctaves, chordIDs, chordSymbols, dot, noteType(beatNote), j + 1);
+							
+							//Add beam check
+							
+							fileGen.addDrumChord(chords, duration, chordNotes, chordOctaves, chordIDs, chordSymbols, dot, noteType(beatNote), j + 1, null, null);
 							if (rest > 0) {
 								fileGen.addRest(getDuration(rest, Measure.get(i)), noteType(rest), j + 1);
 								rest = 0.0;
