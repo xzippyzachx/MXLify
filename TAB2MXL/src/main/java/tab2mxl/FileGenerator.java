@@ -802,7 +802,7 @@ public class FileGenerator {
 		}		
 	}
 		
-	public void addDrumNote(String noteHead, int duration, String displayStep, int displayOctave, String instrumentID, String noteType, int voice, int dot){
+	public void addDrumNote(String noteHead, int duration, String displayStep, int displayOctave, String instrumentID, String noteType, int voice, int dot, int bm){
 
 		write(currentIndent + "<note>");
 		newLine();
@@ -842,12 +842,22 @@ public class FileGenerator {
 			newLine();
 		}
 		tabBack();
+		if(bm == 1) {
+			write(currentIndent + "<beam number=\"1\">begin</beam>");
+			newLine();
+		}else if(bm == 2) {
+			write(currentIndent + "<beam number=\"1\">continue</beam>");
+			newLine();
+		}else if(bm == 3) {
+			write(currentIndent + "<beam number=\"1\">end</beam>");
+			newLine();
+		}
 		write(currentIndent + "</note>");
 		newLine();
 			
 	}
 	
-	public void addDrumChord(ArrayList<String>chords, int duration, ArrayList<String>chordNotes, ArrayList<Integer>chordOctaves, ArrayList<String>chordIDs, ArrayList<String>chordSymbols, int chordDot, String chordType, int voice) {
+	public void addDrumChord(ArrayList<String>chords, int duration, ArrayList<String>chordNotes, ArrayList<Integer>chordOctaves, ArrayList<String>chordIDs, ArrayList<String>chordSymbols, int chordDot, String chordType, int voice, int bm) {
 
 		boolean first = false;
 		for(int i = chords.size()-1; i >= 0; i--) {
@@ -893,6 +903,18 @@ public class FileGenerator {
 				newLine();
 			}
 			tabBack();
+			if(!first) {
+				if(bm == 1) {
+					write(currentIndent + "<beam number=\"1\">begin</beam>");
+					newLine();
+				}else if(bm == 2) {
+					write(currentIndent + "<beam number=\"1\">continue</beam>");
+					newLine();
+				}else if(bm == 3) {
+					write(currentIndent + "<beam number=\"1\">end</beam>");
+					newLine();
+				}
+			}
 			write(currentIndent + "</note>");
 			newLine();
 			

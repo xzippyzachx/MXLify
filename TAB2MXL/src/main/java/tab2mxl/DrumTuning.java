@@ -1,8 +1,11 @@
 package tab2mxl;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class DrumTuning {
 	
@@ -27,41 +30,51 @@ public class DrumTuning {
 		unSupportedDrum = false;
 		drumFile = new File(FILE_NAME);
 		
-		String drumName = "";
+		//String drumName = "";
 		String drumIDName = "";
 		
 		try {
 			Scanner fileScanner = new Scanner(drumFile);
 			String line = "";
-			
+			String drumNames;
+			int index = 0;
 			while(fileScanner.hasNextLine()) {
+				index = 0;
 				line = fileScanner.nextLine();
-				drumName = line.substring(0, 2).trim();
-				drumIDName += drumName;
+				drumNames = line.substring(0, line.indexOf(" "));
 				for(int i = 0; i < drums.length; i++) {
-//					if(drums[i].equals("H"))
-//						drums[i] = "HH";
-					if(drumName.equals(drums[i])) {
-						String notePlusOctave = line.substring(4, line.indexOf('|', 4));
+					if(drumNames.contains(drum[i])) {
+						index = line.indexOf(" ");
+						drumIDName += drums[i];
+						String notePlusOctave = line.substring(index+1, line.indexOf(" ", index+1));
+						index = line.indexOf(" ", index+1);
+						//Get the note
 						String note = notePlusOctave.substring(0, notePlusOctave.length()-1);
+						//Get the octave
 						int octave = Integer.parseInt(notePlusOctave.substring(notePlusOctave.length()-1));
-						String symbol = line.substring(line.indexOf('|', 4)+1, line.indexOf('|', 4)+2);
-						String Id = line.substring(line.indexOf('|', 4)+3, line.indexOf('|', line.indexOf('|', 4)+3));
-						drumIDName += symbol;
-						drumNotes.put(drumName, note);
-						drumOctaves.put(drumName, octave);
-						System.out.println("NAME+SYMBOL: " + drumIDName);
-						System.out.println("ID: "+ Id);
+						String symbol = line.substring(index, line.indexOf(" ", index+1));
+						index = line.indexOf(" ", index+1);
+						String Id = line.substring(index, line.indexOf(" ", index+1));
+						drumIDName += symbol.trim();
+						drumNotes.put(drum[i], note);
+						drumOctaves.put(drum[i], octave);
 						drumID.put(drumIDName, Id);
+						drumIDName = "";
 					}
 				}
-				drumIDName = "";
+				
 			}
 			fileScanner.close();
-		}catch(Exception e) {
-			System.out.println(e.getClass());
-			System.out.println(e.getMessage());
+		}catch(	Exception e) {
+			System.out.println("DrumTuning Constructor: " + e.getMessage());
 		}
+		
+		/*for(String s : drumNotes.keySet()) {
+			System.out.println(s + ": " + drumNotes.get(s) + drumOctaves.get(s));
+		}
+		for(String s : drumID.keySet()) {
+			System.out.println(s + ": " + drumID.get(s));
+		}*/
 		
 		if(drumNotes.size() != drumAmount)
 			this.unSupportedDrum = true;
@@ -75,30 +88,28 @@ public class DrumTuning {
 		try {
 			Scanner fileScanner = new Scanner(file);
 			String drumName = "";
-			
+			String line = "";
 			while(fileScanner.hasNextLine()) {
-				drumName = fileScanner.nextLine().substring(0, 2).trim();
-				if(drum.trim().equals(drumName)) {
+				line = fileScanner.nextLine();
+				drumName = line.substring(0, line.indexOf(" "));
+				if(drumName.trim().contains(drum.trim())) {
 					output = true;
 					break;
 				}
 			}
-			
 			fileScanner.close();
 		}catch(Exception e) {
 			System.out.println("drumSupportCheck: " + e.getMessage());
 		}
-
+		System.out.println("TuneCheck: " + output);
 		return output;
 	}
 	
 	public String getNote(String drum) {
-		System.out.println("DrumName: " + drum);
 		return drumNotes.get(drum);
 	}
 	
 	public int getOctave(String drum) {
-		System.out.println("DrumName: " + drum);
 		try {
 			return drumOctaves.get(drum);
 		}catch(NullPointerException e) {
@@ -107,8 +118,12 @@ public class DrumTuning {
 	}
 	
 	public String getID(String drum, String symbol) {
-		System.out.println("DrumName: " + drum);
-		return drumID.get(drum+symbol);
+		for(String s : drumID.keySet()) {
+			if(s.contains(drum) && s.contains(symbol)) {
+				return drumID.get(s);
+			}
+		}
+		return null;
 	}
 	
 	public static int getVoice(String drum) {
