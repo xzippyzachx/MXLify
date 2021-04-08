@@ -274,7 +274,7 @@ public class StringParser {
 				//Open measure and sent attributes
 				if (count == stringAmount) {
 					measure++;
-					count = 0;					
+					count = 0;
 					
 					if(fileGen.measureOpen)
 						fileGen.closeMeasure(wasRepeat, repeatAmount);

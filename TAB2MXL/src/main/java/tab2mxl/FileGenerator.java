@@ -82,6 +82,9 @@ public class FileGenerator {
 		}
 	}
 	
+	/**
+	 * Goes back a tab in the MusicXML
+	 */
 	private void tabBack()
 	{
 		try {
@@ -92,6 +95,10 @@ public class FileGenerator {
 		}
 	}
 	
+	/**
+	 * Writes to the MusicXML
+	 * @param line
+	 */
 	private void write(String line)
 	{
 		try {
@@ -103,6 +110,10 @@ public class FileGenerator {
 		}
 	}
 
+	/**
+	 * Adds a line of MusicXML to the stringBuilder
+	 * @param line
+	 */
 	private void appendString(String line)
 	{		
 		if(line.equals("  <part id=\"P1\">"))
@@ -114,8 +125,9 @@ public class FileGenerator {
 	}
 	
 	/**
-	 * Adds the initial info to the beginning of the MusicXML
-	 * @param title
+	 * Adds the initial string info to the beginning of the MusicXML
+	 * @param title - of the music piece
+	 * @param instrument - type that the info is for
 	 */
 	public void addStringInfo(String title, String instrument)
 	{
@@ -160,6 +172,11 @@ public class FileGenerator {
 		}			
 	}
 
+	/**
+	 * Adds the initial drum info to the beginning of the MusicXML
+	 * @param title - of the music piece
+	 * @param instrument - type that the info is for
+	 */
 	public void addDrumInfo(String title)  {
 		try {
 			myWriter.write(currentIndent + "<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
@@ -417,13 +434,14 @@ public class FileGenerator {
 	}
 
 	/**
-	 * Adds attributes to the MusicXML
+	 * Adds string attributes to the MusicXML
 	 * @param division
 	 * @param keySignature
 	 * @param beat
 	 * @param beatType
 	 * @param clef
 	 * @param tune
+	 * @param tuneOctave
 	 */
 	public void stringAttributes(int division, int keySignature, int beat, int beatType, String clef, String[] tune, int[] tuneOctave) {
 		write(currentIndent + "<attributes>");
@@ -493,6 +511,12 @@ public class FileGenerator {
 		newLine();		
 	}
 	
+	/**
+	 * Adds drum attributes to the MusicXML
+	 * @param division
+	 * @param beat
+	 * @param beatType
+	 */
 	public void drumAttributes(int division, int beat, int beatType) {
 		write(currentIndent + "<attributes>");
 		currentIndent += "  ";
@@ -558,6 +582,8 @@ public class FileGenerator {
 	/**
 	 * Adds a new measure opening to the MusicXML
 	 * @param measureNumber
+	 * @param isRepeat - is this the start of a repeat?
+	 * @param repeatAmount - the amount of repeats
 	 */
 	public void openMeasure(int measureNumber, boolean isRepeat, int repeatAmount)
 	{
@@ -598,6 +624,8 @@ public class FileGenerator {
 	
 	/**
 	 * Adds a measure closing to the MusicXML
+	 * @param isRepeat - is this the end of a repeat?
+	 * @param repeatAmount - the amount of repeats
 	 */
 	public void closeMeasure(boolean isRepeat, int repeatAmount)
 	{
@@ -623,12 +651,22 @@ public class FileGenerator {
 	}
 		
 	/**
-	 * Adds a note to the MusicXML
+	 * Adds a string note to the MusicXML
 	 * @param string
 	 * @param fret
 	 * @param note
+	 * @param noteType
+	 * @param duration
+	 * @param octave
+	 * @param dot
+	 * @param alter
+	 * @param hammerStart
+	 * @param hammerContinue
+	 * @param hammerDone
+	 * @param harmonic
+	 * @param grace
 	 */
-	public void addStringNote(int string, int fret, char note, String noteType, int duration, int octave, int dot,boolean alter,boolean hammerStart, boolean hammerContinue, boolean hammerDone,boolean harmonic,boolean grace)
+	public void addStringNote(int string, int fret, char note, String noteType, int duration, int octave, int dot, boolean alter, boolean hammerStart, boolean hammerContinue, boolean hammerDone, boolean harmonic, boolean grace)
 	{
 		write(currentIndent + "<note>");
 		currentIndent += "  ";
@@ -719,11 +757,22 @@ public class FileGenerator {
 	}
 	
 	/**
-	 * Adds a chord to the MusicXML
+	 * Adds a string chord to the MusicXML
 	 * @param chord
 	 * @param noteType
+	 * @param duration
+	 * @param octaves
+	 * @param string
+	 * @param fret
+	 * @param dot
+	 * @param alter
+	 * @param HamLocation
+	 * @param hammerStart
+	 * @param hammerContinue
+	 * @param hammerDone
+	 * @param harmonic
 	 */
-	public void addStringChord(char[] chord, String noteType, int duration, int[] octaves,int[] string, int[] fret, int[] dot,boolean[] alter, int HamLocation, boolean hammerStart, boolean hammerContinue, boolean hammerDone,boolean[] harmonic) {
+	public void addStringChord(char[] chord, String noteType, int duration, int[] octaves,int[] string, int[] fret, int[] dot, boolean[] alter, int HamLocation, boolean hammerStart, boolean hammerContinue, boolean hammerDone, boolean[] harmonic) {
 		boolean firstDone = false;
 		for (int i = chord.length-1; i>=0;i--) {
 			if(string[i] != 0) {
@@ -802,8 +851,18 @@ public class FileGenerator {
 		}		
 	}
 		
+	/**
+	 * Adds a drum note to the MusicXML
+	 * @param noteHead
+	 * @param duration
+	 * @param displayStep
+	 * @param displayOctave
+	 * @param instrumentID
+	 * @param noteType
+	 * @param voice
+	 * @param dot
+	 */
 	public void addDrumNote(String noteHead, int duration, String displayStep, int displayOctave, String instrumentID, String noteType, int voice, int dot, int bm){
-
 		write(currentIndent + "<note>");
 		newLine();
 		currentIndent += "  ";
@@ -857,8 +916,21 @@ public class FileGenerator {
 			
 	}
 	
-	public void addDrumChord(ArrayList<String>chords, int duration, ArrayList<String>chordNotes, ArrayList<Integer>chordOctaves, ArrayList<String>chordIDs, ArrayList<String>chordSymbols, int chordDot, String chordType, int voice, int bm) {
-
+	/**
+	 * Adds a drum chord to the MusicXML
+	 * @param chords
+	 * @param duration
+	 * @param chordNotes
+	 * @param chordOctaves
+	 * @param chordIDs
+	 * @param chordSymbols
+	 * @param chordDot
+	 * @param chordType
+	 * @param voice
+	 * @param beamNum
+	 * @param beamState
+	 */
+public void addDrumChord(ArrayList<String>chords, int duration, ArrayList<String>chordNotes, ArrayList<Integer>chordOctaves, ArrayList<String>chordIDs, ArrayList<String>chordSymbols, int chordDot, String chordType, int voice, int bm) {
 		boolean first = false;
 		for(int i = chords.size()-1; i >= 0; i--) {
 			write(currentIndent + "<note>");
@@ -922,8 +994,13 @@ public class FileGenerator {
 		}
 	}
 		
-	public void addRest(int duration, String noteType, int v) {
-		
+	/**
+	 * Adds a rest to the MusicXML
+	 * @param duration
+	 * @param noteType
+	 * @param voice
+	 */
+	public void addRest(int duration, String noteType, int voice) {		
 		if(duration > 0) {
 			write(currentIndent + "<note>");
 			currentIndent += "  ";
@@ -932,8 +1009,8 @@ public class FileGenerator {
 			newLine();
 			write(currentIndent + "<duration>" + duration + "</duration>");
 			newLine();
-			if(v != -1) {
-				write(currentIndent + "<voice>" + v + "</voice>" );
+			if(voice != -1) {
+				write(currentIndent + "<voice>" + voice + "</voice>" );
 				newLine();
 			}
 			write(currentIndent + "<type>" + noteType + "</type>");
@@ -944,8 +1021,11 @@ public class FileGenerator {
 		}
 	}
 		
+	/**
+	 * Adds a backup to the MusicXML
+	 * @param totalDuration
+	 */
 	public void backup(int totalDuration){
-
 		write(currentIndent + "<backup>");
 		newLine();
 		currentIndent += "  ";
@@ -957,6 +1037,7 @@ public class FileGenerator {
 		newLine();
 
 	}
+	
 	/**
 	 * Adds the closing lines to the MusicXML
 	 */

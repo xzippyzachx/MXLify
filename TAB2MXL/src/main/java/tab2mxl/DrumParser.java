@@ -207,6 +207,7 @@ public class DrumParser{
 							beamCheck(beatNote, nextBeatNote, i, k);
 							duration = getDuration(beatNote, Measure.get(i)) - getDuration(rest, Measure.get(i));
 							totalDuration += duration;
+							//Add beam check
 							fileGen.addDrumChord(chords, duration, chordNotes, chordOctaves, chordIDs, chordSymbols, dot, noteType(beatNote), j + 1, bm);
 							if (rest > 0) {
 								fileGen.addRest(getDuration(rest, Measure.get(i)), noteType(rest), j + 1);

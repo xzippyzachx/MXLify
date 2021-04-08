@@ -6,6 +6,8 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.Insets;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -45,6 +47,7 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 	
 	JPanel inputpanel;	
 	JButton convertButton;
+	JButton timeSignatureButton;
 	
 	String[] instruments = {"Guitar", "Bass", "Drums"};
 	JPanel detailsPanel;
@@ -61,6 +64,8 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 	private static String instrument;
 	private static String title;
 	private static String timeSig;
+	
+	private boolean measureEdit = false;
 		
 	TextInputContentPanel(){
 	
@@ -196,16 +201,44 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
         songNamePanel.add(songName);
         
         JPanel timeSignaturePanel = new JPanel();
-        timeSignaturePanel.setLayout(new GridLayout(0, 1));
-        timeSignaturePanel.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 20));
+        timeSignaturePanel.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
+        timeSignaturePanel.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 0));
         timeSignaturePanel.setOpaque(false);
-        timeSignature = new JTextField();
+        timeSignature = new JTextField(16);
         timeSignature.setFont(timeSignature.getFont().deriveFont(16f));
-        //timeSignature.setHorizontalAlignment(JTextField.CENTER);
-        TextPrompt timeSignaturePrompt = new TextPrompt("Time Signature", timeSignature,Show.FOCUS_LOST);
+        TextPrompt timeSignaturePrompt = new TextPrompt("Time Signature", timeSignature, Show.FOCUS_LOST);
         timeSignaturePrompt.setHorizontalAlignment(JTextField.CENTER);
         timeSignaturePrompt.changeAlpha(0.8f);
         timeSignaturePanel.add(timeSignature);
+        
+        JPanel timeSignatureButtonPanel = new JPanel();
+        timeSignatureButtonPanel.setLayout(new FlowLayout(FlowLayout.RIGHT, 10,0));
+        timeSignatureButtonPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
+        timeSignatureButtonPanel.setOpaque(false);
+        
+        timeSignatureButton = new JButton("+");
+        timeSignatureButton.setMargin(new Insets(0, 0, 0, 0));
+        timeSignatureButton.setPreferredSize(new Dimension(25, 25));
+        timeSignatureButton.setBackground(new Color(33,150,243));
+        timeSignatureButton.setForeground(new Color(224,224,224));
+        timeSignatureButton.setFocusable(false);
+        timeSignatureButton.addActionListener(this);
+        
+        timeSignatureButton.setOpaque(true);
+        timeSignatureButton.setBorderPainted(false);
+        //Button hover effects
+        timeSignatureButton.addMouseListener(new java.awt.event.MouseAdapter() {
+    	    public void mouseEntered(java.awt.event.MouseEvent evt) {
+    	    	timeSignatureButton.setBackground(new Color(224,224,224));
+    	    	timeSignatureButton.setForeground(new Color(33,150,243));
+    	    }
+    	    public void mouseExited(java.awt.event.MouseEvent evt) {
+    	    	timeSignatureButton.setBackground(new Color(33,150,243));
+    	    	timeSignatureButton.setForeground(new Color(224,224,224));
+    	    }
+    	}); 
+        //timeSignatureButtonPanel.add(timeSignatureButton); 
+        timeSignaturePanel.add(timeSignatureButton);
         
         Border detailsPadding = BorderFactory.createEmptyBorder(20, 0, 20, 0);
         detailsPanel.setBorder(detailsPadding);
@@ -294,9 +327,12 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 		if(e.getSource() == convertButton && !Main.isInPopUp)
 		{			
 			FormatChecker formatChecker = new FormatChecker(textField.getText(), instrumentList.getSelectedIndex());
-						
+
 			if(formatChecker.GetErrorType() == 2)
+			{
+				Toolkit.getDefaultToolkit().beep();
 				return;
+			}
 			
 			String[] inputText = formatChecker.GetOuput();
 			
@@ -323,13 +359,30 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 		{
 			new SaveManager("", instrumentList.getSelectedIndex(), songName.getText(), timeSignature.getText(), textField.getText());
 		}
+		else if(e.getSource() == timeSignatureButton && !Main.isInPopUp)
+		{
+			if(!measureEdit)
+			{
+				measureEdit = true;
+				Main.myFrame.fileUploadContentPanel.OptionsPanel.add(Main.myFrame.fileUploadContentPanel.MeasurePanel);
+				Border OptionsPadding = BorderFactory.createEmptyBorder(0, 0, 0, 0);
+				Main.myFrame.fileUploadContentPanel.OptionsPanel.setBorder(OptionsPadding);				
+				Main.myFrame.fileUploadContentPanel.OptionsPanel.revalidate();
+			}
+			else
+			{
+				measureEdit = false;
+				Main.myFrame.fileUploadContentPanel.OptionsPanel.remove(Main.myFrame.fileUploadContentPanel.MeasurePanel);
+				Border OptionsPadding = BorderFactory.createEmptyBorder(0, 0, 100, 0);
+				Main.myFrame.fileUploadContentPanel.OptionsPanel.setBorder(OptionsPadding);
+				Main.myFrame.fileUploadContentPanel.OptionsPanel.revalidate();
+			}
+		}
 		
 	}
 	
 	private ArrayList<ArrayList<String>> GetInput (String[] textInput, boolean convert)
-	{
-		errorText.setText("");
-		warningText.setText("");
+	{		
 		if(textField.getText().isEmpty())
 		{
 			return null;

@@ -28,6 +28,9 @@ public class MyFrame extends JFrame{
 		//Main Screen
 		///////////////////////
 		
+		ImageIcon frameIcon = new ImageIcon("Images/Icon.png");
+		this.setIconImage(frameIcon.getImage());
+		
 		mainContentPanel = new JPanel();
 		GridBagConstraints c = new GridBagConstraints();
 		mainContentPanel.setLayout(new GridBagLayout ());
@@ -50,12 +53,12 @@ public class MyFrame extends JFrame{
 		//Sets the FileChoosers style to the current system look and feel
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-	    } 
+	    }
 	    catch (Throwable ex) { }
 		
 		this.setContentPane(bg);
-		 this.setLayout(new GridBagLayout());
-         
+		this.setLayout(new GridBagLayout());
+        
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setSize(1280,720);
 		this.setResizable(false);
