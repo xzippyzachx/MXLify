@@ -399,10 +399,10 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 			{
 				//line = cleanTextContent(line); //Removes redundant spaces
 				if (!line.contains("|")) {
-					break;
+					continue;
 				}
 				if (!line.contains("-")) {
-					break;
+					continue;
 				}
 				
 				Matcher matcher = pattern.matcher(line);
