@@ -10,7 +10,7 @@ import java.awt.Insets;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -34,6 +34,8 @@ import tab2mxl.SaveManager;
 public class TextInputContentPanel extends JPanel implements ActionListener {
 	public UndoRedoTextArea textField;
 	public static boolean scoremake = false;
+
+	public static Map<Integer,String> customMeasureMap = new HashMap<>();
 	JPanel titlePanel;
 	JLabel titleLabel;
 	
@@ -326,7 +328,8 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		
 		if(e.getSource() == convertButton && !Main.isInPopUp)
-		{			
+		{
+			makeCustomMeasures(FileUploadContentPanel.customTextArea.getText());
 			FormatChecker formatChecker = new FormatChecker(textField.getText(), instrumentList.getSelectedIndex());
 
 			if(formatChecker.GetErrorType() == 2)
@@ -486,8 +489,47 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 		return timeSig;
 	}
 
+
 	public static void setTimeSig(String timeSig) {
 		TextInputContentPanel.timeSig = timeSig;
 	}
-		
+
+	private void makeCustomMeasures(String input){
+		if(input.isEmpty()){
+
+		}
+		else{
+			List<String> commands = Arrays.asList(input.split("[\r\n]"));
+			for(String command:commands){
+				if (command.toLowerCase().contains("measure")){
+				final Pattern p = Pattern.compile("[^\\d]+([\\d]+[-]?[\\d]{0,4})[^\\d]+([\\d]+/[\\d]+)");
+					Matcher m = p.matcher(command);
+					if(m.find()){
+						int startMeasure = 0;
+						int endMeasure =0;
+						if(m.group(1).contains("-")){
+							startMeasure = Integer.parseInt(m.group(1).substring(0,m.group(1).indexOf("-")));
+							if(m.group(1).indexOf("-") == m.group(1).length()-1){
+								endMeasure = 9999;
+							}
+							else
+								endMeasure = Integer.parseInt(m.group(1).substring(m.group(1).indexOf("-")+1));
+						}
+						else{
+							int measure = Integer.parseInt((m.group(1)));
+							customMeasureMap.put(measure,m.group(2));
+						}
+
+						for(int i = startMeasure; i<=endMeasure;i++){
+						customMeasureMap.put(i,m.group(2));
+						}
+
+
+
+					}
+				}
+			}
+
+		}
+	}
 }

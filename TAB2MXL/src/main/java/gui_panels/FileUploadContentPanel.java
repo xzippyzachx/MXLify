@@ -33,10 +33,10 @@ public class FileUploadContentPanel extends JPanel implements ActionListener {
 
 	JButton openButton;
 	JButton backButton;
-	
+
 	JPanel OptionsPanel;
 	JPanel MeasurePanel;
-	public UndoRedoTextArea customTextArea;
+	public static UndoRedoTextArea customTextArea;
 
 	public Preferences prefs = Preferences.userRoot().node(getClass().getName());
 	public String LAST_USED_FOLDER = "";
@@ -166,7 +166,7 @@ public class FileUploadContentPanel extends JPanel implements ActionListener {
 										
 					if(extension.equals(".mxlify") || extension.equals("mxlify"))
 					{
-						new LoadManager(file.getPath());						
+						new LoadManager(file.getPath());
 						return;
 					}
 					

@@ -35,7 +35,7 @@ public class DrumParser{
 	private ArrayList<Integer> totalDashes = new ArrayList<>();
 	private int beamCount = 0;
 	private boolean eighthCheck = true;
-	
+
 
 	
 //	
@@ -88,6 +88,9 @@ public class DrumParser{
 				beatType = 4;
 			}
 		}
+		int currentBeat = beat;
+		int currentBeatType = beatType;
+
 		this.input = input;
 
 		ArrayList<ArrayList<String>> transposedInput = transpose(input);
@@ -120,7 +123,7 @@ public class DrumParser{
 		
 		fileGen.openPart(1);
 
-		double totalBeatPerMeasure = (1.0 * beat)/beatType;
+		double totalBeatPerMeasure =0;
 		int duration = 0;
 		int totalDuration = 0;
 		ArrayList<String> chords = new ArrayList<String>();
@@ -137,7 +140,7 @@ public class DrumParser{
 		int measurecount =0;
 		int maxVoice = 0;
 		int minVoice = 0;
-		
+
 
 
 		for (int i= 0;i< Measure.size();i++) {//For each measure
@@ -161,7 +164,7 @@ public class DrumParser{
 				}
 				minVoice = maxVoice;
 				for(Integer v : voices) {
-					if(v <= minVoice) { 
+					if(v <= minVoice) {
 						minVoice = v;
 					}
 				}
@@ -182,6 +185,33 @@ public class DrumParser{
 				}
 				if (i == 0) {//first measure
 					fileGen.drumAttributes((int) ((divisionsArray.get(0)) / 1), beat, beatType);//Add attributes
+					totalBeatPerMeasure = (1.0 * currentBeat)/currentBeatType;
+				}
+				if(TextInputContentPanel.customMeasureMap.containsKey(measurecount)){
+					System.out.println("change this measure");
+					if( currentBeat == Integer.parseInt(TextInputContentPanel.customMeasureMap.get(measurecount).substring(0,TextInputContentPanel.customMeasureMap.get(measurecount).indexOf("/")))
+							&&
+							currentBeatType == Integer.parseInt(TextInputContentPanel.customMeasureMap.get(measurecount).substring(TextInputContentPanel.customMeasureMap.get(measurecount).indexOf("/")+1))){
+
+					}
+					else{
+						currentBeat = Integer.parseInt(TextInputContentPanel.customMeasureMap.get(measurecount).substring(0,TextInputContentPanel.customMeasureMap.get(measurecount).indexOf("/")));
+						currentBeatType = Integer.parseInt(TextInputContentPanel.customMeasureMap.get(measurecount).substring(TextInputContentPanel.customMeasureMap.get(measurecount).indexOf("/")+1));
+						fileGen.drumAttributes((int) ((divisionsArray.get(i)) / 1), currentBeat, currentBeatType);
+						totalBeatPerMeasure = (1.0 * currentBeat)/currentBeatType;
+					}
+				}
+				else{
+					if(currentBeat == beat && currentBeatType == beatType){
+
+					}
+					else{
+						currentBeat = beat;
+						currentBeatType = beatType;
+						fileGen.drumAttributes((int) ((divisionsArray.get(i)) / 1), beat, beatType);
+						totalBeatPerMeasure = (1.0 * beat)/beatType;
+					}
+
 				}
 				////Attributes for different groups////
 				/*else if(Measure.get(i-1).size() ==2) {
@@ -224,17 +254,20 @@ public class DrumParser{
 									}
 								}
 							}
+//							totalDash = gettotalDash(Measure.get(i));
 							beatNote = beatNote((dash * totalBeatPerMeasure) / totalDash);
 							// to do is make array for total dash
 							dot = dot(beatNote);
 							totalBeatInMeasure += beatNote(noteType(beatNote), dot);
-							beamCheck(beatNote, nextBeatNote, i, k);
-							duration = getDuration(beatNote, Measure.get(i)) - getDuration(rest, Measure.get(i));
+							beamCheck(beatNote, nextBeatNote, i, k,currentBeat,currentBeatType);
+							duration = getDuration(beatNote, Measure.get(i),currentBeat,currentBeatType) - getDuration(rest, Measure.get(i),currentBeat,currentBeatType);
 							totalDuration += duration;
+							
 							//Add beam check
+
 							fileGen.addDrumChord(chords, duration, chordNotes, chordOctaves, chordIDs, chordSymbols, dot, noteType(beatNote), j + 1, bm);
-							if (rest > 0 && getDuration(rest, Measure.get(i)) > 0) {
-								fileGen.addRest(getDuration(rest, Measure.get(i)), noteType(rest), j + 1);
+							if (rest > 0 && getDuration(rest, Measure.get(i),currentBeat, currentBeatType) > 0) {
+								fileGen.addRest(getDuration(rest, Measure.get(i), currentBeat,currentBeatType), noteType(rest), j + 1);
 								totalBeatInMeasure += beatNote(noteType(rest), 0);
 								rest = 0.0;
 							}
@@ -257,12 +290,12 @@ public class DrumParser{
 									// to do is make array for total dash
 									dot = dot(beatNote);
 									totalBeatInMeasure += beatNote(noteType(beatNote), dot);
-									beamCheck(beatNote, nextBeatNote, i, k);
-									duration = getDuration(beatNote, Measure.get(i)) - getDuration(rest, Measure.get(i));
+									beamCheck(beatNote, nextBeatNote, i, k,currentBeat,currentBeatType);
+									duration = getDuration(beatNote, Measure.get(i),currentBeat, currentBeatType) - getDuration(rest, Measure.get(i),currentBeat, currentBeatType);
 									totalDuration += duration;
 									fileGen.addDrumNote(column[inst], duration, tuning.getNote(instruments[inst]), tuning.getOctave(instruments[inst]), tuning.getID(instruments[inst], column[inst]), noteType(beatNote), voices[inst], dot, bm);
-									if (rest > 0 && getDuration(rest, Measure.get(i)) > 0) {
-										fileGen.addRest(getDuration(rest, Measure.get(i)), noteType(rest), voices[inst]);
+									if (rest > 0 && getDuration(rest, Measure.get(i),currentBeat, currentBeatType) > 0) {
+										fileGen.addRest(getDuration(rest, Measure.get(i),currentBeat,currentBeatType), noteType(rest), voices[inst]);
 										totalBeatInMeasure += beatNote(noteType(rest), 0);
 										rest = 0.0;
 									}
@@ -271,7 +304,7 @@ public class DrumParser{
 						}
 						if(k == Measure.get(i).size()-1 && totalBeatPerMeasure>totalBeatInMeasure) {
 							rest = totalBeatPerMeasure-totalBeatInMeasure;
-							fileGen.addRest(getDuration(rest, Measure.get(i)), noteType(rest), j+1);
+							fileGen.addRest(getDuration(rest, Measure.get(i),currentBeat, currentBeatType), noteType(rest), j+1);
 							rest = 0.0;
 						}
 					}
@@ -284,7 +317,7 @@ public class DrumParser{
 			/*if(i == Measure.size()-1 || Measure.get(i+1).size() ==2) {
 				fileGen.addBar();
 			}*/
-			
+
 			System.out.println("closing measure");
 			 if(fileGen.measureOpen){
 				 if(repeats.get(i)[1]-runningSpanCount == 0) {
@@ -295,12 +328,13 @@ public class DrumParser{
 					 fileGen.closeMeasure(false, 0); 
 				 }
 			 }
+
 		}
 		fileGen.closePart();
 		fileGen.end();
 		
 		new SuccessPopUp(Main.myFrame, FileGenerator.filepath);
-		
+
 		// Printing for testing
 		int i = 0;
 		for (ArrayList<ArrayList<String>> measure : Measure){
@@ -470,10 +504,12 @@ public class DrumParser{
 		Measure.remove(Measure.size() - 1); //Remove last empty measure
 
 		//CONSIDER DIFF LENGTH MEASURE ROWS
+
 		return Measure;
+
 	}
 
- 	private int dash(int i , int j, int k) {//i is the 
+ 	private int dash(int i , int j, int k) {//i is the
  		int dash = 1;
  		int increment = 1;
  		
@@ -484,11 +520,12 @@ public class DrumParser{
 			} else
 				break;
 		}
+ 		
  		return dash;
  	}
- 	
- 	private void beamCheck(double beatNote, double nextBeatNote, int i, int k) {
- 		
+
+ 	private void beamCheck(double beatNote, double nextBeatNote, int i, int k, int currentBeat,int currentBeatType) {
+
  		if(nextBeatNote == 0) {
  			beam = 0.0;
  			if(beam != 0) bm = 3;
@@ -497,43 +534,43 @@ public class DrumParser{
 			eighthCheck = true;
 			return;
  		}
- 		
+
  		if(beatNote == 0.125 && eighthCheck) {
-			if(beam == 0 && ((beatNote + nextBeatNote) > ((1.0*beat)/beatType)/2 || totalBeatInMeasure == ((1.0*beat)/beatType)/2)) {
+			if(beam == 0 && ((beatNote + nextBeatNote) > ((1.0*currentBeat)/currentBeatType)/2 || totalBeatInMeasure == ((1.0*currentBeat)/currentBeatType)/2)) {
 				bm = 0;
 				beamCount = 0;
-			}else if(beam != 0 && beamCount == 1 && ((totalBeatInMeasure + nextBeatNote >= ((1.0*beat)/beatType) || totalBeatInMeasure + nextBeatNote == ((1.0*beat)/beatType)/2))) {
+			}else if(beam != 0 && beamCount == 1 && ((totalBeatInMeasure + nextBeatNote >= ((1.0*currentBeat)/currentBeatType) || totalBeatInMeasure + nextBeatNote == ((1.0*currentBeat)/currentBeatType)/2))) {
 				beam = 0.0;
 				bm = 3;
 				beamCount = 0;
-			}else if((beam != 0 && (beam + beatNote + nextBeatNote) > ((1.0*beat)/beatType)/2) || (totalBeatInMeasure == ((1.0*beat)/beatType)/2) || (k == Measure.get(i).size()-1)) {
+			}else if((beam != 0 && (beam + beatNote + nextBeatNote) > ((1.0*currentBeat)/currentBeatType)/2) || (totalBeatInMeasure == ((1.0*currentBeat)/currentBeatType)/2) || (k == Measure.get(i).size()-1)) {
 				beam = 0.0;
 				bm = 3;
 				beamCount = 0;
-			}else if(beam == 0 && (beatNote + nextBeatNote) <= ((1.0*beat)/beatType)/2) {
+			}else if(beam == 0 && (beatNote + nextBeatNote) <= ((1.0*currentBeat)/currentBeatType)/2) {
 				beam += beatNote;
 				bm = 1;
 				beamCount = 1;
-			}else if(beam != 0 && (beam + beatNote + nextBeatNote) <= ((1.0*beat)/beatType)/2) {
+			}else if(beam != 0 && (beam + beatNote + nextBeatNote) <= ((1.0*currentBeat)/currentBeatType)/2) {
 				beam += beatNote;
 				bm = 2;
 				beamCount++;
 			}
 		}else if(beatNote < 0.25) {
 			eighthCheck = false;
-			if(beam == 0 && (((beatNote + nextBeatNote) > 1.0/beatType) || (totalBeatInMeasure == ((1.0*beat)/beatType)/2))) {
+			if(beam == 0 && (((beatNote + nextBeatNote) > 1.0/currentBeatType) || (totalBeatInMeasure == ((1.0*currentBeat)/currentBeatType)/2))) {
 				bm = 0;
 				beamCount = 0;
-			}else if((beam != 0 && (beam + beatNote + nextBeatNote) > 1.0/beatType) || (totalBeatInMeasure == ((1.0*beat)/beatType)/2) || (k == Measure.get(i).size()-1)) {
+			}else if((beam != 0 && (beam + beatNote + nextBeatNote) > 1.0/currentBeatType) || (totalBeatInMeasure == ((1.0*currentBeat)/currentBeatType)/2) || (k == Measure.get(i).size()-1)) {
 				beam = 0.0;
 				bm = 3;
 				beamCount = 0;
 				eighthCheck = true;
-			}else if(beam == 0 && (beatNote + nextBeatNote) <= 1.0/beatType) {
+			}else if(beam == 0 && (beatNote + nextBeatNote) <= 1.0/currentBeatType) {
 				beam += beatNote;
 				bm = 1;
 				beamCount = 1;
-			}else if(beam != 0 && (beam + beatNote + nextBeatNote) <= 1.0/beatType) {
+			}else if(beam != 0 && (beam + beatNote + nextBeatNote) <= 1.0/currentBeatType) {
 				beam += beatNote;
 				bm = 2;
 				beamCount++;
@@ -545,7 +582,7 @@ public class DrumParser{
 			eighthCheck = true;
 		}
  	}
- 	
+
  	private int nextKPos(int i , int j, int k) {
  		int increment = 1;
  		int output = 0;
@@ -562,8 +599,8 @@ public class DrumParser{
  		else
  			return output;
  	}
- 	
-	private double getDivision(ArrayList<ArrayList<String>> measure) {
+
+	private double getDivision(ArrayList<ArrayList<String>> measure,int currentBeat,int currentBeatType) {
 		double division = 0;
 		int runningcount;
 
@@ -573,10 +610,15 @@ public class DrumParser{
 
 			if(!containsOnlyString(col,"-")){                   //First column with info
 				int dashes = measure.size() - runningcount;
-				double beatNote = 1.0/beatType;
-				double bSig  = 1.0 * beat;
-				double totalBeatPerMeasure = bSig/beatType;
+
+				totalDash = dashes;
+				double beatNote = 1.0/currentBeatType;
+				double bSig  = 1.0 * currentBeat;
+				double totalBeatPerMeasure = bSig/currentBeatType;
 				division = (dashes * beatNote)/totalBeatPerMeasure;
+				//System.out.println("TBM: " + totalBeatPerMeasure);
+				//System.out.println("hyfen number is "+hyfenNumber);
+				//System.out.println("Division: " + division);
 				if(division%0.5 == 0)
 					return (int)division;
 				else
@@ -598,11 +640,29 @@ public class DrumParser{
 		}
 		return dashes;
 	}
-	
+
 	private void createDivisionsArray(){
-		for (ArrayList<ArrayList<String>> measure : Measure){
-			divisionsArray.add(getDivision(measure));
+		int measureNum = 1;
+		for(int i =0; i< Measure.size();i++){
+			if(Measure.get(i).size() ==2){
+				divisionsArray.add(0.0);
+			}
+			else{
+				if(TextInputContentPanel.customMeasureMap.containsKey(measureNum)){
+					int currentBeat = Integer.parseInt(TextInputContentPanel.customMeasureMap.get(measureNum).substring(0,TextInputContentPanel.customMeasureMap.get(measureNum).indexOf("/")));
+					int currentBeatType = Integer.parseInt(TextInputContentPanel.customMeasureMap.get(measureNum).substring(TextInputContentPanel.customMeasureMap.get(measureNum).indexOf("/")+1));
+					divisionsArray.add(getDivision(Measure.get(i),currentBeat,currentBeatType));
+					measureNum++;
+				}
+				else {
+					divisionsArray.add(getDivision(Measure.get(i), beat, beatType));
+					measureNum++;
+				}
+			}
 		}
+
+
+
 	}
 
 	public int[] setVoice(DrumTuning tuner, String[] instruments){
@@ -613,10 +673,10 @@ public class DrumParser{
 		return voices;
 	}
 
-	private int getDuration(double noteType,ArrayList<ArrayList<String>> measure) {
+	private int getDuration(double noteType,ArrayList<ArrayList<String>> measure, int currentBeat, int currentBeatType) {
 		double output = 0;
-		double div = getDivision(measure);
-		double beatTypeNote = 1.0/beatType;
+		double div = getDivision(measure, currentBeat, currentBeatType);
+		double beatTypeNote = 1.0/currentBeatType;
 		output = (noteType * div)/beatTypeNote;
 //		System.out.println("DurationOutput: " + output);
 		if(output%0.5 == 0)
@@ -663,7 +723,7 @@ public class DrumParser{
 	
 	protected static String noteType(double beatNote) {
 		String output = "";
-		
+
 		if(beatNote >= 1.0/256) {
 			if(beatNote >= 1.0) {
 				output = "whole";
@@ -708,10 +768,10 @@ public class DrumParser{
 		}
 		return output;
 	}
-	
+
 	private double beatNote(String note, int dot) {
 		double output = 0.0;
-		
+
 		if(note.equals("whole")) {
 			output += 1.0;
 		}else if(note.equals("half")) {
@@ -737,10 +797,10 @@ public class DrumParser{
 		}
 		return output;
 	}
-	
+
 	private double beatNote(double b) {
 		double output = 0.0;
-		
+
 		if(b >= 1.0/256) {
 			if(b >= 2.0) {
 				output = 2.0;
