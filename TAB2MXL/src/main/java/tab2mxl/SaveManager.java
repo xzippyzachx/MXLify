@@ -18,7 +18,7 @@ public class SaveManager {
 	FileWriter myWriter;
 	static String filepath;
 	
-	public SaveManager (String path, int instrument, String title, String timesig, String textArea)
+	public SaveManager (String path, int instrument, String title, String timesig, String textArea, String customArea)
 	{
 		if(textArea.isEmpty())
 			return;
@@ -56,6 +56,12 @@ public class SaveManager {
 		      myWriter.write("title " + title);
 		      myWriter.write("\n");
 		      myWriter.write("timesig " + timesig);
+		      myWriter.write("\n");
+		      myWriter.write("custom");
+		      myWriter.write("\n");
+		      myWriter.write(customArea);
+		      myWriter.write("\n");
+		      myWriter.write("tablature");
 		      myWriter.write("\n");
 		      myWriter.write(textArea);
 		      

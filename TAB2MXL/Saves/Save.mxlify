@@ -1,6 +1,9 @@
 instrument 0
-title Example
+title Test
 timesig 4/4
+custom
+Test measure area
+tablature
 |-----------0-----|-0---------------|
 |---------0---0---|-0---------------|
 |-------1-------1-|-1---------------|

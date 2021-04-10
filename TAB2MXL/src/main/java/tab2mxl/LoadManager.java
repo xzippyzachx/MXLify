@@ -9,7 +9,7 @@ import java.util.prefs.Preferences;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import gui_popups.ClearPopUp;
+import gui_popups.LoadPopUp;
 
 public class LoadManager {
 
@@ -18,7 +18,8 @@ public class LoadManager {
 	
 	private String[] loadedData = new String[3];
 	private String loadedText = "";
-	
+	private String loadedCustom = "";
+		
 	File loadFile;
 	public boolean failed = false;
 	
@@ -62,14 +63,18 @@ public class LoadManager {
 				
 				BufferedReader reader = new BufferedReader(new FileReader (loadFile));
 			    String         line = null;
-			    StringBuilder  stringBuilder = new StringBuilder();
+			    StringBuilder  tablatureStringBuilder = new StringBuilder();
+			    StringBuilder  customStringBuilder = new StringBuilder();
 			    String         ls = System.getProperty("line.separator");
 				
 				if(extension.equals(".mxlify") || extension.equals("mxlify"))
 				{
+					String section = "";
+					
 					while((line = reader.readLine()) != null) {
 			        	
-						if(line.split(" ").length > 1)
+						if(section.isEmpty() && line.split(" ").length > 1)
+						{
 							switch (line.split(" ")[0])
 							{
 								case "instrument":
@@ -81,26 +86,51 @@ public class LoadManager {
 								case "timesig":
 									loadedData[2] = (line.split(" ")[1].equals("null")) ? "" : line.split(" ")[1];
 									break;
-								case "":
-									break;
-								default:
-									stringBuilder.append(line);
-						            stringBuilder.append(ls);
+								default:																
 						            break;
 							}
-						else if (!line.split(" ")[0].equals("title") && !line.split(" ")[0].equals("timesig"))
+							continue;
+						}
+						else if(line.equals("custom"))
 						{
-							stringBuilder.append(line);
-				            stringBuilder.append(ls);
+							section = "custom";
+							continue;
+						}
+						else if(line.equals("tablature"))
+						{
+							section = "tablature";
+							continue;
+						}
+						
+						if (section.equals("custom") && !line.split(" ")[0].equals("title") && !line.split(" ")[0].equals("timesig"))
+						{
+							customStringBuilder.append(line);
+							customStringBuilder.append(ls);
+						}
+						else if (section.equals("tablature") && !line.split(" ")[0].equals("title") && !line.split(" ")[0].equals("timesig"))
+						{
+							tablatureStringBuilder.append(line);
+							tablatureStringBuilder.append(ls);
 						}
 			        }
 					
-					if(!Main.myFrame.textInputContentPanel.textField.getText().isEmpty())
-						new ClearPopUp(Main.myFrame, stringBuilder.toString(), "Override Current Tablature");
-					else
-						Main.myFrame.textInputContentPanel.textField.setText(stringBuilder.toString());
+					if(path.equals("") && (!Main.myFrame.textInputContentPanel.textField.getText().isEmpty() || !Main.myFrame.textInputContentPanel.songName.getText().isEmpty() || !Main.myFrame.textInputContentPanel.timeSignature.getText().isEmpty() || !Main.myFrame.fileUploadContentPanel.customTextArea.getText().isEmpty()))
+					{
+						new LoadPopUp(Main.myFrame, tablatureStringBuilder.toString(), loadedData[0], loadedData[1], loadedData[2], customStringBuilder.toString(), "Override Current Tablature");
+					}
+					else if(path.equals(""))
+					{
+						Main.myFrame.textInputContentPanel.instrumentList.setSelectedIndex(Integer.parseInt(loadedData[0]));
+						Main.myFrame.textInputContentPanel.songName.setText(loadedData[1]);
+						Main.myFrame.textInputContentPanel.timeSignature.setText(loadedData[2]);
+						Main.myFrame.fileUploadContentPanel.customTextArea.focusGained(null);
+						Main.myFrame.fileUploadContentPanel.customTextArea.setText(customStringBuilder.toString());
+						Main.myFrame.textInputContentPanel.textField.focusGained(null);
+						Main.myFrame.textInputContentPanel.textField.setText(tablatureStringBuilder.toString());
+					}
 					
-					loadedText = stringBuilder.toString();
+					loadedCustom = customStringBuilder.toString();
+					loadedText = tablatureStringBuilder.toString();
 				}
 
 		        reader.close();
@@ -121,5 +151,10 @@ public class LoadManager {
 	public String GetLoadedText()
 	{		
 		return loadedText;
+	}
+	
+	public String GetLoadedCustom()
+	{		
+		return loadedCustom;
 	}
 }

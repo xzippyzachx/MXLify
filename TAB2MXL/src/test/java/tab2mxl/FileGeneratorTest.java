@@ -336,6 +336,27 @@ class FileGeneratorTest {
 		assertEquals(expected, fileContent); 
 		//fail("Measure 0 should throw error");
 	}
+	
+	@Test
+	void testOpenMeasureRepeat() {
+		openWriter();
+		fileGen.openMeasure(0, true, 5);
+		fileGen.end();
+		String fileContent = this.readFile();
+		String expected = "<measure number=\"" + 0 + "\">\n"
+						+ "  <barline location=\"left\">\n"
+						+ "    <bar-style>heavy-light</bar-style>\n"
+						+ "    <repeat direction=\"forward\" times=\"" + 5 + "\"/>\n"
+						+ "  </barline>\n"
+						+ "  <direction placement=\"above\">\n"
+						+ "    <direction-type>\n"
+						+ "      <words default-x=\"15\" default-y=\"15\" font-size=\"9\" font-style=\"italic\">Repeat " + 5 + "x</words>\n"
+						+ "    </direction-type>\n"
+						+ "  </direction>\n" 
+						+ "</score-partwise>";
+		assertEquals(expected, fileContent); 
+		//fail("Measure 0 should throw error");
+	}
 
 	@Test
 	void testCloseMeasure() {
