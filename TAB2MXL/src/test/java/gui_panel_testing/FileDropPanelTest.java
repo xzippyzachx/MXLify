@@ -59,7 +59,7 @@ public class FileDropPanelTest {
 		assertEquals(dropLoc.getIcon().getIconHeight(),120);
 		assertEquals(dropLoc.getIcon().getIconWidth(),140);
 		
-		assertEquals(dropLoc.getBackground(), Color.LIGHT_GRAY);
+		assertEquals(dropLoc.getBackground(), Color.WHITE);
 		
 	}
 	

@@ -35,12 +35,15 @@ public class SaveLoadTest {
 				+ "|-------1-------1-|-1---------------|\n"
 				+ "|-----2-----------|-2---------------|\n"
 				+ "|---2-------------|-2---------------|\n"
-				+ "|-0---------------|-0---------------|");
+				+ "|-0---------------|-0---------------|", "measure 1-20 4/4");
 		
 		fileContent = this.readFile(path);
 		expected ="instrument 0\n"
 				+ "title test\n"
 				+ "timesig 4/4\n"
+				+ "custom\n"
+				+ "measure 1-20 4/4\n"
+				+ "tablature\n"
 				+ "|-----------0-----|-0---------------|\n"
 				+ "|---------0---0---|-0---------------|\n"
 				+ "|-------1-------1-|-1---------------|\n"
@@ -54,14 +57,17 @@ public class SaveLoadTest {
 	@Test
 	void testLoad1() {
 		String path = "SaveLoadTests/testSave.mxlify";
-		((UndoRedoTextArea) Main.myFrame.textInputContentPanel.textField).focusGained(null);
+		Main.myFrame.textInputContentPanel.textField.focusGained(null);
+		Main.myFrame.fileUploadContentPanel.customTextArea.focusGained(null);
 		
-		LoadManager	loadManager = new LoadManager(path);		
+		LoadManager	loadManager = new LoadManager(path);
 		loadedContent = loadManager.GetLoadedData();
 		
 		assertEquals("0", loadedContent[0]);
 		assertEquals("test", loadedContent[1]);
 		assertEquals("4/4", loadedContent[2]);
+		
+		assertEquals("measure 1-20 4/4", loadManager.GetLoadedCustom().trim());
 		
 		expected ="|-----------0-----|-0---------------|\n"
 				+ "|---------0---0---|-0---------------|\n"
@@ -70,7 +76,7 @@ public class SaveLoadTest {
 				+ "|---2-------------|-2---------------|\n"
 				+ "|-0---------------|-0---------------|\n";
 		
-		assertEquals(expected, loadManager.GetLoadedText().replaceAll("\\r", ""));
+		assertEquals(expected, loadManager.GetLoadedText().replaceAll("\\r", ""));		
 	}
 	
 	@SuppressWarnings("resource")

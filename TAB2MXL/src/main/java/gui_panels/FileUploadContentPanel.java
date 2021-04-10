@@ -36,6 +36,7 @@ public class FileUploadContentPanel extends JPanel implements ActionListener {
 	
 	JPanel OptionsPanel;
 	JPanel MeasurePanel;
+	public UndoRedoTextArea customTextArea;
 
 	public Preferences prefs = Preferences.userRoot().node(getClass().getName());
 	public String LAST_USED_FOLDER = "";
@@ -116,12 +117,12 @@ public class FileUploadContentPanel extends JPanel implements ActionListener {
 					
 		MeasurePanel.add(measureLabel);
 		
-		JTextArea textField = new UndoRedoTextArea(); //Create empty text area (Undo-able Text Area)
-        textField.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
+		customTextArea = new UndoRedoTextArea(); //Create empty text area (Undo-able Text Area)
+		customTextArea.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
 		
-        MeasurePanel.add(textField);
+        MeasurePanel.add(customTextArea);
         
-        JScrollPane scroll = new JScrollPane (textField);
+        JScrollPane scroll = new JScrollPane (customTextArea);
         scroll.setPreferredSize(new Dimension(300, 265));
         scroll.setSize(getPreferredSize());;
         MeasurePanel.add(scroll);
@@ -165,14 +166,7 @@ public class FileUploadContentPanel extends JPanel implements ActionListener {
 										
 					if(extension.equals(".mxlify") || extension.equals("mxlify"))
 					{
-						LoadManager loadManager = new LoadManager(file.getPath());
-						String[] loadedData = loadManager.GetLoadedData();
-						if(!loadManager.failed)
-						{
-							Main.myFrame.textInputContentPanel.instrumentList.setSelectedIndex(Integer.parseInt(loadedData[0]));
-							Main.myFrame.textInputContentPanel.songName.setText(loadedData[1]);
-							Main.myFrame.textInputContentPanel.timeSignature.setText(loadedData[2]);
-						}
+						new LoadManager(file.getPath());						
 						return;
 					}
 					

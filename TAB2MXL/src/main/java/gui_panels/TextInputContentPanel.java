@@ -32,7 +32,7 @@ import tab2mxl.Main;
 import tab2mxl.SaveManager;
 
 public class TextInputContentPanel extends JPanel implements ActionListener {
-	public JTextArea textField;
+	public UndoRedoTextArea textField;
 	public static boolean scoremake = false;
 	JPanel titlePanel;
 	JLabel titleLabel;
@@ -51,9 +51,9 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 	
 	String[] instruments = {"Guitar", "Bass", "Drums"};
 	JPanel detailsPanel;
-	JComboBox<Object> instrumentList;
-	JTextField timeSignature;
-	JTextField songName;
+	public JComboBox<Object> instrumentList;
+	public JTextField timeSignature;
+	public JTextField songName;
 	SteelCheckBox sheetMusicToggle;
 	
 	JPanel errorPanel;
@@ -217,6 +217,7 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
         timeSignatureButtonPanel.setOpaque(false);
         
         timeSignatureButton = new JButton("+");
+        timeSignatureButton.setFont(new Font(timeSignatureButton.getFont().getFontName(), Font.PLAIN, 20));
         timeSignatureButton.setMargin(new Insets(0, 0, 0, 0));
         timeSignatureButton.setPreferredSize(new Dimension(25, 25));
         timeSignatureButton.setBackground(new Color(33,150,243));
@@ -348,7 +349,6 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 			setTimeSig(timeSignature.getText());
 			
 			Main.Convert(input, instrumentList.getSelectedIndex());
-
 		}
 		else if(e.getSource() == clearButton && !Main.isInPopUp)
 		{
@@ -357,7 +357,7 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 		}
 		else if(e.getSource() == saveButton && !Main.isInPopUp)
 		{
-			new SaveManager("", instrumentList.getSelectedIndex(), songName.getText(), timeSignature.getText(), textField.getText());
+			new SaveManager("", instrumentList.getSelectedIndex(), songName.getText(), timeSignature.getText(), textField.getText(), Main.myFrame.fileUploadContentPanel.customTextArea.getText());
 		}
 		else if(e.getSource() == timeSignatureButton && !Main.isInPopUp)
 		{
@@ -368,6 +368,7 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 				Border OptionsPadding = BorderFactory.createEmptyBorder(0, 0, 0, 0);
 				Main.myFrame.fileUploadContentPanel.OptionsPanel.setBorder(OptionsPadding);				
 				Main.myFrame.fileUploadContentPanel.OptionsPanel.revalidate();
+				timeSignatureButton.setText("-");
 			}
 			else
 			{
@@ -376,6 +377,7 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 				Border OptionsPadding = BorderFactory.createEmptyBorder(0, 0, 100, 0);
 				Main.myFrame.fileUploadContentPanel.OptionsPanel.setBorder(OptionsPadding);
 				Main.myFrame.fileUploadContentPanel.OptionsPanel.revalidate();
+				timeSignatureButton.setText("+");
 			}
 		}
 		
