@@ -591,7 +591,7 @@ public class FileGenerator {
 		currentIndent += "  ";
 		newLine();
 		
-		if(isRepeat)
+		if(isRepeat && repeatAmount > 0)
 		{
 			write(currentIndent + "<barline location=\"left\">");
 			currentIndent += "  ";
@@ -629,7 +629,7 @@ public class FileGenerator {
 	 */
 	public void closeMeasure(boolean isRepeat, int repeatAmount)
 	{
-		if(isRepeat)
+		if(isRepeat && repeatAmount > 0)
 		{
 			write(currentIndent + "<barline location=\"right\">");
 			currentIndent += "  ";
@@ -993,7 +993,19 @@ public void addDrumChord(ArrayList<String>chords, int duration, ArrayList<String
 			first = true;
 		}
 	}
-		
+
+	public void addBar() {
+		System.out.println("Bar");
+		write(currentIndent + "<barline location=\"right\">");
+		currentIndent += "  ";
+		newLine();
+		write(currentIndent + "<bar-style>heavy</bar-style>");
+		newLine();
+		tabBack();
+		write(currentIndent + "</barline>");
+		newLine();
+	}
+	
 	/**
 	 * Adds a rest to the MusicXML
 	 * @param duration
@@ -1029,7 +1041,6 @@ public void addDrumChord(ArrayList<String>chords, int duration, ArrayList<String
 		write(currentIndent + "<backup>");
 		newLine();
 		currentIndent += "  ";
-
 		write(currentIndent + "<duration>" + totalDuration + "</duration>");
 		newLine();
 		tabBack();
