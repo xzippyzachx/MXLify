@@ -61,6 +61,9 @@ public class StringParser {
 			}
 		}
 		
+		int currentBeat = beat;
+		int currentBeatType = beatType;
+		
 //		System.out.println("beat: " + beat);
 //		System.out.println("beatType: " + beatType);
 		
@@ -276,12 +279,40 @@ public class StringParser {
 					measure++;
 					count = 0;
 					
+					
 					if(fileGen.measureOpen)
 						fileGen.closeMeasure(wasRepeat, repeatAmount);
-					if(columns.size() > currentColumn + 1) {
+					if(columns.size() > currentColumn + 2) {
+						div = getDivisions(currentBeat, currentBeatType, isRepeat ? i+1 : i);
+						Map<Integer, String> measureMap = TextInputContentPanel.customMeasureMap;
+						
+						
 						fileGen.openMeasure(measure, isRepeat, repeatAmount);						
 						if(measure == 1) {
-							fileGen.stringAttributes(div, 0, beat, beatType, "G", tune, tuningOctave);
+							fileGen.stringAttributes(div, beat, beatType, "G", tune, tuningOctave);
+						}
+						if(measureMap.containsKey(measure)){
+							if(currentBeat == Integer.parseInt(measureMap.get(measure).substring(0,measureMap.get(measure).indexOf("/"))) &&
+									currentBeatType == Integer.parseInt(measureMap.get(measure).substring(measureMap.get(measure).indexOf("/")+1))){
+							}
+							else{
+								currentBeat = Integer.parseInt(measureMap.get(measure).substring(0,measureMap.get(measure).indexOf("/")));
+								currentBeatType = Integer.parseInt(measureMap.get(measure).substring(measureMap.get(measure).indexOf("/")+1));
+								fileGen.stringAttributes((int) (div / 1), currentBeat, currentBeatType, "G", tune, tuningOctave);
+								totalBeatPerMeasure = (1.0 * currentBeat)/currentBeatType;
+							}
+						}
+						else{
+							if(currentBeat == beat && currentBeatType == beatType){
+								
+							}
+							else{
+								currentBeat = beat;
+								currentBeatType = beatType;
+								fileGen.stringAttributes((int) (div / 1), beat, beatType, "G", tune, tuningOctave);
+								totalBeatPerMeasure = (1.0 * beat)/beatType;
+							}
+
 						}
 					}					
 					wasRepeat = isRepeat;
@@ -337,7 +368,7 @@ public class StringParser {
     							sharpnote = true;
     						}
                     	    beatNote = beatNote((dash * totalBeatPerMeasure)/totalDash);
-                    	    fileGen.addStringNote(line, fret, tunner.getNote(tune[line-1], fret, line).charAt(0), noteType(beatNote), getDuration(beatNote) - getDuration(rest), tunner.getOctave(tune[line-1], fret, line), dot(beatNote),sharpnote, hammerStart,hammerContinue,hammerDone,harmonic,grace);
+                    	    fileGen.addStringNote(line, fret, tunner.getNote(tune[line-1], fret, line).charAt(0), noteType(beatNote), getDuration(beatNote, currentBeat, currentBeatType, div) - getDuration(rest, currentBeat, currentBeatType, div), tunner.getOctave(tune[line-1], fret, line), dot(beatNote),sharpnote, hammerStart,hammerContinue,hammerDone,harmonic,grace);
                 		}
                     	else if(Character.isDigit(gcharacter)) {
                     		fret = Character.getNumericValue(gcharacter);
@@ -349,7 +380,7 @@ public class StringParser {
                     		if (tunner.getNote(tune[line-1], fret, line).substring(tunner.getNote(tune[line-1], fret, line).length()-1,tunner.getNote(tune[line-1], fret, line).length()).equals("#")){
     							sharpnote = true;
     						}
-                    		fileGen.addStringNote(line, fret, tunner.getNote(tune[line-1], fret, line).charAt(0), noteType(beatNote), getDuration(beatNote) - getDuration(rest), tunner.getOctave(tune[line-1], fret, line), dot(beatNote),sharpnote, hammerStart,hammerContinue,hammerDone,harmonic,grace);
+                    		fileGen.addStringNote(line, fret, tunner.getNote(tune[line-1], fret, line).charAt(0), noteType(beatNote), getDuration(beatNote, currentBeat, currentBeatType, div) - getDuration(rest, currentBeat, currentBeatType, div), tunner.getOctave(tune[line-1], fret, line), dot(beatNote),sharpnote, hammerStart,hammerContinue,hammerDone,harmonic,grace);
                     	    hammerDone = false;
                     	}
                     	columns.get(z)[j] = '-';
@@ -402,7 +433,9 @@ public class StringParser {
 				if(hammerOn){
 					beatNote = beatNote((hammerDuration * totalBeatPerMeasure)/totalDash);/*beatNote((hammerDuration * beatTypeNote)/div);*/
 				}
-				else {beatNote = beatNote((dash * totalBeatPerMeasure)/totalDash);/*beatNote((dash * beatTypeNote)/div)*/}
+				else {
+					beatNote = beatNote((dash * totalBeatPerMeasure)/totalDash);/*beatNote((dash * beatTypeNote)/div)*/
+				}
 
 				////////////////
 				//Regular notes				
@@ -422,7 +455,7 @@ public class StringParser {
 						if (tunner.getNote(tune[line-1], fret, line).substring(tunner.getNote(tune[line-1], fret, line).length()-1,tunner.getNote(tune[line-1], fret, line).length()).equals("#")){
 							sharpnote = true;
 						}
-						fileGen.addStringNote(line, fret, tunner.getNote(tune[line-1], fret, line).charAt(0), noteType(beatNote), getDuration(beatNote) - getDuration(rest), tunner.getOctave(tune[line-1], fret, line), dot(beatNote),sharpnote, hammerStart,hammerContinue,hammerDone,harmonic,grace);
+						fileGen.addStringNote(line, fret, tunner.getNote(tune[line-1], fret, line).charAt(0), noteType(beatNote), getDuration(beatNote, currentBeat, currentBeatType, div) - getDuration(rest, currentBeat, currentBeatType, div), tunner.getOctave(tune[line-1], fret, line), dot(beatNote),sharpnote, hammerStart,hammerContinue,hammerDone,harmonic,grace);
 						harmonic = false;
 						grace = false;
 //						System.out.println("");
@@ -430,7 +463,7 @@ public class StringParser {
 //						System.out.println("Duration: " + getDuration(beatNote));
 //						System.out.println("");
 						if(rest > 0) {
-							fileGen.addRest(getDuration(rest), noteType(rest), -1);
+							fileGen.addRest(getDuration(rest, currentBeat, currentBeatType, div), noteType(rest), -1);
 							rest = 0.0;
 						}
 							
@@ -490,9 +523,9 @@ public class StringParser {
 					beatNote = beatNote((dash * totalBeatPerMeasure)/totalDash);/*beatNote((dash * beatTypeNote)/div)*/
 				}
 
-				fileGen.addStringChord(chords,chordType, getDuration(beatNote) - getDuration(rest), chordsOctave,linearray,fretarray, chordDot,sharp,hammerLocation,hammerStart,hammerContinue,hammerDone,hchord);
+				fileGen.addStringChord(chords,chordType, getDuration(beatNote, currentBeat, currentBeatType, div) - getDuration(rest, currentBeat, currentBeatType, div), chordsOctave,linearray,fretarray, chordDot,sharp,hammerLocation,hammerStart,hammerContinue,hammerDone,hchord);
 				if(rest > 0) {
-					fileGen.addRest(getDuration(rest), noteType(rest), -1);
+					fileGen.addRest(getDuration(rest, currentBeat, currentBeatType, div), noteType(rest), -1);
 					rest = 0.0;
 				}
 				linearray = new int[stringAmount];
@@ -568,7 +601,7 @@ public class StringParser {
 		boolean output = true;
 		
 		for(Object t : cs) {
-			output = (output && t.equals(o)) || (output && t.equals('[')) || (output && t.equals(']'));
+			output = (output && t.equals(o)) || (output && t.equals('[')) || (output && t.equals(']') || (output && t.equals('*')));
 		}
 		
 		return output;
@@ -664,7 +697,10 @@ public class StringParser {
 	private double beatNote(double b) {
 		double output = 0.0;
 		
-//		System.out.println("BeatNote: " + b);
+
+		System.out.println("totalDash: " + totalDash);
+		
+		//System.out.println("BeatNote: " + b);
 		if(b >= 1.0/256) {
 			if(b >= 2.0) {
 				output = 2.0;
@@ -755,25 +791,25 @@ public class StringParser {
 		return output;
 	}
 	
-	private int getDuration(double noteType) {
+	private int getDuration(double noteType, int currentBeat, int currentBeatType, double div) {
 		double output = 0;
-		double div = getDivisions(beat);
-		double beatTypeNote = 1.0/beatType;
+		//double div = getDivisions(currentBeat);
+		double beatTypeNote = 1.0/currentBeatType;
 		output = (noteType * div)/beatTypeNote;
-//		System.out.println("DurationOutput: " + output);
+		//System.out.println("DurationOutput: " + output);
 		if(output%0.5 == 0)
 			return (int)output;
 		else
 			return (int)Math.round(output);
 	}
-	
-	private double noteFromDash(int d) {
-		double output = 0.0;
-		
-		output = ((1.0 * beat/beatType)*d)/totalDash;
-		
-		return output;
-	}
+//	
+//	private double noteFromDash(int d) {
+//		double output = 0.0;
+//		
+//		output = ((1.0 * beat/beatType)*d)/totalDash;
+//		
+//		return output;
+//	}
 	
 	private int getDivisions(int beatSig) {
 		int hyfenNumber = 0;
@@ -788,66 +824,65 @@ public class StringParser {
 			}
 			if(containsOnlyChar(columns.get(i), '|')) {
 				boundary++;
-				//System.out.println("Boundary");
 			}
 			if(boundary == 2) {
-				//System.out.println("Break");
 				break;
 			}
 			if(!containsOnlyChar(columns.get(i), '-')) {
 				value++;
 				if(doubleDigit(columns.get(i), columns.get(i+1)))
 					doubleDigit++;
-				//System.out.println("Value: " + value);
 			}
 			if(boundary == 1 && value > 1) {				
 				hyfenNumber++;
-				//System.out.println("Hyfen Increase: " + hyfenNumber);
 			}
 		}
 		hyfenNumber -= doubleDigit;
-		///System.out.println("HyfenNumber: " + hyfenNumber);
-		//System.out.println("DoubleDigit: " + doubleDigit);
-		/*
-		for(int i=0;i< columns.size();i++) {
-			
-			if(columns.get(i)[0] == '|'){
-				boundary++;
-			}
-			if (boundary == 2) {
-				break;
-			}
-			
-			if(columns.get(i)[0] == '-' || columns.get(i)[0] == 'h') {
-				hyfenNumber++;
-				System.out.println("- || h");
-			}
-			else {
-				if(i==0) {
-				
-				}
-				else if(columns.get(i-1)[0] == 'h') {
-					hyfenNumber++;
-					System.out.println("h");
-				}
-				else if(columns.get(i-1)[0] != '-') {
-					
-				}
-				else {
-					hyfenNumber++;
-					System.out.println("Else");
-				}
-		}
-			}*/
-		//System.out.println("");
-		totalDash = hyfenNumber;
+		
 		double beatNote = 1.0/beatType;
 		double bSig  = 1.0 * beatSig;
 		double totalBeatPerMeasure = bSig/beatType;
 		double division = (hyfenNumber * beatNote)/totalBeatPerMeasure;
-		//System.out.println("TBM: " + totalBeatPerMeasure);
-		//System.out.println("hyfen number is "+hyfenNumber);
-		//System.out.println("Division: " + division);
+
+		if(division%0.5 == 0)
+            return (int)division;
+        else
+            return (int)Math.round(division);
+	}
+	
+	private int getDivisions(int beat, int beatType, int startIndex) {
+		int hyfenNumber = 0;
+		int boundary = 0;
+		int value = 0;
+		int doubleDigit = 0;
+		//System.out.println("Index: " + startIndex);
+		
+		for(int i = startIndex; i < columns.size(); i++) {
+			if(containsOnlyChar(columns.get(i), '-')) {
+				//System.out.println("Dash");
+			}
+			if(containsOnlyChar(columns.get(i), '|')) {
+				boundary++;
+			}
+			if(boundary == 2) {
+				break;
+			}
+			if(!containsOnlyChar(columns.get(i), '-')) {
+				value++;
+				if(i != columns.size() - 1 && doubleDigit(columns.get(i), columns.get(i+1)))
+					doubleDigit++;
+			}
+			if(boundary == 1 && value > 1) {				
+				hyfenNumber++;
+			}
+		}
+		hyfenNumber -= doubleDigit;
+		
+		totalDash = hyfenNumber;
+		double beatNote = 1.0/beatType;
+		double bSig  = 1.0 * beat;
+		double totalBeatPerMeasure = bSig/beatType;
+		double division = (hyfenNumber * beatNote)/totalBeatPerMeasure;
 
 		if(division%0.5 == 0)
             return (int)division;
@@ -872,8 +907,7 @@ public class StringParser {
 				output = output || false;
 			}
 		}
-		return output;
-		
+		return output;		
 	}
 	
 	////////////////////////

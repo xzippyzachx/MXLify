@@ -436,14 +436,13 @@ public class FileGenerator {
 	/**
 	 * Adds string attributes to the MusicXML
 	 * @param division
-	 * @param keySignature
 	 * @param beat
 	 * @param beatType
 	 * @param clef
 	 * @param tune
 	 * @param tuneOctave
 	 */
-	public void stringAttributes(int division, int keySignature, int beat, int beatType, String clef, String[] tune, int[] tuneOctave) {
+	public void stringAttributes(int division, int beat, int beatType, String clef, String[] tune, int[] tuneOctave) {
 		write(currentIndent + "<attributes>");
 		currentIndent += "  ";
 		newLine();
@@ -930,7 +929,7 @@ public class FileGenerator {
 	 * @param beamNum
 	 * @param beamState
 	 */
-public void addDrumChord(ArrayList<String>chords, int duration, ArrayList<String>chordNotes, ArrayList<Integer>chordOctaves, ArrayList<String>chordIDs, ArrayList<String>chordSymbols, int chordDot, String chordType, int voice, int bm) {
+	public void addDrumChord(ArrayList<String>chords, int duration, ArrayList<String>chordNotes, ArrayList<Integer>chordOctaves, ArrayList<String>chordIDs, ArrayList<String>chordSymbols, int chordDot, String chordType, int voice, int bm) {
 		boolean first = false;
 		for(int i = chords.size()-1; i >= 0; i--) {
 			write(currentIndent + "<note>");
@@ -994,6 +993,9 @@ public void addDrumChord(ArrayList<String>chords, int duration, ArrayList<String
 		}
 	}
 
+	/**
+	 * Adds bar to the MusicXML
+	 */
 	public void addBar() {
 		System.out.println("Bar");
 		write(currentIndent + "<barline location=\"right\">");

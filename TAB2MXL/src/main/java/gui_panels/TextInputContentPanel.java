@@ -495,8 +495,9 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 	}
 
 	private void makeCustomMeasures(String input){
+		customMeasureMap.clear();
+		
 		if(input.isEmpty()){
-
 		}
 		else{
 			List<String> commands = Arrays.asList(input.split("[\r\n]"));
@@ -521,11 +522,8 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 						}
 
 						for(int i = startMeasure; i<=endMeasure;i++){
-						customMeasureMap.put(i,m.group(2));
+							customMeasureMap.put(i,m.group(2));
 						}
-
-
-
 					}
 				}
 			}

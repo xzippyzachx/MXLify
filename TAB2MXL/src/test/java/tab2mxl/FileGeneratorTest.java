@@ -151,7 +151,7 @@ class FileGeneratorTest {
 		openWriter();	
 		String[] tune = new String[]{"E", "B", "G", "D", "A", "E"};	
 		int[] oct = new int[] {1, 2, 3, 4, 5, 6};
-		fileGen.stringAttributes(2,4,4,4, "G", tune, oct);
+		fileGen.stringAttributes(2,4,4, "G", tune, oct);
 		fileGen.end();
 		String fileContent = this.readFile();
 		String expected = "<attributes>\n"

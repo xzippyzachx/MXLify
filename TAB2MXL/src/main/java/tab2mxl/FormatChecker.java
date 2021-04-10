@@ -164,7 +164,7 @@ public class FormatChecker {
 			else if (instrument == 2)
 			{
 				String[] check = line.split("\\|");
-				check[0] = check[0].replaceAll("\\d", "");
+				check[0] = check[0];
 				if(check[0].strip() != "")
 				{
 					if(!DrumTuning.drumSupportCheck(check[0].toUpperCase()))
