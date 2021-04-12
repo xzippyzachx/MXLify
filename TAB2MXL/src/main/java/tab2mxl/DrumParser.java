@@ -13,13 +13,11 @@ import java.util.Arrays;
 public class DrumParser{
 	ArrayList<ArrayList<String>> input;
 	ArrayList<ArrayList<String>> TransInput = new ArrayList<>();
-	private boolean	hasTuning;
 	private ArrayList<ArrayList<ArrayList<String>>> Measure = new ArrayList<>();
 	public static Map<String,String> misc;
 	private int beat;
 	private int beatType;
 	private ArrayList<Double> divisionsArray;
-	private ArrayList<String> instrumentsArray;
 	private int[] voices;
 	private String[] instruments;
 	private int totalDash;
@@ -34,28 +32,6 @@ public class DrumParser{
 	private double totalBeatInMeasure = 0.0;
 	private int beamCount = 0;
 	private boolean eighthCheck = true;
-
-
-	
-//	
-//	
-//	
-//	public static void main(String[] args) {
-//
-//		//Testing DrumTuning
-//		String[] a = {"BD", "CC", "F"};
-//		int d = 2;
-//		DrumTuning test = new DrumTuning(a, d);
-//		System.out.print(test.getNote("BD"));
-//		System.out.println(test.getOctave("BD"));
-//		System.out.print(test.getNote("CC"));
-//		System.out.println(test.getOctave("CC"));
-//		System.out.print(test.getNote("F"));
-//		System.out.println(test.getOctave("F"));
-//		System.out.println(test.unSupportedDrum);
-//		System.out.println(test.getID("CC", "x"));
-//		System.out.println(test.getVoice("CC"));
-//	}
 
 	public DrumParser (ArrayList<ArrayList<String>> input) {
 		misc = new HashMap<String, String>();
@@ -133,7 +109,6 @@ public class DrumParser{
 		int dash = 1;
 		int nextDash = 0;
 		int dot = 0;
-		int currentSpan = 0;
 		int runningSpanCount = 0;
 		boolean repeatOpen = false;
 		int measurecount =0;
@@ -143,8 +118,6 @@ public class DrumParser{
 
 
 		for (int i= 0;i< Measure.size();i++) {//For each measure
-			
-			currentSpan = repeats.get(i)[1];
 			maxVoice = 0;
 			minVoice = 1;
 			if(Measure.get(i).size() ==2){
@@ -348,6 +321,14 @@ public class DrumParser{
 
 	}
 
+	public int[] setVoice(DrumTuning tuner, String[] instruments){
+		int[] voices = new int[instruments.length];
+		for(int i = 0; i <instruments.length;i++){
+			voices[i] = DrumTuning.getVoice(instruments[i]);
+		}
+		return voices;
+	}
+
 	private String[] getInstruments(ArrayList<String> col){ // returns null if the tuning does
 		String column = String.join("",col);
 		String regexPattern = "(BD|BA|B|T2|R|C|CC|HH|H|RC|Rd|SD|SN|S|HT|T|T1|MT|FT|F){1,10}";
@@ -379,7 +360,6 @@ public class DrumParser{
 		int start = 0;
 		int end = 0;
 		int repeat = 0;
-		String r = "";
 		Integer[] store = null;
 		String[] split = null;
 		
@@ -448,7 +428,6 @@ public class DrumParser{
 		}
 		return transposed;
 	}
-
 
  	private ArrayList<ArrayList<ArrayList<String>>> CreateMeasureArray(ArrayList<ArrayList<String>> transposedinput){
 		ArrayList<ArrayList<ArrayList<String>>> Measure = new ArrayList<>();
@@ -661,14 +640,6 @@ public class DrumParser{
 
 	}
 
-	public int[] setVoice(DrumTuning tuner, String[] instruments){
-		int[] voices = new int[instruments.length];
-		for(int i = 0; i <instruments.length;i++){
-			voices[i] = tuner.getVoice(instruments[i]);
-		}
-		return voices;
-	}
-
 	private int getDuration(double noteType,ArrayList<ArrayList<String>> measure, int currentBeat, int currentBeatType) {
 		double output = 0;
 		double div = getDivision(measure, currentBeat, currentBeatType);
@@ -717,7 +688,7 @@ public class DrumParser{
 		return output;
 		}
 	
-	protected static String noteType(double beatNote) {
+	private static String noteType(double beatNote) {
 		String output = "";
 
 		if(beatNote >= 1.0/256) {

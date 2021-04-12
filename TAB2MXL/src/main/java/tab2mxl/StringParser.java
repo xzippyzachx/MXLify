@@ -369,8 +369,13 @@ public class StringParser {
     							sharpnote = true;
     						}
                     	    beatNote = beatNote((dash * totalBeatPerMeasure)/totalDash);
-                    	    fileGen.addStringNote(line, fret, tunner.getNote(tune[line-1], fret, line).charAt(0), noteType(beatNote), getDuration(beatNote, currentBeat, currentBeatType, div) - getDuration(rest, currentBeat, currentBeatType, div), tunner.getOctave(tune[line-1], fret, line), dot(beatNote),sharpnote, hammerStart,hammerContinue,hammerDone,harmonic,grace);
-                		}
+                    	    int dot = dot(beatNote);
+                    	    fileGen.addStringNote(line, fret, tunner.getNote(tune[line-1], fret, line).charAt(0), noteType(beatNote), getDuration(beatNote, currentBeat, currentBeatType, div) - getDuration(rest, currentBeat, currentBeatType, div), tunner.getOctave(tune[line-1], fret, line), dot,sharpnote, hammerStart,hammerContinue,hammerDone,harmonic,grace);
+    						if(rest > 0) {
+    							fileGen.addRest(getDuration(rest, currentBeat, currentBeatType, div), noteType(rest), -1);
+    							rest = 0.0;
+    						}
+                    	}
                     	else if(Character.isDigit(gcharacter)) {
                     		fret = Character.getNumericValue(gcharacter);
                     		hammerStart = false;
@@ -381,8 +386,13 @@ public class StringParser {
                     		if (tunner.getNote(tune[line-1], fret, line).substring(tunner.getNote(tune[line-1], fret, line).length()-1,tunner.getNote(tune[line-1], fret, line).length()).equals("#")){
     							sharpnote = true;
     						}
-                    		fileGen.addStringNote(line, fret, tunner.getNote(tune[line-1], fret, line).charAt(0), noteType(beatNote), getDuration(beatNote, currentBeat, currentBeatType, div) - getDuration(rest, currentBeat, currentBeatType, div), tunner.getOctave(tune[line-1], fret, line), dot(beatNote),sharpnote, hammerStart,hammerContinue,hammerDone,harmonic,grace);
+                    		int dot = dot(beatNote);
+                    		fileGen.addStringNote(line, fret, tunner.getNote(tune[line-1], fret, line).charAt(0), noteType(beatNote), getDuration(beatNote, currentBeat, currentBeatType, div) - getDuration(rest, currentBeat, currentBeatType, div), tunner.getOctave(tune[line-1], fret, line), dot,sharpnote, hammerStart,hammerContinue,hammerDone,harmonic,grace);
                     	    hammerDone = false;
+    						if(rest > 0) {
+    							fileGen.addRest(getDuration(rest, currentBeat, currentBeatType, div), noteType(rest), -1);
+    							rest = 0.0;
+    						}
                     	}
                     	columns.get(z)[j] = '-';
                     	gcharacter = columns.get(z+1)[j];
@@ -705,7 +715,6 @@ public class StringParser {
 		return output;
 	}
 
-	
 	private double beatNote(double b) {
 		double output = 0.0;
 

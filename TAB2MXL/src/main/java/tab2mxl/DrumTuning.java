@@ -12,22 +12,17 @@ public class DrumTuning {
 	private HashMap<String, String> drumNotes;
 	private HashMap<String, Integer> drumOctaves;
 	private HashMap<String, String> drumID;
-	//private HashMap<String, Integer> drumVoice;
 	
 	private String[] drums;
-	private int drumAmount;
 	private final static String FILE_NAME = "DrumNotes.txt";
 	private File drumFile;
 	
-	public boolean unSupportedDrum;
 	
 	DrumTuning(String[] drum, int d){
 		drumNotes = new HashMap<String, String>();
 		drumOctaves = new HashMap<String, Integer>();
 		drumID = new HashMap<String, String>();
 		drums = drum;
-		drumAmount = d;
-		unSupportedDrum = false;
 		drumFile = new File(FILE_NAME);
 		
 		//String drumName = "";
@@ -68,18 +63,6 @@ public class DrumTuning {
 		}catch(	Exception e) {
 			System.out.println("DrumTuning Constructor: " + e.getMessage());
 		}
-		
-		/*for(String s : drumNotes.keySet()) {
-			System.out.println(s + ": " + drumNotes.get(s) + drumOctaves.get(s));
-		}
-		for(String s : drumID.keySet()) {
-			System.out.println(s + ": " + drumID.get(s));
-		}*/
-		
-		if(drumNotes.size() != drumAmount)
-			this.unSupportedDrum = true;
-		if(drumOctaves.size() != drumAmount)
-			this.unSupportedDrum = true;
 	}
 	
 	public static boolean drumSupportCheck(String drum) {
@@ -101,7 +84,6 @@ public class DrumTuning {
 		}catch(Exception e) {
 			System.out.println("drumSupportCheck: " + e.getMessage());
 		}
-		System.out.println("TuneCheck: " + output);
 		return output;
 	}
 	
