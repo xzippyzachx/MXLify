@@ -193,6 +193,7 @@ public class DrumParser{
 					eighthCheck = true;
 					totalBeatInMeasure = 0.0;
 					totalDash = getTotalDashes(Measure.get(i), j+1);
+					System.out.println("totalDash: " + totalDash);
 					for (int k = 0; k < Measure.get(i).size(); k++) {//for each column of measure
 						String[] column = new String[Measure.get(i).get(k).size()];
 						int chord = 0;
@@ -274,6 +275,7 @@ public class DrumParser{
 						if(k == Measure.get(i).size()-1 && totalBeatPerMeasure>totalBeatInMeasure) {
 							rest = totalBeatPerMeasure-totalBeatInMeasure;
 							fileGen.addRest(getDuration(rest, Measure.get(i),currentBeat, currentBeatType), noteType(rest), j+1);
+							totalBeatInMeasure += beatNote(noteType(rest), 0);
 							rest = 0.0;
 						}
 					}
@@ -585,8 +587,6 @@ public class DrumParser{
 
 			if(!containsOnlyString(col,"-")){                   //First column with info
 				int dashes = measure.size() - runningcount;
-
-				totalDash = dashes;
 				double beatNote = 1.0/currentBeatType;
 				double bSig  = 1.0 * currentBeat;
 				double totalBeatPerMeasure = bSig/currentBeatType;

@@ -51,9 +51,9 @@ public class DrumTuning {
 						index = line.indexOf(" ", index+1);
 						String Id = line.substring(index, line.indexOf(" ", index+1));
 						drumIDName += symbol.trim();
-						drumNotes.put(drum[i], note);
-						drumOctaves.put(drum[i], octave);
-						drumID.put(drumIDName, Id);
+						drumNotes.put(drum[i].trim(), note.trim());
+						drumOctaves.put(drum[i].trim(), octave);
+						drumID.put(drumIDName.trim(), Id.trim());
 						drumIDName = "";
 					}
 				}
@@ -82,18 +82,18 @@ public class DrumTuning {
 			}
 			fileScanner.close();
 		}catch(Exception e) {
-			System.out.println("drumSupportCheck: " + e.getMessage());
+			System.out.println("drumSupportCheckError: " + e.getMessage());
 		}
 		return output;
 	}
 	
 	public String getNote(String drum) {
-		return drumNotes.get(drum);
+		return drumNotes.get(drum).trim();
 	}
 	
 	public int getOctave(String drum) {
 		try {
-			return drumOctaves.get(drum);
+			return drumOctaves.get(drum.trim());
 		}catch(NullPointerException e) {
 			return -1;
 		}
@@ -102,7 +102,7 @@ public class DrumTuning {
 	public String getID(String drum, String symbol) {
 		for(String s : drumID.keySet()) {
 			if(s.contains(drum) && s.contains(symbol)) {
-				return drumID.get(s);
+				return drumID.get(s).trim();
 			}
 		}
 		return null;
