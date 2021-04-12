@@ -1,6 +1,7 @@
 package tab2mxl;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -64,8 +65,8 @@ public class StringParser {
 		int currentBeat = beat;
 		int currentBeatType = beatType;
 		
-//		System.out.println("beat: " + beat);
-//		System.out.println("beatType: " + beatType);
+//		System.out.println("beat: " + currentBeat);
+//		System.out.println("beatType: " + currentBeatType);
 		
 		for(int i = 0; i < input.size(); i++) {		
 			if(input.get(i).size() < 2)
@@ -111,11 +112,12 @@ public class StringParser {
 		int measure = 0;
 		int line = 0;
 		double totalBeatPerMeasure = (1.0 * beat)/beatType;
-		int div = getDivisions(beat);
+		int div = getDivisions(beat, beatType, 0);
 		double dash = 0; 			
 		char character = ' ';		
 		char note = ' ';
-		char[] col;	
+		char[] col;
+		int measureBegin = 0;
 		
 		//Double digit
 		boolean doubleDigit;
@@ -139,7 +141,7 @@ public class StringParser {
 		boolean hammerContinue = false;
 		boolean hammerDone = false;
 		int hammerLength = 0;
-		int hammerDuration = 0;
+		int hammerDashes = 0;
 		int hammerLocation = -1;
 		double beatNote = 0.0;
 		
@@ -283,10 +285,9 @@ public class StringParser {
 					if(fileGen.measureOpen)
 						fileGen.closeMeasure(wasRepeat, repeatAmount);
 					if(columns.size() > currentColumn + 2) {
-						div = getDivisions(currentBeat, currentBeatType, isRepeat ? i+1 : i);
+						div = getDivisions(currentBeat, currentBeatType, isRepeat ? i+2 : i);
 						Map<Integer, String> measureMap = TextInputContentPanel.customMeasureMap;
-						
-						
+
 						fileGen.openMeasure(measure, isRepeat, repeatAmount);						
 						if(measure == 1) {
 							fileGen.stringAttributes(div, beat, beatType, "G", tune, tuningOctave);
@@ -404,7 +405,7 @@ public class StringParser {
 						currentChar =  columns.get(m)[j];
 						hammerLocation = j;
 					}
-					hammerDuration = hamererOnDuration(columns.get(i+2)[j],i+lastHammerFret-1); // sets necessary flags to true
+					hammerDashes = hamererOnDashes(columns.get(i+2)[j],i+lastHammerFret-1); // sets necessary flags to true
 					hammerOn = true;
 					hammerStart = true;
 
@@ -418,7 +419,7 @@ public class StringParser {
 					}
 					boolean test;
 					for(int k = i+1+offset; k < columns.size()-1; k++) {
-						if(!containsOnlyChar(columns.get(k), '|')) {
+						if(!boundary(columns.get(k))) {
 							test = containsOnlyChar(columns.get(k), '-');
 							if(test) {
 								dash++;
@@ -431,7 +432,7 @@ public class StringParser {
 				}
 				
 				if(hammerOn){
-					beatNote = beatNote((hammerDuration * totalBeatPerMeasure)/totalDash);/*beatNote((hammerDuration * beatTypeNote)/div);*/
+					beatNote = beatNote((hammerDashes * totalBeatPerMeasure)/totalDash);/*beatNote((hammerDuration * beatTypeNote)/div);*/
 				}
 				else {
 					beatNote = beatNote((dash * totalBeatPerMeasure)/totalDash);/*beatNote((dash * beatTypeNote)/div)*/
@@ -455,13 +456,10 @@ public class StringParser {
 						if (tunner.getNote(tune[line-1], fret, line).substring(tunner.getNote(tune[line-1], fret, line).length()-1,tunner.getNote(tune[line-1], fret, line).length()).equals("#")){
 							sharpnote = true;
 						}
-						fileGen.addStringNote(line, fret, tunner.getNote(tune[line-1], fret, line).charAt(0), noteType(beatNote), getDuration(beatNote, currentBeat, currentBeatType, div) - getDuration(rest, currentBeat, currentBeatType, div), tunner.getOctave(tune[line-1], fret, line), dot(beatNote),sharpnote, hammerStart,hammerContinue,hammerDone,harmonic,grace);
+						int dot = dot(beatNote);
+						fileGen.addStringNote(line, fret, tunner.getNote(tune[line-1], fret, line).charAt(0), noteType(beatNote), getDuration(beatNote, currentBeat, currentBeatType, div) - getDuration(rest, currentBeat, currentBeatType, div), tunner.getOctave(tune[line-1], fret, line), dot,sharpnote, hammerStart,hammerContinue,hammerDone,harmonic,grace);
 						harmonic = false;
 						grace = false;
-//						System.out.println("");
-//						System.out.println("Dash: " + dash);
-//						System.out.println("Duration: " + getDuration(beatNote));
-//						System.out.println("");
 						if(rest > 0) {
 							fileGen.addRest(getDuration(rest, currentBeat, currentBeatType, div), noteType(rest), -1);
 							rest = 0.0;
@@ -483,7 +481,7 @@ public class StringParser {
 						if (hammerLength == 0 ){ // indicates that the hammer on is over and back to regular scheduled programming
 							hammerDone = false;
 							hammerOn = false;
-							hammerDuration = 0;
+							hammerDashes = 0;
 							hammerLength = 0;
 						}
 
@@ -517,7 +515,7 @@ public class StringParser {
 			if (chord && !grace) { 
 				beatNote = 0.0;
 				if(hammerOn){
-					beatNote = beatNote((hammerDuration * totalBeatPerMeasure)/totalDash);/*beatNote((hammerDuration * beatTypeNote)/div);*/
+					beatNote = beatNote((hammerDashes * totalBeatPerMeasure)/totalDash);/*beatNote((hammerDuration * beatTypeNote)/div);*/
 				}
 				else {
 					beatNote = beatNote((dash * totalBeatPerMeasure)/totalDash);/*beatNote((dash * beatTypeNote)/div)*/
@@ -547,7 +545,7 @@ public class StringParser {
 				if (hammerLength == 0 ){ // indicates that the hammer on is over and back to regular scheduled programming
 					hammerDone = false;
 					hammerOn = false;
-					hammerDuration = 0;
+					hammerDashes = 0;
 					hammerLength = 0;
 				}
 			}
@@ -601,34 +599,12 @@ public class StringParser {
 		boolean output = true;
 		
 		for(Object t : cs) {
-			output = (output && t.equals(o)) || (output && t.equals('[')) || (output && t.equals(']') || (output && t.equals('*')));
+			output = (output && t.equals(o)) || (output && t.equals('[')) || (output && t.equals(']'));
 		}
 		
 		return output;
 	}
-
-	private int hamererOnDuration(char afterhammer, int i){
-		if( afterhammer!= '-' && afterhammer != '|') {
-			int dash = 1;
-			boolean test;
-			for(int k = i+1; k < columns.size()-1; k++) {
-				if(!containsOnlyChar(columns.get(k), '|'))
-				{
-					test = containsOnlyChar(columns.get(k), '-');
-					if(test) {
-						dash++;
-					}else {
-						break;
-					}
-				}
-				else
-					break;
-			}
-			return dash;
-		}
-		return 1;
-	}
-
+	
 	private boolean containsOnlyInt(int[] cs, int o) {
 		boolean output = true;
 		
@@ -649,9 +625,50 @@ public class StringParser {
 		return output;
 	}
 	
+	private boolean containsChar(char[] cs,char o) {
+		
+		for(Object t : cs) {
+			if(t.equals(o)) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
+	private boolean boundary(char[] cs) {
+		
+		for(Object t : cs) {
+			if(t.equals('|'))return true;
+			if(t.equals('*')) return true;
+		}
+		
+		return false;
+	}
+	
+	private int hamererOnDashes(char afterhammer, int i){
+		if( afterhammer!= '-' && afterhammer != '|') {
+			int dash = 1;
+			boolean test;
+			for(int k = i+1; k < columns.size()-1; k++) {
+				if(!boundary(columns.get(k)))
+				{
+					test = containsOnlyChar(columns.get(k), '-');
+					if(test) {
+						dash++;
+					}else {
+						break;
+					}
+				}
+				else
+					break;
+			}
+			return dash;
+		}
+		return 1;
+	}
+	
 	private int dot(double beatNote) {
-//		System.out.println("");
-//		System.out.println("DotBeatNote: " + beatNote);
 		int output = 0;
 		double check = 0.0;
 		double check2 = 0.0;
@@ -664,24 +681,20 @@ public class StringParser {
 			}
 		}
 		
-//		System.out.println("DotCheck: " + check);
 		temp = check;
 		check2 = check;
 		
 		while(true) {
 			check = check + temp/div;
 			if(check2 < beatNote && beatNote > check) {
-//				System.out.println(check2 + " < " + beatNote + " > " + check);
 				output++;
 			}else if(beatNote == check) {
-//				System.out.println(beatNote + " == " + check);
 				output++;
 				break;
 			}else if(beatNote < check) {
 				if(check - beatNote < check - check2) {
 					//add the rest here
 					rest = beatNote(beatNote - check2);
-//					System.out.println("DotRest: " + rest);
 				}else {
 					break;
 				}
@@ -689,18 +702,13 @@ public class StringParser {
 			check2 = check2 + temp/div;
 			div *= 2;
 			}
-//		System.out.println("");
 		return output;
 	}
 
 	
 	private double beatNote(double b) {
 		double output = 0.0;
-		
 
-		System.out.println("totalDash: " + totalDash);
-		
-		//System.out.println("BeatNote: " + b);
 		if(b >= 1.0/256) {
 			if(b >= 2.0) {
 				output = 2.0;
@@ -730,18 +738,17 @@ public class StringParser {
 						}
 					}
 				}
-//				System.out.println("Power: " + power);
 				while(div != 1) {
 					div = div/2;
 					maxIndex++;
 				}
 				int temp = (int)(Math.pow(2, maxIndex) * 8);
 				output = 1.0/temp;
-//				System.out.println("Temp: " + temp);
 				output += beatNote(b - output);
 			}
+		}else {
+			output = 0;
 		}		
-//		System.out.println("BeatNoteOut: " + output);		
 		return output;
 	}
 	
@@ -793,23 +800,13 @@ public class StringParser {
 	
 	private int getDuration(double noteType, int currentBeat, int currentBeatType, double div) {
 		double output = 0;
-		//double div = getDivisions(currentBeat);
 		double beatTypeNote = 1.0/currentBeatType;
 		output = (noteType * div)/beatTypeNote;
-		//System.out.println("DurationOutput: " + output);
 		if(output%0.5 == 0)
 			return (int)output;
 		else
 			return (int)Math.round(output);
 	}
-//	
-//	private double noteFromDash(int d) {
-//		double output = 0.0;
-//		
-//		output = ((1.0 * beat/beatType)*d)/totalDash;
-//		
-//		return output;
-//	}
 	
 	private int getDivisions(int beatSig) {
 		int hyfenNumber = 0;
@@ -822,7 +819,7 @@ public class StringParser {
 			if(containsOnlyChar(columns.get(i), '-')) {
 				//System.out.println("Dash");
 			}
-			if(containsOnlyChar(columns.get(i), '|')) {
+			if(boundary(columns.get(i))) {
 				boundary++;
 			}
 			if(boundary == 2) {
@@ -850,18 +847,27 @@ public class StringParser {
             return (int)Math.round(division);
 	}
 	
+	
 	private int getDivisions(int beat, int beatType, int startIndex) {
+		int hammerEnd = 0;
+		int hammer = 0;
 		int hyfenNumber = 0;
 		int boundary = 0;
 		int value = 0;
 		int doubleDigit = 0;
-		//System.out.println("Index: " + startIndex);
 		
 		for(int i = startIndex; i < columns.size(); i++) {
-			if(containsOnlyChar(columns.get(i), '-')) {
-				//System.out.println("Dash");
+			if(containsChar(columns.get(i),'h')) {
+				hammer++;
 			}
-			if(containsOnlyChar(columns.get(i), '|')) {
+			if(containsOnlyChar(columns.get(i), '-')) {
+				for(int j = 0; j < hammer; j++)
+					hammerEnd++;
+				if(!containsOnlyChar(columns.get(i+1), '-')) {
+					hammer = 0;
+				}
+			}
+			if(boundary(columns.get(i))) {
 				boundary++;
 			}
 			if(boundary == 2) {
@@ -869,14 +875,15 @@ public class StringParser {
 			}
 			if(!containsOnlyChar(columns.get(i), '-')) {
 				value++;
-				if(i != columns.size() - 1 && doubleDigit(columns.get(i), columns.get(i+1)))
+				if(doubleDigit(columns.get(i), columns.get(i+1)))
 					doubleDigit++;
 			}
-			if(boundary == 1 && value > 1) {				
+			if(boundary == 1 && value > 1 && !containsChar(columns.get(i),'h')) {				
 				hyfenNumber++;
 			}
 		}
 		hyfenNumber -= doubleDigit;
+		hyfenNumber += hammerEnd;
 		
 		totalDash = hyfenNumber;
 		double beatNote = 1.0/beatType;

@@ -32,7 +32,6 @@ public class DrumParser{
 	private double beam = 0.0;
 	private int bm = 0;
 	private double totalBeatInMeasure = 0.0;
-	private ArrayList<Integer> totalDashes = new ArrayList<>();
 	private int beamCount = 0;
 	private boolean eighthCheck = true;
 
@@ -213,10 +212,7 @@ public class DrumParser{
 					}
 
 				}
-				////Attributes for different groups////
-				/*else if(Measure.get(i-1).size() ==2) {
-					fileGen.drumAttributes((int) ((divisionsArray.get(i)) / 1), beat, beatType);
-				}*/
+				
 				for (int j = minVoice-1; j < maxVoice; j++) {//for each voice in measure
 					beam = 0.0;
 					bm = 0;
@@ -254,7 +250,7 @@ public class DrumParser{
 									}
 								}
 							}
-//							totalDash = gettotalDash(Measure.get(i));
+							
 							beatNote = beatNote((dash * totalBeatPerMeasure) / totalDash);
 							// to do is make array for total dash
 							dot = dot(beatNote);
