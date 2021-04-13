@@ -7,7 +7,7 @@ import java.io.File;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-class TuningTest {
+class StringTuningTest {
 
 	static StringTuning tunning;
 	static String[] tune = {"e", "B", "G", "D", "A", "E"};; 
