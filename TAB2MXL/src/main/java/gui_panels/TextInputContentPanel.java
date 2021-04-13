@@ -69,7 +69,7 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 	
 	private boolean measureEdit = false;
 		
-	TextInputContentPanel(){
+	public TextInputContentPanel(){
 	
 		// creates main content panel, lets layout to vertical, adds padding and sets it as Content Pane
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -386,7 +386,7 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 		
 	}
 	
-	private ArrayList<ArrayList<String>> GetInput (String[] textInput, boolean convert)
+	public ArrayList<ArrayList<String>> GetInput (String[] textInput, boolean convert)
 	{		
 		if(textField.getText().isEmpty())
 		{
