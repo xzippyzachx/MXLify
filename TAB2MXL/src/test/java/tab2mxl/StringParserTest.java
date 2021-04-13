@@ -3189,7 +3189,6 @@ class StringParserTest {
 		expected = expected.replaceAll("\\r", "");
 		assertEquals(expected, fileContent);
 	}
-	
 	@Test
 	void testNoteType() {
 		assertEquals("whole", StringParser.noteType(1.0));

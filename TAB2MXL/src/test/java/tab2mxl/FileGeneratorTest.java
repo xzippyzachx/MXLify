@@ -250,7 +250,29 @@ class FileGeneratorTest {
 				+ "</score-partwise>";
 		assertEquals(expected, fileContent); 
 	}
-
+    @Test
+    void testAddStringNote3() {
+    	openWriter();
+    	fileGen.addStringNote(2,3,'G', "quarter", 1, 2, 0,false,false,false,false,false,true);
+        fileGen.end();
+        String fileContent = this.readFile();
+        System.out.println(fileContent);
+        String expected ="<note>\n"
+        		+ "  <grace/>\n"
+        		+ "  <pitch>\n"
+        		+ "    <step>G</step>\n"
+        		+ "    <octave>2</octave>\n"
+        		+ "  </pitch>\n"
+        		+ "  <notations>\n"
+        		+ "    <technical>\n"
+        		+ "      <string>2</string>\n"
+        		+ "      <fret>3</fret>\n"
+        		+ "    </technical>\n"
+        		+ "  </notations>\n"
+        		+ "</note>\n"
+        		+ "</score-partwise>";
+        		assertEquals(expected,fileContent);
+    }
 	@Test
 
 	void testAddStringChord() {
