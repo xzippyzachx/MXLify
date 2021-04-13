@@ -88,7 +88,10 @@ public class DrumTuning {
 	}
 	
 	public String getNote(String drum) {
-		return drumNotes.get(drum).trim();
+		if(drumNotes.get(drum) != null)
+			return drumNotes.get(drum).trim();
+		
+		return null;
 	}
 	
 	public int getOctave(String drum) {
@@ -109,11 +112,13 @@ public class DrumTuning {
 	}
 	
 	public static int getVoice(String drum) {
-		if(drum.trim().equals("BD")||drum.trim().equals("BA")||drum.trim().equals("B")) {
+		if(!DrumTuning.drumSupportCheck(drum)) 
+			return -1;
+		
+		if(drum.trim().equals("BD")||drum.trim().equals("BA")||drum.trim().equals("B")) 
 			return 2;
-		}else {
+		else 
 			return 1;
-		}
 	}
 	
 }
