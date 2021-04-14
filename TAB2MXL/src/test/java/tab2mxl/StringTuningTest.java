@@ -7,16 +7,16 @@ import java.io.File;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-class TuningTest {
+class StringTuningTest {
 
-	static Tuning tunning;
+	static StringTuning tunning;
 	static String[] tune = {"e", "B", "G", "D", "A", "E"};; 
 	
 	@BeforeAll
     static void setUp() {
 		//String[] tune = {"e", "B", "G", "D", "A", "E"};
 		int[] oct = new int[]{1, 2, 3, 4, 5, 6};
-	     tunning = new Tuning(tune, 6, oct);
+	     tunning = new StringTuning(tune, 6, oct);
 	}
 	
 	@Test
@@ -28,11 +28,11 @@ class TuningTest {
 		String[] tuneD = {"e", "B", "G", "D", "A", "E", "B", "F#"};
 		String[] tuneE = {"e", "B", "G", "D", "A", "E", "B", "F#", "C#"};
 		
-		assertArrayEquals(Tuning.getDefaultTuning(5), tuneA);
-		assertArrayEquals(Tuning.getDefaultTuning(6), tuneB);
-		assertArrayEquals(Tuning.getDefaultTuning(7), tuneC);
-		assertArrayEquals(Tuning.getDefaultTuning(8), tuneD);
-		assertArrayEquals(Tuning.getDefaultTuning(9), tuneE);
+		assertArrayEquals(StringTuning.getDefaultTuning(5), tuneA);
+		assertArrayEquals(StringTuning.getDefaultTuning(6), tuneB);
+		assertArrayEquals(StringTuning.getDefaultTuning(7), tuneC);
+		assertArrayEquals(StringTuning.getDefaultTuning(8), tuneD);
+		assertArrayEquals(StringTuning.getDefaultTuning(9), tuneE);
 	}
 	
 	void testStringNotesHashMap() {
@@ -43,11 +43,11 @@ class TuningTest {
 	void testGetNote() {
 	
 		// GUITAR NOTES
-		assertEquals("G", tunning.getNote("E", 3));     //Testing notes from different positions
-		assertEquals("F", tunning.getNote("E", 1));
-		assertEquals("C#", tunning.getNote("E", 21));
-		assertEquals("C#", tunning.getNote("D", 11));
-		assertEquals("B", tunning.getNote("G", 4));
+		assertEquals("G", tunning.getNote("E", 3, 1));     //Testing notes from different positions
+		assertEquals("F", tunning.getNote("E", 1, 6));
+		assertEquals("C#", tunning.getNote("E", 21, 1));
+		assertEquals("C#", tunning.getNote("D", 11, 4));
+		assertEquals("B", tunning.getNote("G", 4, 3));
 		
 	}
 

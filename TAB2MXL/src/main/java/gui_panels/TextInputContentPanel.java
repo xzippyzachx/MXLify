@@ -6,9 +6,13 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.Insets;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -16,27 +20,27 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 import gui.ColorDef;
-import gui.ColumnTextArea;
 import gui.SteelCheckBox;
 import gui.TextPrompt;
 import gui.TextPrompt.Show;
 import gui.UndoRedoTextArea;
 import gui_popups.ClearPopUp;
-import gui.ColumnTextArea;
 import tab2mxl.CreateScore;
+import tab2mxl.FormatChecker;
 import tab2mxl.InstrumentDetection;
-import tab2mxl.LoadManager;
 import tab2mxl.Main;
 import tab2mxl.SaveManager;
 
 public class TextInputContentPanel extends JPanel implements ActionListener {
-	public JTextArea textField;
+	public UndoRedoTextArea textField;
 	public static boolean scoremake = false;
+
+	public static Map<Integer,String> customMeasureMap = new HashMap<>();
 	JPanel titlePanel;
 	JLabel titleLabel;
 	
 	JPanel clearPanel;
-	JButton clearButton;
+	public JButton clearButton;
 	
 	JPanel savePanel;
 	JButton saveButton;
@@ -45,22 +49,27 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 	
 	JPanel inputpanel;	
 	JButton convertButton;
+	JButton timeSignatureButton;
 	
-	String[] tabTypes = {"Guitar", "Bass" /*, "Drums" */};
+	String[] instruments = {"Guitar", "Bass", "Drums"};
 	JPanel detailsPanel;
-	JComboBox tabList;
-	JTextField timeSignature;
-	JTextField songName;
+	public JComboBox<Object> instrumentList;
+	public JTextField timeSignature;
+	public JTextField songName;
 	SteelCheckBox sheetMusicToggle;
 	
 	JPanel errorPanel;
 	public JLabel errorText;
+	public JLabel warningText;
+	public ClearPopUp clearPopUp;
 	
-	private static String tabType;
+	private static String instrument;
 	private static String title;
 	private static String timeSig;
+	
+	private boolean measureEdit = false;
 		
-	TextInputContentPanel(){
+	public TextInputContentPanel(){
 	
 		// creates main content panel, lets layout to vertical, adds padding and sets it as Content Pane
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -151,13 +160,13 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 			@Override
 			public void insertUpdate(DocumentEvent e) {
 				String[] inputText = textField.getText().split("\n");
-				tabList.setSelectedIndex(InstrumentDetection.detectInstrument(GetInput(inputText,false)));
+				instrumentList.setSelectedIndex(InstrumentDetection.detectInstrument(GetInput(inputText,false)));
 			}
 			
 			@Override
 			public void removeUpdate(DocumentEvent e) {
 				String[] inputText = textField.getText().split("\n");
-				tabList.setSelectedIndex(InstrumentDetection.detectInstrument(GetInput(inputText,false)));
+				instrumentList.setSelectedIndex(InstrumentDetection.detectInstrument(GetInput(inputText,false)));
 			}
         });
         
@@ -177,9 +186,9 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
         tabListPanel.setLayout(new GridLayout(0, 1));
         tabListPanel.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 20));
         tabListPanel.setOpaque(false);
-        tabList = new JComboBox<Object>(tabTypes);
-        tabList.setSelectedIndex(0);
-        tabListPanel.add(tabList);
+        instrumentList = new JComboBox<Object>(instruments);
+        instrumentList.setSelectedIndex(0);
+        tabListPanel.add(instrumentList);
         
         JPanel songNamePanel = new JPanel();
         songNamePanel.setLayout(new GridLayout(0, 1));
@@ -194,16 +203,45 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
         songNamePanel.add(songName);
         
         JPanel timeSignaturePanel = new JPanel();
-        timeSignaturePanel.setLayout(new GridLayout(0, 1));
-        timeSignaturePanel.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 20));
+        timeSignaturePanel.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
+        timeSignaturePanel.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 0));
         timeSignaturePanel.setOpaque(false);
-        timeSignature = new JTextField();
+        timeSignature = new JTextField(16);
         timeSignature.setFont(timeSignature.getFont().deriveFont(16f));
-        //timeSignature.setHorizontalAlignment(JTextField.CENTER);
-        TextPrompt timeSignaturePrompt = new TextPrompt("Time Signature", timeSignature,Show.FOCUS_LOST);
+        TextPrompt timeSignaturePrompt = new TextPrompt("Time Signature", timeSignature, Show.FOCUS_LOST);
         timeSignaturePrompt.setHorizontalAlignment(JTextField.CENTER);
         timeSignaturePrompt.changeAlpha(0.8f);
         timeSignaturePanel.add(timeSignature);
+        
+        JPanel timeSignatureButtonPanel = new JPanel();
+        timeSignatureButtonPanel.setLayout(new FlowLayout(FlowLayout.RIGHT, 10,0));
+        timeSignatureButtonPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
+        timeSignatureButtonPanel.setOpaque(false);
+        
+        timeSignatureButton = new JButton("+");
+        timeSignatureButton.setFont(new Font(timeSignatureButton.getFont().getFontName(), Font.PLAIN, 20));
+        timeSignatureButton.setMargin(new Insets(0, 0, 0, 0));
+        timeSignatureButton.setPreferredSize(new Dimension(25, 25));
+        timeSignatureButton.setBackground(new Color(33,150,243));
+        timeSignatureButton.setForeground(new Color(224,224,224));
+        timeSignatureButton.setFocusable(false);
+        timeSignatureButton.addActionListener(this);
+        
+        timeSignatureButton.setOpaque(true);
+        timeSignatureButton.setBorderPainted(false);
+        //Button hover effects
+        timeSignatureButton.addMouseListener(new java.awt.event.MouseAdapter() {
+    	    public void mouseEntered(java.awt.event.MouseEvent evt) {
+    	    	timeSignatureButton.setBackground(new Color(224,224,224));
+    	    	timeSignatureButton.setForeground(new Color(33,150,243));
+    	    }
+    	    public void mouseExited(java.awt.event.MouseEvent evt) {
+    	    	timeSignatureButton.setBackground(new Color(33,150,243));
+    	    	timeSignatureButton.setForeground(new Color(224,224,224));
+    	    }
+    	}); 
+        //timeSignatureButtonPanel.add(timeSignatureButton); 
+        timeSignaturePanel.add(timeSignatureButton);
         
         Border detailsPadding = BorderFactory.createEmptyBorder(20, 0, 20, 0);
         detailsPanel.setBorder(detailsPadding);
@@ -252,8 +290,6 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 				if(e.getID() == ActionEvent.ACTION_PERFORMED){
 					TextInputContentPanel.scoremake = !TextInputContentPanel.scoremake;
 				}
-				//TextInputContentPanel.scoremake = e.getStateChange() == ItemEvent.SELECTED;
-				//System.out.println(TextInputContentPanel.scoremake);
 				if( TextInputContentPanel.scoremake && !CreateScore.isWindows()){
 					JOptionPane.showMessageDialog(null,"We've detected you're running this application on MacOS, please read Section 6.5 of the User Manual before using this feature to prevent any errors");
 				}
@@ -270,9 +306,12 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
         
         errorPanel = new JPanel();
         errorPanel.setLayout(new FlowLayout());
-        errorText = new JLabel("");        
+        errorText = new JLabel("");
         errorText.setForeground(Color.red);
-        errorPanel.add(errorText);
+		warningText = new JLabel("");
+		warningText.setForeground(Color.yellow);
+		errorPanel.add(errorText);
+		errorPanel.add(warningText);
         errorPanel.setPreferredSize(new Dimension(100, 30));
         errorPanel.setOpaque(false);
         
@@ -289,63 +328,66 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		
 		if(e.getSource() == convertButton && !Main.isInPopUp)
-		{	
-			//Detect if the text area is empty
-			if(textField.getText().isEmpty())
+		{
+			makeCustomMeasures(FileUploadContentPanel.customTextArea.getText());
+			FormatChecker formatChecker = new FormatChecker(textField.getText(), instrumentList.getSelectedIndex());
+
+			if(formatChecker.GetErrorType() == 2)
 			{
-				errorText.setText("Text Area Empty");
+				Toolkit.getDefaultToolkit().beep();
 				return;
 			}
-			String[] inputText = textField.getText().split("\n");
 			
-			ArrayList<ArrayList<String>> input = new ArrayList<ArrayList<String>>();
+			String[] inputText = formatChecker.GetOuput();
 			
+			ArrayList<ArrayList<String>> input = new ArrayList<ArrayList<String>>();			
 			input = GetInput(inputText,true); // Convert to double String ArrayList
 	       
 			if (input == null) {
 				return;
 			}
-								
-			//Detect if the text area is empty
-			int lineLength = input.get(0).size();
-			for (ArrayList<String> line : input) {
-				if(line.size() != lineLength && line.size() != 0)
-				{
-					errorText.setText("Wrong Formatting");
-					return;
-				}
-			}
-						
-			/*
-			for (ArrayList<String> line : input) {
-				for (String chr : line) {
-					System.out.print(chr);
-				}
-				System.out.println("");
-			}
-			*/
-			setTabType(tabList.getSelectedItem().toString());
+			
+			setInstrument(instrumentList.getSelectedItem().toString());
 			setTitle(songName.getText());
 			setTimeSig(timeSignature.getText());
 			
-			Main.Convert(input, tabList.getSelectedIndex());
-
+			Main.Convert(input, instrumentList.getSelectedIndex());
 		}
 		else if(e.getSource() == clearButton && !Main.isInPopUp)
 		{
 			if(!Main.myFrame.textInputContentPanel.textField.getText().isEmpty())
-				new ClearPopUp(Main.myFrame, "", "Clear Current Tablature");
+				clearPopUp = new ClearPopUp(Main.myFrame, "", "Clear Current Tablature");
 		}
 		else if(e.getSource() == saveButton && !Main.isInPopUp)
 		{
-			new SaveManager("", tabList.getSelectedIndex(), songName.getText(), timeSignature.getText(), textField.getText());
+			new SaveManager("", instrumentList.getSelectedIndex(), songName.getText(), timeSignature.getText(), textField.getText(), Main.myFrame.fileUploadContentPanel.customTextArea.getText());
+		}
+		else if(e.getSource() == timeSignatureButton && !Main.isInPopUp)
+		{
+			if(!measureEdit)
+			{
+				measureEdit = true;
+				Main.myFrame.fileUploadContentPanel.OptionsPanel.add(Main.myFrame.fileUploadContentPanel.MeasurePanel);
+				Border OptionsPadding = BorderFactory.createEmptyBorder(0, 0, 0, 0);
+				Main.myFrame.fileUploadContentPanel.OptionsPanel.setBorder(OptionsPadding);				
+				Main.myFrame.fileUploadContentPanel.OptionsPanel.revalidate();
+				timeSignatureButton.setText("-");
+			}
+			else
+			{
+				measureEdit = false;
+				Main.myFrame.fileUploadContentPanel.OptionsPanel.remove(Main.myFrame.fileUploadContentPanel.MeasurePanel);
+				Border OptionsPadding = BorderFactory.createEmptyBorder(0, 0, 100, 0);
+				Main.myFrame.fileUploadContentPanel.OptionsPanel.setBorder(OptionsPadding);
+				Main.myFrame.fileUploadContentPanel.OptionsPanel.revalidate();
+				timeSignatureButton.setText("+");
+			}
 		}
 		
 	}
 	
-	private ArrayList<ArrayList<String>> GetInput (String[] textInput, boolean convert)
-	{
-		errorText.setText("");
+	public ArrayList<ArrayList<String>> GetInput (String[] textInput, boolean convert)
+	{		
 		if(textField.getText().isEmpty())
 		{
 			return null;
@@ -353,22 +395,29 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 		
 		ArrayList<ArrayList<String>> input = new ArrayList<ArrayList<String>>();
 		
+		String regexPattern = "repeat";
+		Pattern pattern = Pattern.compile(regexPattern, Pattern.CASE_INSENSITIVE);
+		String[] lineInput = null;
+		
 		for (String line : textInput) {
 			if(line.length() > 1)
 			{
-				line = cleanTextContent(line); //Removes redundant spaces
+				//line = cleanTextContent(line); //Removes redundant spaces
 				if (!line.contains("|")) {
-					if (convert)
-						errorText.setText("Wrong Formatting");
-					return null;
+					continue;
 				}
 				if (!line.contains("-")) {
-					if (convert)
-						errorText.setText("Wrong Formatting");
-					return null;
+					continue;
 				}
 				
-				String[] lineInput = line.substring(line.indexOf('|')).split("");
+				Matcher matcher = pattern.matcher(line);
+				boolean matchFound = matcher.find();
+				
+				if(matchFound)
+					lineInput= line.split("");
+				else
+					lineInput = line.substring(line.indexOf('|')).split("");
+
 				ArrayList<String> lineInputList = new ArrayList<String>();
 				String tunePlusOctave = line.substring(0, line.indexOf('|')).trim();
 				String tune = "";
@@ -396,7 +445,7 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 				input.add(new ArrayList<String>());
 			}
 		}
-		
+
 		return input;
 	}
 	
@@ -415,7 +464,7 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 	}
 
 	public static String getTitle() {
-		if(title.isEmpty())
+		if(title == null || title.isEmpty())
 			return "Title";
 		return title;
 	}
@@ -424,22 +473,61 @@ public class TextInputContentPanel extends JPanel implements ActionListener {
 		TextInputContentPanel.title = title;
 	}
 
-	public static String getTabType() {
-		return tabType;
+	public static String getInstrument() {
+		if(instrument == null || instrument.isEmpty())
+			return "Guitar";
+		return instrument;
 	}
 
-	public static void setTabType(String tabType) {
-		TextInputContentPanel.tabType = tabType;
+	public static void setInstrument(String instrument) {
+		TextInputContentPanel.instrument = instrument;
 	}
 
 	public static String getTimeSig() {
-		if(timeSig.isEmpty())
+		if(timeSig == null || timeSig.isEmpty())
 			return "4/4";
 		return timeSig;
 	}
 
+
 	public static void setTimeSig(String timeSig) {
 		TextInputContentPanel.timeSig = timeSig;
 	}
+
+	private void makeCustomMeasures(String input){
+		customMeasureMap.clear();
 		
+		if(input.isEmpty()){
+		}
+		else{
+			List<String> commands = Arrays.asList(input.split("[\r\n]"));
+			for(String command:commands){
+				if (command.toLowerCase().contains("measure")){
+				final Pattern p = Pattern.compile("[^\\d]+([\\d]+[-]?[\\d]{0,4})[^\\d]+([\\d]+/[\\d]+)");
+					Matcher m = p.matcher(command);
+					if(m.find()){
+						int startMeasure = 0;
+						int endMeasure =0;
+						if(m.group(1).contains("-")){
+							startMeasure = Integer.parseInt(m.group(1).substring(0,m.group(1).indexOf("-")));
+							if(m.group(1).indexOf("-") == m.group(1).length()-1){
+								endMeasure = 9999;
+							}
+							else
+								endMeasure = Integer.parseInt(m.group(1).substring(m.group(1).indexOf("-")+1));
+						}
+						else{
+							int measure = Integer.parseInt((m.group(1)));
+							customMeasureMap.put(measure,m.group(2));
+						}
+
+						for(int i = startMeasure; i<=endMeasure;i++){
+							customMeasureMap.put(i,m.group(2));
+						}
+					}
+				}
+			}
+
+		}
+	}
 }

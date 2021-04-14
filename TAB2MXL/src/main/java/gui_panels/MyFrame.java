@@ -18,7 +18,7 @@ public class MyFrame extends JFrame{
 
 	//Screens
 	public JPanel mainContentPanel;
-	FileUploadContentPanel fileUploadContentPanel;
+	public FileUploadContentPanel fileUploadContentPanel;
 	public TextInputContentPanel textInputContentPanel;
 	Color frameColour = new Color(0,90,108);
 	
@@ -27,6 +27,9 @@ public class MyFrame extends JFrame{
 		///////////////////////
 		//Main Screen
 		///////////////////////
+		
+		ImageIcon frameIcon = new ImageIcon("Images/Icon.png");
+		this.setIconImage(frameIcon.getImage());
 		
 		mainContentPanel = new JPanel();
 		GridBagConstraints c = new GridBagConstraints();
@@ -50,19 +53,18 @@ public class MyFrame extends JFrame{
 		//Sets the FileChoosers style to the current system look and feel
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-	    } 
+	    }
 	    catch (Throwable ex) { }
 		
 		this.setContentPane(bg);
-		 this.setLayout(new GridBagLayout());
-         
+		this.setLayout(new GridBagLayout());
+        
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setSize(1280,720);
 		this.setResizable(false);
 		this.setTitle("MXLify");
 		this.setLocationRelativeTo(null); //Open in center of screen
 		this.setVisible(true);	
-
 	}
 	
 	private ImageIcon getBackgroundImage() {

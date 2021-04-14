@@ -23,7 +23,7 @@ import javax.swing.border.Border;
 import gui_panels.MyFrame;
 import tab2mxl.Main;
 
-public class ClearPopUp extends PopupFactory implements ActionListener{
+public class LoadPopUp extends PopupFactory implements ActionListener{
 
 	Popup popup;
 	
@@ -31,11 +31,19 @@ public class ClearPopUp extends PopupFactory implements ActionListener{
 	public JButton noButton;
 	
 	String input;
+	String instrument;
+	String songTitle;
+	String timeSig;
+	String custom;
 	MyFrame myFrame;
 		
-	public ClearPopUp (Component owner, String input, String message){
+	public LoadPopUp (Component owner, String input, String instrument, String songTitle, String timeSig, String custom, String message){
 		
 		this.input = input;
+		this.instrument = instrument;
+		this.songTitle = songTitle;
+		this.timeSig = timeSig;
+		this.custom = custom;
 		myFrame = (MyFrame) owner;
 		
         JPanel panel = new JPanel(); 
@@ -120,7 +128,13 @@ public class ClearPopUp extends PopupFactory implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == yesButton)
-		{
+		{			
+			myFrame.textInputContentPanel.instrumentList.setSelectedIndex(Integer.parseInt(instrument));
+			myFrame.textInputContentPanel.songName.setText(songTitle);
+			myFrame.textInputContentPanel.timeSignature.setText(timeSig);
+			myFrame.fileUploadContentPanel.customTextArea.focusGained(null);
+			myFrame.fileUploadContentPanel.customTextArea.setText(custom);
+			myFrame.textInputContentPanel.textField.focusGained(null);
 			myFrame.textInputContentPanel.textField.setText(input);
 			popup.hide();
 			Main.isInPopUp = false;

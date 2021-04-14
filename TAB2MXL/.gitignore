@@ -1,10 +1,16 @@
 # Ignore Gradle project-specific cache directory
 .gradle
+.html
+.classpath
+.project
+.settings
+.metadata
 
 # Ignore Gradle build output directory
-/Outputs
-/Saves
-/build
-/buildDir
+Outputs/*
+Saves/*
+build/*
+buildDir/*
 /.DS_Store
 /exampleemajor.musicxml.txt
+/build/

@@ -1,0 +1,9 @@
+BD|BA|B F4 o|f P1-I36 Bass-drum-1
+FT|F A4 o|f P1-I42 Floor-tom
+SD|SN|S C5 o|f P1-I39 Snare
+MT|T2 D5 o|f P1-I46 Medium-tom
+HT|T|T1 E5 o|f P1-I48 High-tom
+RC|Rd|R F5 x P1-I52 Ride-cymbal-1
+HH|H G5 o P1-I47 Hi-hat(o)
+HH|H G5 x P1-I43 Hi-hat(x)
+CC|C A5 x P1-I50 Crash-cymbal-1
