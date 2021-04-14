@@ -75,7 +75,7 @@ public class DrumParser{
 		createDivisionsArray(); // adds the divisions for each measure into the divisions Array
 
 
-		System.out.println("instruments");
+		//System.out.println("instruments");
 		ArrayList<String> instrmnt = new ArrayList<>();
 		for(int inst = 0; inst < transposedInput.get(0).size(); inst++) {
 			instrmnt.add(transposedInput.get(0).get(inst)+transposedInput.get(1).get(inst));
@@ -85,7 +85,7 @@ public class DrumParser{
 
 		tuning = new DrumTuning(instruments, instruments.length);
 		for(int g  = 0; g < instruments.length; g++)
-			System.out.println("Instrument: " + instruments[g]);
+			//System.out.println("Instrument: " + instruments[g]);
 
 		voices = setVoice(tuning,instruments);
 
@@ -142,7 +142,7 @@ public class DrumParser{
 				}
 				totalBeatInMeasure = 0.0;
 				measurecount++;
-				System.out.println("Entered measure: " + measurecount);
+				//System.out.println("Entered measure: " + measurecount);
 				if(repeats.get(i)[0] == 0) {
 					fileGen.openMeasure(measurecount, false, 0);
 				}else {
@@ -160,7 +160,7 @@ public class DrumParser{
 					totalBeatPerMeasure = (1.0 * currentBeat)/currentBeatType;
 				}
 				if(TextInputContentPanel.customMeasureMap.containsKey(measurecount)){
-					System.out.println("change this measure");
+					//System.out.println("change this measure");
 					if( currentBeat == Integer.parseInt(TextInputContentPanel.customMeasureMap.get(measurecount).substring(0,TextInputContentPanel.customMeasureMap.get(measurecount).indexOf("/")))
 							&&
 							currentBeatType == Integer.parseInt(TextInputContentPanel.customMeasureMap.get(measurecount).substring(TextInputContentPanel.customMeasureMap.get(measurecount).indexOf("/")+1))){
@@ -193,7 +193,7 @@ public class DrumParser{
 					eighthCheck = true;
 					totalBeatInMeasure = 0.0;
 					totalDash = getTotalDashes(Measure.get(i), j+1);
-					System.out.println("totalDash: " + totalDash);
+					//System.out.println("totalDash: " + totalDash);
 					for (int k = 0; k < Measure.get(i).size(); k++) {//for each column of measure
 						String[] column = new String[Measure.get(i).get(k).size()];
 						int chord = 0;
@@ -289,7 +289,7 @@ public class DrumParser{
 				fileGen.addBar();
 			}*/
 
-			System.out.println("closing measure");
+			//System.out.println("closing measure");
 			 if(fileGen.measureOpen){
 				 if(repeats.get(i)[1]-runningSpanCount == 0) {
 				 fileGen.closeMeasure(true, repeats.get(i)[0]);
@@ -309,16 +309,16 @@ public class DrumParser{
 		// Printing for testing
 		int i = 0;
 		for (ArrayList<ArrayList<String>> measure : Measure){
-			System.out.println(repeats.get(i)[0] + "," + repeats.get(i)[1]);
+			//System.out.println(repeats.get(i)[0] + "," + repeats.get(i)[1]);
 			i++;
 			for(ArrayList<String> row : measure){
 				for(String c:row){
-					System.out.print(c);
+					//System.out.print(c);
 				}
-				System.out.println();
+				//System.out.println();
 			}
-			System.out.println();
-			System.out.println();
+			//System.out.println();
+			//System.out.println();
 		}
 
 	}
@@ -337,7 +337,7 @@ public class DrumParser{
 		Pattern pattern = Pattern.compile(regexPattern, Pattern.CASE_INSENSITIVE);
 		Matcher matcher = pattern.matcher(column);
 		boolean matchFound = matcher.find();
-		System.out.println(matchFound);
+		//System.out.println(matchFound);
 		if(matchFound){
 			String[] instruments = new String[col.size()];
 			for(int i = 0; i<col.size();i++){
@@ -470,7 +470,7 @@ public class DrumParser{
 					}
 					currentMeasure.add(row);
 				}
-				System.out.println(currentMeasure.size());
+				//System.out.println(currentMeasure.size());
 				double span = (end - start)*(1.0)/currentMeasure.size();
 				span = Math.round(span);
 				repeats.add(new Integer[]{repeatValue, (int)span});
